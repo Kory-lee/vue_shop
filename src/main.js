@@ -7,6 +7,12 @@ import './assets/fonts/iconfont.css'
 import axios from 'axios'
 // 设置请求根路径
 axios.defaults.baseURL = 'https://www.liulongbin.top:8888/api/private/v1/'
+// 请求拦截器
+axios.interceptors.request.use(config => {
+  // 在最后必须return config
+  config.headers.Authorization = window.sessionStorage.getItem('token')
+  return config
+})
 // 挂载到Vue的原型对象上
 Vue.prototype.$http = axios
 
