@@ -204,8 +204,7 @@ export default {
         this.addCateForm.cat_level = this.selectedKeys.length
       }
     }
-  },
-  components: {}
+  }
 }
 </script>
 <style lang="less" scoped>
