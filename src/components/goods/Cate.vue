@@ -186,6 +186,19 @@ export default {
       this.getParentCateList()
       this.addDialogVisible = true
     },
+    async removeUserById() {
+      const confirmResult = await this.$confirm('此操作将永久删除该参数,是否继续？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => err)
+      if (confirmResult !== 'confirm') return this.$message.info('已取消删除')
+      // const { data: res } = await this.$http.delete(`categories/${this.cateId}/attributes/${attrId}`)
+      // if (res.meta.status !== 200) return this.$message.error('删除参数信息失败')
+      this.$message.success('删除参数成功')
+      this.getCateList()
+    },
+    setUser() {},
     // 获取父级分类的数据列表
     async getParentCateList() {
       const { data: res } = await this.$http.get('categories', { params: { type: 2 } })

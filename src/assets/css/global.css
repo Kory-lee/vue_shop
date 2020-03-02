@@ -23,3 +23,9 @@ body,
 .el-row {
   margin-bottom: 10px;
 }
+.el-steps {
+  margin: 15px 0;
+}
+.quill-editor {
+  height: 300px;
+}
