@@ -4,13 +4,13 @@
 
 > 用于管理用户账号,商品分类,商品信息,订单,数据统计等业务功能
 
-![简单功能](https://gitee.com/kory923033576/vue_shop/raw/master/img/mall_desc01.png)
+![简单功能](./img/mall_desc01.png)
 
 ## 开发模式
 
 > 电商后台管理系统整体采用前后端分离的开发模式，其中前端是基于 Vue 技术栈的 SPA 项目
 
-![开发模式](../vue_shop/img/mall_desc02.png)
+![开发模式](img/mall_desc02.png)
 
 ## 技术类型
 
