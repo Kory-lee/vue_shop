@@ -6,8 +6,6 @@
 
 ![功能](https://gitee.com/kory923033576/vue_shop/raw/master/img/mall_desc01.png)
 
-
-
 ## 开发模式
 
 > 电商后台管理系统整体采用前后端分离的开发模式，其中前端是基于 Vue 技术栈的 SPA 项目
@@ -60,7 +58,7 @@
 3. 通过 session 在客户端记录状态
 4. 通过 token 维持状态(不允许跨域状态)
 
-![登陆业务](https://gitee.com/kory923033576/vue_shop/raw/master/img/mall_desc02.png)
+![登陆业务](https://gitee.com/kory923033576/vue_shop/raw/master/img/mall_desc04.png)
 
 ### 登陆界面布局
 
@@ -97,7 +95,7 @@ axios.interceptor.request.use(config => {
 
 > 通过权限管理模块控制不同的用户可以进行哪些操作,具体可以通过角色的方式进行控制,及每一个用户分配一个特定的角色,角色包括不同的权限
 
-![mall_desc05](../vue_shop/img/mall_desc05.png)
+![权限管理](./img/mall_desc05.png)
 
 ### 分类管理
 
@@ -268,7 +266,7 @@ app.use(compression())
 #### 配置 https 服务
 
 > 申请 ssl 证书(https://freessl.org) => 正常企业还是使用收费 ssh(http 协议默认运行在 80 端口,https 默认运行在 443 端口)
-> ![img](https://mmbiz.qpic.cn/mmbiz_png/R5ic1icyNBNd7xWCpbK6ov8rlssLDRPJJKAJzXBq80MdQHDKoDS8EHm2WnKB4ibspCAg43Ndpk4V2ibIjYic2KtQLfQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+> ![img](./img/mall_desc06.png)
 
 #### 使用 pm2 管理应用
 
