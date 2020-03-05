@@ -4,7 +4,9 @@
 
 > 用于管理用户账号,商品分类,商品信息,订单,数据统计等业务功能
 
-![简单功能](./img/mall_desc01.png)
+![功能](https://gitee.com/kory923033576/vue_shop/raw/master/img/mall_desc01.png)
+
+
 
 ## 开发模式
 
@@ -58,7 +60,7 @@
 3. 通过 session 在客户端记录状态
 4. 通过 token 维持状态(不允许跨域状态)
 
-![登陆业务](../vue_shop/img/mall_desc04.png)
+![登陆业务](https://gitee.com/kory923033576/vue_shop/raw/master/img/mall_desc02.png)
 
 ### 登陆界面布局
 
