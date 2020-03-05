@@ -169,9 +169,8 @@ export default {
     closeAddRole() {
       this.$refs.addFormRef.resetFields()
     },
-    editRole(id) {
-      console.log(id)
-    },
+
+    editRole(id) {},
     async romoveRightById(role, rightId) {
       const confirResult = await this.$confirm('此操作将永久刪除该权限,是否继续', '提示', {
         confirmButtonText: '确定',

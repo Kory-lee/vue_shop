@@ -1,18 +1,17 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from './components/Login.vue'
-import Home from './components/Home.vue'
-import Welcome from './components/Welcome.vue'
-import Users from './components/user/Users.vue'
-import Roles from './components/power/Roles.vue'
-import Rights from './components/power/Rights.vue'
-import Cate from './components/goods/Cate.vue'
-import Params from './components/goods/Params.vue'
-import GoodsList from './components/goods/List.vue'
-import Add from './components/goods/Add.vue'
-import Order from './components/order/Order.vue'
-import Report from './components/report/Report.vue'
-
+const Order = () => import(/* webpackChunkName: 'Order-Report' */ './components/order/Order.vue')
+const Report = () => import(/* webpackChunkName: 'Order-Report' */ './components/report/Report.vue')
+const Add = () => import(/* webpackChunkName: 'cate_params_list_add' */ './components/goods/Add.vue')
+const Cate = () => import(/* webpackChunkName: 'cate_params_list_add' */ './components/goods/Cate.vue')
+const Params = () => import(/* webpackChunkName: 'cate_params_list_add' */ './components/goods/Params.vue')
+const GoodsList = () => import(/* webpackChunkName: 'cate_params_list_add' */ './components/goods/List.vue')
+const Login = () => import(/* webpackChunkName: 'login_home_welcome' */ './components/Login.vue')
+const Home = () => import(/* webpackChunkName: 'login_home_welcome' */ './components/Home.vue')
+const Welcome = () => import(/* webpackChunkName: 'login_home_welcome' */ './components/Welcome.vue')
+const Roles = () => import(/* webpackChunkName: 'users_roles_rights' */ './components/power/Roles.vue')
+const Users = () => import(/* webpackChunkName: 'users_roles_rights' */ './components/user/Users.vue')
+const Rights = () => import(/* webpackChunkName: 'users_roles_rights' */ './components/power/Rights.vue')
 Vue.use(Router)
 
 const router = new Router({
@@ -52,7 +51,6 @@ const router = new Router({
         { path: '/goods/add', component: Add },
         { path: '/orders', component: Order },
         { path: '/reports', component: Report }
-
       ]
     }
   ]

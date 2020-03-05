@@ -320,7 +320,6 @@ export default {
       if (res.meta.status !== 200) return this.$message.error(res.meta.msg + ', 获取角色列表失败')
 
       this.rolesList = res.data
-      console.log(this.rolesList)
 
       this.setRoleDialogVisible = true
     },
