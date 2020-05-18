@@ -13,16 +13,16 @@
       </el-row>
       <el-table :data="rolelist" border stripe>
         <el-table-column type="expand">
-          <template #default="slotRole">
+          <template v-slot="{row}">
             <el-row
               type="flex"
               align="middle"
               :class="['bdbottom',i1 === 0?'bdtop':'']"
-              v-for="(item1,i1) in slotRole.row.children"
+              v-for="(item1,i1) in row.children"
               :key="item1.id"
             >
               <el-col :span="5">
-                <el-tag closable @close="romoveRightById(slotRole.row,item1.id)">{{item1.authName}}</el-tag>
+                <el-tag closable @close="romoveRightById(row,item1.id)">{{item1.authName}}</el-tag>
                 <i class="el-icon-caret-right"></i>
               </el-col>
               <el-col :span="19">
@@ -37,7 +37,7 @@
                       type="success"
                       :class="[i2 === 0?'':'bdtop']"
                       closable
-                      @close="romoveRightById(slotRole.row,item2.id)"
+                      @close="romoveRightById(row,item2.id)"
                     >{{item2.authName}}</el-tag>
                     <i class="el-icon-caret-right"></i>
                   </el-col>
@@ -59,20 +59,19 @@
         <el-table-column prop="roleName" label="角色名称"></el-table-column>
         <el-table-column prop="roleDesc" label="角色描述"></el-table-column>
         <el-table-column label="操作" width="320">
-          <template #default="slotProps">
+          <template v-slot="{row}">
             <el-button
-              v-model="slotProps.row"
               type="primary"
               icon="el-icon-edit"
               size="mini"
-              @click="editRole(slotProps.row.id)"
+              @click="editRole(row.id)"
             >编辑</el-button>
             <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
             <el-button
               type="warning"
               icon="el-icon-setting"
               size="mini"
-              @click="showSetRightDialog(slotProps.row)"
+              @click="showSetRightDialog(row)"
             >分配权限</el-button>
           </template>
         </el-table-column>
@@ -120,7 +119,6 @@
 </template>
 <script>
 export default {
-  name: '',
   data() {
     return {
       rolelist: [],

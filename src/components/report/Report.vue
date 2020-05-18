@@ -50,17 +50,14 @@ export default {
   },
   async mounted() {
     // 3.基于准备好的dom, 初始化echarts实例
-    var myChart = echarts.init(document.getElementById('main'))
-    const { data: res } = await this.$http.get('report/type/1')
+    const myChart = echarts.init(document.getElementById('main'))
+    const { data: res } = await this.$http.get('reports/type/1')
     if (res.meta.status !== 200) return this.$message.error('获取折线图数据失败')
     // 4.准备数据和配置项
     const result = _.merge(res.data, this.options)
     // 5.展示数据
     myChart.setOption(result)
-  },
-  computed: {},
-  methods: {},
-  components: {}
+  }
 }
 </script>
 <style lang='less' scoped>

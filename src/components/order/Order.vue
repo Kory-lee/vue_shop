@@ -19,34 +19,34 @@
         <el-table-column prop="order_number" label="订单编号"></el-table-column>
         <el-table-column prop="order_price" label="订单价格"></el-table-column>
         <el-table-column prop="pay_status" label="是否付款">
-          <template #default="scope">
-            <el-tag type="success" v-if="scope.row.pay_status === '1'">已付款</el-tag>
+          <template v-slot="{row}">
+            <el-tag type="success" v-if="row.pay_status === '1'">已付款</el-tag>
             <el-tag type="danger" v-else>未付款</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="is_send" label="是否发货">
-          <template #default="scope">
-            <div>{{ scope.row.is_send }}</div>
+          <template v-slot="{row}">
+            <div>{{ row.is_send }}</div>
           </template>
         </el-table-column>
         <el-table-column prop="create_time" label="下单时间">
-          <template #default="scope">
-            <div>{{ scope.row.create_time | dateFormat }}</div>
+          <template v-slot="{row}">
+            <div>{{ row.create_time | dateFormat }}</div>
           </template>
         </el-table-column>
         <el-table-column label="操作">
-          <template #default="scope">
+          <template v-slot="{row}">
             <el-button
               type="primary"
               size="mini"
               icon="el-icon-edit"
-              @click="showDialog(scope.row)"
+              @click="showDialog(row)"
             ></el-button>
             <el-button
               type="success"
               size="mini"
               icon="el-icon-location"
-              @click="showProgressBox(scope.row)"
+              @click="showProgressBox(row)"
             ></el-button>
           </template>
         </el-table-column>

@@ -22,34 +22,34 @@
         :show-row-hover="false"
       >
         <!-- 是否有效 -->
-        <template #isok="slotProp">
-          <i class="el-icon-success" v-if="!slotProp.row.cat_deleted" style="color: lightgreen"></i>
+        <template #isok="{row}">
+          <i class="el-icon-success" v-if="!row.cat_deleted" style="color: lightgreen"></i>
           <i class="el-icon-error" v-else></i>
         </template>
-        <template #order="slot">
-          <el-tag size="mini" v-if="slot.row.cat_level === 0">一级</el-tag>
-          <el-tag type="success" size="mini" v-else-if="slot.row.cat_level === 1">二级</el-tag>
+        <template #order="{row}">
+          <el-tag size="mini" v-if="row.cat_level === 0">一级</el-tag>
+          <el-tag type="success" size="mini" v-else-if="row.cat_level === 1">二级</el-tag>
           <el-tag type="warning" size="mini" v-else>三级</el-tag>
         </template>
-        <template #opt="optSlot">
+        <template #opt="{row}">
           <el-button
             type="primary"
             icon="el-icon-edit"
             size="mini"
-            @click="showEditDialog(optSlot.row.id)"
+            @click="showEditDialog(row.id)"
           ></el-button>
           <el-button
             type="danger"
             icon="el-icon-delete"
             size="mini"
-            @click="removeUserById(optSlot.row.id)"
+            @click="removeUserById(row.id)"
           ></el-button>
           <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
             <el-button
               type="primary"
               icon="el-icon-setting"
               size="mini"
-              @click="setUser(optSlot.row)"
+              @click="setUser(row)"
             ></el-button>
           </el-tooltip>
         </template>

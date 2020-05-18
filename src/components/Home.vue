@@ -22,7 +22,8 @@
         >
           <!-- 一级菜单 -->
           <el-submenu v-for="item in menuList" :key="item.id" :index="item.id+''">
-            <template slot="title">
+          <!-- 具名插槽-->
+            <template v-slot:title>
               <i :class="'el-icon-' + iconsObj[item.id]"></i>
               <span>{{item.authName}}</span>
             </template>
@@ -32,7 +33,7 @@
               :key="subItem.id"
               @click="saveNavState('/' + subItem.path)"
             >
-              <template slot="title">
+              <template v-slot:title>
                 <i class="el-icon-menu"></i>
                 <span>{{subItem.authName}}</span>
               </template>
@@ -88,8 +89,7 @@ export default {
       window.sessionStorage.setItem('activePath', activePath)
       this.activePath = activePath
     }
-  },
-  components: {}
+  }
 }
 </script>
 <style lang="less" scoped>
