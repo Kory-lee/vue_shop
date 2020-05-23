@@ -23,7 +23,7 @@
           <!-- 一级菜单 -->
           <el-submenu v-for="item in menuList" :key="item.id" :index="item.id+''">
           <!-- 具名插槽-->
-            <template v-slot:title>
+            <template #title>
               <i :class="'el-icon-' + iconsObj[item.id]"></i>
               <span>{{item.authName}}</span>
             </template>
@@ -33,7 +33,7 @@
               :key="subItem.id"
               @click="saveNavState('/' + subItem.path)"
             >
-              <template v-slot:title>
+              <template #title>
                 <i class="el-icon-menu"></i>
                 <span>{{subItem.authName}}</span>
               </template>
