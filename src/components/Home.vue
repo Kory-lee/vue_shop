@@ -25,7 +25,7 @@
           <!-- 具名插槽-->
             <template #title>
               <i :class="'el-icon-' + iconsObj[item.id]"></i>
-              <span>{{item.authName}}</span>
+              {{item.authName}}
             </template>
             <el-menu-item
               :index="'/' + subItem.path"
