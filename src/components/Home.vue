@@ -23,13 +23,13 @@
           <!-- 一级菜单 -->
           <el-submenu v-for="item in menuList" :key="item.id" :index="item.id+''">
           <!-- 具名插槽-->
-            <template #title>
+            <template v-slot:title>
               <i :class="'el-icon-' + iconsObj[item.id]"></i>
-              {{item.authName}}
+              <span>{{item.authName}}</span>
             </template>
             <el-menu-item
-              :index="'/' + subItem.path"
               v-for="subItem in item.children"
+              :index="'/' + subItem.path"
               :key="subItem.id"
               @click="saveNavState('/' + subItem.path)"
             >
