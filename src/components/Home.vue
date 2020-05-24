@@ -21,9 +21,9 @@
           :default-active="activePath"
         >
           <!-- 一级菜单 -->
-          <el-submenu v-for="item in menuList" :key="item.id" :index="item.id+''">
+          <el-submenu v-for="item in menuList" :key="item.id" :index="item.id">
           <!-- 具名插槽-->
-            <template v-slot:title>
+            <template slot= "title">
               <i :class="'el-icon-' + iconsObj[item.id]"></i>
               <span>{{item.authName}}</span>
             </template>
