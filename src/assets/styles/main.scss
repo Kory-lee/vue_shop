@@ -1,0 +1,14 @@
+@import 'normalize.scss';
+@import 'config.scss';
+@import 'elementui.scss';
+
+.push-left {
+  position: absolute;
+  left: 0;
+}
+.push-right {
+  position: absolute;
+  right: 0;
+  height: inherit;
+  overflow: hidden;
+}
