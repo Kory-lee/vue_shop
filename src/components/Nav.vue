@@ -8,6 +8,7 @@
     background-color="#344A5F"
     text-color="#fff"
     active-text-color="#fff"
+    unique-opened="true"
   >
     <slot>
       <h1 class="logo">
@@ -15,10 +16,10 @@
       </h1>
     </slot>
     <template v-for="item in routers">
-      <el-submenu :key="item.id" :index="item.path" v-if="!item.hidden">
+      <el-submenu v-if="!item.hidden" :key="item.id" :index="item.path">
         <!--一级菜单-->
         <template #title>
-          <svg-icon :iconName="item.meta.icon" class="regular"></svg-icon>
+          <svg-icon :icon-name="item.meta.icon" class="regular"></svg-icon>
           <span name="title">{{ item.meta.name }}</span>
         </template>
         <el-menu-item v-for="subItem in item.children" :key="subItem.id" :index="subItem.path">{{
@@ -33,12 +34,12 @@
 <script>
 import { reactive, computed } from '@vue/composition-api';
 export default {
-  name: 'layoutNav',
+  name: 'LayoutNav',
   setup(props, { root }) {
     const routers = reactive(root.$router.options.routes);
     const isCollapse = computed(() => root.$store.state.app.isCollapse);
     const indexActive = root.$route.path;
-    const backHome = () => root.$router.push({ name: 'Console' });
+    const backHome = () => root.$router.push({ name: 'Index' });
     return {
       routers,
       isCollapse,

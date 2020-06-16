@@ -48,7 +48,7 @@ module.exports = {
       .set('@', resolve('src'))
       .set('@views', resolve('src/views'))
       .set('@components', resolve('src/components'))
-      .set('@styles', resolve('src/assets/styles'))
+      .set('@styles', resolve('src/styles'))
       .set('@images', resolve('src/assets/images'))
       .set('@assets', resolve('src/assets'))
       .set('@router', resolve('src/router'))
@@ -122,21 +122,19 @@ module.exports = {
       sass: {
         prependData: `@import "~@styles/main.scss";`,
       },
-      // postcss: {
-      //   plugins: [
-      //     // 把px单位换算成rem单位
-      //     require('postcss-pxtorem')({
-      //       rootValue: 75, // 换算的基数(设计图750的根字体为32)
-      //       selectorBlackList: ['.van-'], // 要忽略的选择器并保留为px。
-      //       propList: ['*'], // 可以从px更改为rem的属性。
-      //       minPixelValue: 2 // 设置要替换的最小像素值。
-      //     }),
-      //     require('autoprefixer')
-      //   ]
-      //   // plugins: [
-      //   //   require('autoprefixer')
-      //   // ]
-      // } // 这里的选项会传递给 postcss-loader
+      postcss: {
+        // plugins: [
+        //   // 把px单位换算成rem单位
+        //   require('postcss-pxtorem')({
+        //     rootValue: 75, // 换算的基数(设计图750的根字体为32)
+        //     selectorBlackList: ['.van-'], // 要忽略的选择器并保留为px。
+        //     propList: ['*'], // 可以从px更改为rem的属性。
+        //     minPixelValue: 2, // 设置要替换的最小像素值。
+        //   }),
+        //   require('autoprefixer'),
+        // ],
+        plugins: [require('autoprefixer')],
+      }, // 这里的选项会传递给 postcss-loader
     }, // css预设器配置项 详见https://cli.vuejs.org/zh/config/#css-loaderoptions
     // modules: false // 启用 CSS modules for all css / pre-processor files.
     requireModuleExtension: true,

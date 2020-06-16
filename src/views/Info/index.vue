@@ -4,7 +4,7 @@
       <el-row :gutter="16">
         <el-col :span="4">
           <el-form-item label="类别：" label-width="60px">
-            <el-select v-model="searchValue.category" placeholder="" style="width: 100%;">
+            <el-select v-model="searchValue.category" clearable style="width: 100%;">
               <el-option
                 v-for="item in searchOptions.category"
                 :key="item.id"
@@ -75,7 +75,7 @@
       <el-table-column label="操作" align="center" width="170">
         <template v-slot="scope">
           <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
-          <el-button type="sucess" size="mini" @click="dialogInfo = true">编辑</el-button>
+          <el-button type="sucess" size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -99,6 +99,12 @@
       </el-col>
     </el-row>
     <DialogInfo :flag.sync="dialogInfo" :category="searchOptions.category" />
+    <DialogInfo
+      :id="dialog_info_edit.id"
+      :data="dialog_info_edit.data"
+      :flag.sync="dialog_info_edit.value"
+      :category="searchOptions.category"
+    />
   </el-card>
 </template>
 
@@ -113,6 +119,7 @@ export default {
   setup(props, { root }) {
     const dialogInfo = ref(false);
     const tableData = reactive({ item: [], loading: true, deleteItem: null }),
+      dialog_info_edit = reactive({ id: '', value: false, data: {} }),
       searchValue = reactive({
         key: '',
         work: '',
@@ -136,6 +143,12 @@ export default {
         else page.page_sizes = [10, 20, 50, 100];
       }
     );
+    watch(
+      () => dialog_info_edit.value,
+      (value, oldValue) => {
+        if (!value && oldValue) getList();
+      }
+    );
     // 方法
     const toDate = (row) => timestampToTime(row.createDate * 1000);
     const toCategory = (row) =>
@@ -146,6 +159,7 @@ export default {
     };
     const handleSelectionChange = (val) => (tableData.deleteItem = val);
     const search = () => {
+      if (!searchValue.category || searchValue.date.length === 0) return;
       let requestData = {
         categoryId: searchValue.category || '',
         startTiem: searchValue.date[0] || '',
@@ -161,6 +175,11 @@ export default {
     const handleCurrentChange = (val) => {
       page.pageNumber = val;
       getList();
+    };
+    const handleEdit = (id) => {
+      dialog_info_edit.value = true;
+      dialog_info_edit.id = id;
+      dialog_info_edit.data = tableData.item;
     };
     const handleDelete = (id = null) => {
       if (!id && !tableData.deleteItem) return root.$message.error('请勾选要删除的对象');
@@ -207,6 +226,7 @@ export default {
       tableData,
       page,
       dialogInfo,
+      dialog_info_edit,
       handleSizeChange,
       handleCurrentChange,
       handleDelete,
@@ -214,6 +234,7 @@ export default {
       toCategory,
       handleSelectionChange,
       search,
+      handleEdit,
     };
   },
 };

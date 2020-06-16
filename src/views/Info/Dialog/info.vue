@@ -15,7 +15,7 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button size="small" class="diglogButton" @click="dialog_info_flag = false">取 消</el-button>
+      <el-button size="small" class="diglogButton" @click="close">取 消</el-button>
       <el-button size="small" type="danger" :loading="submitLoading" class="diglogButton" @click="submitConfirm"
         >确 定</el-button
       >
@@ -24,8 +24,9 @@
 </template>
 
 <script>
-import { AddInfo } from '@api/news';
-import { ref, reactive, watch } from '@vue/composition-api';
+import { AddInfo, EditInfo } from '@api/news';
+import { ref, reactive, computed, watch } from '@vue/composition-api';
+import { indexArr } from '@utils/common';
 export default {
   props: {
     flag: {
@@ -36,26 +37,50 @@ export default {
       type: Array,
       default: () => [],
     },
+    id: {
+      type: String,
+      default: '',
+    },
+    data: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, { emit, root, refs }) {
-    const dialog_info_flag = ref(false),
-      submitLoading = ref(false);
+    const submitLoading = ref(false);
+    const dialog_info_id = computed(() => props.id),
+      dialog_info_flag = computed(() => props.flag),
+      dialog_info_data = computed(() => props.data);
+    let editInfo, id;
     const form = reactive({
       category: '',
       title: '',
       content: '',
     });
+    watch(
+      () => form.category,
+      (value) => console.log(value)
+    );
     const options = reactive({ item: null });
     const close = () => {
       dialog_info_flag.value = false;
       emit('update:flag', false);
       initForm();
     };
-    watch(
-      () => props.flag,
-      (value) => (dialog_info_flag.value = value)
-    );
-    const openedDialog = () => (options.item = props.category);
+    const openedDialog = () => {
+      options.item = props.category;
+      console.log(props.category);
+      console.log(dialog_info_data.value);
+      if (!dialog_info_id.value) return;
+      let index = indexArr(dialog_info_data.value, dialog_info_id.value);
+      let categoryId = dialog_info_data.value[index].categoryId;
+      let cateIndex = indexArr(props.category, categoryId);
+      id = props.category[cateIndex].id;
+      console.log(props.category[cateIndex]);
+      form.category = props.category[cateIndex].id;
+      form.title = dialog_info_data.value[index].title;
+      form.content = dialog_info_data.value[index].content;
+    };
     const initForm = () => {
       refs.form.resetFields();
       submitLoading.value = false;
@@ -63,15 +88,24 @@ export default {
     const submitConfirm = () => {
       if (!form.category) return root.$message.error('类别不能为空');
       submitLoading.value = true;
-      let requsetData = { category: form.category, title: form.title, content: form.content };
-      root
-        .$submit(() => AddInfo(requsetData))
-        .then(() => {
-          initForm();
-        });
+      if (dialog_info_id.value) {
+        editInfo = { id, categoryId: form.category, title: form.title, content: form.content, imgUrl: '' };
+        root
+          .$submit(() => EditInfo(editInfo))
+          .then(() => {
+            dialog_info_flag.value = false;
+            emit('update:flag', false);
+            initForm();
+            dialog_info_id.value = '';
+          });
+      } else {
+        let requsetData = { category: form.category, title: form.title, content: form.content };
+        root.$submit(() => AddInfo(requsetData)).then(initForm);
+      }
     };
     return {
       dialog_info_flag,
+      dialog_info_id,
       submitLoading,
       form,
       options,

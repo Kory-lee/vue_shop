@@ -23,5 +23,5 @@ export function transformTime(timestamp = +new Date()) {
 }
 
 export function indexArr(arr, id) {
-  arr.findIndex((item) => item.id === id);
+  return arr.findIndex((item) => item.id == id);
 }

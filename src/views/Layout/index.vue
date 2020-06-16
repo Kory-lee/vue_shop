@@ -16,7 +16,7 @@ import Header from '@components/Header';
 
 import { computed } from '@vue/composition-api';
 export default {
-  name: 'layout',
+  name: 'Layout',
   components: { Nav, Header },
   setup(props, { root }) {
     const menuStatus = computed(() => root.$store.state.app.isCollapse);

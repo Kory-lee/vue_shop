@@ -53,6 +53,14 @@ export function AddInfo(data) {
   });
 }
 
+export function EditInfo(data) {
+  return service.request({
+    method: 'post',
+    url: '/news/editInfo/',
+    data,
+  });
+}
+
 export function GetList(data) {
   return service.request({
     method: 'post',
