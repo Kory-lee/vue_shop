@@ -12,7 +12,7 @@ import { getToken, getUsername } from './cookie';
 * 进行字符串替换，可以在创建axios实例时不设置前缀，这样就可以不进行替换了
 */
 // const BASEURL = process.env.NODE_ENV === 'production' ? '' : '/devApi';
-const BASEURL = '/devApi';
+const BASEURL = 'http://web-jshtml.cn/productapi';
 const service = axios.create({
   baseURL: BASEURL,
   timeout: 10000,
