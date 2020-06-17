@@ -151,11 +151,11 @@ module.exports = {
     hot: true, // 开启热加载
     hotOnly: false,
     proxy: {
-      '/api': {
-        target: 'http://www.web-jshtml.cn/productapi/token', //API服务器的地址  http://www.web-jshtml.cn/api
+      '/devApi': {
+        target: 'web-jshtml.cn/productapi/token', //API服务器的地址  http://www.web-jshtml.cn/api
         changeOrigin: true,
         pathRewrite: {
-          '^/api': '',
+          '^/devApi': '',
         },
       },
     },
