@@ -41,7 +41,10 @@ module.exports = {
     svgRules
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
-      .options({ symbolId: 'icon-[name]', include: ['./src/icons'] });
+      .options({
+        symbolId: 'icon-[name]',
+        include: ['./src/icons'],
+      });
 
     config.resolve.alias
       // .set('vue', 'vue/dist/vue.js')
@@ -157,18 +160,19 @@ module.exports = {
           '^/devApi': '',
         },
       },
+      // [process.env.VUE_APP_MODE]: {
+      //   target: `http://web-jshtml.cn/productapi/token`,
+      //   changeOrigin: true,
+      //   pathRewrite: {//看后台是否有，决定是否重写
+      //     ["^" + process.env.VUE_APP_API_URL]: ""
+      //   },
+      // },
+      overlay: {
+        warnings: true,
+        errors: true,
+      }, // 错误、警告在页面弹出
     },
-    overlay: {
-      warnings: true,
-      errors: true,
-    }, // 错误、警告在页面弹出
-    //[process.env.VUE_APP_MODE]: {
-    //   target: `http://cs.ep.eichong.com:2482/api`,
-    //   changeOrigin: true,
-    //   pathRewrite: {//看后台是否有，决定是否重写
-    //       ["^" + process.env.VUE_APP_API_URL]: ""
-    //   }
+    // 第三方插件配置
+    pluginOptions: {},
   },
-  // 第三方插件配置
-  pluginOptions: {},
 };
