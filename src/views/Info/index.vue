@@ -177,9 +177,9 @@ export default {
       getList();
     };
     const handleEdit = (id) => {
-      dialog_info_edit.value = true;
       dialog_info_edit.id = id;
       dialog_info_edit.data = tableData.item;
+      dialog_info_edit.value = true;
     };
     const handleDelete = (id = null) => {
       if (!id && !tableData.deleteItem) return root.$message.error('请勾选要删除的对象');

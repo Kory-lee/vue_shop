@@ -9,7 +9,9 @@
           <div v-for="item in categoryData.data" :key="item.id" class="category">
             <h4>
               <i
-                :class="item.id === showMenu ? 'el-icon-remove-outline' : 'el-icon-circle-plus-outline'"
+                :class="
+                  item.id === showMenu || !item.children ? 'el-icon-remove-outline' : 'el-icon-circle-plus-outline'
+                "
                 @click="openMenu(item)"
               ></i>
               {{ item.category_name }}
@@ -81,6 +83,11 @@ export default {
       submitStatus = reactive({ data: null, type: null, level: null });
     const submit_disabled = computed(() => !(!addFirstDisable.value || !addSecDisable.value));
     const loadingData = computed(() => !categoryData.data);
+    // const iconClass = (item)=>{
+    //   if(item.children){
+    //     if(item.id === showMenu)
+    //   }
+    // }
     // 工具函数
     const initForm = () => {
       refs.formData.resetFields();

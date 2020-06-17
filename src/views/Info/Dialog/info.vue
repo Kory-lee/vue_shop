@@ -51,7 +51,7 @@ export default {
     const dialog_info_id = computed(() => props.id),
       dialog_info_flag = computed(() => props.flag),
       dialog_info_data = computed(() => props.data);
-    let editInfo, id;
+    let id;
     const form = reactive({
       category: '',
       title: '',
@@ -69,15 +69,10 @@ export default {
     };
     const openedDialog = () => {
       options.item = props.category;
-      console.log(props.category);
-      console.log(dialog_info_data.value);
       if (!dialog_info_id.value) return;
       let index = indexArr(dialog_info_data.value, dialog_info_id.value);
-      let categoryId = dialog_info_data.value[index].categoryId;
-      let cateIndex = indexArr(props.category, categoryId);
-      id = props.category[cateIndex].id;
-      console.log(props.category[cateIndex]);
-      form.category = props.category[cateIndex].id;
+      id = dialog_info_data.value[index].id;
+      form.category = dialog_info_data.value[index].categoryId;
       form.title = dialog_info_data.value[index].title;
       form.content = dialog_info_data.value[index].content;
     };
@@ -88,20 +83,23 @@ export default {
     const submitConfirm = () => {
       if (!form.category) return root.$message.error('类别不能为空');
       submitLoading.value = true;
-      if (dialog_info_id.value) {
-        editInfo = { id, categoryId: form.category, title: form.title, content: form.content, imgUrl: '' };
-        root
-          .$submit(() => EditInfo(editInfo))
-          .then(() => {
-            dialog_info_flag.value = false;
-            emit('update:flag', false);
-            initForm();
-            dialog_info_id.value = '';
-          });
-      } else {
-        let requsetData = { category: form.category, title: form.title, content: form.content };
-        root.$submit(() => AddInfo(requsetData)).then(initForm);
-      }
+      if (dialog_info_id.value) edit();
+      else add();
+    };
+    const edit = () => {
+      let requsetData = { id, categoryId: form.category, title: form.title, content: form.content };
+      root
+        .$submit(() => EditInfo(requsetData))
+        .then(() => {
+          dialog_info_flag.value = false;
+          emit('update:flag', false);
+          initForm();
+          dialog_info_id.value = '';
+        });
+    };
+    const add = () => {
+      let requsetData = { category: form.category, title: form.title, content: form.content };
+      root.$submit(() => AddInfo(requsetData)).then(initForm);
     };
     return {
       dialog_info_flag,
