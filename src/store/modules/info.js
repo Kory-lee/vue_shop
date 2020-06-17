@@ -1,7 +1,7 @@
 import { GetCategoryAll, GetCategory } from '../../api/news';
 
 const actions = {
-  getInfoCategory(cotent, request) {
+  getInfoCategory() {
     return GetCategory({})
       .then((result) => result)
       .catch((err) => err);

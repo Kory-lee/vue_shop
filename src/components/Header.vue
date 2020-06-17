@@ -7,9 +7,7 @@
       <div class="user-info">
         <el-dropdown trigger="click">
           <div class="username">
-            <el-avatar>
-              <img src="../assets/images/avatar.jpg" alt="" />
-            </el-avatar>
+            <el-avatar><img src="../assets/images/avatar.jpg" alt="" /></el-avatar>
           </div>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item icon="el-icon-user-solid">{{ username }}</el-dropdown-item>
@@ -36,7 +34,7 @@ export default {
       });
     const exitConfirm = () => {
       root.$store.dispatch('login/exit').then(() => {
-        root.$router.push({ name: 'Login' });
+        root.$router.push({ path: '/login', name: 'Login' });
         root.$notify({ title: '成功', message: '已成功退出', type: 'success' });
       });
     };

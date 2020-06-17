@@ -8,8 +8,8 @@
 <script>
 import { computed } from '@vue/composition-api';
 export default {
-  name: 'svgIcon',
-  props: { iconName: { type: String, required: true }, className: { type: String } },
+  name: 'SvgIcon',
+  props: { iconName: { type: String, required: true }, className: { type: String, default: '' } },
   setup(props) {
     const name = computed(() => `#icon-${props.iconName}`);
     // `svg-icon ${props.iconName} ${props.className ? props.className : ''}`;

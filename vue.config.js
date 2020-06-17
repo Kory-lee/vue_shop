@@ -31,7 +31,7 @@ module.exports = {
   // outputDir: process.env.outputDir, // 输出文件目录
   outputDir: isProduction ? 'dist' : 'devdist',
   assetsDir: 'static',
-  lintOnSave: false, // eslint-loader 是否在保存的时候检查
+  lintOnSave: true, // eslint-loader 是否在保存的时候检查
   // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
   // webpack配置
   chainWebpack: (config) => {
@@ -44,7 +44,7 @@ module.exports = {
       .options({ symbolId: 'icon-[name]', include: ['./src/icons'] });
 
     config.resolve.alias
-      .set('vue', 'vue/dist/vue.js')
+      // .set('vue', 'vue/dist/vue.js')
       .set('@', resolve('src'))
       .set('@views', resolve('src/views'))
       .set('@components', resolve('src/components'))
@@ -73,7 +73,6 @@ module.exports = {
     config.externals = cdn.externals;
     // 生产环境相关配置
     if (isProduction) {
-      config.mode = 'production'; // 为生产环境修改配置...
       // gzip压缩
       const productionGzipExtensions = ['html', 'js', 'css'];
       config.plugins.push(
@@ -148,20 +147,21 @@ module.exports = {
     port: 8080, // 端口
     https: false, // 启用https
     hot: true, // 热更新
-    overlay: {
-      warnings: true,
-      errors: true,
-    }, // 错误、警告在页面弹出
+    hotOnly: false,
     proxy: {
       '/devApi': {
         target: 'http://web-jshtml.cn/productapi/token', // api服务器地址
         changeOrigin: true, // 开启代理,在本地建立一个虚拟服务端
-        // ws: true, // 是否启用websockets
+        ws: true, // 是否启用websockets
         pathRewrite: {
           '^/devApi': '',
         },
       },
     },
+    overlay: {
+      warnings: true,
+      errors: true,
+    }, // 错误、警告在页面弹出
     //[process.env.VUE_APP_MODE]: {
     //   target: `http://cs.ep.eichong.com:2482/api`,
     //   changeOrigin: true,

@@ -39,7 +39,6 @@ Vue.use(VueCompositionApi);
 // global test
 import global from '@utils/global';
 // 将msg与msgbox组件封装
-
 Vue.use(global);
 
 Vue.use(Form);

@@ -3,7 +3,6 @@ import { Message, MessageBox, Notification } from 'element-ui';
 export default {
   install(Vue) {
     Vue.prototype.$message = Message;
-    Vue.prototype.$msgbox = MessageBox;
     Vue.prototype.$confirm = MessageBox.confirm;
     Vue.prototype.$notify = Notification;
     Vue.prototype.$message.error = Message.error = (message) =>
