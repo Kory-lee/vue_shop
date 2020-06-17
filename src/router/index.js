@@ -138,7 +138,7 @@ const whiteRouter = ['/login'];
 const isLogin = getToken();
 
 router.beforeEach((to, from, next) => {
-  if (whiteRouter.includes(to.name)) next();
+  if (whiteRouter.includes(to.path)) next();
   else isLogin ? next() : next('/login');
 });
 
