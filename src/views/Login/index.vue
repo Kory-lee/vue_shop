@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-    <div class="login-wrap">
+    <div class="login-wrap clearfix">
       <ul class="menu-tab">
         <li
           v-for="item in menuTab"
