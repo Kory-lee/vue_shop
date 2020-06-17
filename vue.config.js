@@ -30,7 +30,6 @@ module.exports = {
   publicPath: isProduction ? '' : '/', // 基本路径,打包时加上.
   // outputDir: process.env.outputDir, // 输出文件目录
   outputDir: isProduction ? 'dist' : 'devdist',
-  assetsDir: 'static',
   lintOnSave: true, // eslint-loader 是否在保存的时候检查
   // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
   // webpack配置
@@ -145,34 +144,33 @@ module.exports = {
   pwa: {}, // PWA 插件相关配置 see https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
   // webpack-dev-server 相关配置
   devServer: {
-    open: true, // 自动打开浏览器
-    host: '0.0.0.0', // 允许外部ip访问
-    port: 8080, // 端口
-    https: false, // 启用https
-    hot: true, // 热更新
+    open: false, // 编译完成是否打开网页
+    host: '0.0.0.0', // 指定使用地址，默认localhost,0.0.0.0代表可以被外界访问
+    port: 8080, // 访问端口
+    https: false, // 编译失败时刷新页面
+    hot: true, // 开启热加载
     hotOnly: false,
     proxy: {
       '/devApi': {
-        target: 'http://web-jshtml.cn/productapi/token', // api服务器地址
-        changeOrigin: true, // 开启代理,在本地建立一个虚拟服务端
-        ws: true, // 是否启用websockets
+        target: 'http://www.web-jshtml.cn/productapi/token', //API服务器的地址  http://www.web-jshtml.cn/api
+        changeOrigin: true,
         pathRewrite: {
           '^/devApi': '',
         },
       },
-      // [process.env.VUE_APP_MODE]: {
-      //   target: `http://web-jshtml.cn/productapi/token`,
-      //   changeOrigin: true,
-      //   pathRewrite: {//看后台是否有，决定是否重写
-      //     ["^" + process.env.VUE_APP_API_URL]: ""
-      //   },
-      // },
-      overlay: {
-        warnings: true,
-        errors: true,
-      }, // 错误、警告在页面弹出
     },
-    // 第三方插件配置
-    pluginOptions: {},
+    //[process.env.VUE_APP_MODE]: {
+    //   target: `http://cs.ep.eichong.com:2482/api`,
+    //   changeOrigin: true,
+    //   pathRewrite: {//看后台是否有，决定是否重写
+    //       ["^" + process.env.VUE_APP_API_URL]: ""
+    //   }
+    // }
+    overlay: {
+      // 全屏模式下是否显示脚本错误
+      warnings: true,
+      errors: true,
+    },
+    before: () => {},
   },
 };
