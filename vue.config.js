@@ -1,3 +1,4 @@
+'use strict';
 const path = require('path');
 const isProduction = process.env.NODE_ENV === 'production';
 const resolve = (dir) => path.join(__dirname, dir);
@@ -12,6 +13,7 @@ const cdn = {
     'vue-router': 'VueRouter',
     axios: 'axios',
     'element-ui': 'ELEMENT',
+    // echarts: 'echarts',
   },
   // 通过cdn方式使用
   js: [
@@ -148,24 +150,25 @@ module.exports = {
     host: '0.0.0.0', // 指定使用地址，默认localhost,0.0.0.0代表可以被外界访问
     port: 8080, // 访问端口
     https: false, // 编译失败时刷新页面
-    hot: true, // 开启热加载
+    hot: false, // 开启热加载
     hotOnly: false,
     proxy: {
+      // [process.env.VUE_APP_MODE]: {
+      //   target: `http://web-jshtml.cn/productapi/token`,
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     //看后台是否有，决定是否重写
+      //     ['^' + process.env.VUE_APP_API_URL]: '',
+      //   },
+      // },
       '/devApi': {
-        target: 'web-jshtml.cn/productapi/token', //API服务器的地址  http://www.web-jshtml.cn/api
+        target: 'http://web-jshtml.cn/productapi/token', //API服务器的地址  http://www.web-jshtml.cn/api
         changeOrigin: true,
         pathRewrite: {
           '^/devApi': '',
         },
       },
     },
-    //[process.env.VUE_APP_MODE]: {
-    //   target: `http://cs.ep.eichong.com:2482/api`,
-    //   changeOrigin: true,
-    //   pathRewrite: {//看后台是否有，决定是否重写
-    //       ["^" + process.env.VUE_APP_API_URL]: ""
-    //   }
-    // }
     overlay: {
       // 全屏模式下是否显示脚本错误
       warnings: true,
