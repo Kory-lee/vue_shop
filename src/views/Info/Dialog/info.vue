@@ -25,7 +25,7 @@
 
 <script>
 import { AddInfo, EditInfo } from '@api/news';
-import { ref, reactive, computed, watch } from '@vue/composition-api';
+import { ref, reactive, computed } from '@vue/composition-api';
 import { indexArr } from '@utils/common';
 export default {
   props: {
@@ -57,10 +57,6 @@ export default {
       title: '',
       content: '',
     });
-    watch(
-      () => form.category,
-      (value) => console.log(value)
-    );
     const options = reactive({ item: null });
     const close = () => {
       dialog_info_flag.value = false;

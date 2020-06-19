@@ -26,11 +26,11 @@ const routes = [
   },
   {
     path: '/404',
-    component: () => import('@views/error-page/404'),
     hidden: true,
     meta: {
       name: '404',
     },
+    component: () => import('@views/error-page/404'),
   },
   {
     path: '/',
@@ -77,6 +77,15 @@ const routes = [
           name: '信息分类',
         },
         component: () => import('@views/Info/Category'),
+      },
+      {
+        path: '/infoDetail',
+        name: 'InfoDetail',
+        hidden: true,
+        meta: {
+          name: '信息详情',
+        },
+        component: () => import('@views/Info/Detail'),
       },
     ],
   },

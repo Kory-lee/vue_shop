@@ -147,7 +147,7 @@ export default {
         },
       ],
     };
-    const stop = watch(timerId, (value) => {
+    watch(timerId, (value) => {
       if (!value) {
         timerId.value = 60;
         loginButtonStatus.value = true;
@@ -195,26 +195,22 @@ export default {
       }
       updateCodeButton({ text: '发送中', status: true });
       loginButtonStatus.value = false;
-      GetSms({ username: ruleForm.email, module: model.value })
-        .then((response) => {
-          root.$message.success(response.message);
-          console.log(response);
+      root.$submit(
+        () => GetSms({ username: ruleForm.email, module: model.value }),
+        () => {
           timer && clearInterval(timer);
           countDown();
-        })
-        .catch((err) => {
-          updateCodeButton({ status: false, text: '重新获取' });
-          root.$message.error(err.message);
-        });
+        },
+        () => updateCodeButton({ status: false, text: '重新获取' })
+      );
     };
     // 登录与注册
     const login = (data) => {
       root.$store
         .dispatch('login/login', data)
         .then((response) => {
-          stop();
           // 页面跳转
-          root.$router.push({ name: 'Console' });
+          root.$router.push({ name: 'Index' });
           root.$notify({ title: '登录成功', message: response.data.message, type: 'success' });
         })
         .catch((err) => {
@@ -223,18 +219,16 @@ export default {
         });
     };
     const register = (data) => {
-      Register(data)
-        .then((response) => {
-          root.$message.success(response.data.message);
+      root.$submit(
+        () => Register(data),
+        () => {
           let temp = { email: ruleForm.email, pass: ruleForm.pass };
-          toggleMenu(menuTab[0]);
           ruleForm.email = temp.email;
           ruleForm.pass = temp.pass;
-        })
-        .catch((err) => {
-          root.$message.error(err.message);
-          toggleMenu(menuTab[1]);
-        });
+          toggleMenu(menuTab[0]);
+        },
+        () => toggleMenu(menuTab[1])
+      );
     };
     const submitForm = (formName) => {
       refs[formName].validate((valid) => {
@@ -272,6 +266,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+html,
+body {
+  height: 100%;
+}
 #login {
   height: 100vh;
   background-color: #344a5f;

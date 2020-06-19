@@ -9,6 +9,10 @@
 .push-right {
   position: absolute;
   right: 0;
-  height: inherit;
   overflow: hidden;
+}
+@for $i from 1 to 110 {
+  .margin-left-#{$i} {
+    margin-left: (1px * $i);
+  }
 }

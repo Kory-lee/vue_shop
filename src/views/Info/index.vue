@@ -23,7 +23,7 @@
               type="datetimerange"
               format="yyyy 年 MM 月 dd 日"
               value-format="yyyy-MM-dd HH:mm:ss"
-              align="right"
+              align="center"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               :default-time="['12:00:00', '08:00:00']"
@@ -33,7 +33,7 @@
         </el-col>
         <el-col :span="13">
           <el-row :gutter="16">
-            <el-form-item label="关键字：" label-width="100px">
+            <el-form-item label="关键字：" class="key" label-width="100px">
               <el-col :span="4">
                 <el-select v-model="searchValue.key" style="width: 100%;">
                   <el-option
@@ -72,10 +72,16 @@
       </el-table-column>
       <el-table-column prop="createDate" label="日期" width="200" align="center" :formatter="toDate"> </el-table-column>
       <!-- <el-table-column prop="user" label="管理员" width="115" align="center"> </el-table-column> -->
-      <el-table-column label="操作" align="center" width="170">
+      <el-table-column label="操作" align="center" width="250">
         <template v-slot="scope">
           <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
           <el-button type="sucess" size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
+          <!-- <router-link
+            :to="{ name: 'InfoDetail', path: '/infoDetail', query: { id: scope.row.id } }"
+            class="margin-left-10"
+          > -->
+          <el-button type="sucess" size="mini" @click="toDetail(scope.row)">编辑详情</el-button>
+          <!-- </router-link> -->
         </template>
       </el-table-column>
     </el-table>
@@ -153,6 +159,15 @@ export default {
     const toDate = (row) => timestampToTime(row.createDate * 1000);
     const toCategory = (row) =>
       searchOptions.category && searchOptions.category.filter((item) => item.id === row.categoryId)[0].category_name;
+
+    const toDetail = (data) => {
+      root.$router.push({ name: 'InfoDetail', path: 'infoDetail', params: { id: data.id, title: data.title } });
+      root.$store.commit('infoDetail/UPDATE_STATE_VALUE', {
+        id: { value: data.id, session: true, sessionKey: 'infoId' },
+        title: { value: data.title, session: true, sessionKey: 'infoTitle' },
+      });
+    };
+
     const handleSizeChange = (val) => {
       page.pageSize = val;
       getList();
@@ -227,6 +242,7 @@ export default {
       page,
       dialogInfo,
       dialog_info_edit,
+      toDetail,
       handleSizeChange,
       handleCurrentChange,
       handleDelete,
@@ -243,5 +259,8 @@ export default {
 <style scoped lang="scss">
 .black-space-30::before {
   height: 30px;
+}
+.key .el-button--danger {
+  min-width: 65px;
 }
 </style>
