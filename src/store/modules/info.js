@@ -1,5 +1,10 @@
-import { GetCategoryAll, GetCategory } from '../../api/news';
-
+import { GetCategoryAll, GetCategory } from '@api/news';
+const state = {
+  qiniuUrl: 'http://www-web-jshtml-cn-idva7mx.web-jshtml.cn',
+};
+const getters = {
+  qiniuUrl: (state) => state.qiniuUrl,
+};
 const actions = {
   getInfoCategory() {
     return GetCategory({})
@@ -12,4 +17,4 @@ const actions = {
       .catch((err) => err);
   },
 };
-export default { namespaced: true, actions };
+export default { namespaced: true, actions, state, getters };

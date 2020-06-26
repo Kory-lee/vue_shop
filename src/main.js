@@ -30,6 +30,7 @@ import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
+  Upload,
 } from 'element-ui';
 // import '@router/guard';
 import '@icons';
@@ -66,6 +67,7 @@ Vue.use(TimeSelect);
 Vue.use(Dropdown);
 Vue.use(DropdownItem);
 Vue.use(DropdownMenu);
+Vue.use(Upload);
 
 Vue.use(Loading.directive);
 

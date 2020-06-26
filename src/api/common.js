@@ -1,3 +1,4 @@
+import service from '@utils/request';
 // import { GetCategory } from './new';
 // import { reactive } from '@vue/composition-api';
 
@@ -12,3 +13,11 @@
 //     category,
 //   };
 // }
+// 获取token
+export function ImageToken(data) {
+  return service.request({
+    method: 'post',
+    url: '/uploadImgToken/',
+    data,
+  });
+}

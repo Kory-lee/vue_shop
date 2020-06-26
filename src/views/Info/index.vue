@@ -203,7 +203,11 @@ export default {
       else ids = [id];
       root.confirm({ content: '确认永久删除？是否继续', tip: '警告', fn: () => deleteConfirm(ids) });
     };
-    const deleteConfirm = (id) => root.$submit(() => DeleteInfo({ id }), getList);
+    const deleteConfirm = (id) =>
+      root.$submit(
+        () => DeleteInfo({ id }),
+        () => getList()
+      );
 
     const getCategory = () =>
       root.$store
