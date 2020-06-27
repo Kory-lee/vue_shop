@@ -162,7 +162,7 @@ module.exports = {
       //   },
       // },
       '/devApi': {
-        target: 'http://web-jshtml.cn/productapi/token', //API服务器的地址  http://www.web-jshtml.cn/api
+        target: 'http://web-jshtml.cn/productapi/token', //API服务器的地址  http://www.web-jshtml.cn/vue_admin_api
         changeOrigin: true,
         pathRewrite: {
           '^/devApi': '',

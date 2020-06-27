@@ -18,6 +18,7 @@
 
 - `vue`
 - `vue-router`
+- `Vuex`
 - `Element-UI`
 - `Axios`
 - `Echarts`
@@ -31,17 +32,6 @@
 - sequelize
 
 [接口文档](./API 接口文档.md)
-
-## 项目初始化
-
-### 前端项目初始化步骤
-
-1. 安装 `Vue` 脚手架
-2. 通过 `Vue-cli` 创建项目
-3. 配置 `vue-router`
-4. 配置 `Element-UI` 组件库
-5. 配置 `Axios` 库
-6. 初始化 git 远程仓库
 
 ## 登录概述
 
@@ -83,10 +73,10 @@ router.beforeEach((to,from,next){
 #### 通过接口获取数据 axios
 
 ```js
-axios.interceptor.request.use(config => {
-  config.headers.Authorization = window.sessionStorage.getItem('token')
-  return config
-})
+axios.interceptor.request.use((config) => {
+  config.headers.Authorization = window.sessionStorage.getItem('token');
+  return config;
+});
 ```
 
 ### 权限管理
@@ -153,23 +143,17 @@ axios.interceptor.request.use(config => {
   ```js
   // 代码示例
   module.exports = {
-    chainWebpack: config => {
+    chainWebpack: (config) => {
       // 发布模式
-      config.when(process.env.NODE_ENV === 'production', config => {
-        config
-          .entry('app')
-          .clear()
-          .add('./src/main-prod.js')
-      })
+      config.when(process.env.NODE_ENV === 'production', (config) => {
+        config.entry('app').clear().add('./src/main-prod.js');
+      });
       // 开发模式
-      config.when(process.env.NODE_ENV === 'development', config => {
-        config
-          .entry('app')
-          .clear()
-          .add('./src/main-dev.js')
-      })
-    }
-  }
+      config.when(process.env.NODE_ENV === 'development', (config) => {
+        config.entry('app').clear().add('./src/main-dev.js');
+      });
+    },
+  };
   ```
 
 - 第三方库启用 CDN

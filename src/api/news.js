@@ -1,5 +1,17 @@
-// 一级分类
 import service from '@utils/request';
+import { post } from './index';
+
+export const news = {
+  getUserList: '/news/getList/',
+  getList: '/news/getList/',
+  deleteInfo: '/news/deleteInfo/',
+  editInfo: '/news/editInfo/',
+  addInfo: '/news/add/',
+  addChildrenCategory: '/news/addChildrenCategory/',
+};
+
+export const GetList = (data) => post(news.getList, data);
+export const DeleteInfo = (data) => post(news.deleteInfo, data);
 export function AddFirstCategory(data) {
   return service.request({
     method: 'post',
@@ -61,18 +73,18 @@ export function EditInfo(data) {
   });
 }
 
-export function GetList(data) {
-  return service.request({
-    method: 'post',
-    url: '/news/getList/',
-    data,
-  });
-}
+// export function GetList(data) {
+//   return service.request({
+//     method: 'post',
+//     url: '/news/getList/',
+//     data,
+//   });
+// }
 
-export function DeleteInfo(data) {
-  return service.request({
-    method: 'post',
-    url: '/news/deleteInfo/',
-    data,
-  });
-}
+// export function DeleteInfo(data) {
+//   return service.request({
+//     method: 'post',
+//     url: '/news/deleteInfo/',
+//     data,
+//   });
+// }

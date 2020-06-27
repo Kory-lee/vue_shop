@@ -16,3 +16,11 @@
     margin-left: (1px * $i);
   }
 }
+html,
+body,
+#app {
+  height: 100%;
+}
+section {
+  height: inherit;
+}

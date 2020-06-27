@@ -57,7 +57,6 @@ export default {
         secretkey: '19AXtnhCVkZexXNRcmHXzmecXiCUiLynwGboMeUw',
         buckety: 'webjshtml',
       };
-
     const submit = () => {
       data.submitLoading = true;
       let requestData = {

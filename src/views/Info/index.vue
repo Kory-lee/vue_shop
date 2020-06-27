@@ -4,6 +4,7 @@
       <el-row :gutter="16">
         <el-col :span="4">
           <el-form-item label="类别：" label-width="60px">
+            <!-- <Select :config="searchValue.categoryConfig"/> -->
             <el-select v-model="searchValue.category" clearable style="width: 100%;">
               <el-option
                 v-for="item in searchOptions.category"
@@ -33,16 +34,9 @@
         </el-col>
         <el-col :span="13">
           <el-row :gutter="16">
-            <el-form-item label="关键字：" class="key" label-width="100px">
+            <el-form-item label="关键字：" class="key" label-width="90px">
               <el-col :span="4">
-                <el-select v-model="searchValue.key" style="width: 100%;">
-                  <el-option
-                    v-for="item in searchOptions.key"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  ></el-option>
-                </el-select>
+                <Select :config="searchOptions.keyConfig" />
               </el-col>
               <el-col :span="6">
                 <el-input v-model="searchValue.work" placeholder="" style="width: 100%;"></el-input>
@@ -71,7 +65,6 @@
       <el-table-column prop="category" label="类型" width="130" align="center" :formatter="toCategory">
       </el-table-column>
       <el-table-column prop="createDate" label="日期" width="200" align="center" :formatter="toDate"> </el-table-column>
-      <!-- <el-table-column prop="user" label="管理员" width="115" align="center"> </el-table-column> -->
       <el-table-column label="操作" align="center" width="250">
         <template v-slot="scope">
           <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
@@ -85,6 +78,18 @@
         </template>
       </el-table-column>
     </el-table>
+    <Table :config="tableData.tableConfig">
+      <template #operation="slotData">
+        <el-button type="danger" size="mini" @click="handleDelete(slotData.row.id)">删除</el-button>
+        <el-button type="sucess" size="mini" @click="handleEdit(slotData.row.id)">编辑</el-button>
+        <!-- <router-link
+            :to="{ name: 'InfoDetail', path: '/infoDetail', query: { id: scope.row.id } }"
+            class="margin-left-10"
+          > -->
+        <el-button type="sucess" size="mini" @click="toDetail(slotData.row)">编辑详情</el-button>
+        <!-- </router-link> -->
+      </template>
+    </Table>
     <el-row :gutter="10" class="black-space-30">
       <el-col :span="12">
         <el-button type="primary" size="medium" @click="handleDelete()">批量删除</el-button>
@@ -117,14 +122,29 @@
 <script>
 import { reactive, ref, onMounted, watch } from '@vue/composition-api';
 import DialogInfo from './Dialog/info';
+import Select from '@components/Select';
+import Table from '@components/Table';
 import { GetList, DeleteInfo } from '@api/news';
 import { timestampToTime } from '@utils/common';
 export default {
   name: 'InfoIndex',
-  components: { DialogInfo },
+  components: { DialogInfo, Select, Table },
   setup(props, { root }) {
     const dialogInfo = ref(false);
-    const tableData = reactive({ item: [], loading: true, deleteItem: null }),
+    const tableData = reactive({
+        item: [],
+        loading: true,
+        deleteItem: null,
+        tableConfig: {
+          selection: true,
+          head: [
+            { value: 'title', label: '标题' },
+            { value: 'category', label: '类型', width: 130 },
+            { value: 'createDate', label: '日期', width: 200 },
+            { value: 'operation', label: '操作', columnType: 'slot', slotName: 'operation', width: 250 },
+          ],
+        },
+      }),
       dialog_info_edit = reactive({ id: '', value: false, data: {} }),
       searchValue = reactive({
         key: '',
@@ -134,10 +154,7 @@ export default {
       }),
       searchOptions = reactive({
         category: null,
-        key: [
-          { value: 'id', label: 'ID' },
-          { value: 'title', label: '标题' },
-        ],
+        keyConfig: { init: ['id', 'title'] },
       }),
       page = reactive({ totalCount: 0, pageSize: 10, pageNumber: 1, page_sizes: [10] });
     watch(
