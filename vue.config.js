@@ -17,7 +17,7 @@ const cdn = {
   },
   // 通过cdn方式使用
   js: [
-    'https://cdn.bootcss.com/vue/2.6.11/vue.runtime.min.js',
+    'https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js',
     'https://cdn.jsdelivr.net/npm/vuex@3.4.0/dist/vuex.min.js',
     'https://cdn.jsdelivr.net/npm/vue-router@3.3.3/dist/vue-router.min.js',
     'https://cdn.bootcss.com/axios/0.19.2/axios.min.js',

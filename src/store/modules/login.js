@@ -7,6 +7,7 @@ const state = {
 const getters = {
   username: (state) => state.username,
 };
+
 const mutations = {
   SET_USER_ID(state, { username, token } = { username: '', token: '' }) {
     setToken((state.username = username), (state.to_ken = token));
@@ -17,13 +18,10 @@ const actions = {
     return new Promise((resolve, reject) =>
       Login(data)
         .then((response) => {
-          console.log(response);
           commit('SET_USER_ID', response.data);
           resolve(response);
         })
-        .catch((err) => {
-          reject(err);
-        })
+        .catch((err) => reject(err))
     );
   },
   exit({ commit }) {

@@ -5,16 +5,20 @@
 </template>
 
 <script>
-import { reactive, onMounted } from '@vue/composition-api';
+import { reactive, onBeforeMount, watch, computed } from '@vue/composition-api';
 export default {
   name: 'Select',
   props: {
     config: {
-      type: Array,
+      type: Object,
       default: () => {},
     },
+    selected: {
+      type: String,
+      default: '',
+    },
   },
-  setup(props) {
+  setup(props, { root, emit }) {
     const data = reactive({
       options: [
         { value: 'name', label: '姓名' },
@@ -23,18 +27,33 @@ export default {
         { value: 'id', label: 'ID' },
         { value: 'title', label: '标题' },
       ],
+      categoryOptions: null,
       initOptions: [],
-      selectValue: '',
+      selectValue: null,
     });
-    let initOption = () => {
+    watch(
+      () => data.selectValue,
+      (value) => {
+        emit('update:selected', value);
+      }
+    );
+    watch(
+      () => props.selected,
+      (value) => (data.selectValue = value)
+    );
+    const initOption = () => {
       let tempArr;
-      if (!props.config.init.length) return false;
-      tempArr = data.options.filter((elem) => props.config.init.includes(elem.value));
-      if (!tempArr.length) return false;
+      if (props.config.commitUrl) {
+        tempArr = computed(() => root.$store.getters[props.config.commitUrl]?.data);
+      } else {
+        if (!props.config.init?.length) return false;
+        tempArr = data.options.filter((elem) => props.config.init?.includes(elem.value));
+        if (!tempArr?.length) return false;
+        data.selectValue = tempArr[0].value;
+      }
       data.initOptions = tempArr;
-      data.selectValue = tempArr[0].value;
     };
-    onMounted(() => {
+    onBeforeMount(() => {
       initOption();
     });
     return { data };

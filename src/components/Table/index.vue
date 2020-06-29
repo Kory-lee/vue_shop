@@ -1,11 +1,12 @@
 <template>
   <el-table
-    v-loading="data.tableConfig.loading"
+    ref="multipleSelection"
+    v-loading="loading"
     :data="data.tableData"
     border
-    @selection-change="handleSelectionChange"
+    @selection-change="emitDeleteItem"
   >
-    <el-table-column v-if="data.tableConfig.selection" type="selection" align="center"> </el-table-column>
+    <el-table-column v-if="data.tableConfig.selection.show" type="selection" align="center"> </el-table-column>
 
     <template v-for="item in data.tableConfig.head">
       <el-table-column
@@ -25,6 +26,7 @@
         :key="item.value"
         :prop="item.value"
         :label="item.label"
+        :formatter="item.formatter"
         :width="item.width"
         align="center"
       >
@@ -34,8 +36,8 @@
 </template>
 
 <script>
-import { reactive, onBeforeMount } from '@vue/composition-api';
-import { post } from '@api';
+import { reactive, onBeforeMount, computed } from '@vue/composition-api';
+import { responseInit } from '@utils/common';
 export default {
   name: 'Table',
   props: {
@@ -44,35 +46,28 @@ export default {
       default: () => {},
     },
   },
-  setup(props, { root }) {
+  setup(props, { root, emit }) {
     const data = reactive({
-      tableConfig: { selection: true, head: [], requsetData: {} },
+      tableConfig: { selection: { show: true, deleteItem: null }, head: [], commitUrl: '' },
       tableData: [],
     });
-    const loadData = () => {
-      root.$request(
-        () => post(data.tableConfig.requsetData.url, data.tableConfig.requsetData.data),
-        (response) => {
-          let responseData = response.data.data;
-          if (responseData && responseData.length) data.tableData = responseData;
-          console.log(data.tableData);
-        }
-      );
+    const loading = computed(() => !data.tableData);
+    const emitDeleteItem = (val) => {
+      data.tableConfig.selection.deleteItem = val;
+      emit('give-selection', data.tableConfig.selection.deleteItem);
     };
-    const initTable = () => {
-      let keys = Object.keys(data.tableConfig);
-      for (let key in props.config) {
-        if (keys.includes(key)) {
-          data.tableConfig[key] = props.config[key];
-        }
-      }
+    const loadData = async () => {
+      let tempArr = await computed(() => root.$store.getters[props.config.commitUrl]?.data);
+      data.tableData = tempArr;
     };
     onBeforeMount(() => {
-      initTable();
+      responseInit(data.tableConfig, props.config);
       loadData();
     });
     return {
       data,
+      loading,
+      emitDeleteItem,
     };
   },
 };

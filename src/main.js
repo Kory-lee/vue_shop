@@ -3,6 +3,7 @@ import VueCompositionApi from '@vue/composition-api';
 import App from './App';
 import router from './router';
 import store from './store';
+Vue.use(VueCompositionApi);
 import {
   Form,
   FormItem,
@@ -32,15 +33,6 @@ import {
   DropdownMenu,
   Upload,
 } from 'element-ui';
-// import '@router/guard';
-import '@icons';
-
-Vue.use(VueCompositionApi);
-
-// global test
-import global from '@utils/global';
-// 将msg与msgbox组件封装
-Vue.use(global);
 
 Vue.use(Form);
 Vue.use(FormItem);
@@ -71,10 +63,19 @@ Vue.use(Upload);
 
 Vue.use(Loading.directive);
 
+import '@icons';
+
+// global test
+import { install } from '@utils/global';
+// 将msg与msgbox组件封装
+Vue.use(install);
+
 import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
 
 Vue.component(CollapseTransition.name, CollapseTransition);
 Vue.config.productionTip = false;
+
+Vue.config.devtools = true;
 
 new Vue({
   router,

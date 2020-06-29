@@ -1,11 +1,8 @@
 <template>
-  <el-dialog title="新增" :visible.sync="dialog_info_flag" width="500px" @close="close" @opened="openedDialog">
+  <el-dialog :title="modeTitle" :visible.sync="dialog_flag" width="500px" @close="close" @opened="openedDialog">
     <el-form ref="form" :model="form" label-width="50px">
-      <el-form-item label="类型: " prop="category">
-        <el-select v-model="form.category" placeholder="请选择活动区域">
-          <el-option v-for="item in options.item" :key="item.id" :label="item.category_name" :value="item.id">
-          </el-option>
-        </el-select>
+      <el-form-item label="类型: " prop="categoryId">
+        <Select :config="options.categoryConfig" :selected.sync="form.categoryId" />
       </el-form-item>
       <el-form-item label="标题: " prop="title">
         <el-input v-model="form.title" placeholder="请输入内容"></el-input>
@@ -26,20 +23,14 @@
 <script>
 import { AddInfo, EditInfo } from '@api/news';
 import { ref, reactive, computed } from '@vue/composition-api';
-import { indexArr } from '@utils/common';
+import { timestampToTime } from '@utils/common';
+import Select from '@components/Select';
 export default {
+  components: { Select },
   props: {
     flag: {
       type: Boolean,
       default: false,
-    },
-    category: {
-      type: Array,
-      default: () => [],
-    },
-    id: {
-      type: String,
-      default: '',
     },
     data: {
       type: Object,
@@ -47,59 +38,65 @@ export default {
     },
   },
   setup(props, { emit, root, refs }) {
-    const submitLoading = ref(false);
-    const dialog_info_id = computed(() => props.id),
-      dialog_info_flag = computed(() => props.flag),
-      dialog_info_data = computed(() => props.data);
-    let id;
+    const submitLoading = ref(false),
+      modeTitle = ref('');
+    const dialog_data = computed(() => props.data),
+      dialog_flag = computed(() => props.flag);
     const form = reactive({
-      category: '',
-      title: '',
-      content: '',
-    });
-    const options = reactive({ item: null });
+        categoryId: '',
+        title: '',
+        content: '',
+      }),
+      options = reactive({ categoryConfig: { commitUrl: 'common/infoCategory' } });
+
+    // 方法
     const close = () => {
-      dialog_info_flag.value = false;
+      dialog_flag.value = false;
       emit('update:flag', false);
       initForm();
     };
     const openedDialog = () => {
-      options.item = props.category;
-      if (!dialog_info_id.value) return;
-      let index = indexArr(dialog_info_data.value, dialog_info_id.value);
-      id = dialog_info_data.value[index].id;
-      form.category = dialog_info_data.value[index].categoryId;
-      form.title = dialog_info_data.value[index].title;
-      form.content = dialog_info_data.value[index].content;
+      let { categoryId, title, content } = dialog_data.value.data;
+      if (dialog_data.value.mode === 'edit') {
+        modeTitle.value = '编辑';
+        form.categoryId = categoryId;
+        form.title = title;
+        form.content = content;
+      } else {
+        modeTitle.value = '新增';
+      }
     };
     const initForm = () => {
       refs.form.resetFields();
       submitLoading.value = false;
     };
     const submitConfirm = () => {
-      if (!form.category) return root.$message.error('类别不能为空');
-      submitLoading.value = true;
-      if (dialog_info_id.value) edit();
-      else add();
-    };
-    const edit = () => {
-      let requsetData = { id, categoryId: form.category, title: form.title, content: form.content };
-      root
-        .$submit(() => EditInfo(requsetData))
-        .then(() => {
-          dialog_info_flag.value = false;
-          emit('update:flag', false);
-          initForm();
-          dialog_info_id.value = '';
-        });
-    };
-    const add = () => {
-      let requsetData = { category: form.category, title: form.title, content: form.content };
-      root.$submit(() => AddInfo(requsetData)).then(initForm);
+      let { categoryId, title, content } = form;
+      let value = dialog_data.value;
+      let id = value.data.id;
+      if (!categoryId && !title) return root.$message.error('类别、标题不能为空');
+      if (value.mode === 'edit') {
+        if (!content) return root.$message.error('内容不能为空');
+        root.$submit(
+          () => EditInfo({ categoryId, title, content, updateDate: timestampToTime(), id }),
+          () => {
+            dialog_flag.value = false;
+            emit('update:flag', false);
+            root.$store.commit('common/EDIT_INFO_LIST', { id, data: { categoryId, title, content } });
+            initForm();
+          }
+        );
+      } else
+        root.$submit(
+          () => AddInfo({ categoryId, title, content, createDate: timestampToTime() }),
+          () => {
+            initForm();
+          }
+        );
     };
     return {
-      dialog_info_flag,
-      dialog_info_id,
+      modeTitle,
+      dialog_flag,
       submitLoading,
       form,
       options,

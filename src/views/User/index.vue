@@ -39,7 +39,6 @@
 import { reactive } from '@vue/composition-api';
 import Select from '@components/Select';
 import Table from '@components/Table';
-import { news } from '@api/news';
 export default {
   name: 'User',
   components: { Select, Table },
@@ -57,13 +56,7 @@ export default {
             { value: 'status', label: '禁/启用状态', columnType: 'slot', slotName: 'status' },
             { value: 'operation', label: '操作', columnType: 'slot', slotName: 'operation', width: 154 },
           ],
-          requestData: {
-            url: news.getUserList,
-            data: {
-              pageNumber: 1,
-              pageSize: 10,
-            },
-          },
+          category_name: '',
         },
       }),
       formData = reactive({ selectValue: 'name', inputValue: '' });

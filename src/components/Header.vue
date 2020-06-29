@@ -28,7 +28,7 @@ export default {
   setup(props, { root }) {
     const username = computed(() => root.$store.state.login.username);
     const exitButton = () =>
-      root.confirm({
+      root.$confirm({
         content: '确认退出?',
         fn: exitConfirm,
       });

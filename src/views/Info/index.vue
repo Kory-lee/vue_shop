@@ -4,16 +4,7 @@
       <el-row :gutter="16">
         <el-col :span="4">
           <el-form-item label="类别：" label-width="60px">
-            <!-- <Select :config="searchValue.categoryConfig"/> -->
-            <el-select v-model="searchValue.category" clearable style="width: 100%;">
-              <el-option
-                v-for="item in searchOptions.category"
-                :key="item.id"
-                :label="item.category_name"
-                :value="item.id"
-              >
-              </el-option>
-            </el-select>
+            <Select :config="searchOptions.categoryConfig" />
           </el-form-item>
         </el-col>
         <el-col :span="7">
@@ -45,49 +36,18 @@
                 <el-button type="danger" style="width: 100%;" @click="search">搜索</el-button>
               </el-col>
               <el-col :span="4" :offset="6">
-                <el-button type="danger" style="width: 100%;" @click="dialogInfo = true">新增</el-button>
+                <el-button type="danger" style="width: 100%;" @click="handleAdd">新增</el-button>
               </el-col>
             </el-form-item>
           </el-row>
         </el-col>
       </el-row>
     </el-form>
-    <el-table
-      ref="mutipleTable"
-      v-loading="tableData.loading"
-      :data="tableData.item"
-      border
-      style="width: 100%;"
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column type="selection" width="45" align="center"> </el-table-column>
-      <el-table-column prop="title" label="标题" align="center"> </el-table-column>
-      <el-table-column prop="category" label="类型" width="130" align="center" :formatter="toCategory">
-      </el-table-column>
-      <el-table-column prop="createDate" label="日期" width="200" align="center" :formatter="toDate"> </el-table-column>
-      <el-table-column label="操作" align="center" width="250">
-        <template v-slot="scope">
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
-          <el-button type="sucess" size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
-          <!-- <router-link
-            :to="{ name: 'InfoDetail', path: '/infoDetail', query: { id: scope.row.id } }"
-            class="margin-left-10"
-          > -->
-          <el-button type="sucess" size="mini" @click="toDetail(scope.row)">编辑详情</el-button>
-          <!-- </router-link> -->
-        </template>
-      </el-table-column>
-    </el-table>
-    <Table :config="tableData.tableConfig">
+    <Table :config="tableData.tableConfig" @give-selection="onDeleteItem">
       <template #operation="slotData">
-        <el-button type="danger" size="mini" @click="handleDelete(slotData.row.id)">删除</el-button>
-        <el-button type="sucess" size="mini" @click="handleEdit(slotData.row.id)">编辑</el-button>
-        <!-- <router-link
-            :to="{ name: 'InfoDetail', path: '/infoDetail', query: { id: scope.row.id } }"
-            class="margin-left-10"
-          > -->
-        <el-button type="sucess" size="mini" @click="toDetail(slotData.row)">编辑详情</el-button>
-        <!-- </router-link> -->
+        <el-button type="danger" size="mini" @click="handleDelete(slotData)">删除</el-button>
+        <el-button type="sucess" size="mini" @click="handleEdit(slotData)">编辑</el-button>
+        <el-button type="sucess" size="mini" @click="toDetail(slotData)">编辑详情</el-button>
       </template>
     </Table>
     <el-row :gutter="10" class="black-space-30">
@@ -109,52 +69,39 @@
         </el-pagination>
       </el-col>
     </el-row>
-    <DialogInfo :flag.sync="dialogInfo" :category="searchOptions.category" />
-    <DialogInfo
-      :id="dialog_info_edit.id"
-      :data="dialog_info_edit.data"
-      :flag.sync="dialog_info_edit.value"
-      :category="searchOptions.category"
-    />
+    <DialogInfo :flag.sync="dialog_show" :data="dialog_info" />
   </el-card>
 </template>
 
 <script>
-import { reactive, ref, onMounted, watch } from '@vue/composition-api';
+import { reactive, ref, watch, onBeforeMount } from '@vue/composition-api';
 import DialogInfo from './Dialog/info';
 import Select from '@components/Select';
 import Table from '@components/Table';
-import { GetList, DeleteInfo } from '@api/news';
+import { DeleteInfo } from '@api/news';
 import { timestampToTime } from '@utils/common';
 export default {
   name: 'InfoIndex',
   components: { DialogInfo, Select, Table },
   setup(props, { root }) {
-    const dialogInfo = ref(false);
+    const dialog_show = ref(false);
     const tableData = reactive({
-        item: [],
-        loading: true,
-        deleteItem: null,
         tableConfig: {
-          selection: true,
+          selection: { show: true, deleteItem: null },
           head: [
             { value: 'title', label: '标题' },
-            { value: 'category', label: '类型', width: 130 },
-            { value: 'createDate', label: '日期', width: 200 },
+            { value: 'category', label: '类型', width: 130, formatter: (row) => toCategory(row) },
+            { value: 'createDate', label: '日期', width: 200, formatter: (row) => toDate(row) },
             { value: 'operation', label: '操作', columnType: 'slot', slotName: 'operation', width: 250 },
           ],
+          commitUrl: 'common/infoList',
         },
       }),
-      dialog_info_edit = reactive({ id: '', value: false, data: {} }),
-      searchValue = reactive({
-        key: '',
-        work: '',
-        category: '',
-        date: [],
-      }),
+      dialog_info = reactive({ mode: '', data: {} }),
+      searchValue = reactive({ key: '', work: '', category: '', date: [] }),
       searchOptions = reactive({
-        category: null,
         keyConfig: { init: ['id', 'title'] },
+        categoryConfig: { commitUrl: 'common/infoCategory' },
       }),
       page = reactive({ totalCount: 0, pageSize: 10, pageNumber: 1, page_sizes: [10] });
     watch(
@@ -166,17 +113,13 @@ export default {
         else page.page_sizes = [10, 20, 50, 100];
       }
     );
-    watch(
-      () => dialog_info_edit.value,
-      (value, oldValue) => {
-        if (!value && oldValue) getList();
-      }
-    );
+
     // 方法
     const toDate = (row) => timestampToTime(row.createDate * 1000);
-    const toCategory = (row) =>
-      searchOptions.category && searchOptions.category.filter((item) => item.id === row.categoryId)[0].category_name;
-
+    const toCategory = (row) => {
+      let categoryData = root.$store.getters['common/infoCategory'].data;
+      return categoryData?.find((item) => item.value === row.categoryId).label;
+    };
     const toDetail = (data) => {
       root.$router.push({ name: 'InfoDetail', path: 'infoDetail', params: { id: data.id, title: data.title } });
       root.$store.commit('infoDetail/UPDATE_STATE_VALUE', {
@@ -184,12 +127,13 @@ export default {
         title: { value: data.title, session: true, sessionKey: 'infoTitle' },
       });
     };
-
+    const onDeleteItem = (val) => {
+      tableData.tableConfig.selection.deleteItem = val;
+    };
     const handleSizeChange = (val) => {
       page.pageSize = val;
       getList();
     };
-    const handleSelectionChange = (val) => (tableData.deleteItem = val);
     const search = () => {
       if (!searchValue.category || searchValue.date.length === 0) return;
       let requestData = {
@@ -208,51 +152,42 @@ export default {
       page.pageNumber = val;
       getList();
     };
-    const handleEdit = (id) => {
-      dialog_info_edit.id = id;
-      dialog_info_edit.data = tableData.item;
-      dialog_info_edit.value = true;
+    const handleEdit = (row) => {
+      dialog_show.value = true;
+      dialog_info.mode = 'edit';
+      dialog_info.data = row.data;
     };
-    const handleDelete = (id = null) => {
-      if (!id && !tableData.deleteItem) return root.$message.error('请勾选要删除的对象');
-      let ids;
-      if (!id) ids = tableData.deleteItem.map((item) => item.id);
-      else ids = [id];
-      root.confirm({ content: '确认永久删除？是否继续', tip: '警告', fn: () => deleteConfirm(ids) });
+    const handleAdd = () => {
+      dialog_show.value = true;
+      dialog_info.mode = 'add';
+    };
+    const handleDelete = (row) => {
+      let multi_row = tableData.tableConfig.selection.deleteItem;
+      let id;
+      if (!multi_row && !row) return root.$message.error('请选择要删除的对象');
+      if (row) id = [row.data.id];
+      else id = multi_row?.map((item) => item.id);
+      root.$confirm({ content: '确认永久删除？是否继续', tip: '警告', fn: () => deleteConfirm(id) });
     };
     const deleteConfirm = (id) =>
       root.$submit(
         () => DeleteInfo({ id }),
         () => getList()
       );
-
-    const getCategory = () =>
-      root.$store
-        .dispatch('info/getInfoCategory')
-        .then((result) => (searchOptions.category = result.data.data))
-        .catch((err) => root.$message.error(err));
+    const getCategory = (data = {}) => root.$store.dispatch('common/getInfoCategory', data);
     const getList = (
-      requestData = {
+      data = {
         categoryId: '',
-        startTiem: '',
+        startTime: '',
         endTime: '',
         title: '',
         id: '',
-        pageNumber: page.pageNumber,
-        pageSize: page.pageSize,
+        pageNumber: 1,
+        pageSize: 10,
       }
-    ) => {
-      root
-        .$request(
-          () => GetList(requestData),
-          (response) => {
-            tableData.item = response.data.data;
-            page.totalCount = response.data.total;
-          }
-        )
-        .then(() => (tableData.loading = false));
-    };
-    onMounted(() => {
+    ) => root.$store.dispatch('common/getInfoList', data);
+
+    onBeforeMount(() => {
       getCategory();
       getList();
     });
@@ -261,16 +196,15 @@ export default {
       searchOptions,
       tableData,
       page,
-      dialogInfo,
-      dialog_info_edit,
+      dialog_info,
+      dialog_show,
       toDetail,
       handleSizeChange,
       handleCurrentChange,
       handleDelete,
-      toDate,
-      toCategory,
-      handleSelectionChange,
+      onDeleteItem,
       search,
+      handleAdd,
       handleEdit,
     };
   },

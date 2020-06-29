@@ -2,7 +2,7 @@ import service from '@utils/request';
 // import { GetCategory } from './new';
 // import { reactive } from '@vue/composition-api';
 
-// export function submitRequest(fn, cb) {
+// export function submitRequest() {
 //   const category = reactive({ item: [] });
 //   const getInfoCategory = () =>
 //     GetCategory({})

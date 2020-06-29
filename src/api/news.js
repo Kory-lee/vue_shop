@@ -1,90 +1,26 @@
-import service from '@utils/request';
 import { post } from './index';
 
 export const news = {
   getUserList: '/news/getList/',
   getList: '/news/getList/',
+  getCategory: '/news/getCategory/',
+  getCategoryAll: '/news/getCategoryAll/',
+  deleteCategory: '/news/deleteCategory/',
+  editCategory: '/news/editCategory/',
   deleteInfo: '/news/deleteInfo/',
   editInfo: '/news/editInfo/',
   addInfo: '/news/add/',
+  addFirstCategory: '/news/addFirstCategory/',
   addChildrenCategory: '/news/addChildrenCategory/',
 };
 
 export const GetList = (data) => post(news.getList, data);
+export const GetCategory = (data = {}) => post(news.getCategory, data);
+export const GetCategoryAll = (data) => post(news.getCategoryAll, data);
+export const DeleteCategory = (data) => post(news.deleteCategory, data);
+export const EditCategory = (data) => post(news.editCategory, data);
 export const DeleteInfo = (data) => post(news.deleteInfo, data);
-export function AddFirstCategory(data) {
-  return service.request({
-    method: 'post',
-    url: '/news/addFirstCategory/',
-    data,
-  });
-}
-export function GetCategory(data) {
-  return service.request({
-    method: 'post',
-    url: '/news/getCategory/',
-    data,
-  });
-}
-
-export function GetCategoryAll(data) {
-  return service.request({
-    method: 'post',
-    url: '/news/getCategoryAll/',
-    data,
-  });
-}
-export function DeleteCategory(data) {
-  return service.request({
-    method: 'post',
-    url: '/news/deleteCategory/',
-    data,
-  });
-}
-export function EditCategory(data) {
-  return service.request({
-    method: 'post',
-    url: '/news/editCategory/',
-    data,
-  });
-}
-
-export function AddChildrenCategory(data) {
-  return service.request({
-    method: 'post',
-    url: '/news/addChildrenCategory/',
-    data,
-  });
-}
-
-export function AddInfo(data) {
-  return service.request({
-    method: 'post',
-    url: '/news/add/',
-    data,
-  });
-}
-
-export function EditInfo(data) {
-  return service.request({
-    method: 'post',
-    url: '/news/editInfo/',
-    data,
-  });
-}
-
-// export function GetList(data) {
-//   return service.request({
-//     method: 'post',
-//     url: '/news/getList/',
-//     data,
-//   });
-// }
-
-// export function DeleteInfo(data) {
-//   return service.request({
-//     method: 'post',
-//     url: '/news/deleteInfo/',
-//     data,
-//   });
-// }
+export const EditInfo = (data) => post(news.editInfo, data);
+export const AddInfo = (data) => post(news.addInfo, data);
+export const AddFirstCategory = (data) => post(news.addFirstCategory, data);
+export const AddChildrenCategory = (data) => post(news.addChildrenCategory, data);
