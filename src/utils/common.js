@@ -1,6 +1,6 @@
 export function timestampToTime(timestamp = Date.now()) {
   let date = new Date(+timestamp + 8 * 3600 * 1000);
-  return date.toJSON().substring(0, 19).replace('T', ' ');
+  return date.toJSON()?.substring(0, 19).replace('T', ' ');
   // new Date(Date.now()+8*3600*1000).toISOString()
 }
 
@@ -22,8 +22,8 @@ export function transformTime(timestamp = +new Date()) {
   }
 }
 
-export function indexArr(arr, id) {
-  return arr.findIndex((item) => item.id == id);
+export function indexArr(arr, key, id = 'id') {
+  return arr?.findIndex((item) => item[id] == key);
 }
 export const responseInit = (formatter, data) => {
   let keys = Object.keys(formatter);

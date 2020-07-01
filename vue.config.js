@@ -1,6 +1,6 @@
 'use strict';
 const path = require('path');
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = ['production', 'prod'].includes(process.env.NODE_ENV);
 const resolve = (dir) => path.join(__dirname, dir);
 // gzip压缩
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
@@ -17,23 +17,21 @@ const cdn = {
   },
   // 通过cdn方式使用
   js: [
-    'https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js',
-    'https://cdn.jsdelivr.net/npm/vuex@3.4.0/dist/vuex.min.js',
+    //访问https: //unpkg.com/vue/dist/vue.min.js获取最新版本
+    'https://unpkg.com/vue@2.6.11/dist/vue.min.js',
+    'https://cdn.jsdelivr.net/npm/vuex@3.5.1/dist/vuex.min.js',
     'https://cdn.jsdelivr.net/npm/vue-router@3.3.3/dist/vue-router.min.js',
     'https://cdn.bootcss.com/axios/0.19.2/axios.min.js',
-    'https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/index.js',
+    'https://unpkg.com/element-ui@2.13.2/lib/index.js',
     // 'https://cdn.bootcss.com/moment.js/2.24.0/moment.min.js',
     // 'https://cdn.bootcss.com/echarts/4.6.0/echarts.min.js',
   ],
-  css: ['https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.2/theme-chalk/index.css'],
+  // 访问https://unpkg.com/element-ui/lib/theme-chalk/index.css获取最新版本
+  css: ['https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css'],
 };
 
 module.exports = {
   publicPath: isProduction ? '' : '/', // 基本路径,打包时加上.
-  // outputDir: process.env.outputDir, // 输出文件目录
-  outputDir: isProduction ? 'dist' : 'devdist',
-  lintOnSave: true, // eslint-loader 是否在保存的时候检查
-  // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
   // webpack配置
   chainWebpack: (config) => {
     config.resolve.symlinks(true);
@@ -72,11 +70,14 @@ module.exports = {
     });
     config.module.rule('eslint');
   },
+
   configureWebpack: (config) => {
     // 忽略打包配置
     config.externals = cdn.externals;
     // 生产环境相关配置
     if (isProduction) {
+      config.mode = 'production';
+
       // gzip压缩
       const productionGzipExtensions = ['html', 'js', 'css'];
       config.plugins.push(
@@ -112,11 +113,13 @@ module.exports = {
       //   }
       // };
     } else {
-      // 为开发环境修改配置...
       config.mode = 'development';
     }
   },
-  productionSourceMap: false, // 生产环境是否生成 sourceMap 文件
+
+  // 生产环境是否生成 sourceMap 文件
+  productionSourceMap: false,
+
   // css相关配置
   css: {
     extract: true, // 是否使用css分离插件 ExtractTextPlugin
@@ -142,8 +145,11 @@ module.exports = {
     // modules: false // 启用 CSS modules for all css / pre-processor files.
     requireModuleExtension: true,
   },
-  parallel: require('os').cpus().length > 1, // 是否为 Babel 或 TypeScript 使用 thread-loader。该选项在系统的 CPU 有多于一个内核时自动启用，仅作用于生产构建。
-  pwa: {}, // PWA 插件相关配置 see https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
+
+  // 是否为 Babel 或 TypeScript 使用 thread-loader。该选项在系统的 CPU 有多于一个内核时自动启用，仅作用于生产构建。
+  parallel: require('os').cpus().length > 1,
+  pwa: {},
+
   // webpack-dev-server 相关配置
   devServer: {
     open: true, // 编译完成是否打开网页
@@ -153,16 +159,8 @@ module.exports = {
     hot: false, // 开启热加载
     hotOnly: false,
     proxy: {
-      // [process.env.VUE_APP_MODE]: {
-      //   target: `http://web-jshtml.cn/productapi/token`,
-      //   changeOrigin: true,
-      //   pathRewrite: {
-      //     //看后台是否有，决定是否重写
-      //     ['^' + process.env.VUE_APP_API_URL]: '',
-      //   },
-      // },
       '/devApi': {
-        target: 'http://web-jshtml.cn/productapi/token', //API服务器的地址  http://www.web-jshtml.cn/vue_admin_api
+        target: 'http://www.web-jshtml.cn/vue_admin_api/token', //API服务器的地址  http://web-jshtml.cn/productapi/token
         changeOrigin: true,
         pathRewrite: {
           '^/devApi': '',

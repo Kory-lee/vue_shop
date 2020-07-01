@@ -28,7 +28,7 @@
         <el-switch v-model="slotData.data.status" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
       </template>
       <template #operation="slotData">
-        <el-button size="mini" type="danger" @click="handleDelete(slotData.data)">删除</el-button>
+        <el-button size="mini" type="danger" @click="handleDelete(slotData)">删除</el-button>
         <el-button size="mini" type="succes">编辑</el-button>
       </template>
     </Table>

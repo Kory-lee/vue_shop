@@ -7,7 +7,7 @@
       <div class="user-info">
         <el-dropdown trigger="click">
           <div class="username">
-            <el-avatar><img src="../assets/images/avatar.jpg" alt="" /></el-avatar>
+            <el-avatar><img src="../../assets/images/avatar.jpg" alt="" /></el-avatar>
           </div>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item icon="el-icon-user-solid">{{ username }}</el-dropdown-item>
@@ -26,12 +26,10 @@
 import { computed } from '@vue/composition-api';
 export default {
   setup(props, { root }) {
-    const username = computed(() => root.$store.state.login.username);
-    const exitButton = () =>
-      root.$confirm({
-        content: '确认退出?',
-        fn: exitConfirm,
-      });
+    const username = computed(() =>
+      root.$store.state.login.username.replace(/@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,8})$/, '')
+    );
+    const exitButton = () => root.$confirm({ content: '确认退出?', fn: exitConfirm });
     const exitConfirm = () => {
       root.$store.dispatch('login/exit').then(() => {
         root.$router.push({ path: '/login', name: 'Login' });

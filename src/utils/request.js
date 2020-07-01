@@ -28,9 +28,10 @@ service.interceptors.request.use(
 );
 // 响应拦截器
 service.interceptors.response.use(
-  (response) => {
-    let data = response.data;
-    return response.status === 200 && !data.resCode ? Promise.resolve(data) : Promise.reject(data.message);
+  ({ data, status }) => {
+    return status === 200 && (!data.resCode || data.resCode === 1025)
+      ? Promise.resolve(data)
+      : Promise.reject(data.message);
   },
   (error) => {
     return Promise.reject(error);

@@ -210,7 +210,7 @@ export default {
         .dispatch('login/login', data)
         .then((response) => {
           // 页面跳转
-          root.$router.push({ name: 'Index' });
+          root.$router.push({ name: 'Index', path: 'index' });
           root.$notify({ title: '登录成功', message: response.data.message, type: 'success' });
         })
         .catch((err) => {
@@ -243,8 +243,7 @@ export default {
                 module: 'register',
               });
         } else {
-          console.log('error submit!!', valid);
-          root.$message.error('请填写信息');
+          root.$message.error('请填写信息', valid);
           return false;
         }
       });

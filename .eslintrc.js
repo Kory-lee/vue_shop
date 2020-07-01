@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   env: { node: true },
-  extends: ['plugin:vue/recommended', 'eslint:recommended', 'prettier/vue', '@vue/prettier'],
+  extends: ['plugin:vue/essential', 'eslint:recommended', 'prettier/vue', '@vue/prettier'],
   parserOptions: { parser: 'babel-eslint', ecmaVersion: 6, sourceType: 'module' },
 
   rules: {

@@ -13,9 +13,8 @@
 </template>
 
 <script>
-import Nav from '@components/Nav';
-import Header from '@components/Header';
-
+import Nav from '@components/Layout/Nav';
+import Header from '@components/Layout/Header';
 import { computed } from '@vue/composition-api';
 export default {
   name: 'Layout',

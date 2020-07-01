@@ -1,4 +1,4 @@
-import { GetCategoryAll, GetCategory, GetList } from '@api/news';
+import { GetCategoryAll, GetCategory, GetList, DeleteCategory } from '@api/news';
 import { Error } from '@utils/global';
 import { indexArr, responseInit } from '@utils/common';
 const initData = (fn, thenCb = () => {}) => {
@@ -35,26 +35,26 @@ const mutations = {
     let index = indexArr(state.infoList.data, params.id);
     responseInit(state.infoList.data[index], params.data);
   },
-  // DELETE_INFO_LIST(state, ids) {
-  //   if (ids.length === 1) {
-  //     let index = indexArr(state.infoList.data, ids[0]);
-  //     state.infoList.data.splice(index, 1);
-  //   } else {
-  //     let sup = state.infoList.data.filter((item) => !ids.includes(item.id));
-  //   }
-  // },
+  DELETE_CATEGORY(state, deleteId) {
+    let index = indexArr(state.infoCategory.data, deleteId, 'value');
+    state.infoCategory.data?.splice(index, 1);
+  },
 };
 const actions = {
   async getInfoCategory({ commit }, params) {
     commit('UPDATE_CATEGORY', await initData(() => GetCategory(params)));
   },
   getAllInfoCateGory() {
-    return GetCategoryAll({})
-      .then((response) => response)
-      .catch((err) => err);
+    return GetCategoryAll({});
   },
   async getInfoList({ commit }, params) {
     commit('UPDATE_INFO_LIST', await initData(() => GetList(params)));
+  },
+  async deleteInfoCategory({ commit }, id) {
+    initData(
+      () => DeleteCategory({ categoryId: id }),
+      () => commit('DELETE_CATEGORY', id)
+    );
   },
 };
 export default { namespaced: true, state, mutations, actions, getters };

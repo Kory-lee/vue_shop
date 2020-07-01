@@ -16,6 +16,11 @@
     margin-left: (1px * $i);
   }
 }
+@for $i from 1 to 110 {
+  .black-space-#{$i} {
+    margin-top: (1px * $i);
+  }
+}
 html,
 body,
 #app {

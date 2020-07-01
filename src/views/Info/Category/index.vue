@@ -83,10 +83,6 @@ export default {
       submitStatus = reactive({ data: null, type: null, level: null });
     const submit_disabled = computed(() => !(!addFirstDisable.value || !addSecDisable.value));
     const loadingData = computed(() => !categoryData.data);
-    // const iconClass = (item)=>{
-    //   if(item.children){
-    //     if(item.id === showMenu)
-    //   }
     // }
     // 工具函数
     const initForm = () => {

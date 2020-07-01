@@ -12,7 +12,7 @@ const routes = [
   // {
   //   path: '/redirect',
   //   component: Layout,
-  //   hiddden: true,
+  //   hidden: true,
   //   children: [{ path: 'redirect/:path(.*)', component: () => import('@views/redirect') }],
   // },
   {
@@ -43,9 +43,8 @@ const routes = [
     component: Layout,
     children: [
       {
-        path: '/index',
+        path: 'index',
         name: 'Index',
-        // redirect: '/',
         meta: {
           name: '首页',
         },

@@ -49,26 +49,10 @@
         <el-button type="sucess" size="mini" @click="handleEdit(slotData)">编辑</el-button>
         <el-button type="sucess" size="mini" @click="toDetail(slotData)">编辑详情</el-button>
       </template>
-    </Table>
-    <el-row :gutter="10" class="black-space-30">
-      <el-col :span="12">
+      <template #left>
         <el-button type="primary" size="medium" @click="handleDelete()">批量删除</el-button>
-      </el-col>
-      <el-col :span="12">
-        <el-pagination
-          background
-          hide-on-single-page="true"
-          :page-sizes="page.page_sizes"
-          :page-size="page.pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="page.totalCount"
-          class="push-right"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        >
-        </el-pagination>
-      </el-col>
-    </el-row>
+      </template>
+    </Table>
     <DialogInfo :flag.sync="dialog_show" :data="dialog_info" />
   </el-card>
 </template>
@@ -88,13 +72,13 @@ export default {
     const tableData = reactive({
         tableConfig: {
           selection: { show: true, deleteItem: null },
+          commitUrl: 'common/infoList',
           head: [
             { value: 'title', label: '标题' },
             { value: 'category', label: '类型', width: 130, formatter: (row) => toCategory(row) },
             { value: 'createDate', label: '日期', width: 200, formatter: (row) => toDate(row) },
             { value: 'operation', label: '操作', columnType: 'slot', slotName: 'operation', width: 250 },
           ],
-          commitUrl: 'common/infoList',
         },
       }),
       dialog_info = reactive({ mode: '', data: {} }),
@@ -104,36 +88,23 @@ export default {
         categoryConfig: { commitUrl: 'common/infoCategory' },
       }),
       page = reactive({ totalCount: 0, pageSize: 10, pageNumber: 1, page_sizes: [10] });
-    watch(
-      () => page.totalCount,
-      (value) => {
-        if (value > 0) page.page_sizes = [10];
-        else if (value > 40) page.page_sizes = [10, 20];
-        else if (value > 80) page.page_sizes = [10, 20, 50];
-        else page.page_sizes = [10, 20, 50, 100];
-      }
-    );
 
+    watch(dialog_show, (value, oldValue) => !value && oldValue && getList());
     // 方法
     const toDate = (row) => timestampToTime(row.createDate * 1000);
-    const toCategory = (row) => {
-      let categoryData = root.$store.getters['common/infoCategory'].data;
-      return categoryData?.find((item) => item.value === row.categoryId).label;
-    };
-    const toDetail = (data) => {
-      root.$router.push({ name: 'InfoDetail', path: 'infoDetail', params: { id: data.id, title: data.title } });
+    const toCategory = (row) =>
+      root.$store.getters['common/infoCategory'].data?.find((item) => item.value === row.categoryId).label;
+    const toDetail = ({ id, title }) => {
+      root.$router.push({ name: 'InfoDetail', path: 'infoDetail', params: { id, title } });
       root.$store.commit('infoDetail/UPDATE_STATE_VALUE', {
-        id: { value: data.id, session: true, sessionKey: 'infoId' },
-        title: { value: data.title, session: true, sessionKey: 'infoTitle' },
+        id: { value: id, session: true, sessionKey: 'infoId' },
+        title: { value: title, session: true, sessionKey: 'infoTitle' },
       });
     };
     const onDeleteItem = (val) => {
       tableData.tableConfig.selection.deleteItem = val;
     };
-    const handleSizeChange = (val) => {
-      page.pageSize = val;
-      getList();
-    };
+
     const search = () => {
       if (!searchValue.category || searchValue.date.length === 0) return;
       let requestData = {
@@ -147,10 +118,6 @@ export default {
       };
       if (searchValue.key) requestData[searchValue.key] = searchValue.work;
       getList(requestData);
-    };
-    const handleCurrentChange = (val) => {
-      page.pageNumber = val;
-      getList();
     };
     const handleEdit = (row) => {
       dialog_show.value = true;
@@ -177,15 +144,17 @@ export default {
     const getCategory = (data = {}) => root.$store.dispatch('common/getInfoCategory', data);
     const getList = (
       data = {
-        categoryId: '',
-        startTime: '',
-        endTime: '',
+        categoryId: searchValue.category || '',
+        startTiem: searchValue.date[0] || '',
+        endTime: searchValue.date[1] || '',
         title: '',
         id: '',
-        pageNumber: 1,
-        pageSize: 10,
+        pageNumber: page.pageNumber,
+        pageSize: page.pageSize,
       }
-    ) => root.$store.dispatch('common/getInfoList', data);
+    ) => {
+      root.$store.dispatch('common/getInfoList', data);
+    };
 
     onBeforeMount(() => {
       getCategory();
@@ -199,8 +168,6 @@ export default {
       dialog_info,
       dialog_show,
       toDetail,
-      handleSizeChange,
-      handleCurrentChange,
       handleDelete,
       onDeleteItem,
       search,
