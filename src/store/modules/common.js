@@ -1,14 +1,6 @@
 import { GetCategoryAll, GetCategory, GetList, DeleteCategory } from '@api/news';
-import { Error } from '@utils/global';
+import { Request } from '@utils/global';
 import { indexArr, responseInit } from '@utils/common';
-const initData = (fn, thenCb = () => {}) => {
-  return fn()
-    .then((response) => {
-      thenCb(response);
-      return response.data;
-    })
-    .catch((err) => Error(err.message));
-};
 const initCategory = (value, id = 'id', category_name = 'category_name') =>
   value?.map((item) => {
     return { value: item[id], label: item[category_name] };
@@ -25,15 +17,15 @@ const getters = {
   infoList: (state) => state.infoList,
 };
 const mutations = {
-  UPDATE_CATEGORY(state, newData) {
-    state.infoCategory.data = initCategory(newData.data);
+  UPDATE_CATEGORY(state, { data }) {
+    state.infoCategory.data = initCategory(data);
   },
   UPDATE_INFO_LIST(state, newData) {
     responseInit(state.infoList, newData);
   },
-  EDIT_INFO_LIST(state, params) {
-    let index = indexArr(state.infoList.data, params.id);
-    responseInit(state.infoList.data[index], params.data);
+  EDIT_INFO_LIST(state, { id, data }) {
+    let index = indexArr(state.infoList.data, id);
+    responseInit(state.infoList.data[index], data);
   },
   DELETE_CATEGORY(state, deleteId) {
     let index = indexArr(state.infoCategory.data, deleteId, 'value');
@@ -42,16 +34,16 @@ const mutations = {
 };
 const actions = {
   async getInfoCategory({ commit }, params) {
-    commit('UPDATE_CATEGORY', await initData(() => GetCategory(params)));
+    commit('UPDATE_CATEGORY', await Request(() => GetCategory(params)));
   },
   getAllInfoCateGory() {
     return GetCategoryAll({});
   },
   async getInfoList({ commit }, params) {
-    commit('UPDATE_INFO_LIST', await initData(() => GetList(params)));
+    commit('UPDATE_INFO_LIST', await Request(() => GetList(params)));
   },
   async deleteInfoCategory({ commit }, id) {
-    initData(
+    Request(
       () => DeleteCategory({ categoryId: id }),
       () => commit('DELETE_CATEGORY', id)
     );

@@ -6,7 +6,7 @@
           <el-row :gutter="16">
             <el-form-item label="关键字：">
               <el-col :span="8">
-                <Select :config="data.selectConfig" />
+                <Select :config="tableData.selectConfig" />
               </el-col>
               <el-col :span="12">
                 <el-input v-model="formData.inputValue" placeholder=""></el-input>
@@ -19,54 +19,89 @@
         </el-col>
 
         <el-col :span="7" :offset="7">
-          <el-button type="danger" class="push-right">添加用户</el-button>
+          <el-button type="danger" class="push-right" @click="handleAdd">添加用户</el-button>
         </el-col>
       </el-row>
     </el-form>
-    <Table :config="data.tableConfig">
-      <template #status="slotData">
-        <el-switch v-model="slotData.data.status" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+    <Table
+      :config="tableData.tableConfig"
+      @give-selection="onDeleteItem"
+      :pageSize.sync="pageSize"
+      :pageNumber.sync="pageNumber"
+    >
+      <template #status="{data}">
+        {{ data }}
+        <el-switch
+          v-model="data.status"
+          active-value="2"
+          inactive-value="1"
+          active-color="#13ce66"
+          inactive-color="#ff4949"
+        ></el-switch>
       </template>
-      <template #operation="slotData">
-        <el-button size="mini" type="danger" @click="handleDelete(slotData)">删除</el-button>
-        <el-button size="mini" type="succes">编辑</el-button>
+      <template #operation="{data}">
+        <el-button size="mini" type="danger" @click="handleDelete(data)">删除</el-button>
+        <el-button size="mini" type="success">编辑</el-button>
+      </template>
+      <template #left>
+        <el-button type="primary" size="medium" @click="handleDelete()">批量删除</el-button>
       </template>
     </Table>
+    <Dialog :flag.sync="dialog_show" :data="dialog_info" />
   </el-card>
 </template>
 
 <script>
-import { reactive } from '@vue/composition-api';
+import { reactive, onBeforeMount, watch, ref } from '@vue/composition-api';
 import Select from '@components/Select';
 import Table from '@components/Table';
+import Dialog from './Dialog';
 export default {
   name: 'User',
-  components: { Select, Table },
-  setup() {
-    const data = reactive({
+  components: { Select, Table, Dialog },
+  setup(props, { root }) {
+    const dialog_show = ref(false);
+    const tableData = reactive({
         selectConfig: { init: ['name', 'phone'] },
         tableConfig: {
-          selection: true,
+          selection: { show: true, deleteItem: null },
+          commitUrl: 'user/userList',
           head: [
-            { value: 'email', label: '邮箱/用户名', width: 150 },
-            { value: 'name', label: '真实姓名', width: 120 },
+            { value: 'username', label: '邮箱/用户名', width: 150 },
+            { value: 'truename', label: '真实姓名', width: 120 },
             { value: 'phone', label: '手机号', width: 150 },
-            { value: 'address', label: '地区', width: 200 },
+            { value: 'region', label: '地区', width: 200 },
             { value: 'role', label: '角色' },
             { value: 'status', label: '禁/启用状态', columnType: 'slot', slotName: 'status' },
             { value: 'operation', label: '操作', columnType: 'slot', slotName: 'operation', width: 154 },
           ],
-          category_name: '',
         },
       }),
-      formData = reactive({ selectValue: 'name', inputValue: '' });
+      formData = reactive({ selectValue: 'name', inputValue: '' }),
+      page = reactive({ pageSize: 10, pageNumber: 1 }),
+      dialog_info = reactive({ data: null });
+    const handleAdd = () => {
+      dialog_show.value = true;
+    };
     const handleDelete = (data) => {
       console.log(data);
     };
+    watch(
+      () => page.pageSize,
+      (value) => console.log('value :>> ', value)
+    );
+    const getUserList = (data = { pageNumber: 1, pageSize: 10 }) => root.$store.dispatch('user/getUserList', data);
+    onBeforeMount(() => {
+      getUserList();
+    });
     return {
-      data,
+      dialog_show,
+      dialog_info,
+      tableData,
+      page,
       formData,
       handleDelete,
+      handleAdd,
     };
   },
 };

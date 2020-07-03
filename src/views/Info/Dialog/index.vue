@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="modeTitle" :visible.sync="dialog_flag" width="500px" @close="close" @opened="openedDialog">
+  <el-dialog :title="dialog_mode" :visible.sync="dialog_flag" width="500px" @close="close" @opened="openedDialog">
     <el-form ref="form" :model="form" label-width="50px">
       <el-form-item label="类型: " prop="categoryId">
         <Select :config="options.categoryConfig" :selected.sync="form.categoryId" />
@@ -11,12 +11,14 @@
         <el-input v-model="form.content" type="textarea" :rows="5" placeholder="请输入内容"></el-input>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button size="small" class="diglogButton" @click="close">取 消</el-button>
-      <el-button size="small" type="danger" :loading="submitLoading" class="diglogButton" @click="submitConfirm"
-        >确 定</el-button
-      >
-    </div>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button size="small" class="dialogButton" @click="close">取 消</el-button>
+        <el-button size="small" class="dialogButton" type="danger" :loading="submitLoading" @click="submitConfirm"
+          >确 定</el-button
+        >
+      </div>
+    </template>
   </el-dialog>
 </template>
 
@@ -38,15 +40,11 @@ export default {
     },
   },
   setup(props, { emit, root, refs }) {
-    const submitLoading = ref(false),
-      modeTitle = ref('');
-    const dialog_data = computed(() => props.data),
+    const submitLoading = ref(false);
+    const dialog_data = computed(() => props.data.data),
+      dialog_mode = computed(() => props.data.mode),
       dialog_flag = computed(() => props.flag);
-    const form = reactive({
-        categoryId: '',
-        title: '',
-        content: '',
-      }),
+    const form = reactive({ categoryId: '', title: '', content: '' }),
       options = reactive({ categoryConfig: { commitUrl: 'common/infoCategory' } });
 
     // 方法
@@ -56,14 +54,11 @@ export default {
       initForm();
     };
     const openedDialog = () => {
-      let { categoryId, title, content } = dialog_data.value.data;
-      if (dialog_data.value.mode === 'edit') {
-        modeTitle.value = '编辑';
+      let { categoryId, title, content } = dialog_data.value;
+      if (dialog_mode.value === 'edit') {
         form.categoryId = categoryId;
         form.title = title;
         form.content = content;
-      } else {
-        modeTitle.value = '新增';
       }
     };
     const initForm = () => {
@@ -72,10 +67,9 @@ export default {
     };
     const submitConfirm = () => {
       let { categoryId, title, content } = form;
-      let value = dialog_data.value;
-      let id = value.data.id;
+      let id = dialog_data.value.id;
       if (!categoryId && !title) return root.$message.error('类别、标题不能为空');
-      if (value.mode === 'edit') {
+      if (dialog_mode.value === 'edit') {
         if (!content) return root.$message.error('内容不能为空');
         root.$submit(
           () => EditInfo({ categoryId, title, content, updateDate: timestampToTime(), id }),
@@ -86,16 +80,10 @@ export default {
             initForm();
           }
         );
-      } else
-        root.$submit(
-          () => AddInfo({ categoryId, title, content, createDate: timestampToTime() }),
-          () => {
-            initForm();
-          }
-        );
+      } else root.$submit(() => AddInfo({ categoryId, title, content, createDate: timestampToTime() }), initForm);
     };
     return {
-      modeTitle,
+      dialog_mode,
       dialog_flag,
       submitLoading,
       form,
@@ -108,15 +96,4 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.el-dialog .el-form .el-form-item:last-child {
-  margin-bottom: 0;
-}
-.diglogButton {
-  width: 150px;
-  margin: 0 11px 20px;
-}
-.dialog-footer {
-  text-align: center;
-}
-</style>
+<style scoped lang="scss"></style>

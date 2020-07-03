@@ -32,6 +32,7 @@ import {
   DropdownItem,
   DropdownMenu,
   Upload,
+  Radio,
 } from 'element-ui';
 
 Vue.use(Form);
@@ -60,6 +61,7 @@ Vue.use(Dropdown);
 Vue.use(DropdownItem);
 Vue.use(DropdownMenu);
 Vue.use(Upload);
+Vue.use(Radio);
 
 Vue.use(Loading.directive);
 

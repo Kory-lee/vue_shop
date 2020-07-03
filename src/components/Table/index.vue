@@ -18,8 +18,8 @@
           :width="item.width"
           align="center"
         >
-          <template v-slot="scope">
-            <slot :name="item.slotName" :data="scope.row"></slot>
+          <template v-slot="{ row }">
+            <slot :name="item.slotName" :data="row"></slot>
           </template>
         </el-table-column>
         <el-table-column
@@ -41,7 +41,7 @@
       <el-col :span="12">
         <el-pagination
           background
-          :page-sizes="page.page_sizes"
+          :page-sizes="[10, 20, 50]"
           :page-size="page.pageSize"
           :current-page="page.pageNumber"
           layout="total, sizes, prev, pager, next, jumper"
@@ -67,6 +67,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    page: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, { root, emit }) {
     const tableConfig = reactive({
@@ -75,7 +79,7 @@ export default {
         commitUrl: '',
       }),
       tableData = reactive({ data: [], total: 0 });
-    const loading = computed(() => !tableData.data);
+    const loading = computed(() => !tableData.data?.length);
     const emitDeleteItem = (val) => {
       tableConfig.selection.deleteItem = val;
       emit('give-selection', val);
@@ -89,32 +93,16 @@ export default {
     );
 
     // pagination
-    const page = reactive({
-      pageSize: 10,
-      pageNumber: 1,
-      page_sizes: [10, 20, 50, 100],
-    });
-    // watch(
-    //   () => tableData.total,
-    //   (value) => {
-    //     if (value > 0) page.page_sizes = [10];
-    //     else if (value > 40) page.page_sizes = [10, 20];
-    //     else if (value > 80) page.page_sizes = [10, 20, 50];
-    //     else page.page_sizes = [10, 20, 50, 100];
-    //   },
-    //   { lazy: true }
-    // );
-    watch([() => page.pageNumber, () => page.pageSize], ([pageNumber, pageSize]) => console.log(pageNumber, pageSize));
+    const page = reactive({ pageSize: 10, pageNumber: 1 });
+    // watch([() => page.pageNumber, () => page.pageSize], ([pageNumber, pageSize]) => console.log(pageNumber, pageSize));
     const handleSizeChange = (val) => {
       page.pageSize = val;
-      getList();
+      emit('update:pageSize', val);
     };
     const handleCurrentChange = (val) => {
       page.pageNumber = val;
-      getList();
+      emit('update:pageNumber', val);
     };
-    const getList = ({ pageSize, pageNumber } = page) =>
-      root.$store.dispatch('common/getInfoList', { pageSize, pageNumber });
     onBeforeMount(() => {
       responseInit(tableConfig, props.config);
     });

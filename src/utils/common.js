@@ -33,3 +33,6 @@ export const responseInit = (formatter, data) => {
     }
   }
 };
+export const initObj = (arr, obj = {}) => {
+  arr.forEach((item) => (obj[`${item}`] = null));
+};

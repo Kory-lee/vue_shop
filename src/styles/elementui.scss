@@ -1,4 +1,3 @@
-
 .login-form label {
   display: block;
   color: #fff;
@@ -39,4 +38,19 @@ li.el-submenu {
 // dialog
 .el-dialog .el-dialog__body {
   padding: 30px 47px;
+}
+.el-dialog__title {
+  // 首字母大写
+  text-transform: capitalize;
+}
+.el-dialog .el-form .el-form-item:last-child {
+  margin-bottom: 0;
+}
+
+.dialog-footer {
+  text-align: center;
+}
+.dialogButton {
+  width: 150px;
+  margin: 0 11px 20px;
 }

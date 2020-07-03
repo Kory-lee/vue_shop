@@ -107,7 +107,7 @@ export default {
         root
           .$submit(
             () => AddFirstCategory({ categoryName: formData.categoryName }),
-            (result) => categoryData.data.push(result.data)
+            (result) => categoryData.data.unshift(result.data)
           )
           .then(() => initForm());
       },

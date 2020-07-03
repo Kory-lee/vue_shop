@@ -32,6 +32,7 @@ const cdn = {
 
 module.exports = {
   publicPath: isProduction ? '' : '/', // 基本路径,打包时加上.
+  lintOnSave: isProduction,
   // webpack配置
   chainWebpack: (config) => {
     config.resolve.symlinks(true);

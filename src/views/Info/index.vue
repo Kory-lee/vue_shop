@@ -43,11 +43,16 @@
         </el-col>
       </el-row>
     </el-form>
-    <Table :config="tableData.tableConfig" @give-selection="onDeleteItem">
+    <Table
+      :config="tableData.tableConfig"
+      @give-selection="onDeleteItem"
+      :pageSize.sync="pageSize"
+      :pageNumber.sync="pageNumber"
+    >
       <template #operation="slotData">
         <el-button type="danger" size="mini" @click="handleDelete(slotData)">删除</el-button>
-        <el-button type="sucess" size="mini" @click="handleEdit(slotData)">编辑</el-button>
-        <el-button type="sucess" size="mini" @click="toDetail(slotData)">编辑详情</el-button>
+        <el-button type="success" size="mini" @click="handleEdit(slotData)">编辑</el-button>
+        <el-button type="success" size="mini" @click="toDetail(slotData)">编辑详情</el-button>
       </template>
       <template #left>
         <el-button type="primary" size="medium" @click="handleDelete()">批量删除</el-button>
@@ -59,7 +64,7 @@
 
 <script>
 import { reactive, ref, watch, onBeforeMount } from '@vue/composition-api';
-import DialogInfo from './Dialog/info';
+import DialogInfo from './Dialog';
 import Select from '@components/Select';
 import Table from '@components/Table';
 import { DeleteInfo } from '@api/news';
@@ -68,7 +73,9 @@ export default {
   name: 'InfoIndex',
   components: { DialogInfo, Select, Table },
   setup(props, { root }) {
-    const dialog_show = ref(false);
+    const dialog_show = ref(false),
+      pageSize = ref(10),
+      pageNumber = ref(1);
     const tableData = reactive({
         tableConfig: {
           selection: { show: true, deleteItem: null },
@@ -86,10 +93,10 @@ export default {
       searchOptions = reactive({
         keyConfig: { init: ['id', 'title'] },
         categoryConfig: { commitUrl: 'common/infoCategory' },
-      }),
-      page = reactive({ totalCount: 0, pageSize: 10, pageNumber: 1, page_sizes: [10] });
+      });
 
     watch(dialog_show, (value, oldValue) => !value && oldValue && getList());
+    watch(pageSize, (value) => console.log(value));
     // 方法
     const toDate = (row) => timestampToTime(row.createDate * 1000);
     const toCategory = (row) =>
@@ -109,20 +116,21 @@ export default {
       if (!searchValue.category || searchValue.date.length === 0) return;
       let requestData = {
         categoryId: searchValue.category || '',
-        startTiem: searchValue.date[0] || '',
+        startTime: searchValue.date[0] || '',
         endTime: searchValue.date[1] || '',
         title: '',
         id: '',
-        pageNumber: page.pageNumber,
-        pageSize: page.pageSize,
+        pageNumber: pageNumber.value,
+        pageSize: pageSize.value,
       };
       if (searchValue.key) requestData[searchValue.key] = searchValue.work;
       getList(requestData);
     };
-    const handleEdit = (row) => {
+    const handleEdit = ({ data }) => {
       dialog_show.value = true;
+      console.log(data);
       dialog_info.mode = 'edit';
-      dialog_info.data = row.data;
+      dialog_info.data = data;
     };
     const handleAdd = () => {
       dialog_show.value = true;
@@ -145,12 +153,12 @@ export default {
     const getList = (
       data = {
         categoryId: searchValue.category || '',
-        startTiem: searchValue.date[0] || '',
+        startTime: searchValue.date[0] || '',
         endTime: searchValue.date[1] || '',
         title: '',
         id: '',
-        pageNumber: page.pageNumber,
-        pageSize: page.pageSize,
+        pageNumber: pageNumber.value,
+        pageSize: pageSize.value,
       }
     ) => {
       root.$store.dispatch('common/getInfoList', data);
@@ -161,10 +169,10 @@ export default {
       getList();
     });
     return {
+      pageSize,
       searchValue,
       searchOptions,
       tableData,
-      page,
       dialog_info,
       dialog_show,
       toDetail,
