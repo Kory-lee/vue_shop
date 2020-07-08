@@ -13,15 +13,7 @@
         </li>
       </ul>
       <el-form ref="loginRef" :model="ruleForm" status-icon size="medium" class="login-form">
-        <el-form-item
-          label="邮箱"
-          prop="email"
-          class="item-form"
-          :rules="[
-            { require: true, message: '请输入邮箱地址', trigger: 'blur' },
-            { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
-          ]"
-        >
+        <el-form-item label="邮箱" prop="email" class="item-form" :rules="rules.email">
           <el-input
             v-model="ruleForm.email"
             type="text"
@@ -89,7 +81,7 @@
 import sha1 from 'js-sha1';
 import { GetSms, Register } from '@api/login';
 import { reactive, ref, watch } from '@vue/composition-api';
-import { stripScript, is, isEmail, isPassword } from '@utils/validate';
+import { is, isEmail, isPassword, stripScript } from '@utils/validate';
 export default {
   name: 'Login',
   setup(props, { refs, root }) {
@@ -114,18 +106,20 @@ export default {
         code: '',
         pass2: '',
       });
+    const validatePass = (rule, value, callback) => {
+      value = ruleForm.pass = stripScript(value);
+      if (!value) callback(new Error('密码不能为空'));
+      else if (!isPassword(value)) callback(new Error('数字字母组合且不少于6位'));
+      else callback();
+    };
     const rules = {
-      pass: [
-        {
-          validator: (rule, value, callback) => {
-            value = ruleForm.pass = stripScript(value);
-            if (!value) callback(new Error('请输入密码'));
-            else if (!isPassword(value)) callback(new Error('数字字母组合且不少于6位'));
-            else callback();
-          },
-          trigger: 'blur',
-        },
+      email: [
+        [
+          { require: true, message: '请输入邮箱地址', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
+        ],
       ],
+      pass: [{ require: true, validator: validatePass, trigger: 'blur' }],
       pass2: [
         {
           validator: (rule, value, callback) => {
@@ -205,19 +199,16 @@ export default {
       );
     };
     // 登录与注册
-    const login = (data) => {
-      root.$store
-        .dispatch('login/login', data)
-        .then((response) => {
-          // 页面跳转
-          root.$router.push({ name: 'Index', path: 'index' });
+    const login = (data) =>
+      root.$request(
+        () => root.$store.dispatch('login/login', data),
+        () => {
+          root.$router.push({ name: 'Console', path: '/' });
           root.$notify({ title: '登录成功', message: response.data.message, type: 'success' });
-        })
-        .catch((err) => {
-          root.$message.error(err.message);
-          initCountDown();
-        });
-    };
+        },
+        () => initCountDown()
+      );
+
     const register = (data) => {
       root.$submit(
         () => Register(data),

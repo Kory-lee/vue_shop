@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :title="dialog_mode" :visible.sync="dialog_flag" width="600px" @close="close" @opened="openedDialog">
-    <el-form ref="form" :model="form" :rules="rules" label-width="95px">
+  <el-dialog :title="dialog_info.mode" :visible.sync="dialog_flag" width="550px" @close="close" @opened="openedDialog">
+    <el-form ref="form" :model="form" :rules="rules" label-width="94px" size="small" v-loading="dialog_loading">
       <el-form-item label="用户名：" prop="username">
         <el-input v-model="form.username" placeholder="输入邮箱"></el-input>
       </el-form-item>
@@ -8,10 +8,10 @@
         <el-input v-model="form.truename"></el-input>
       </el-form-item>
       <el-form-item label="密码：" prop="password">
-        <el-input v-model="form.password"></el-input>
+        <el-input type="password" v-model="form.password"></el-input>
       </el-form-item>
       <el-form-item label="手机号：" prop="phone">
-        <el-input v-model.number="form.phone"></el-input>
+        <el-input v-model="form.phone"></el-input>
       </el-form-item>
       <el-form-item label="地区：" prop="region">
         <CityPicker :config="pickSizes" v-model="form.region" />
@@ -38,10 +38,10 @@
 </template>
 
 <script>
-import { ref, reactive, computed } from '@vue/composition-api';
+import { ref, reactive, computed, watch } from '@vue/composition-api';
 import CityPicker from '@components/CityPicker';
-import { AddUser, GetRole } from '@api/user';
-import { initObj } from '@utils/common';
+import { AddUser, EditUser, GetRole } from '@api/user';
+import { stripScript, isPassword } from '@utils/validate';
 export default {
   name: 'UserDialog',
   props: {
@@ -57,87 +57,131 @@ export default {
   components: { CityPicker },
   setup(props, { refs, emit, root }) {
     const submitLoading = ref(false),
-      dialog_flag = computed(() => props.flag);
+      dialog_loading = ref(true),
+      dialog_flag = computed(() => props.flag),
+      // dialog_required = computed(() => props.data.mode === 'add'),
+      dialog_info = reactive(props.data);
     const form = reactive({
         username: '',
         truename: '',
         password: '',
         phone: '',
-        region: { province: '', city: '', area: '', street: '' },
-        status: '1',
+        region: {},
+        status: '',
         role: [],
+        btnPerm: '',
+        id: '',
       }),
       options = reactive({ categoryConfig: { commitUrl: 'common/infoCategory' } }),
       pickSizes = ['province', 'city', 'area', 'street'],
-      rules = {
-        username: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
+      rules = reactive({
+        username: [
+          { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
+        ],
         truename: [{ type: 'string', trigger: 'blur' }],
-        password: [{ type: 'string', required: true, message: '请输入密码', trigger: 'change' }],
-        region: [{ type: 'object', message: '请选择活动区域', trigger: 'change' }],
-        phone: [{ type: 'number', message: '请输入电话号码', trigger: 'change' }],
-        status: [{ type: 'string', required: true }],
-        role: [{ type: 'array', message: '请选择用户角色', required: true }],
-      };
+        password: [
+          {
+            type: 'string',
+            required: true,
+            message: '密码不能为空',
+            trigger: 'blur',
+          },
+          {
+            validator(rule, value, callback) {
+              value = form.password = stripScript(value);
+              if (!value) {
+                if (dialog_info.mode === 'edit') callback();
+                else callback(new Error('密码不能为空'));
+              }
+              if (!isPassword(value)) callback(new Error('数字字母组合且不少于6位'));
+              else callback();
+            },
+          },
+        ],
+        region: [{ type: 'object', message: '请选择地区', trigger: 'change' }],
+        phone: [{ trigger: 'blur' }],
+        status: [{ type: 'string', required: true, message: '请选择用户状态' }],
+        role: [{ type: 'array', message: '用户角色不能为空', required: true }],
+      });
     const roleItems = reactive({ data: [] });
-    // initObj(pickSizes, form.region);
-
+    watch(
+      () => props.data.mode,
+      (value) => {
+        if (value === 'add') rules.password[0].required = true;
+        else rules.password[0].required = false;
+      }
+    );
     // 方法
     const close = () => {
+      dialog_loading.value = true;
       dialog_flag.value = false;
       emit('update:flag', false);
       initForm();
     };
-    const openedDialog = () => {
-      getRole();
-    };
     const initForm = () => {
       submitLoading.value = false;
       root.$nextTick(() => {
-        initObj(pickSizes, form.region);
+        form.region = {};
         refs.form.resetFields();
       });
     };
-    const submitConfirm = () => {
-      console.log('form.region :>> ', form.region);
-      let { username, truename, password, phone, region, status, role } = form;
-      role = role.join();
-      region = JSON.stringify(region);
-      if (!username || !password || !status || !role) return root.$message.error('请填写必要信息！');
-      root.$submit(
-        () => AddUser({ username, truename, password, phone, region, status, role }),
-        () => {
-          initForm();
-        }
-      );
-      //   if (dialog_mode.value === 'edit') {
-      //     if (!content) return root.$message.error('内容不能为空');
-      //     root.$submit(
-      //       () => EditInfo({ categoryId, title, content, updateDate: timestampToTime(), id }),
-      //       () => {
-      //         dialog_flag.value = false;
-      //         emit('update:flag', false);
-      //         root.$store.commit('common/EDIT_INFO_LIST', { id, data: { categoryId, title, content } });
-      //         initForm();
-      //       }
-      //     );
-      //   } else
-      //     root.$submit(
-      //       () => AddUser({ categoryId, title, content, createDate: timestampToTime() }),
-      //       () => {
-      //         initForm();
-      //       }
-      //     );
+    const openedDialog = () => {
+      getRole();
+      if (dialog_info.mode === 'edit') {
+        let { username, truename, phone, status, region, role, btnPerm, id } = dialog_info.data;
+        form.role = role.split(',');
+
+        form.username = username;
+        form.truename = truename;
+        form.phone = phone;
+        form.status = status;
+        form.region = JSON.parse(region);
+        form.btnPerm = btnPerm;
+        form.id = id;
+      }
+      dialog_loading.value = false;
     };
-    const getRole = (params = []) =>
+    const user = {
+      add: AddUser,
+      edit: EditUser,
+    };
+    const submitConfirm = () => {
+      refs.form.validate((valid) => {
+        if (valid) {
+          let params;
+          let { username, truename, password, phone, region, status, role, btnPerm, id } = form;
+          role = role.join();
+          region = JSON.stringify(region);
+          if (dialog_info.mode === 'edit')
+            params = { id, username, truename, password, phone, region, status, role, btnPerm };
+          else {
+            params = { username, truename, phone, region, status, role };
+            if (password) params.password = password;
+          }
+          // 添加状态,需要密码
+          // 编辑状态,值存在,并且加密码
+          root.$submit(
+            () => user[dialog_info.mode](params),
+            () => close()
+          );
+        } else {
+          console.log('error submit');
+        }
+      });
+    };
+    const getRole = (params = {}) =>
       root.$request(
         () => GetRole(params),
         (data) => (roleItems.data = data)
       );
     return {
       pickSizes,
+      dialog_loading,
       rules,
       roleItems,
       dialog_flag,
+      dialog_info,
       submitLoading,
       form,
       options,

@@ -1,4 +1,8 @@
-// 过滤特殊字符
+/**
+ *
+ * @function stripScript 过滤特殊字符
+ * @param {String} s
+ */
 export function stripScript(s) {
   let pattern = new RegExp("[`~!@#$%^&*()_\\-+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]");
   let rs = '';

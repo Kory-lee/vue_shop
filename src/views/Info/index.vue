@@ -4,7 +4,7 @@
       <el-row :gutter="16">
         <el-col :span="4">
           <el-form-item label="类别：" label-width="60px">
-            <Select :config="searchOptions.categoryConfig" />
+            <Select :config="searchOptions.categoryConfig" :selected.sync="searchValue.categoryId" />
           </el-form-item>
         </el-col>
         <el-col :span="7">
@@ -27,10 +27,15 @@
           <el-row :gutter="16">
             <el-form-item label="关键字：" class="key" label-width="90px">
               <el-col :span="4">
-                <Select :config="searchOptions.keyConfig" />
+                <Select :config="searchOptions.keyConfig" :selected.sync="searchValue.selectValue" />
               </el-col>
               <el-col :span="6">
-                <el-input v-model="searchValue.work" placeholder="" style="width: 100%;"></el-input>
+                <el-input
+                  v-model="searchValue.inputValue"
+                  clearable
+                  placeholder="请输入"
+                  style="width: 100%;"
+                ></el-input>
               </el-col>
               <el-col :span="4">
                 <el-button type="danger" style="width: 100%;" @click="search">搜索</el-button>
@@ -44,15 +49,17 @@
       </el-row>
     </el-form>
     <Table
-      :config="tableData.tableConfig"
-      @give-selection="onDeleteItem"
-      :pageSize.sync="pageSize"
-      :pageNumber.sync="pageNumber"
+      ref="userTable"
+      v-loading="loading"
+      :config="tableConfig"
+      :page.sync="page.pageNumber"
+      :limit.sync="page.pageSize"
+      :selectedIds.sync="tableConfig.selection.selectedIds"
     >
-      <template #operation="slotData">
-        <el-button type="danger" size="mini" @click="handleDelete(slotData)">删除</el-button>
-        <el-button type="success" size="mini" @click="handleEdit(slotData)">编辑</el-button>
-        <el-button type="success" size="mini" @click="toDetail(slotData)">编辑详情</el-button>
+      <template #operation="{data}">
+        <el-button type="danger" size="mini" @click="handleDelete(data)">删除</el-button>
+        <el-button type="success" size="mini" @click="handleEdit(data)">编辑</el-button>
+        <el-button type="success" size="mini" @click="toDetail(data)">编辑详情</el-button>
       </template>
       <template #left>
         <el-button type="primary" size="medium" @click="handleDelete()">批量删除</el-button>
@@ -67,68 +74,66 @@ import { reactive, ref, watch, onBeforeMount } from '@vue/composition-api';
 import DialogInfo from './Dialog';
 import Select from '@components/Select';
 import Table from '@components/Table';
-import { DeleteInfo } from '@api/news';
-import { timestampToTime } from '@utils/common';
+import { DeleteInfo, GetList } from '@api/news';
+import { timestampToTime, throttle } from '@utils/common';
 export default {
   name: 'InfoIndex',
   components: { DialogInfo, Select, Table },
-  setup(props, { root }) {
+  setup(props, { root, refs }) {
     const dialog_show = ref(false),
-      pageSize = ref(10),
-      pageNumber = ref(1);
-    const tableData = reactive({
-        tableConfig: {
-          selection: { show: true, deleteItem: null },
-          commitUrl: 'common/infoList',
-          head: [
-            { value: 'title', label: '标题' },
-            { value: 'category', label: '类型', width: 130, formatter: (row) => toCategory(row) },
-            { value: 'createDate', label: '日期', width: 200, formatter: (row) => toDate(row) },
-            { value: 'operation', label: '操作', columnType: 'slot', slotName: 'operation', width: 250 },
-          ],
-        },
+      loading = ref(true);
+    const tableConfig = reactive({
+        selection: { show: true, selectedIds: [] },
+        tableData: { data: [], total: 0 },
+        head: [
+          { value: 'title', label: '标题' },
+          { value: 'category', label: '类型', width: 130, formatter: (row) => toCategory(row) },
+          { value: 'createDate', label: '日期', width: 200, formatter: (row) => toDate(row) },
+          { value: 'operation', label: '操作', columnType: 'slot', slotName: 'operation', width: 250 },
+        ],
       }),
       dialog_info = reactive({ mode: '', data: {} }),
-      searchValue = reactive({ key: '', work: '', category: '', date: [] }),
+      searchValue = reactive({ selectValue: '', inputValue: '', categoryId: '', date: [] }),
       searchOptions = reactive({
         keyConfig: { init: ['id', 'title'] },
         categoryConfig: { commitUrl: 'common/infoCategory' },
-      });
-
-    watch(dialog_show, (value, oldValue) => !value && oldValue && getList());
-    watch(pageSize, (value) => console.log(value));
+      }),
+      page = reactive({ pageSize: 10, pageNumber: 1 });
+    watch(dialog_show, (value, oldValue) => !value && oldValue && getList(), { lazy: true });
+    watch(
+      () => searchValue.categoryId,
+      (value, oldValue) => oldValue && !value && getList()
+    );
     // 方法
     const toDate = (row) => timestampToTime(row.createDate * 1000);
     const toCategory = (row) =>
       root.$store.getters['common/infoCategory'].data?.find((item) => item.value === row.categoryId).label;
     const toDetail = ({ id, title }) => {
+      console.log(id, title);
+
       root.$router.push({ name: 'InfoDetail', path: 'infoDetail', params: { id, title } });
       root.$store.commit('infoDetail/UPDATE_STATE_VALUE', {
         id: { value: id, session: true, sessionKey: 'infoId' },
         title: { value: title, session: true, sessionKey: 'infoTitle' },
       });
     };
-    const onDeleteItem = (val) => {
-      tableData.tableConfig.selection.deleteItem = val;
-    };
-
     const search = () => {
-      if (!searchValue.category || searchValue.date.length === 0) return;
+      if (!searchValue.categoryId && !searchValue.date?.length) return root.$message.error('请至少输入类别或日期');
+      if (!searchValue.selectValue && searchValue.inputValue) return root.$message.error('请选择关键字分类');
       let requestData = {
-        categoryId: searchValue.category || '',
+        categoryId: searchValue.categoryId,
         startTime: searchValue.date[0] || '',
         endTime: searchValue.date[1] || '',
         title: '',
         id: '',
-        pageNumber: pageNumber.value,
-        pageSize: pageSize.value,
+        pageNumber: page.pageNumber,
+        pageSize: page.pageSize,
       };
-      if (searchValue.key) requestData[searchValue.key] = searchValue.work;
+      if (searchValue.selectValue) requestData[searchValue.selectValue] = searchValue.inputValue;
       getList(requestData);
     };
-    const handleEdit = ({ data }) => {
+    const handleEdit = (data) => {
       dialog_show.value = true;
-      console.log(data);
       dialog_info.mode = 'edit';
       dialog_info.data = data;
     };
@@ -136,32 +141,37 @@ export default {
       dialog_show.value = true;
       dialog_info.mode = 'add';
     };
-    const handleDelete = (row) => {
-      let multi_row = tableData.tableConfig.selection.deleteItem;
+    const handleDelete = (data) => {
       let id;
-      if (!multi_row && !row) return root.$message.error('请选择要删除的对象');
-      if (row) id = [row.data.id];
-      else id = multi_row?.map((item) => item.id);
-      root.$confirm({ content: '确认永久删除？是否继续', tip: '警告', fn: () => deleteConfirm(id) });
+      if (!tableConfig.selection.selectedIds?.length && !data?.id) return root.$message.error('请选择要删除的对象');
+      if (data) id = [data.id];
+      else id = tableConfig.selection.selectedIds;
+      root.$confirm({
+        content: '确认永久删除？是否继续',
+        tip: '警告',
+        fn: () =>
+          root.$submit(
+            () => DeleteInfo({ id }),
+            () => getList()
+          ),
+      });
     };
-    const deleteConfirm = (id) =>
-      root.$submit(
-        () => DeleteInfo({ id }),
-        () => getList()
-      );
-    const getCategory = (data = {}) => root.$store.dispatch('common/getInfoCategory', data);
+    const getCategory = (params = {}) => {
+      root.$store.dispatch('common/getInfoCategory', params);
+    };
     const getList = (
-      data = {
-        categoryId: searchValue.category || '',
-        startTime: searchValue.date[0] || '',
-        endTime: searchValue.date[1] || '',
-        title: '',
-        id: '',
-        pageNumber: pageNumber.value,
-        pageSize: pageSize.value,
+      params = {
+        pageNumber: page.pageNumber,
+        pageSize: page.pageSize,
       }
     ) => {
-      root.$store.dispatch('common/getInfoList', data);
+      loading.value = true;
+      root
+        .$request(
+          () => GetList(params),
+          ({ data, total }) => (tableConfig.tableData = { data, total })
+        )
+        .then(() => (loading.value = false));
     };
 
     onBeforeMount(() => {
@@ -169,16 +179,16 @@ export default {
       getList();
     });
     return {
-      pageSize,
+      page,
+      loading,
       searchValue,
       searchOptions,
-      tableData,
+      tableConfig,
       dialog_info,
       dialog_show,
       toDetail,
       handleDelete,
-      onDeleteItem,
-      search,
+      search: throttle(search),
       handleAdd,
       handleEdit,
     };

@@ -5,8 +5,8 @@
         <el-select
           v-model="picker[`${item}`]"
           clearable
-          :disabled="!options[`${item}`].length"
-          size="small"
+          :disabled="!options[`${item}`] || !options[`${item}`].length"
+          size="mini"
           placeholder="请选择"
           @change="(val) => getPickerData(val, index)"
         >
@@ -25,7 +25,7 @@
 
 <script>
 import { GetCityPicker } from '@api/user';
-import { reactive, onBeforeMount, computed } from '@vue/composition-api';
+import { reactive, onBeforeMount, computed, watch } from '@vue/composition-api';
 const initData = (arr) => {
   let obj = {};
   arr.forEach((item) => (obj[item] = []));
@@ -47,24 +47,37 @@ export default {
     const pickSizes = props.config;
     const options = reactive(initData(pickSizes));
     const picker = computed(() => props.value);
-    const getPickerData = async (val, index = -1) => {
+    // 对options注册上一个选中的值的依赖
+    const getPicker = () => {
+      for (let i = 0; i <= pickSizes.length - 1; i++) {
+        watch(
+          () => picker.value[`${pickSizes[i]}`],
+          (value) => getProvincePicker(i + 1, value)
+        );
+      }
+    };
+    getPicker();
+
+    const getPickerData = async (val, index) => {
       // 点击最后一个选择框时
       if (index === pickSizes.length - 1) return;
       // 清空该选择框后所有选择框的值（若有的话
-      if (!val) {
-        for (; index < pickSizes.length - 1; ++index) {
-          picker[`${pickSizes[index + 1]}`] = '';
-          options[`${pickSizes[index + 1]}`] = [];
-        }
+      for (; index < pickSizes.length - 1; ++index) {
+        picker.value[`${pickSizes[index + 1]}`] = '';
+        options[`${pickSizes[index + 2]}`] = [];
       }
+
       emit('input', picker);
-      getProvincePicker(index, val);
+      // getProvincePicker(index, val);
     };
-    const getProvincePicker = async (index = -1, val = 'init') => {
-      let params = { type: pickSizes[index + 1] };
-      if (val !== 'init') params[`${pickSizes[index]}_code`] = val;
-      let { data } = await root.$request(() => GetCityPicker(params));
-      options[`${pickSizes[index + 1]}`] = data;
+    const getProvincePicker = async (index = 0, val) => {
+      if (index > pickSizes.length - 1) return false;
+      let params = { type: pickSizes[index] };
+      if (index !== 0) params[`${pickSizes[index - 1]}_code`] = val;
+      await root.$request(
+        () => GetCityPicker(params),
+        ({ data }) => (options[`${pickSizes[index]}`] = data)
+      );
     };
     onBeforeMount(() => {
       getProvincePicker();

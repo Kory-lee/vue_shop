@@ -21,7 +21,7 @@ const cdn = {
     'https://unpkg.com/vue@2.6.11/dist/vue.min.js',
     'https://cdn.jsdelivr.net/npm/vuex@3.5.1/dist/vuex.min.js',
     'https://cdn.jsdelivr.net/npm/vue-router@3.3.3/dist/vue-router.min.js',
-    'https://cdn.bootcss.com/axios/0.19.2/axios.min.js',
+    'https://unpkg.com/axios@0.19.2/dist/axios.min.js',
     'https://unpkg.com/element-ui@2.13.2/lib/index.js',
     // 'https://cdn.bootcss.com/moment.js/2.24.0/moment.min.js',
     // 'https://cdn.bootcss.com/echarts/4.6.0/echarts.min.js',

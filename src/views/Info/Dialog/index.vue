@@ -8,7 +8,12 @@
         <el-input v-model="form.title" placeholder="请输入内容"></el-input>
       </el-form-item>
       <el-form-item label="概况: " prop="content">
-        <el-input v-model="form.content" type="textarea" :rows="5" placeholder="请输入内容"></el-input>
+        <el-input
+          v-model="form.content"
+          type="textarea"
+          :autosize="{ minRows: 2, maxRows: 5 }"
+          placeholder="请输入内容"
+        ></el-input>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -30,14 +35,8 @@ import Select from '@components/Select';
 export default {
   components: { Select },
   props: {
-    flag: {
-      type: Boolean,
-      default: false,
-    },
-    data: {
-      type: Object,
-      default: () => {},
-    },
+    flag: { type: Boolean, default: false },
+    data: { type: Object, default: () => {} },
   },
   setup(props, { emit, root, refs }) {
     const submitLoading = ref(false);

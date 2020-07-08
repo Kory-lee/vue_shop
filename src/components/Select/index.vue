@@ -1,11 +1,11 @@
 <template>
-  <el-select v-model="data.selectValue" placeholder="请选择" clearable>
+  <el-select v-model="selectValue" placeholder="请选择" clearable @change="handleChange">
     <el-option v-for="item in data.initOptions" :key="item.value" :label="item.label" :value="item.value"> </el-option>
   </el-select>
 </template>
 
 <script>
-import { reactive, onBeforeMount, watch, computed } from '@vue/composition-api';
+import { reactive, onBeforeMount, ref, computed, watch } from '@vue/composition-api';
 export default {
   name: 'Select',
   props: {
@@ -17,11 +17,17 @@ export default {
       type: String,
       default: '',
     },
+    value: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, { root, emit }) {
     const data = reactive({
       options: [
+        { value: 'truename', label: '真实姓名' },
         { value: 'name', label: '姓名' },
+        { value: 'username', label: '用户名' },
         { value: 'phone', label: '手机号' },
         { value: 'email', label: '邮箱' },
         { value: 'id', label: 'ID' },
@@ -29,34 +35,27 @@ export default {
       ],
       categoryOptions: null,
       initOptions: [],
-      selectValue: null,
     });
-    watch(
-      () => data.selectValue,
-      (value) => {
-        emit('update:selected', value);
-      }
-    );
+    const selectValue = ref('');
     watch(
       () => props.selected,
-      (value) => (data.selectValue = value)
+      (value) => (selectValue.value = value)
     );
+    const handleChange = (val) => emit('update:selected', val);
     const initOption = () => {
       let tempArr;
-      if (props.config.commitUrl) {
-        tempArr = computed(() => root.$store.getters[props.config.commitUrl]?.data);
-      } else {
-        if (!props.config.init?.length) return false;
+      if (props.config.init?.length) {
         tempArr = data.options.filter((elem) => props.config.init?.includes(elem.value));
-        if (!tempArr?.length) return false;
-        data.selectValue = tempArr[0].value;
+        selectValue.value = tempArr[0].value;
+      } else {
+        tempArr = computed(() => root.$store.getters[props.config.commitUrl]?.data);
       }
       data.initOptions = tempArr;
     };
     onBeforeMount(() => {
       initOption();
     });
-    return { data };
+    return { data, selectValue, handleChange };
   },
 };
 </script>

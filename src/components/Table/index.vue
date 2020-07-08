@@ -1,12 +1,6 @@
 <template>
   <div>
-    <el-table
-      ref="multipleSelection"
-      v-loading="loading"
-      :data="tableData.data"
-      border
-      @selection-change="emitDeleteItem"
-    >
+    <el-table ref="multipleSelection" :data="tableConfig.tableData.data" border @selection-change="emitDeleteItem">
       <el-table-column v-if="tableConfig.selection.show" type="selection" align="center"> </el-table-column>
 
       <template v-for="item in tableConfig.head">
@@ -45,7 +39,7 @@
           :page-size="page.pageSize"
           :current-page="page.pageNumber"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="tableData.total"
+          :total="tableConfig.tableData.total"
           class="push-right"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -58,50 +52,38 @@
 <!-- hide-on-single-page="true" -->
 
 <script>
-import { reactive, onBeforeMount, computed, watch } from '@vue/composition-api';
+import { reactive, onBeforeMount, ref, watch } from '@vue/composition-api';
 import { responseInit } from '@utils/common';
 export default {
   name: 'Table',
   props: {
-    config: {
-      type: Object,
-      default: () => {},
-    },
-    page: {
-      type: Object,
-      default: () => {},
-    },
+    config: { type: Object, default: () => {} },
+    page: { type: Number, default: 1 },
+    limit: { type: Number, default: 10 },
+    selectedIds: { type: Array, default: () => [] },
   },
-  setup(props, { root, emit }) {
+  setup(props, { emit }) {
     const tableConfig = reactive({
-        selection: { show: true, deleteItem: null },
-        head: [],
-        commitUrl: '',
-      }),
-      tableData = reactive({ data: [], total: 0 });
-    const loading = computed(() => !tableData.data?.length);
-    const emitDeleteItem = (val) => {
-      tableConfig.selection.deleteItem = val;
-      emit('give-selection', val);
-    };
-    watch(
-      [
-        () => root.$store.getters[props.config.commitUrl]?.data,
-        () => root.$store.getters[props.config.commitUrl]?.total,
-      ],
-      ([data, total]) => responseInit(tableData, { data, total })
-    );
-
-    // pagination
+      selection: { show: true, selectedIds: [] },
+      head: [],
+      tableData: { data: null, total: null },
+    });
     const page = reactive({ pageSize: 10, pageNumber: 1 });
-    // watch([() => page.pageNumber, () => page.pageSize], ([pageNumber, pageSize]) => console.log(pageNumber, pageSize));
+
+    // setInterval(() => console.log(tableData), 1000);
+    const emitDeleteItem = (val) => {
+      let ids = val?.map((item) => item.id);
+      tableConfig.selection.selectedIds = ids;
+      emit('update:selectedIds', ids);
+    };
+    // pagination
     const handleSizeChange = (val) => {
       page.pageSize = val;
-      emit('update:pageSize', val);
+      emit('update:limit', val);
     };
     const handleCurrentChange = (val) => {
       page.pageNumber = val;
-      emit('update:pageNumber', val);
+      emit('update:page', val);
     };
     onBeforeMount(() => {
       responseInit(tableConfig, props.config);
@@ -109,8 +91,6 @@ export default {
     return {
       tableConfig,
       page,
-      tableData,
-      loading,
       emitDeleteItem,
       handleSizeChange,
       handleCurrentChange,
