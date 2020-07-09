@@ -18,9 +18,9 @@ export const Request = (fn, successCb = () => {}, errorCb = () => {}) =>
       successCb(data);
       return data;
     })
-    .catch((err) => {
+    .catch((message) => {
       errorCb();
-      Message.error(err.message || '操作失败');
+      Error(message || '操作失败');
     });
 export const Confirm = ({ content = '确认永久删除？是否继续', tip = '警告', fn, type = 'warning' }) =>
   MessageBox.confirm(content, tip, {

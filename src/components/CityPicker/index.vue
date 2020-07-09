@@ -5,7 +5,6 @@
         <el-select
           v-model="picker[`${item}`]"
           clearable
-          :disabled="!options[`${item}`] || !options[`${item}`].length"
           size="mini"
           placeholder="请选择"
           @change="(val) => getPickerData(val, index)"
@@ -52,7 +51,7 @@ export default {
       for (let i = 0; i <= pickSizes.length - 1; i++) {
         watch(
           () => picker.value[`${pickSizes[i]}`],
-          (value) => getProvincePicker(i + 1, value)
+          (value) => value && getProvincePicker(i + 1, value)
         );
       }
     };
@@ -62,11 +61,10 @@ export default {
       // 点击最后一个选择框时
       if (index === pickSizes.length - 1) return;
       // 清空该选择框后所有选择框的值（若有的话
-      for (; index < pickSizes.length - 1; ++index) {
+      for (; index < pickSizes.length - 1; index++) {
         picker.value[`${pickSizes[index + 1]}`] = '';
         options[`${pickSizes[index + 2]}`] = [];
       }
-
       emit('input', picker);
       // getProvincePicker(index, val);
     };

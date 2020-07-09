@@ -67,34 +67,6 @@ export default {
     @include webkit(transition, width 0.4s ease 0s);
   }
 }
-// .logo {
-//   text-align: center;
-//   img {
-//     @include webkit(transition, width 0.4s ease 0s);
-//   }
-// }
-// .close {
-//   .logo img {
-//     width: 30px;
-//   }
-//   #nav-wrap {
-//     width: $navMenuMin;
-//   }
-// }
-// .open {
-//   .logo img {
-//     width: 92px;
-//   }
-//   #nav-wrap {
-//     width: $navMenu;
-//   }
-// }
-// #nav-wrap {
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   @include webkit(transition, width 0.4s ease 0s);
-// }
 svg {
   margin-right: 10px;
 }

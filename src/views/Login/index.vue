@@ -200,14 +200,12 @@ export default {
     };
     // 登录与注册
     const login = (data) =>
-      root.$request(
-        () => root.$store.dispatch('login/login', data),
-        () => {
-          root.$router.push({ name: 'Console', path: '/' });
-          root.$notify({ title: '登录成功', message: response.data.message, type: 'success' });
-        },
-        () => initCountDown()
-      );
+      root
+        .$submit(
+          () => root.$store.dispatch('login/login', data),
+          () => root.$router.push({ name: 'Index', path: '/index' })
+        )
+        .then(() => initCountDown());
 
     const register = (data) => {
       root.$submit(

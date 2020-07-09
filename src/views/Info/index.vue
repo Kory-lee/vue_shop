@@ -57,9 +57,11 @@
       :selectedIds.sync="tableConfig.selection.selectedIds"
     >
       <template #operation="{data}">
-        <el-button type="danger" size="mini" @click="handleDelete(data)">删除</el-button>
-        <el-button type="success" size="mini" @click="handleEdit(data)">编辑</el-button>
-        <el-button type="success" size="mini" @click="toDetail(data)">编辑详情</el-button>
+        <el-button type="danger" size="mini" @click="handleDelete(data)" v-if="btnPerm('info.delete')">删除</el-button>
+        <el-button type="success" size="mini" @click="handleEdit(data)" v-if="btnPerm('info.edit')">编辑</el-button>
+        <el-button type="success" size="mini" @click="toDetail(data)" v-if="btnPerm('info.detailed')"
+          >编辑详情</el-button
+        >
       </template>
       <template #left>
         <el-button type="primary" size="medium" @click="handleDelete()">批量删除</el-button>

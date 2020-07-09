@@ -22,8 +22,22 @@
       </el-form-item>
       <el-form-item label="角色类型：" prop="role">
         <el-checkbox-group v-model="form.role">
-          <el-checkbox v-for="item in roleItems.data" :key="item.role" :label="item.role">{{ item.name }}</el-checkbox>
+          <el-checkbox v-for="item in checkboxData.roleItems" :key="item.role" :label="item.role">{{
+            item.name
+          }}</el-checkbox>
         </el-checkbox-group>
+      </el-form-item>
+      <el-form-item label="按钮：" v-if="dialog_info.mode === 'edit'" prop="btnPerm">
+        <div v-for="item in checkboxData.btnPerm" :key="item.name">
+          <template v-if="item.perm && item.perm.length">
+            <h5>{{ item.name }}</h5>
+            <el-checkbox-group v-model="form.btnPerm">
+              <el-checkbox v-for="btns in item.perm" :key="btns.value" :label="btns.value">
+                {{ btns.name }}
+              </el-checkbox>
+            </el-checkbox-group>
+          </template>
+        </div>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -40,8 +54,9 @@
 <script>
 import { ref, reactive, computed, watch } from '@vue/composition-api';
 import CityPicker from '@components/CityPicker';
-import { AddUser, EditUser, GetRole } from '@api/user';
+import { AddUser, EditUser, GetRole, GetPermButton } from '@api/user';
 import { stripScript, isPassword } from '@utils/validate';
+import sha1 from 'js-sha1';
 export default {
   name: 'UserDialog',
   props: {
@@ -69,10 +84,10 @@ export default {
         region: {},
         status: '',
         role: [],
-        btnPerm: '',
+        btnPerm: [],
         id: '',
       }),
-      options = reactive({ categoryConfig: { commitUrl: 'common/infoCategory' } }),
+      checkboxData = reactive({ roleItems: [], btnPerm: [] }),
       pickSizes = ['province', 'city', 'area', 'street'],
       rules = reactive({
         username: [
@@ -103,8 +118,8 @@ export default {
         phone: [{ trigger: 'blur' }],
         status: [{ type: 'string', required: true, message: '请选择用户状态' }],
         role: [{ type: 'array', message: '用户角色不能为空', required: true }],
+        btnPerm: [{ type: 'array', message: '按钮不能为空', required: true }],
       });
-    const roleItems = reactive({ data: [] });
     watch(
       () => props.data.mode,
       (value) => {
@@ -118,26 +133,24 @@ export default {
       dialog_flag.value = false;
       emit('update:flag', false);
       initForm();
+      console.log(form);
     };
     const initForm = () => {
       submitLoading.value = false;
-      root.$nextTick(() => {
-        form.region = {};
-        refs.form.resetFields();
-      });
+      form.region = {};
+      root.$nextTick(() => refs.form.resetFields());
     };
     const openedDialog = () => {
       getRole();
       if (dialog_info.mode === 'edit') {
         let { username, truename, phone, status, region, role, btnPerm, id } = dialog_info.data;
         form.role = role.split(',');
-
         form.username = username;
         form.truename = truename;
         form.phone = phone;
         form.status = status;
         form.region = JSON.parse(region);
-        form.btnPerm = btnPerm;
+        if (btnPerm) form.btnPerm = btnPerm.split(',');
         form.id = id;
       }
       dialog_loading.value = false;
@@ -152,39 +165,44 @@ export default {
           let params;
           let { username, truename, password, phone, region, status, role, btnPerm, id } = form;
           role = role.join();
+          btnPerm = btnPerm.join();
+          password = sha1(password);
           region = JSON.stringify(region);
           if (dialog_info.mode === 'edit')
             params = { id, username, truename, password, phone, region, status, role, btnPerm };
           else {
-            params = { username, truename, phone, region, status, role };
+            params = { username, truename, phone, region, status, role, btnPerm };
             if (password) params.password = password;
           }
           // 添加状态,需要密码
           // 编辑状态,值存在,并且加密码
-          root.$submit(
-            () => user[dialog_info.mode](params),
-            () => close()
-          );
+          root.$submit(() => user[dialog_info.mode](params)).then(() => close());
         } else {
           console.log('error submit');
         }
       });
     };
-    const getRole = (params = {}) =>
+    const getRole = (params = {}) => {
       root.$request(
         () => GetRole(params),
-        (data) => (roleItems.data = data)
+        (result) => (checkboxData.roleItems = result)
       );
+
+      root.$request(
+        () => GetPermButton(),
+        (result) => (checkboxData.btnPerm = result)
+      );
+    };
+
     return {
       pickSizes,
       dialog_loading,
       rules,
-      roleItems,
+      checkboxData,
       dialog_flag,
       dialog_info,
       submitLoading,
       form,
-      options,
       close,
       openedDialog,
       submitConfirm,

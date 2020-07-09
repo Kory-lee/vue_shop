@@ -75,6 +75,9 @@ Vue.use(install);
 import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
 
 Vue.component(CollapseTransition.name, CollapseTransition);
+
+import { buttonPermission } from '@utils/buttonPermission';
+Vue.prototype.btnPerm = buttonPermission;
 Vue.config.productionTip = false;
 
 Vue.config.devtools = true;
