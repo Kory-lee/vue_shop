@@ -80,7 +80,7 @@
 <script>
 import sha1 from 'js-sha1';
 import { GetSms, Register } from '@api/login';
-import { reactive, ref, watch } from '@vue/composition-api';
+import { reactive, ref, watch, onUnmounted } from '@vue/composition-api';
 import { is, isEmail, isPassword, stripScript } from '@utils/validate';
 export default {
   name: 'Login',
@@ -200,12 +200,11 @@ export default {
     };
     // 登录与注册
     const login = (data) =>
-      root
-        .$submit(
-          () => root.$store.dispatch('login/login', data),
-          () => root.$router.push({ name: 'Index', path: '/index' })
-        )
-        .then(() => initCountDown());
+      root.$submit(
+        () => root.$store.dispatch('login/login', data),
+        () => root.$router.push({ name: 'Index', path: '/index' }),
+        () => updateCodeButton({ status: false, text: '重新获取' })
+      );
 
     const register = (data) => {
       root.$submit(
@@ -237,6 +236,7 @@ export default {
         }
       });
     };
+    onUnmounted(() => initCountDown());
     return {
       menuTab,
       model,

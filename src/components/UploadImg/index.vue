@@ -39,7 +39,6 @@ export default {
     },
   },
   setup(props, { root, emit }) {
-    console.log(props);
     const dialogImageUrl = ref(''),
       dialogVisible = ref(false);
     const data = reactive({ image: '', upLoadKey: { token: null, key: null } });

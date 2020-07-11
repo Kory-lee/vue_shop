@@ -71,3 +71,10 @@ export const throttle = (fn, wait = 300, { first = true, last = true } = {}) => 
     }
   };
 };
+/**
+ * 将字符串首字母大写
+ * @param {String} str 待转换的字符串
+ */
+export function firstUpperCase(str) {
+  return str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
+}

@@ -70,7 +70,6 @@ export default {
     });
     const page = reactive({ pageSize: 10, pageNumber: 1 });
 
-    // setInterval(() => console.log(tableData), 1000);
     const emitDeleteItem = (val) => {
       let ids = val?.map((item) => item.id);
       tableConfig.selection.selectedIds = ids;

@@ -133,7 +133,6 @@ export default {
       dialog_flag.value = false;
       emit('update:flag', false);
       initForm();
-      console.log(form);
     };
     const initForm = () => {
       submitLoading.value = false;
@@ -183,6 +182,7 @@ export default {
       });
     };
     const getRole = (params = {}) => {
+      if (checkboxData.roleItems && checkboxData.btnPerm) return false;
       root.$request(
         () => GetRole(params),
         (result) => (checkboxData.roleItems = result)

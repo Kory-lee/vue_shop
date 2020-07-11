@@ -9,18 +9,9 @@ import { reactive, onBeforeMount, ref, computed, watch } from '@vue/composition-
 export default {
   name: 'Select',
   props: {
-    config: {
-      type: Object,
-      default: () => {},
-    },
-    selected: {
-      type: String,
-      default: '',
-    },
-    value: {
-      type: Object,
-      default: () => {},
-    },
+    config: { type: Object, default: () => {} },
+    selected: { type: String, default: '' },
+    value: { type: Object, default: () => {} },
   },
   setup(props, { root, emit }) {
     const data = reactive({
@@ -47,6 +38,7 @@ export default {
       if (props.config.init?.length) {
         tempArr = data.options.filter((elem) => props.config.init?.includes(elem.value));
         selectValue.value = tempArr[0].value;
+        emit('update:selected', selectValue.value);
       } else {
         tempArr = computed(() => root.$store.getters[props.config.commitUrl]?.data);
       }

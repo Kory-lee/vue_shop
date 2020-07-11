@@ -93,11 +93,9 @@ export default {
     watch(dialog_show, (value, oldValue) => !value && oldValue && getUserList());
     const search = () => {
       let { pageNumber, pageSize } = page;
-      let requestData = {
-        pageNumber,
-        pageSize,
-      };
+      let requestData = { pageNumber, pageSize };
       if (formData.selectValue) requestData[formData.selectValue] = formData.inputValue;
+      console.log(formData.selectValue);
       getUserList(requestData);
     };
     const handleSwitch = ({ id, status }) => {

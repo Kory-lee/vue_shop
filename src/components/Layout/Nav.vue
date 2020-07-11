@@ -15,7 +15,6 @@
     </h1>
     <template v-for="item in routers">
       <el-submenu v-if="!item.hidden" :key="item.id" :index="item.path">
-        <!--一级菜单-->
         <template #title>
           <svg-icon :icon-name="item.meta.icon" class="regular"></svg-icon>
           <span name="title">{{ item.meta.name }}</span>

@@ -59,9 +59,7 @@
       <template #operation="{data}">
         <el-button type="danger" size="mini" @click="handleDelete(data)" v-if="btnPerm('info.delete')">删除</el-button>
         <el-button type="success" size="mini" @click="handleEdit(data)" v-if="btnPerm('info.edit')">编辑</el-button>
-        <el-button type="success" size="mini" @click="toDetail(data)" v-if="btnPerm('info.detailed')"
-          >编辑详情</el-button
-        >
+        <el-button type="success" size="mini" @click="toDetail(data)">编辑详情</el-button>
       </template>
       <template #left>
         <el-button type="primary" size="medium" @click="handleDelete()">批量删除</el-button>
@@ -74,7 +72,7 @@
 <script>
 import { reactive, ref, watch, onBeforeMount } from '@vue/composition-api';
 import DialogInfo from './Dialog';
-import Select from '@components/Select';
+import Select from '@/components/Select';
 import Table from '@components/Table';
 import { DeleteInfo, GetList } from '@api/news';
 import { timestampToTime, throttle } from '@utils/common';
@@ -111,8 +109,6 @@ export default {
     const toCategory = (row) =>
       root.$store.getters['common/infoCategory'].data?.find((item) => item.value === row.categoryId).label;
     const toDetail = ({ id, title }) => {
-      console.log(id, title);
-
       root.$router.push({ name: 'InfoDetail', path: 'infoDetail', params: { id, title } });
       root.$store.commit('infoDetail/UPDATE_STATE_VALUE', {
         id: { value: id, session: true, sessionKey: 'infoId' },
@@ -159,7 +155,7 @@ export default {
       });
     };
     const getCategory = (params = {}) => {
-      root.$store.dispatch('common/getInfoCategory', params);
+      if (!root.$store.getters['common/infoCategory']?.data) root.$store.dispatch('common/getInfoCategory', params);
     };
     const getList = (
       params = {

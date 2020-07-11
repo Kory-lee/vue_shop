@@ -9,7 +9,6 @@ const getters = {
 };
 const mutations = {
   UPDATE_USER_LIST(state, { data }) {
-    // console.log('newData :>> ', data);
     state.userList.data = data;
   },
   EDIT_INFO_LIST(state, { id, data }) {

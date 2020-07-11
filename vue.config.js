@@ -160,11 +160,11 @@ module.exports = {
     hot: false, // 开启热加载
     hotOnly: false,
     proxy: {
-      '/devApi': {
+      [process.env.VUE_APP_API]: {
         target: 'http://www.web-jshtml.cn/vue_admin_api/token', //API服务器的地址  http://web-jshtml.cn/productapi/token
         changeOrigin: true,
         pathRewrite: {
-          '^/devApi': '',
+          ['^' + process.env.VUE_APP_API]: '',
         },
       },
     },

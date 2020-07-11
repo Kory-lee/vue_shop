@@ -49,13 +49,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-// .open #header-wrap {
-//   left: $navMenu;
-// }
-// .close #header-wrap {
-//   left: $navMenuMin;
-// }
-
 .head {
   position: relative;
   width: inherit;
@@ -74,8 +67,6 @@ export default {
 
 .header-icon {
   padding: 0 32px;
-  // height: 75px;
-  // line-height: 75px;
   text-align: center;
   svg {
     margin-bottom: -8px;
@@ -84,7 +75,6 @@ export default {
 }
 .exit {
   border-left: 1px solid #ededed;
-  // margin-right: -10px;
 }
 .user-info {
   display: flex;

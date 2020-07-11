@@ -41,7 +41,7 @@ export const defaultRoutersMap = [
   {
     path: '/error',
     component: Layout,
-    redirect: 'noRedirect',
+    // redirect: 'noRedirect',
     hidden: true,
     name: 'ErrorPages',
     meta: {
@@ -81,6 +81,7 @@ export const asyncRoutersMap = [
         path: '/infoIndex',
         name: 'InfoIndex',
         meta: {
+          keepAlive: true,
           roles: ['sale', 'manager'],
           name: '信息列表',
         },
@@ -90,6 +91,7 @@ export const asyncRoutersMap = [
         path: '/infoCategory',
         name: 'InfoCategory',
         meta: {
+          keepAlive: true,
           role: ['sale'],
           name: '信息分类',
         },
@@ -100,6 +102,7 @@ export const asyncRoutersMap = [
         name: 'InfoDetail',
         hidden: true,
         meta: {
+          keepAlive: true,
           role: ['sale'],
           name: '信息详情',
         },
@@ -122,6 +125,7 @@ export const asyncRoutersMap = [
         path: '/userIndex',
         name: 'UserIndex',
         meta: {
+          keepAlive: true,
           role: ['sale'],
           name: '用户列表',
         },

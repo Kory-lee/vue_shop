@@ -19,6 +19,7 @@ const getters = {
 const mutations = {
   UPDATE_CATEGORY(state, { data }) {
     state.infoCategory.data = initCategory(data);
+    return state.infoCategory.data;
   },
   UPDATE_INFO_LIST(state, newData) {
     responseInit(state.infoList, newData);
@@ -34,7 +35,7 @@ const mutations = {
 };
 const actions = {
   async getInfoCategory({ commit }, params) {
-    commit('UPDATE_CATEGORY', await Request(() => GetCategory(params)));
+    return commit('UPDATE_CATEGORY', await Request(() => GetCategory(params)));
   },
   getAllInfoCateGory() {
     return GetCategoryAll({});

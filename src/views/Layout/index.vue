@@ -6,7 +6,10 @@
     <el-container>
       <el-header height="75px"><Header /></el-header>
       <el-main>
-        <router-view />
+        <keep-alive>
+          <router-view v-if="$route.meta.keepAlive" />
+        </keep-alive>
+        <router-view v-if="!$route.meta.keepAlive" />
       </el-main>
     </el-container>
   </el-container>
