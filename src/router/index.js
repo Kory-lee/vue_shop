@@ -17,29 +17,27 @@ const router = new VueRouter({
 });
 // 路由守卫
 // 白名单
-const whiteRouter = ['/login'];
+const whiteRouter = ['/login', 'login'];
 const isLogin = getToken();
 
 router.beforeEach((to, from, next) => {
-  if (whiteRouter.includes(to.path)) {
-    store.dispatch('login/exit');
-    next();
-  } else {
-    if (isLogin)
-      if (!store.getters['permission/roles']?.length)
-        store.dispatch('permission/getUserRoles').then(({ role }) =>
-          store.dispatch('permission/createRouter', role).then(() => {
-            let addRouters = store.getters['permission/addRouters'];
-            let allRouters = store.getters['permission/allRouters'];
-            // 路由更新
-            router.options.routes = allRouters;
-            // 动态路由
-            router.addRoutes(addRouters);
-            // 不会留下history记录
-            next({ ...to, replace: true });
-          })
-        );
-      else next();
+  if (isLogin)
+    if (!store.getters['permission/roles']?.length)
+      store.dispatch('permission/getUserRoles').then(({ role }) =>
+        store.dispatch('permission/createRouter', role).then(() => {
+          let addRouters = store.getters['permission/addRouters'];
+          let allRouters = store.getters['permission/allRouters'];
+          // 路由更新
+          router.options.routes = allRouters;
+          // 动态路由
+          router.addRoutes(addRouters);
+          // 不会留下history记录
+          next({ ...to, replace: true });
+        })
+      );
+    else next();
+  else {
+    if (whiteRouter.includes(to.path)) next();
     else next('/login');
   }
 });

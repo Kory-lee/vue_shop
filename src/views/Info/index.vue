@@ -79,7 +79,7 @@ import { timestampToTime, throttle } from '@utils/common';
 export default {
   name: 'InfoIndex',
   components: { DialogInfo, Select, Table },
-  setup(props, { root, refs }) {
+  setup(props, { root }) {
     const dialog_show = ref(false),
       loading = ref(true);
     const tableConfig = reactive({

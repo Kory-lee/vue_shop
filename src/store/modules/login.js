@@ -15,19 +15,17 @@ const mutations = {
 };
 const actions = {
   login({ commit }, data) {
-    return new Promise((resolve, reject) =>
-      Login(data)
-        .then((response) => {
-          commit('SET_USER_ID', response.data);
-          resolve(response);
-        })
-        .catch((err) => reject(err))
-    );
+    return Login(data)
+      .then(({ data, message }) => {
+        commit('SET_USER_ID', data);
+        return message;
+      })
+      .catch((err) => err);
   },
   exit({ commit }) {
     return new Promise((resolve) => {
-      commit('SET_USER_ID');
       removeToken();
+      // commit('SET_USER_ID');
       resolve();
     });
   },

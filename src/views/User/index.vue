@@ -95,7 +95,6 @@ export default {
       let { pageNumber, pageSize } = page;
       let requestData = { pageNumber, pageSize };
       if (formData.selectValue) requestData[formData.selectValue] = formData.inputValue;
-      console.log(formData.selectValue);
       getUserList(requestData);
     };
     const handleSwitch = ({ id, status }) => {

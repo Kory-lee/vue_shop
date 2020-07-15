@@ -1,7 +1,7 @@
 import { Message, MessageBox, Notification } from 'element-ui';
 
-export const Error = (message) => Message({ showClose: true, message: message, duration: 1500, type: 'error' });
-export const Success = (message) => Message({ showClose: true, message: message, type: 'success' });
+export const Error = (message) => Message({ showClose: true, message, duration: 1500, type: 'error' });
+export const Success = (message) => Message({ showClose: true, message, type: 'success' });
 export const Submit = (fn, successCb = () => {}, errorCb = () => {}) =>
   fn()
     .then((result) => {

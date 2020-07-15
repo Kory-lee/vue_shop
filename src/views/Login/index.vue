@@ -189,23 +189,28 @@ export default {
       }
       updateCodeButton({ text: '发送中', status: true });
       loginButtonStatus.value = false;
+
       root.$submit(
         () => GetSms({ username: ruleForm.email, module: model.value }),
         () => {
           timer && clearInterval(timer);
           countDown();
         },
-        () => updateCodeButton({ status: false, text: '重新获取' })
+        () => initCountDown('重新获取')
       );
     };
     // 登录与注册
     const login = (data) =>
-      root.$submit(
-        () => root.$store.dispatch('login/login', data),
-        () => root.$router.push({ name: 'Index', path: '/index' }),
-        () => updateCodeButton({ status: false, text: '重新获取' })
-      );
-
+      root.$store
+        .dispatch('login/login', data)
+        .then((message) => {
+          root.$router.push({ name: 'Index', path: 'index' });
+          root.$message.success(message);
+        })
+        .catch(({ message }) => {
+          initCountDown('重新获取');
+          root.$message.error(message);
+        });
     const register = (data) => {
       root.$submit(
         () => Register(data),

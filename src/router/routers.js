@@ -2,6 +2,17 @@ import Layout from '@views/Layout';
 
 export const defaultRoutersMap = [
   {
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path(.*)',
+        component: () => import('@/views/redirect/index'),
+      },
+    ],
+  },
+  {
     path: '/login',
     name: 'Login',
     hidden: true,
@@ -11,12 +22,22 @@ export const defaultRoutersMap = [
     component: () => import('@views/Login'),
   },
   {
+    path: '/auth-redirect',
+    component: () => import('@/views/Login/auth-redirect'),
+    hidden: true,
+  },
+  {
     path: '/404',
     hidden: true,
     meta: {
       name: '404',
     },
     component: () => import('@views/error-page/404'),
+  },
+  {
+    path: '/401',
+    component: () => import('@/views/error-page/401'),
+    hidden: true,
   },
   {
     path: '/',
@@ -35,31 +56,6 @@ export const defaultRoutersMap = [
           name: '首页',
         },
         component: () => import('@views/Console'),
-      },
-    ],
-  },
-  {
-    path: '/error',
-    component: Layout,
-    // redirect: 'noRedirect',
-    hidden: true,
-    name: 'ErrorPages',
-    meta: {
-      name: 'Error Pages',
-      icon: '404',
-    },
-    children: [
-      {
-        path: '401',
-        component: () => import('@views/error-page/401'),
-        name: 'Page401',
-        meta: { title: '401', noCache: true },
-      },
-      {
-        path: '404',
-        component: () => import('@views/error-page/404'),
-        name: 'Page404',
-        meta: { title: '404', noCache: true },
       },
     ],
   },
@@ -130,6 +126,31 @@ export const asyncRoutersMap = [
           name: '用户列表',
         },
         component: () => import('@views/User'),
+      },
+    ],
+  },
+  {
+    path: '/error',
+    component: Layout,
+    redirect: 'noRedirect',
+    hidden: true,
+    name: 'ErrorPages',
+    meta: {
+      name: 'Error Pages',
+      icon: '404',
+    },
+    children: [
+      {
+        path: '401',
+        component: () => import('@views/error-page/401'),
+        name: 'Page401',
+        meta: { title: '401', keepAlive: true },
+      },
+      {
+        path: '404',
+        component: () => import('@views/error-page/404'),
+        name: 'Page404',
+        meta: { title: '404', keepAlive: true },
       },
     ],
   },
