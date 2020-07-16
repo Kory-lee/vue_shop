@@ -15,7 +15,6 @@ const cdn = {
     'element-ui': 'ELEMENT',
     // echarts: 'echarts',
   },
-  // 通过cdn方式使用
   js: [
     //访问https: //unpkg.com/vue/dist/vue.min.js获取最新版本
     'https://unpkg.com/vue@2.6.11/dist/vue.min.js',
@@ -31,7 +30,7 @@ const cdn = {
 };
 
 module.exports = {
-  publicPath: isProduction ? '' : '/', // 基本路径,打包时加上.
+  publicPath: '/', // 基本路径,打包时加上.
   lintOnSave: !isProduction,
   // webpack配置
   chainWebpack: (config) => {
@@ -47,7 +46,6 @@ module.exports = {
       });
 
     config.resolve.alias
-      // .set('vue', 'vue/dist/vue.js')
       .set('@', resolve('src'))
       .set('@views', resolve('src/views'))
       .set('@components', resolve('src/components'))
@@ -78,7 +76,6 @@ module.exports = {
     // 生产环境相关配置
     if (isProduction) {
       config.mode = 'production';
-
       // gzip压缩
       const productionGzipExtensions = ['html', 'js', 'css'];
       config.plugins.push(
@@ -88,7 +85,7 @@ module.exports = {
           test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
           threshold: 10240, // 只有大小大于该值的资源会被处理 10240
           minRatio: 0.8, // 只有压缩率小于这个值的资源才会被处理
-          deleteOriginalAssets: true, // 删除原文件
+          deleteOriginalAssets: false, // 删除原文件
         })
       );
       // 公共代码抽离
@@ -130,17 +127,16 @@ module.exports = {
         prependData: `@import "~@styles/main.scss";`,
       },
       postcss: {
-        // plugins: [
-        //   // 把px单位换算成rem单位
-        //   require('postcss-pxtorem')({
-        //     rootValue: 75, // 换算的基数(设计图750的根字体为32)
-        //     selectorBlackList: ['.van-'], // 要忽略的选择器并保留为px。
-        //     propList: ['*'], // 可以从px更改为rem的属性。
-        //     minPixelValue: 2, // 设置要替换的最小像素值。
-        //   }),
-        //   require('autoprefixer'),
-        // ],
-        plugins: [require('autoprefixer')],
+        plugins: [
+          //   // 把px单位换算成rem单位
+          //   require('postcss-pxtorem')({
+          //     rootValue: 75, // 换算的基数(设计图750的根字体为32)
+          //     selectorBlackList: ['.van-'], // 要忽略的选择器并保留为px。
+          //     propList: ['*'], // 可以从px更改为rem的属性。
+          //     minPixelValue: 2, // 设置要替换的最小像素值。
+          //   }),
+          require('autoprefixer'),
+        ],
       }, // 这里的选项会传递给 postcss-loader
     }, // css预设器配置项 详见https://cli.vuejs.org/zh/config/#css-loaderoptions
     // modules: false // 启用 CSS modules for all css / pre-processor files.
@@ -173,6 +169,6 @@ module.exports = {
       warnings: true,
       errors: true,
     },
-    before: () => { },
+    before: () => {},
   },
 };
