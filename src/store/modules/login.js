@@ -1,8 +1,8 @@
 import { Login } from '@api/login';
 import { setToken, getToken, getUsername, removeToken } from '@utils/cookie';
 const state = {
-  username: '' || getUsername(),
-  to_ken: '' || getToken(),
+  username: getUsername() || '',
+  to_ken: getToken() || '',
 };
 const getters = {
   username: (state) => state.username,

@@ -1,78 +1,99 @@
 <template>
-  <div id="login">
-    <div class="login-wrap clearfix">
-      <ul class="menu-tab">
-        <li
-          v-for="item in menuTab"
-          :key="item.id"
-          :class="{ current: item.current }"
-          style="user-select: none;"
-          @click="toggleMenu(item)"
-        >
-          {{ item.txt }}
-        </li>
-      </ul>
-      <el-form ref="loginRef" :model="ruleForm" status-icon size="medium" class="login-form">
-        <el-form-item label="邮箱" prop="email" class="item-form" :rules="rules.email">
-          <el-input
-            v-model="ruleForm.email"
-            type="text"
-            placeholder="请输入邮箱"
-            autocomplete="off"
-            clearable
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="pass" class="item-form" :rules="rules.pass">
-          <el-input
-            v-model="ruleForm.pass"
-            type="password"
-            show-password
-            autocomplete="off"
-            minlength="6"
-            maxlength="20"
-            placeholder="请输入密码"
-          ></el-input>
-        </el-form-item>
-        <el-form-item v-if="model === 'register'" label="确认密码" prop="pass2" class="item-form" :rules="rules.pass2">
-          <el-input
-            v-model="ruleForm.pass2"
-            type="password"
-            placeholder="请再次输入密码"
-            show-password
-            autocomplete="off"
-            minlength="6"
-            maxlength="20"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="验证码" prop="code" class="item-form" :rules="rules.code">
-          <el-row :gutter="10" class="clearfix">
-            <el-col :span="15">
+  <div class="login-container">
+    <div class="cont" :class="{ 's--signup': isSignUp }">
+      <div class="form" :class="isSignUp ? 'sign-up' : 'sign-in'">
+        <el-form ref="loginRef" :model="ruleForm" status-icon size="medium">
+          <h2 v-show="!isSignUp">欢迎回来,</h2>
+          <el-form-item label="邮箱" prop="email" class="item-form" :rules="rules.email">
+            <el-input v-model="ruleForm.email" type="text" placeholder="请输入邮箱" autocomplete="off" clearable>
+              <template #prepend>
+                <svg-icon iconName="email" class="regular"></svg-icon>
+              </template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="密码" prop="pass" class="item-form" :rules="rules.pass">
+            <el-input
+              v-model="ruleForm.pass"
+              type="password"
+              show-password
+              autocomplete="off"
+              minlength="6"
+              maxlength="20"
+              placeholder="请输入密码"
+            >
+              <template #prepend> <svg-icon iconName="password" class="regular"></svg-icon> </template>
+            </el-input>
+          </el-form-item>
+          <el-collapse-transition>
+            <el-form-item v-if="isSignUp" label="确认密码" prop="pass2" class="item-form" :rules="rules.pass2">
               <el-input
-                v-model="ruleForm.code"
-                type="text"
-                minlength="6"
-                maxlength="6"
+                v-model="ruleForm.pass2"
+                type="password"
+                placeholder="请再次输入密码"
+                show-password
                 autocomplete="off"
-                placeholder="请输入验证码"
+                minlength="6"
+                maxlength="20"
+              >
+                <template #prepend> <svg-icon iconName="password" class="regular"></svg-icon> </template
               ></el-input>
-            </el-col>
-            <el-col :span="9">
-              <el-button type="success" class="block" :disabled="codeButton.status" @click="getSms()">
-                {{ codeButton.text }}
-              </el-button>
-            </el-col>
-          </el-row>
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            type="danger"
-            :disabled="loginButtonStatus"
-            class="login-btn block"
-            @click="submitForm('loginRef')"
-            >{{ model === 'login' ? '登录' : '注册' }}</el-button
-          >
-        </el-form-item>
-      </el-form>
+            </el-form-item>
+          </el-collapse-transition>
+
+          <el-form-item label="验证码" prop="code" class="item-form" :rules="rules.code">
+            <el-row :gutter="10" class="clearfix">
+              <el-col :span="16">
+                <el-input
+                  v-model="ruleForm.code"
+                  type="text"
+                  minlength="6"
+                  maxlength="6"
+                  autocomplete="off"
+                  placeholder="请输入验证码"
+                >
+                  <template #prepend>
+                    <svg-icon iconName="safe" class="regular"></svg-icon>
+                  </template>
+                </el-input>
+              </el-col>
+              <el-col :span="8">
+                <el-button type="success" class="block" :disabled="codeButton.status" @click="getSms()">
+                  {{ codeButton.text }}
+                </el-button>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              type="danger"
+              :disabled="loginButtonStatus"
+              class="login-btn block"
+              @click="submitForm('loginRef')"
+            >
+              {{ isSignUp ? '注册' : '登录' }}
+            </el-button>
+          </el-form-item>
+          <transition name="el-zoom-in-bottom">
+            <p v-show="!isSignUp" class="forgot-pass">Forgot password?</p>
+          </transition>
+        </el-form>
+      </div>
+      <div class="sub-cont">
+        <div class="img">
+          <div class="img__text m--up">
+            <h2>New here?</h2>
+            <p>Sign up and discover great amount of new opportunities!</p>
+          </div>
+          <div class="img__text m--in">
+            <h2>One of us?</h2>
+            <p>If you already has an account, just sign in. We've missed you!</p>
+          </div>
+          <div class="img__btn" @click="handleToggle" style="user-select: none;">
+            <span class="m--up">Sign Up</span>
+            <span class="m--in">Sign In</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -91,12 +112,9 @@ export default {
     let timer;
     const model = ref('login'),
       loginButtonStatus = ref(true),
+      isSignUp = ref(false),
       timerId = ref(60);
-    const menuTab = reactive([
-        { txt: '登录', current: true, type: 'login' },
-        { txt: '注册', current: false, type: 'register' },
-      ]),
-      codeButton = reactive({
+    const codeButton = reactive({
         text: '获取验证码',
         status: false,
       }),
@@ -147,10 +165,18 @@ export default {
         loginButtonStatus.value = true;
       }
     });
-
     const updateCodeButton = ({ status, text } = codeButton) => {
       codeButton.text = text;
       codeButton.status = status;
+    };
+    const handleToggle = () => {
+      isSignUp.value = !isSignUp.value;
+      resetFormData();
+      if (isSignUp) {
+        ruleForm.email = '';
+        ruleForm.pass = '';
+      }
+      initCountDown();
     };
     // 重置表单数据
     const resetFormData = () => refs.loginRef.resetFields();
@@ -169,18 +195,6 @@ export default {
       updateCodeButton({ status: false, text });
       if (!loginButtonStatus.value) timerId.value = 0;
     };
-    const toggleMenu = (item) => {
-      if (model.value === item.type) return;
-      resetFormData();
-      if (model.value === 'login') {
-        ruleForm.email = '';
-        ruleForm.pass = '';
-      }
-      menuTab.forEach((elem) => (elem.current = false));
-      item.current = true;
-      model.value = item.type;
-      initCountDown();
-    };
     // 获取验证码
     const getSms = () => {
       if (!isEmail(ruleForm.email)) {
@@ -189,9 +203,9 @@ export default {
       }
       updateCodeButton({ text: '发送中', status: true });
       loginButtonStatus.value = false;
-
+      let module = isSignUp ? 'register' : 'login';
       root.$submit(
-        () => GetSms({ username: ruleForm.email, module: model.value }),
+        () => GetSms({ username: ruleForm.email, module }),
         () => {
           timer && clearInterval(timer);
           countDown();
@@ -214,27 +228,17 @@ export default {
     const register = (data) => {
       root.$submit(
         () => Register(data),
-        () => {
-          let temp = { email: ruleForm.email, pass: ruleForm.pass };
-          ruleForm.email = temp.email;
-          ruleForm.pass = temp.pass;
-          toggleMenu(menuTab[0]);
-        },
-        () => toggleMenu(menuTab[1])
+        () => (isSignUp.value = false)
       );
     };
     const submitForm = (formName) => {
       refs[formName].validate((valid) => {
+        let { email, pass, code } = ruleForm;
         // 表单验证
         if (valid) {
-          model.value === 'login'
-            ? login({ username: ruleForm.email, password: sha1(ruleForm.pass), code: ruleForm.code })
-            : register({
-                username: ruleForm.email,
-                password: sha1(ruleForm.pass),
-                code: ruleForm.code,
-                module: 'register',
-              });
+          isSignUp.value
+            ? register({ username: email, password: sha1(pass), code, module: 'register' })
+            : login({ username: email, password: sha1(pass), code });
         } else {
           root.$message.error('请填写信息', valid);
           return false;
@@ -243,10 +247,10 @@ export default {
     };
     onUnmounted(() => initCountDown());
     return {
-      menuTab,
+      isSignUp,
+      handleToggle,
       model,
       ruleForm,
-      toggleMenu,
       submitForm,
       rules,
       getSms,
@@ -259,38 +263,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-html,
-body {
+.login-container {
   height: 100%;
-}
-#login {
-  height: 100vh;
-  background-color: #344a5f;
-}
-.login-wrap {
-  width: 330px;
-  margin: auto;
-}
-.menu-tab {
-  text-align: center;
-  li {
-    display: inline-block;
-    width: 88px;
-    line-height: 36px;
-    font-size: 14px;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-    &.current {
-      background-color: #2d4255;
-    }
-  }
-}
-.login-form {
-  margin-top: 29px;
-}
-.item-form {
-  margin-bottom: 13px;
+  width: 100vw;
+
+  background: #ededed;
 }
 .block {
   display: block;
@@ -298,5 +275,256 @@ body {
 }
 .login-btn {
   margin-top: 19px;
+}
+
+$contW: 900px;
+$imgW: 260px;
+$formW: $contW - $imgW;
+$switchAT: 1.2s;
+
+$inputW: 260px;
+$btnH: 36px;
+
+$diffRatio: ($contW - $imgW) / $contW;
+
+@mixin signUpActive {
+  .cont.s--signup & {
+    @content;
+  }
+}
+
+.tip {
+  font-size: 20px;
+  margin: 40px auto 50px;
+  text-align: center;
+}
+
+.cont {
+  overflow: hidden;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  width: $contW;
+  height: 550px;
+  background: #fff;
+  margin: auto;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.form {
+  position: relative;
+  width: $formW;
+  height: 100%;
+  transition: transform $switchAT ease-in-out;
+  padding: 50px 60px 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.sub-cont {
+  overflow: hidden;
+  position: absolute;
+  left: $formW;
+  top: 0;
+  width: $contW;
+  height: 100%;
+  // padding-left: $imgW;
+  // background: #fff;
+  transition: transform $switchAT ease-in-out;
+
+  @include signUpActive {
+    transform: translate3d($formW * -1, 0, 0);
+  }
+}
+
+.img {
+  overflow: hidden;
+  z-index: 2;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: $imgW;
+  height: 100%;
+  padding-top: 360px;
+  &:before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: $contW;
+    height: 100%;
+    background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/sections-3.jpg');
+    background-size: cover;
+    transition: transform $switchAT ease-in-out;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  @include signUpActive {
+    &:before {
+      transform: translate3d($formW, 0, 0);
+    }
+  }
+
+  &__text {
+    z-index: 2;
+    position: absolute;
+    left: 0;
+    top: 50px;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    transition: transform $switchAT ease-in-out;
+
+    h2 {
+      margin-bottom: 10px;
+      font-weight: normal;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    &.m--up {
+      @include signUpActive {
+        transform: translateX($imgW * 2);
+      }
+    }
+
+    &.m--in {
+      transform: translateX($imgW * -2);
+
+      @include signUpActive {
+        transform: translateX(0);
+      }
+    }
+  }
+
+  &__btn {
+    overflow: hidden;
+    z-index: 2;
+    position: relative;
+    width: 100px;
+    height: $btnH;
+    margin: 0 auto;
+    background: transparent;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 15px;
+    cursor: pointer;
+
+    &:after {
+      content: '';
+      z-index: 2;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      border: 2px solid #fff;
+      border-radius: 30px;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    span {
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      transition: transform $switchAT;
+
+      &.m--in {
+        transform: translateY($btnH * -2);
+
+        @include signUpActive {
+          transform: translateY(0);
+        }
+      }
+
+      &.m--up {
+        @include signUpActive {
+          transform: translateY($btnH * 2);
+        }
+      }
+    }
+  }
+}
+
+h2 {
+  width: 100%;
+  font-size: 26px;
+  text-align: center;
+}
+
+label {
+  display: block;
+  width: $inputW;
+  margin: 25px auto 0;
+  text-align: center;
+
+  span {
+    font-size: 12px;
+    color: #cfcfcf;
+    text-transform: uppercase;
+  }
+}
+
+input {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+  padding-bottom: 5px;
+  font-size: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+.forgot-pass {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 12px;
+  color: #cfcfcf;
+}
+.sign-up {
+  transition-timing-function: ease-out;
+
+  @include signUpActive {
+    transition-timing-function: ease-in-out;
+    transition-duration: $switchAT;
+    transform: translate3d($imgW, 0, 0);
+  }
+  & ~ .sub-cont {
+    width: $imgW;
+  }
+}
+
+.sign-in {
+  // transform: translate3d($contW * -1, 0, 0);
+
+  @include signUpActive {
+    transform: translate3d(0, 0, 25px);
+  }
 }
 </style>

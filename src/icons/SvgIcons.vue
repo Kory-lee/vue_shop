@@ -27,7 +27,6 @@ export default {
   width: 1em;
   height: 1em;
   fill: currentColor;
-  // color: #fff;
   &.small {
     font-size: $smallFont;
   }

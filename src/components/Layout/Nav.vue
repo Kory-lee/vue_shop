@@ -1,5 +1,4 @@
 <template>
-  <!-- <div id="nav-wrap"> -->
   <el-menu
     router
     :default-active="indexActive"
@@ -27,7 +26,6 @@
       </el-submenu>
     </template>
   </el-menu>
-  <!-- </div> -->
 </template>
 
 <script>

@@ -10,7 +10,7 @@ export const Submit = (fn, successCb = () => {}, errorCb = () => {}) =>
     })
     .catch((err) => {
       errorCb();
-      Message.error(err.message || '操作失败');
+      Message.error(err || '操作失败');
     });
 export const Request = (fn, successCb = () => {}, errorCb = () => {}) =>
   fn()
