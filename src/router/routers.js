@@ -8,7 +8,7 @@ export const defaultRoutersMap = [
     children: [
       {
         path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect/index'),
+        component: () => import('@/views/redirect'),
       },
     ],
   },

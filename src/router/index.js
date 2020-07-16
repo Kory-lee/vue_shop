@@ -18,10 +18,8 @@ const router = new VueRouter({
 // 路由守卫
 // 白名单
 const whiteRouter = ['/login', 'login'];
-const isLogin = getToken();
-
 router.beforeEach((to, from, next) => {
-  if (isLogin)
+  if (getToken())
     if (!store.getters['permission/roles']?.length)
       store.dispatch('permission/getUserRoles').then(({ role }) =>
         store.dispatch('permission/createRouter', role).then(() => {

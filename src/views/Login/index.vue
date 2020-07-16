@@ -1,9 +1,11 @@
 <template>
   <div class="login-container">
-    <div class="cont" :class="{ 's--signup': isSignUp }">
+    <div class="cont" :class="{ 's--sign-up': isSignUp }">
       <div class="form" :class="isSignUp ? 'sign-up' : 'sign-in'">
         <el-form ref="loginRef" :model="ruleForm" status-icon size="medium">
-          <h2 v-show="!isSignUp">欢迎回来,</h2>
+          <el-collapse-transition>
+            <h2 v-show="!isSignUp">欢迎回来,</h2>
+          </el-collapse-transition>
           <el-form-item label="邮箱" prop="email" class="item-form" :rules="rules.email">
             <el-input v-model="ruleForm.email" type="text" placeholder="请输入邮箱" autocomplete="off" clearable>
               <template #prepend>
@@ -64,17 +66,12 @@
             </el-row>
           </el-form-item>
           <el-form-item>
-            <el-button
-              type="danger"
-              :disabled="loginButtonStatus"
-              class="login-btn block"
-              @click="submitForm('loginRef')"
-            >
+            <el-button type="danger" :disabled="loginButtonStatus" class="login-btn block" @click="submitForm()">
               {{ isSignUp ? '注册' : '登录' }}
             </el-button>
           </el-form-item>
-          <transition name="el-zoom-in-bottom">
-            <p v-show="!isSignUp" class="forgot-pass">Forgot password?</p>
+          <transition name="el-fade-in-linear">
+            <el-link type="info" v-show="!isSignUp" class="forgot-pass">Forgot password?</el-link>
           </transition>
         </el-form>
       </div>
@@ -217,29 +214,23 @@ export default {
     const login = (data) =>
       root.$store
         .dispatch('login/login', data)
-        .then((message) => {
-          root.$router.push({ name: 'Index', path: 'index' });
-          root.$message.success(message);
-        })
-        .catch(({ message }) => {
-          initCountDown('重新获取');
-          root.$message.error(message);
-        });
+        .then(() => root.$router.push({ name: 'Index' }))
+        .catch(() => initCountDown('重新获取'));
     const register = (data) => {
       root.$submit(
         () => Register(data),
         () => (isSignUp.value = false)
       );
     };
-    const submitForm = (formName) => {
-      refs[formName].validate((valid) => {
+    const submitForm = () => {
+      refs.loginRef.validate((valid) => {
         let { email, pass, code } = ruleForm;
         // 表单验证
-        if (valid) {
+        if (valid)
           isSignUp.value
             ? register({ username: email, password: sha1(pass), code, module: 'register' })
             : login({ username: email, password: sha1(pass), code });
-        } else {
+        else {
           root.$message.error('请填写信息', valid);
           return false;
         }
@@ -288,17 +279,10 @@ $btnH: 36px;
 $diffRatio: ($contW - $imgW) / $contW;
 
 @mixin signUpActive {
-  .cont.s--signup & {
+  .cont.s--sign-up & {
     @content;
   }
 }
-
-.tip {
-  font-size: 20px;
-  margin: 40px auto 50px;
-  text-align: center;
-}
-
 .cont {
   overflow: hidden;
   position: relative;
@@ -474,7 +458,10 @@ $diffRatio: ($contW - $imgW) / $contW;
 
 h2 {
   width: 100%;
-  font-size: 26px;
+  font-size: 28px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0.93em 0;
   text-align: center;
 }
 
@@ -506,6 +493,9 @@ input {
   text-align: center;
   font-size: 12px;
   color: #cfcfcf;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .sign-up {
   transition-timing-function: ease-out;
@@ -526,5 +516,10 @@ input {
   @include signUpActive {
     transform: translate3d(0, 0, 25px);
   }
+}
+.el-form-item {
+  box-sizing: content-box;
+  padding-bottom: 22px;
+  margin: 0;
 }
 </style>

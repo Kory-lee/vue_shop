@@ -6,11 +6,11 @@ export const Submit = (fn, successCb = () => {}, errorCb = () => {}) =>
   fn()
     .then((result) => {
       successCb(result);
-      Message.success(result.message);
+      Success(result.message);
     })
     .catch((err) => {
       errorCb();
-      Message.error(err || '操作失败');
+      Error(err || '操作失败');
     });
 export const Request = (fn, successCb = () => {}, errorCb = () => {}) =>
   fn()

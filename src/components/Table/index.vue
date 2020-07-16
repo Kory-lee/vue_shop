@@ -52,7 +52,7 @@
 <!-- hide-on-single-page="true" -->
 
 <script>
-import { reactive, onBeforeMount, ref, watch } from '@vue/composition-api';
+import { reactive, onBeforeMount } from '@vue/composition-api';
 import { responseInit } from '@utils/common';
 export default {
   name: 'Table',
