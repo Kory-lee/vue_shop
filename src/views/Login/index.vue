@@ -459,7 +459,6 @@ $diffRatio: ($contW - $imgW) / $contW;
 h2 {
   width: 100%;
   font-size: 28px;
-  box-sizing: border-box;
   margin: 0;
   padding: 0.93em 0;
   text-align: center;
