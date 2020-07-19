@@ -1,6 +1,5 @@
 import { Login } from '@api/login';
 import { setToken, getToken, getUsername, removeToken } from '@utils/cookie';
-import { Success, Error } from '@utils/global';
 const state = {
   username: getUsername() || '',
   to_ken: getToken() || '',
@@ -16,12 +15,7 @@ const mutations = {
 };
 const actions = {
   login({ commit }, params) {
-    return Login(params)
-      .then(({ data, message }) => {
-        commit('SET_USER_ID', data);
-        Success(message);
-      })
-      .catch((message) => Error(message));
+    return Login(params).then(({ data }) => commit('SET_USER_ID', data));
   },
   exit() {
     return new Promise((resolve) => {

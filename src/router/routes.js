@@ -8,7 +8,7 @@ export const defaultRoutersMap = [
     children: [
       {
         path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect'),
+        component: () => import('@views/redirect'),
       },
     ],
   },
@@ -29,6 +29,7 @@ export const defaultRoutersMap = [
   {
     path: '/404',
     hidden: true,
+    name: 'Not Found',
     meta: {
       name: '404',
     },
@@ -43,18 +44,13 @@ export const defaultRoutersMap = [
     path: '/',
     name: 'Console',
     redirect: 'index',
-    meta: {
-      name: '控制台',
-      icon: 'console',
-    },
+    meta: { name: '控制台', icon: 'console' },
     component: Layout,
     children: [
       {
-        path: 'index',
+        path: '/index',
         name: 'Index',
-        meta: {
-          name: '首页',
-        },
+        meta: { name: '首页', keepAlive: true },
         component: () => import('@views/Console'),
       },
     ],
@@ -76,32 +72,20 @@ export const asyncRoutersMap = [
       {
         path: '/infoIndex',
         name: 'InfoIndex',
-        meta: {
-          keepAlive: true,
-          roles: ['sale', 'manager'],
-          name: '信息列表',
-        },
+        meta: { keepAlive: true, roles: ['sale', 'manager'], name: '信息列表' },
         component: () => import('@views/Info'),
       },
       {
         path: '/infoCategory',
         name: 'InfoCategory',
-        meta: {
-          keepAlive: true,
-          role: ['sale'],
-          name: '信息分类',
-        },
+        meta: { keepAlive: true, role: ['sale'], name: '信息分类' },
         component: () => import('@views/Info/Category'),
       },
       {
         path: '/infoDetail',
         name: 'InfoDetail',
         hidden: true,
-        meta: {
-          keepAlive: true,
-          role: ['sale'],
-          name: '信息详情',
-        },
+        meta: { keepAlive: true, role: ['sale'], name: '信息详情' },
         component: () => import('@views/Info/Detail'),
       },
     ],
@@ -120,11 +104,7 @@ export const asyncRoutersMap = [
       {
         path: '/userIndex',
         name: 'UserIndex',
-        meta: {
-          keepAlive: true,
-          role: ['sale'],
-          name: '用户列表',
-        },
+        meta: { keepAlive: true, role: ['sale'], name: '用户列表' },
         component: () => import('@views/User'),
       },
     ],
@@ -141,18 +121,18 @@ export const asyncRoutersMap = [
     },
     children: [
       {
-        path: '401',
+        path: '/401',
         component: () => import('@views/error-page/401'),
         name: 'Page401',
-        meta: { title: '401', keepAlive: true },
+        meta: { name: '401', keepAlive: true },
       },
       {
-        path: '404',
+        path: '/404',
         component: () => import('@views/error-page/404'),
-        name: 'Page404',
-        meta: { title: '404', keepAlive: true },
+        name: '404',
+        meta: { name: '404', keepAlive: true },
       },
     ],
   },
-  { path: '*', redirect: '/404', name: 'error', hidden: true },
+  { path: '*', redirect: '/404', hidden: true },
 ];

@@ -1,6 +1,6 @@
 <template>
   <el-container :class="[menuStatus ? 'close' : 'open']">
-    <el-aside :width="[menuStatus ? '64px' : '200px']">
+    <el-aside :width="menuStatus ? '64px' : '200px'">
       <Nav />
     </el-aside>
     <el-container>

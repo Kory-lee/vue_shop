@@ -2,7 +2,7 @@
   <div class="login-container">
     <div class="cont" :class="{ 's--sign-up': isSignUp }">
       <div class="form" :class="isSignUp ? 'sign-up' : 'sign-in'">
-        <el-form ref="loginRef" :model="ruleForm" status-icon size="medium">
+        <el-form ref="ruleForm" :model="ruleForm" status-icon size="medium">
           <el-collapse-transition>
             <h2 v-show="!isSignUp">欢迎回来,</h2>
           </el-collapse-transition>
@@ -59,14 +59,14 @@
                 </el-input>
               </el-col>
               <el-col :span="8">
-                <el-button type="success" class="block" :disabled="codeButton.status" @click="getSms()">
+                <el-button type="success" class="block" :disabled="codeButton.status" @click="getSms">
                   {{ codeButton.text }}
                 </el-button>
               </el-col>
             </el-row>
           </el-form-item>
           <el-form-item>
-            <el-button type="danger" :disabled="loginButtonStatus" class="login-btn block" @click="submitForm()">
+            <el-button type="danger" :disabled="loginButtonStatus" class="login-btn block" @click="submitForm">
               {{ isSignUp ? '注册' : '登录' }}
             </el-button>
           </el-form-item>
@@ -98,8 +98,9 @@
 <script>
 import sha1 from 'js-sha1';
 import { GetSms, Register } from '@api/login';
-import { reactive, ref, watch, onUnmounted } from '@vue/composition-api';
-import { is, isEmail, isPassword, stripScript } from '@utils/validate';
+import { reactive, ref, onUnmounted, computed } from '@vue/composition-api';
+import validator from '@utils/validate';
+
 export default {
   name: 'Login',
   setup(props, { refs, root }) {
@@ -107,76 +108,47 @@ export default {
       context: { attrs, emit, listeners, parent, refs, root }
      */
     let timer;
+    let loginCountdown = 60;
     const model = ref('login'),
-      loginButtonStatus = ref(true),
       isSignUp = ref(false),
       timerId = ref(60);
-    const codeButton = reactive({
-        text: '获取验证码',
-        status: false,
-      }),
-      ruleForm = reactive({
-        email: '923033576@qq.com',
-        pass: 'hql971028',
-        code: '',
-        pass2: '',
-      });
-    const validatePass = (rule, value, callback) => {
-      value = ruleForm.pass = stripScript(value);
-      if (!value) callback(new Error('密码不能为空'));
-      else if (!isPassword(value)) callback(new Error('数字字母组合且不少于6位'));
-      else callback();
-    };
-    const rules = {
-      email: [
-        [
-          { require: true, message: '请输入邮箱地址', trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' },
-        ],
-      ],
-      pass: [{ require: true, validator: validatePass, trigger: 'blur' }],
-      pass2: [
-        {
-          validator: (rule, value, callback) => {
-            if (!value) callback(new Error('请再次输入密码'));
-            else if (value !== ruleForm.pass) callback(new Error('重复密码不正确'));
-            else callback();
-          },
-          trigger: 'blur',
-        },
-      ],
-      code: [
-        {
-          validator: (rule, value, callback) => {
-            if (!value) return callback(new Error('验证码不能为空'));
-            if (!is('vcode', value)) callback(new Error('验证码格式有误'));
-            else callback();
-          },
-          trigger: 'blur',
-        },
-      ],
-    };
-    watch(timerId, (value) => {
-      if (!value) {
-        timerId.value = 60;
-        loginButtonStatus.value = true;
-      }
+    const codeButton = reactive({ text: '获取验证码', status: false }),
+      ruleForm = reactive({ email: '923033576@qq.com', pass: 'hql971028', code: '', pass2: '' });
+    const loginButtonStatus = computed({
+      set: (val) => val,
+      get: () => {
+        if (timerId.value !== loginCountdown) return false;
+        else return true;
+      },
     });
+
+    const { email, pass, code, pass2 } = validator(ruleForm);
+
+    const rules = {
+      email: [{ validator: email, trigger: 'blur' }],
+      pass: [{ require: true, validator: pass, trigger: 'blur' }],
+      pass2: [{ validator: pass2, trigger: 'blur' }],
+      code: [{ validator: code, trigger: 'blur' }],
+    };
+    // 重置表单数据
+    const resetFormData = () => refs.ruleForm.resetFields();
+
+    const initCountDown = (text = '获取验证码') => {
+      timer && clearInterval(timer);
+      timer = null;
+      updateCodeButton({ status: false, text });
+      timerId.value = loginCountdown;
+    };
     const updateCodeButton = ({ status, text } = codeButton) => {
       codeButton.text = text;
       codeButton.status = status;
     };
     const handleToggle = () => {
       isSignUp.value = !isSignUp.value;
-      resetFormData();
-      if (isSignUp) {
-        ruleForm.email = '';
-        ruleForm.pass = '';
-      }
+      if (isSignUp.value) (ruleForm.email = ''), (ruleForm.pass = '');
+      else resetFormData();
       initCountDown();
     };
-    // 重置表单数据
-    const resetFormData = () => refs.loginRef.resetFields();
 
     // 倒计时
     const countDown = () => {
@@ -186,64 +158,63 @@ export default {
         if (!timerId.value) initCountDown('重新获取');
       }, 1000);
     };
-    const initCountDown = (text = '获取验证码') => {
-      clearInterval(timer);
-      timer = null;
-      updateCodeButton({ status: false, text });
-      if (!loginButtonStatus.value) timerId.value = 0;
-    };
     // 获取验证码
     const getSms = () => {
-      if (!isEmail(ruleForm.email)) {
-        root.$message.error('邮箱格式错误,请重新输入!!');
-        return false;
-      }
-      updateCodeButton({ text: '发送中', status: true });
-      loginButtonStatus.value = false;
-      let module = isSignUp ? 'register' : 'login';
-      root.$submit(
-        () => GetSms({ username: ruleForm.email, module }),
-        () => {
-          timer && clearInterval(timer);
-          countDown();
-        },
-        () => initCountDown('重新获取')
-      );
+      refs.ruleForm.validateField('email', (valid) => {
+        if (valid) root.$$message.error('请输入正确的邮箱地址');
+        else {
+          updateCodeButton({ text: '发送中', status: true });
+          loginButtonStatus.value = false;
+          let module = isSignUp ? 'register' : 'login';
+          root.$submit(
+            () => GetSms({ username: ruleForm.email, module }),
+            () => {
+              timer && clearInterval(timer);
+              countDown();
+            },
+            () => initCountDown('重新获取')
+          );
+        }
+      });
     };
     // 登录与注册
     const login = (data) =>
       root.$store
         .dispatch('login/login', data)
         .then(() => root.$router.push({ name: 'Index' }))
-        .catch(() => initCountDown('重新获取'));
+        .then(() => root.$message.success('登陆成功!'))
+        .catch(() => {
+          initCountDown('重新获取');
+          root.$message.error('登陆失败!');
+        });
     const register = (data) => {
       root.$submit(
         () => Register(data),
-        () => (isSignUp.value = false)
+        () => {
+          isSignUp.value = false;
+          initCountDown();
+        }
       );
     };
     const submitForm = () => {
-      refs.loginRef.validate((valid) => {
+      refs.ruleForm.validate((valid) => {
         let { email, pass, code } = ruleForm;
         // 表单验证
         if (valid)
           isSignUp.value
             ? register({ username: email, password: sha1(pass), code, module: 'register' })
             : login({ username: email, password: sha1(pass), code });
-        else {
-          root.$message.error('请填写信息', valid);
-          return false;
-        }
+        else return root.$message.error('请填写信息', valid);
       });
     };
     onUnmounted(() => initCountDown());
     return {
+      rules,
       isSignUp,
       handleToggle,
       model,
       ruleForm,
       submitForm,
-      rules,
       getSms,
       loginButtonStatus,
       codeButton,
@@ -338,7 +309,7 @@ $diffRatio: ($contW - $imgW) / $contW;
     top: 0;
     width: $contW;
     height: 100%;
-    background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/sections-3.jpg');
+    background-image: url($loginBgImg);
     background-size: cover;
     transition: transform $switchAT ease-in-out;
     box-sizing: border-box;

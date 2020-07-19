@@ -171,7 +171,6 @@ export default {
     const submit = () => {
       if (!(submitStatus.level ? formData.secCategoryName : formData.categoryName))
         return root.$message.error('分类名称不能为空');
-
       submit_loading.value = true;
       if (submitStatus.level) Child[submitStatus.type]();
       else Parent[submitStatus.type]();

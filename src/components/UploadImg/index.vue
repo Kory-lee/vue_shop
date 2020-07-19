@@ -3,18 +3,15 @@
     <el-upload
       :action="config.action"
       :data="data.upLoadKey"
-      limit="1"
+      :show-file-list="false"
       list-type="picture-card"
       :before-upload="beforeUpload"
       :on-success="handleSuccess"
-      :on-preview="handlePictureCardPreview"
-      :on-remove="handleRemove"
     >
       <i class="el-icon-plus"></i>
     </el-upload>
-    <el-dialog :visible.sync="dialogVisible">
-      <img width="100%" :src="dialogImageUrl" alt="" />
-    </el-dialog>
+    <img v-if="dialogImageUrl" :src="dialogImageUrl" class="avatar" />
+    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
   </div>
 </template>
 
@@ -25,39 +22,19 @@ import { ImageToken } from '@api/common';
 export default {
   name: 'UploadImg',
   props: {
-    url: {
-      type: String,
-      default: '',
-    },
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-    config: {
-      type: Object,
-      default: () => {},
-    },
+    url: { type: String, default: '' },
+    config: { type: Object, default: () => {} },
   },
   setup(props, { root, emit }) {
-    const dialogImageUrl = ref(''),
-      dialogVisible = ref(false);
+    const dialogImageUrl = ref('');
     const data = reactive({ image: '', upLoadKey: { token: null, key: null } });
     const handlePictureCardPreview = (file) => {
       dialogImageUrl.value = file.url;
-      dialogVisible.value = true;
-      emit('update:visible', true);
     };
     watch(
       () => props.url,
       (value) => (dialogImageUrl.value = value)
     );
-    watch(
-      () => props.visible,
-      (value) => (dialogVisible.value = value)
-    );
-    const handleRemove = (file, fileList) => {
-      console.log(file, fileList);
-    };
     const beforeUpload = (file) => {
       const isLT2M = file.size / 1024 / 1024 < 3;
       if (!isLT2M) root.$message.error('上传图片大小不能超过3MB!');
@@ -70,28 +47,18 @@ export default {
       data.image = `${root.$store.getters('info/qiniuUrl')}/${res.key}`;
       emit('upload:imgUrl', data.image);
     };
-    const getQiNiuToken = () => {
-      let requestData = {
-        accesskey: props.accesskey,
-        secretkey: props.secretkey,
-        buckety: props.buckety,
-      };
-      ImageToken(JSON.stringify(requestData))
-        .then((response) => {
-          data.upLoadKey.token = response.data.token;
-        })
-        .catch((err) => {
-          root.$message.error(err.message);
-        });
+    const getQiNiuToken = async () => {
+      let { accessKey, secretKey, buckety } = props.config;
+      let requestData = { accessKey, secretKey, buckety };
+      // let { data } = await ImageToken(requestData);
+      data.upLoadKey.token = await ImageToken(requestData).then(({ data }) => data.token);
+      console.log(data.upLoadKey);
     };
-    onMounted(() => {
-      getQiNiuToken();
-    });
+    onMounted(() => getQiNiuToken());
     return {
       dialogImageUrl,
       data,
       handlePictureCardPreview,
-      handleRemove,
       beforeUpload,
       handleSuccess,
     };

@@ -50,7 +50,7 @@ export const initObj = (arr, obj = {}) => {
  * @param {boolean} first 开始触发时是否立即执行
  * @param {boolean} last 停止触发时触发时是否继续执行
  **/
-export const throttle = (fn, wait = 300, { first = true, last = true } = {}) => {
+export const throttle = (fn, wait = 300, { first = false, last = true } = {}) => {
   let timeId,
     prev = 0;
   let later = (args) => {

@@ -1,83 +1,15 @@
-// import './rem';
-import Vue from 'vue';
+import element from '@/plugins/element';
+import svgIcon from '@icons';
+import { buttonPermission } from '@utils/buttonPermission';
 import VueCompositionApi from '@vue/composition-api';
-import App from './App';
+import Vue from 'vue';
+import App from './App.vue';
 import router from './router';
 import store from './store';
+
+Vue.use(element);
+Vue.use(svgIcon);
 Vue.use(VueCompositionApi);
-import {
-  Form,
-  FormItem,
-  Button,
-  Input,
-  Row,
-  Col,
-  Menu,
-  MenuItem,
-  Submenu,
-  Select,
-  Table,
-  TableColumn,
-  Container,
-  Header,
-  Aside,
-  Main,
-  Card,
-  Pagination,
-  Dialog,
-  DatePicker,
-  TimeSelect,
-  TimePicker,
-  Loading,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  Upload,
-  Radio,
-} from 'element-ui';
-
-Vue.use(Form);
-Vue.use(FormItem);
-Vue.use(Input);
-Vue.use(Button);
-Vue.use(Row);
-Vue.use(Col);
-Vue.use(Menu);
-Vue.use(Submenu);
-Vue.use(MenuItem);
-Vue.use(Select);
-Vue.use(Table);
-Vue.use(Container);
-Vue.use(Header);
-Vue.use(Aside);
-Vue.use(Main);
-Vue.use(Card);
-Vue.use(TableColumn);
-Vue.use(Pagination);
-Vue.use(Dialog);
-Vue.use(DatePicker);
-Vue.use(TimePicker);
-Vue.use(TimeSelect);
-Vue.use(Dropdown);
-Vue.use(DropdownItem);
-Vue.use(DropdownMenu);
-Vue.use(Upload);
-Vue.use(Radio);
-
-Vue.use(Loading.directive);
-
-import '@icons';
-
-// global test
-import { install } from '@utils/global';
-// 将msg与msgbox组件封装
-Vue.use(install);
-
-import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
-
-Vue.component(CollapseTransition.name, CollapseTransition);
-
-import { buttonPermission } from '@utils/buttonPermission';
 Vue.prototype.btnPerm = buttonPermission;
 Vue.config.productionTip = false;
 

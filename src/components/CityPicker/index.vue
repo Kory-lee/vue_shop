@@ -45,7 +45,7 @@ export default {
   setup(props, { root, emit }) {
     const pickSizes = props.config;
     const options = reactive(initData(pickSizes));
-    const picker = computed(() => props.value);
+    const picker = computed({ get: () => props.value, set: (val) => val });
     // 对options注册上一个选中的值的依赖
     const getPicker = () => {
       for (let i = 0; i <= pickSizes.length - 1; i++) {

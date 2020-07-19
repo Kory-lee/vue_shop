@@ -1,5 +1,5 @@
 import { GetUserRole } from '@api/user';
-import { defaultRoutersMap, asyncRoutersMap } from '@router/routers';
+import { defaultRoutersMap, asyncRoutersMap } from '@router/routes';
 function hasPermission(roles, router) {
   if (router.meta && router.meta.role) return roles.some((item) => router.meta.role.includes(item));
 }

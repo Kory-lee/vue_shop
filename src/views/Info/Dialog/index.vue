@@ -42,14 +42,13 @@ export default {
     const submitLoading = ref(false);
     const dialog_data = computed(() => props.data.data),
       dialog_mode = computed(() => props.data.mode),
-      dialog_flag = computed(() => props.flag);
+      dialog_flag = computed({ get: () => props.flag, set: (val) => emit('update:flag', val) });
     const form = reactive({ categoryId: '', title: '', content: '' }),
       options = reactive({ categoryConfig: { commitUrl: 'common/infoCategory' } });
 
     // 方法
     const close = () => {
       dialog_flag.value = false;
-      emit('update:flag', false);
       initForm();
     };
     const openedDialog = () => {

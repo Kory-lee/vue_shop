@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { ref, reactive, computed, watch } from '@vue/composition-api';
+import { ref, reactive, watch, computed, nextTick } from '@vue/composition-api';
 import CityPicker from '@components/CityPicker';
 import { AddUser, EditUser, GetRole, GetPermButton } from '@api/user';
 import { stripScript, isPassword } from '@utils/validate';
@@ -60,10 +60,7 @@ import sha1 from 'js-sha1';
 export default {
   name: 'UserDialog',
   props: {
-    flag: {
-      type: Boolean,
-      default: false,
-    },
+    flag: { type: Boolean, default: false },
     data: {
       type: Object,
       default: () => {},
@@ -73,9 +70,10 @@ export default {
   setup(props, { refs, emit, root }) {
     const submitLoading = ref(false),
       dialog_loading = ref(true),
-      dialog_flag = computed(() => props.flag),
+      dialog_flag = computed({ get: () => props.flag, set: (val) => emit('update:flag', val) }),
       // dialog_required = computed(() => props.data.mode === 'add'),
       dialog_info = reactive(props.data);
+    watch(dialog_flag, (value) => console.log(value));
     const form = reactive({
         username: '',
         truename: '',
@@ -87,7 +85,7 @@ export default {
         btnPerm: [],
         id: '',
       }),
-      checkboxData = reactive({ roleItems: [], btnPerm: [] }),
+      checkboxData = reactive({ roleItems: null, btnPerm: null }),
       pickSizes = ['province', 'city', 'area', 'street'],
       rules = reactive({
         username: [
@@ -131,13 +129,12 @@ export default {
     const close = () => {
       dialog_loading.value = true;
       dialog_flag.value = false;
-      emit('update:flag', false);
       initForm();
     };
     const initForm = () => {
       submitLoading.value = false;
       form.region = {};
-      root.$nextTick(() => refs.form.resetFields());
+      nextTick(() => refs.form.resetFields());
     };
     const openedDialog = () => {
       getRole();
@@ -182,12 +179,12 @@ export default {
       });
     };
     const getRole = (params = {}) => {
-      if (checkboxData.roleItems && checkboxData.btnPerm) return false;
+      if (checkboxData.roleItems) return;
       root.$request(
         () => GetRole(params),
         (result) => (checkboxData.roleItems = result)
       );
-
+      if (checkboxData.btnPerm) return;
       root.$request(
         () => GetPermButton(),
         (result) => (checkboxData.btnPerm = result)

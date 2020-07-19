@@ -36,8 +36,8 @@
         <el-pagination
           background
           :page-sizes="[10, 20, 50]"
-          :page-size="page.pageSize"
-          :current-page="page.pageNumber"
+          :page-size="pages.pageSize"
+          :current-page="pages.pageNumber"
           layout="total, sizes, prev, pager, next, jumper"
           :total="tableConfig.tableData.total"
           class="push-right"
@@ -68,7 +68,7 @@ export default {
       head: [],
       tableData: { data: null, total: null },
     });
-    const page = reactive({ pageSize: 10, pageNumber: 1 });
+    const pages = reactive({ pageSize: 10, pageNumber: 1 });
 
     const emitDeleteItem = (val) => {
       let ids = val?.map((item) => item.id);
@@ -77,11 +77,11 @@ export default {
     };
     // pagination
     const handleSizeChange = (val) => {
-      page.pageSize = val;
+      pages.pageSize = val;
       emit('update:limit', val);
     };
     const handleCurrentChange = (val) => {
-      page.pageNumber = val;
+      pages.pageNumber = val;
       emit('update:page', val);
     };
     onBeforeMount(() => {
@@ -89,7 +89,7 @@ export default {
     });
     return {
       tableConfig,
-      page,
+      pages,
       emitDeleteItem,
       handleSizeChange,
       handleCurrentChange,

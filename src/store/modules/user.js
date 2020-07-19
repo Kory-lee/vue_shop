@@ -1,5 +1,5 @@
 import { GetUserList } from '@api/user';
-import { Request } from '@utils/global';
+import { Request } from '@/plugins/element';
 import { indexArr, responseInit } from '@utils/common';
 const state = {
   userList: { data: null },

@@ -7,7 +7,7 @@
       <div class="user-info">
         <el-dropdown trigger="click">
           <div class="username">
-            <el-avatar><img src="../../assets/images/avatar.jpg" alt="" /></el-avatar>
+            <el-avatar><img :src="avatarImg" alt="" /></el-avatar>
           </div>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item icon="el-icon-user-solid">{{ username }}</el-dropdown-item>
@@ -24,25 +24,26 @@
 
 <script>
 import { computed } from '@vue/composition-api';
+import { avatarImg } from '@/config';
 export default {
   setup(props, { root }) {
     const username = computed(() =>
       root.$store.state.login.username.replace(/@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,8})$/, '')
     );
     const exitButton = () => root.$confirm({ content: '确认退出?', fn: exitConfirm });
-    const exitConfirm = () => {
-      root.$store.dispatch('login/exit').then(() => {
-        root.$router.push({ path: '/login', name: 'Login' });
-        root.$notify({ title: '成功', message: '已成功退出', type: 'success' });
-      });
-    };
-    const navMenuState = () => {
-      root.$store.commit('app/SET_COLLAPSE');
-    };
+    const exitConfirm = () =>
+      root.$store
+        .dispatch('login/exit')
+        .then(() => root.$router.push({ name: 'Login' }))
+        .then(() => root.$notify({ title: '成功', message: '已成功退出', type: 'success' }));
+
+    const navMenuState = () => root.$store.commit('app/SET_COLLAPSE');
+
     return {
       navMenuState,
       username,
       exitButton,
+      avatarImg,
     };
   },
 };
@@ -53,16 +54,6 @@ export default {
   position: relative;
   width: inherit;
   height: 100%;
-}
-.push-left {
-  position: absolute;
-  left: 0;
-}
-.push-right {
-  position: absolute;
-  right: 0;
-  height: inherit;
-  overflow: hidden;
 }
 
 .header-icon {
@@ -85,30 +76,30 @@ export default {
     padding: 0 28px;
   }
 }
-.avatar {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: url($img) no-repeat center center;
-  background-size: 38px auto, cover; // 或contain，解决图片拉伸
-  // img标签下使用object-fit：
-  // 1.fill 拉伸以适应 2.contain 添加黑边 3.cover 裁剪以适应 4. none
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 10%;
-    width: 100%;
-    height: 100%;
-    background: inherit;
-    background-size: 100% 100%;
-    border-radius: 50%;
-    transform: scale(0.95);
-    z-index: -1;
-    filter: blur(10px) brightness(80%) opacity(0.8);
-  }
-}
+// .avatar {
+//   position: relative;
+//   width: 40px;
+//   height: 40px;
+//   border-radius: 50%;
+//   background: url($img) no-repeat center center;
+//   background-size: 38px auto, cover; // 或contain，解决图片拉伸
+//   // img标签下使用object-fit：
+//   // 1.fill 拉伸以适应 2.contain 添加黑边 3.cover 裁剪以适应 4. none
+//   &::after {
+//     content: '';
+//     position: absolute;
+//     left: 0;
+//     top: 10%;
+//     width: 100%;
+//     height: 100%;
+//     background: inherit;
+//     background-size: 100% 100%;
+//     border-radius: 50%;
+//     transform: scale(0.95);
+//     z-index: -1;
+//     filter: blur(10px) brightness(80%) opacity(0.8);
+//   }
+// }
 .username {
   padding: 0 32px 0 18px;
   cursor: pointer;

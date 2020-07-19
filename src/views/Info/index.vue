@@ -63,6 +63,7 @@
       </template>
       <template #left>
         <el-button type="primary" size="medium" @click="handleDelete()">批量删除</el-button>
+        <el-button type="primary" size="medium" @click="getList()">刷新</el-button>
       </template>
     </Table>
     <DialogInfo :flag.sync="dialog_show" :data="dialog_info" />
@@ -70,44 +71,27 @@
 </template>
 
 <script>
-import { reactive, ref, watch, onBeforeMount } from '@vue/composition-api';
+import { reactive, ref, watch } from '@vue/composition-api';
 import DialogInfo from './Dialog';
-import Select from '@/components/Select';
+import Select from '@components/Select';
 import Table from '@components/Table';
-import { DeleteInfo, GetList } from '@api/news';
-import { timestampToTime, throttle } from '@utils/common';
+import { DeleteInfo } from '@api/news';
+import getData from './getData';
 export default {
   name: 'InfoIndex',
   components: { DialogInfo, Select, Table },
   setup(props, { root }) {
-    const dialog_show = ref(false),
-      loading = ref(true);
-    const tableConfig = reactive({
-        selection: { show: true, selectedIds: [] },
-        tableData: { data: [], total: 0 },
-        head: [
-          { value: 'title', label: '标题' },
-          { value: 'category', label: '类型', width: 130, formatter: (row) => toCategory(row) },
-          { value: 'createDate', label: '日期', width: 200, formatter: (row) => toDate(row) },
-          { value: 'operation', label: '操作', columnType: 'slot', slotName: 'operation', width: 250 },
-        ],
-      }),
-      dialog_info = reactive({ mode: '', data: {} }),
+    const { tableConfig, loading, page, getList } = getData(root);
+    const dialog_show = ref(false);
+    const dialog_info = reactive({ mode: '', data: {} }),
       searchValue = reactive({ selectValue: '', inputValue: '', categoryId: '', date: [] }),
       searchOptions = reactive({
         keyConfig: { init: ['id', 'title'] },
         categoryConfig: { commitUrl: 'common/infoCategory' },
-      }),
-      page = reactive({ pageSize: 10, pageNumber: 1 });
+      });
     watch(dialog_show, (value, oldValue) => !value && oldValue && getList(), { lazy: true });
-    watch(
-      () => searchValue.categoryId,
-      (value, oldValue) => oldValue && !value && getList()
-    );
     // 方法
-    const toDate = (row) => timestampToTime(row.createDate * 1000);
-    const toCategory = (row) =>
-      root.$store.getters['common/infoCategory'].data?.find((item) => item.value === row.categoryId).label;
+
     const toDetail = ({ id, title }) => {
       root.$router.push({ name: 'InfoDetail', path: 'infoDetail', params: { id, title } });
       root.$store.commit('infoDetail/UPDATE_STATE_VALUE', {
@@ -154,28 +138,6 @@ export default {
           ),
       });
     };
-    const getCategory = (params = {}) => {
-      if (!root.$store.getters['common/infoCategory']?.data) root.$store.dispatch('common/getInfoCategory', params);
-    };
-    const getList = (
-      params = {
-        pageNumber: page.pageNumber,
-        pageSize: page.pageSize,
-      }
-    ) => {
-      loading.value = true;
-      root
-        .$request(
-          () => GetList(params),
-          ({ data, total }) => (tableConfig.tableData = { data, total })
-        )
-        .then(() => (loading.value = false));
-    };
-
-    onBeforeMount(() => {
-      getCategory();
-      getList();
-    });
     return {
       page,
       loading,
@@ -186,7 +148,8 @@ export default {
       dialog_show,
       toDetail,
       handleDelete,
-      search: throttle(search),
+      search,
+      getList,
       handleAdd,
       handleEdit,
     };

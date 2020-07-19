@@ -7,10 +7,10 @@
     background-color="#344A5F"
     text-color="#fff"
     active-text-color="#fff"
-    unique-opened="true"
+    unique-opened
   >
     <h1 class="logo" @click="backHome">
-      <img src="@assets/logo.png" alt />
+      <img :src="logo" alt="logo" />
     </h1>
     <template v-for="item in routers">
       <el-submenu v-if="!item.hidden" :key="item.id" :index="item.path">
@@ -19,7 +19,7 @@
           <span name="title">{{ item.meta.name }}</span>
         </template>
         <template v-for="subItem in item.children">
-          <el-menu-item v-if="!subItem.hidden" :key="subItem.id" :index="subItem.path">{{
+          <el-menu-item v-if="!subItem.hidden" :key="subItem.id" :index="subItem.path" :route="subItem.path">{{
             subItem.meta.name
           }}</el-menu-item>
         </template>
@@ -30,18 +30,20 @@
 
 <script>
 import { reactive, computed } from '@vue/composition-api';
+import { logo } from '@/config';
 export default {
   name: 'LayoutNav',
   setup(props, { root }) {
     const routers = reactive(root.$router.options.routes);
     const isCollapse = computed(() => root.$store.state.app.isCollapse);
     const indexActive = computed(() => root.$route.path);
-    const backHome = () => root.$router.push({ name: 'Index', path: 'index' });
+    const backHome = () => root.$router.push({ name: 'Index' });
     return {
       routers,
       isCollapse,
       indexActive,
       backHome,
+      logo,
     };
   },
 };

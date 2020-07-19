@@ -1,5 +1,5 @@
 import { GetCategoryAll, GetCategory, GetList, DeleteCategory } from '@api/news';
-import { Request } from '@utils/global';
+import { Request } from '@/plugins/element';
 import { indexArr, responseInit } from '@utils/common';
 const initCategory = (value, id = 'id', category_name = 'category_name') =>
   value?.map((item) => {

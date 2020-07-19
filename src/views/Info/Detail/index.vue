@@ -3,17 +3,13 @@
     <el-form ref="formData" :model="formData" label-width="100px">
       <el-form-item label="信息分类：">
         <Select :config="categoryConfig" :selected.sync="formData.categoryId"></Select>
-        <!-- <el-select v-model="formData.category" placeholder="">
-          <el-option v-for="item in data.category" :key="item.id" :label="item.category_name" :value="item.id">
-          </el-option>
-        </el-select> -->
       </el-form-item>
 
       <el-form-item label="新闻标题：">
         <el-input v-model="formData.title"></el-input>
       </el-form-item>
       <el-form-item label="缩略图：">
-        <UploadImg :url.sync="formData.imgUrl" :visible.sync="dialogVisible" :config="uploadConfig" />
+        <UploadImg :url.sync="formData.imgUrl" :config="uploadConfig" />
       </el-form-item>
 
       <el-form-item label="发布日期：">
@@ -31,21 +27,16 @@
 </template>
 
 <script>
-import { reactive, onMounted, ref, onActivated } from '@vue/composition-api';
+import { reactive, onMounted, onActivated } from '@vue/composition-api';
 import UploadImg from '@components/UploadImg';
 import { GetList, EditInfo } from '@api/news';
 import { timestampToTime } from '@utils/common';
 import { quillEditor } from 'vue-quill-editor';
 import Select from '@components/Select';
-// require styles 引入样式
-import 'quill/dist/quill.core.css';
-import 'quill/dist/quill.snow.css';
-import 'quill/dist/quill.bubble.css';
 export default {
   name: 'InfoDetail',
   components: { quillEditor, UploadImg, Select },
   setup(props, { root }) {
-    const dialogVisible = ref(false);
     const formData = reactive({ categoryId: null, title: null, createDate: null, content: null, imgUrl: '' }),
       data = reactive({
         id: root.$route.query.id || root.$store.getters['infoDetail/infoId'],
@@ -55,8 +46,8 @@ export default {
       categoryConfig = reactive({ commitUrl: 'common/infoCategory' }),
       uploadConfig = {
         action: 'http://up-z2.qiniup.com',
-        accesskey: 'Avh-EZZAa4TxqPQZsEW42fXBUbTMFi-RKSZTRKJj',
-        secretkey: '19AXtnhCVkZexXNRcmHXzmecXiCUiLynwGboMeUw',
+        accessKey: 'Avh-EZZAa4TxqPQZsEW42fXBUbTMFi-RKSZTRKJj',
+        secretKey: '19AXtnhCVkZexXNRcmHXzmecXiCUiLynwGboMeUw',
         buckety: 'webjshtml',
       };
     const submit = () => {
@@ -94,7 +85,6 @@ export default {
       getInfo();
     });
     return {
-      dialogVisible,
       uploadConfig,
       data,
       categoryConfig,

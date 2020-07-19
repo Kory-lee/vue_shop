@@ -7,7 +7,7 @@
 <script>
 import { reactive, onBeforeMount, ref, computed, watch } from '@vue/composition-api';
 export default {
-  name: 'Select',
+  name: 'MySelect',
   props: {
     config: { type: Object, default: () => {} },
     selected: { type: String, default: '' },

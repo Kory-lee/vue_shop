@@ -1,10 +1,11 @@
+import store from '@store';
+import { getToken } from '@utils/cookie';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import { getToken } from '@utils/cookie';
-import store from '@store';
-import { defaultRoutersMap } from './routers';
-
+import { defaultRoutersMap } from './routes';
 Vue.use(VueRouter);
+
+// Vue.use(VueRouter);
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch((err) => err);
@@ -19,6 +20,7 @@ const router = new VueRouter({
 // 白名单
 const whiteRouter = ['/login', 'login'];
 router.beforeEach((to, from, next) => {
+  if (to.meta.name) document.title = to.meta.name;
   if (getToken())
     if (!store.getters['permission/roles']?.length)
       store.dispatch('permission/getUserRoles').then(({ role }) =>

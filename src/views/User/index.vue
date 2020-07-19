@@ -48,6 +48,7 @@
       </template>
       <template #left>
         <el-button type="primary" size="medium" @click="handleDelete()">批量删除</el-button>
+        <el-button type="primary" size="medium" @click="getUserList()">更新</el-button>
       </template>
     </Table>
     <Dialog :flag.sync="dialog_show" :data="dialog_info" />
@@ -55,9 +56,9 @@
 </template>
 
 <script>
-import { reactive, onBeforeMount, ref, watch } from '@vue/composition-api';
-import { DeleteUser, GetUserList, ActivesUser } from '@api/user';
-import { throttle } from '@utils/common';
+import { reactive, ref, watch } from '@vue/composition-api';
+import getData from './getData';
+import { DeleteUser, ActivesUser } from '@api/user';
 import Select from '@components/Select';
 import Table from '@components/Table';
 import Dialog from './Dialog';
@@ -65,25 +66,11 @@ export default {
   name: 'User',
   components: { Select, Table, Dialog },
   setup(props, { root }) {
+    const { loading, tableConfig, page, getUserList } = getData(root);
     const dialog_show = ref(false),
-      loading = ref(true),
       switchStatus = ref(false);
     const selectConfig = reactive({ init: ['username', 'phone'] }),
-      tableConfig = reactive({
-        selection: { show: true, selectedIds: null },
-        tableData: { data: [], total: 0 },
-        head: [
-          { value: 'username', label: '邮箱/用户名', width: 150 },
-          { value: 'truename', label: '真实姓名', width: 120 },
-          { value: 'phone', label: '手机号', width: 150 },
-          { value: 'region', label: '地区', width: 200 },
-          { value: 'role', label: '角色' },
-          { value: 'status', label: '禁/启用状态', columnType: 'slot', slotName: 'status' },
-          { value: 'operation', label: '操作', columnType: 'slot', slotName: 'operation', width: 154 },
-        ],
-      }),
       formData = reactive({ selectValue: '', inputValue: '' }),
-      page = reactive({ pageSize: 10, pageNumber: 1 }),
       dialog_info = reactive({ mode: '', data: {} });
     watch(
       () => formData.inputValue,
@@ -124,17 +111,6 @@ export default {
       });
     };
 
-    const getUserList = (params = page) => {
-      loading.value = true;
-      root
-        .$request(
-          () => GetUserList(params),
-          ({ data, total }) => (tableConfig.tableData = { data, total })
-        )
-        .then(() => (loading.value = false));
-    };
-
-    onBeforeMount(() => getUserList());
     return {
       loading,
       dialog_show,
@@ -144,11 +120,12 @@ export default {
       selectConfig,
       page,
       formData,
-      search: throttle(search),
+      search,
       handleDelete,
       handleAdd,
       handleEdit,
       handleSwitch,
+      getUserList,
     };
   },
 };
