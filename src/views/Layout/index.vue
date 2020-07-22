@@ -16,11 +16,11 @@
 </template>
 
 <script>
-import Nav from '@components/Layout/Nav';
-import Header from '@components/Layout/Header';
-import { computed } from '@vue/composition-api';
+import Nav from "@components/Layout/Nav";
+import Header from "@components/Layout/Header";
+import { computed } from "@vue/composition-api";
 export default {
-  name: 'Layout',
+  name: "Layout",
   components: { Nav, Header },
   setup(props, { root }) {
     const menuStatus = computed(() => root.$store.state.app.isCollapse);

@@ -6,14 +6,21 @@
 </template>
 
 <script>
-import { computed } from '@vue/composition-api';
+import { computed } from "@vue/composition-api";
 export default {
-  name: 'SvgIcon',
-  props: { iconName: { type: String, required: true }, className: { type: String, default: '' } },
+  name: "SvgIcon",
+  props: {
+    iconName: { type: String, required: true },
+    className: { type: String, default: "" },
+  },
   setup(props) {
     const name = computed(() => `#icon-${props.iconName}`);
     // `svg-icon ${props.iconName} ${props.className ? props.className : ''}`;
-    const svgClass = computed(() => ['svg-icon', props.iconName, props.className]);
+    const svgClass = computed(() => [
+      "svg-icon",
+      props.iconName,
+      props.className,
+    ]);
     return {
       name,
       svgClass,

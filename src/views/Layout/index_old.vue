@@ -7,13 +7,13 @@
 </template>
 
 <script>
-import LayoutHeader from '@components/Header';
-import LayoutNav from '@components/Nav';
-import LayoutMain from '@components/Main';
-import { computed } from '@vue/composition-api';
+import LayoutHeader from "@components/Header";
+import LayoutNav from "@components/Nav";
+import LayoutMain from "@components/Main";
+import { computed } from "@vue/composition-api";
 
 export default {
-  name: 'layout',
+  name: "layout",
   components: { LayoutHeader, LayoutNav, LayoutMain },
   setup(props, { root }) {
     const menuStatus = computed(() => root.$store.state.app.isCollapse);

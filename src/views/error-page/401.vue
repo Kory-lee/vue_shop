@@ -21,11 +21,18 @@
           <li class="link-type">
             <a href="https://www.taobao.com/">随便看看</a>
           </li>
-          <li><a href="#" @click.prevent="dialogVisible = true">点我看图</a></li>
+          <li>
+            <a href="#" @click.prevent="dialogVisible = true">点我看图</a>
+          </li>
         </ul>
       </el-col>
       <el-col :span="12">
-        <img :src="errGif" width="313" height="428" alt="Girl has dropped her ice cream." />
+        <img
+          :src="errGif"
+          width="313"
+          height="428"
+          alt="Girl has dropped her ice cream."
+        />
       </el-col>
     </el-row>
     <el-dialog :visible.sync="dialogVisible" title="随便看">
@@ -35,21 +42,22 @@
 </template>
 
 <script>
-import errGif from '@images/401/401.gif';
+import errGif from "@images/401/401.gif";
 
 export default {
-  name: 'Page401',
+  name: "Page401",
   data() {
     return {
-      errGif: errGif + '?' + +new Date(),
-      ewizardClap: 'https://wpimg.wallstcn.com/007ef517-bafd-4066-aae4-6883632d9646',
+      errGif: errGif + "?" + +new Date(),
+      ewizardClap:
+        "https://wpimg.wallstcn.com/007ef517-bafd-4066-aae4-6883632d9646",
       dialogVisible: false,
     };
   },
   methods: {
     back() {
       if (this.$route.query.noGoBack) {
-        this.$router.push({ path: '/index' });
+        this.$router.push({ path: "/index" });
       } else {
         this.$router.go(-1);
       }

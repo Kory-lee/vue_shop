@@ -2,9 +2,11 @@
   <el-card>
     <el-form ref="formData" :model="formData" label-width="100px">
       <el-form-item label="信息分类：">
-        <Select :config="categoryConfig" :selected.sync="formData.categoryId"></Select>
+        <Select
+          :config="categoryConfig"
+          :selected.sync="formData.categoryId"
+        ></Select>
       </el-form-item>
-
       <el-form-item label="新闻标题：">
         <el-input v-model="formData.title"></el-input>
       </el-form-item>
@@ -13,52 +15,71 @@
       </el-form-item>
 
       <el-form-item label="发布日期：">
-        <el-date-picker v-model="formData.createDate" type="datetime" disabled></el-date-picker>
+        <el-date-picker
+          v-model="formData.createDate"
+          type="datetime"
+          disabled
+        ></el-date-picker>
       </el-form-item>
 
       <el-form-item label="详细内容：">
-        <quillEditor ref="myQuillEditor" v-model="formData.content" :options="data.editorOption" />
+        <quillEditor
+          ref="myQuillEditor"
+          v-model="formData.content"
+          :options="data.editorOption"
+        />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" :loading="data.submitLoading" @click="submit">保存</el-button>
+        <el-button type="primary" :loading="data.submitLoading" @click="submit"
+          >保存</el-button
+        >
       </el-form-item>
     </el-form>
   </el-card>
 </template>
 
 <script>
-import { reactive, onMounted, onActivated } from '@vue/composition-api';
-import UploadImg from '@components/UploadImg';
-import { GetList, EditInfo } from '@api/news';
-import { timestampToTime } from '@utils/common';
-import { quillEditor } from 'vue-quill-editor';
-import Select from '@components/Select';
+import { reactive, onMounted, onActivated } from "@vue/composition-api";
+import UploadImg from "@components/UploadImg";
+import { GetList, EditInfo } from "@api/news";
+import { timestampToTime } from "@utils/common";
+import { quillEditor } from "vue-quill-editor";
+import Select from "@components/Select";
 export default {
-  name: 'InfoDetail',
+  name: "InfoDetail",
   components: { quillEditor, UploadImg, Select },
   setup(props, { root }) {
-    const formData = reactive({ categoryId: null, title: null, createDate: null, content: null, imgUrl: '' }),
+    const formData = reactive({
+        categoryId: null,
+        title: null,
+        createDate: null,
+        content: null,
+        imgUrl: "",
+      }),
       data = reactive({
-        id: root.$route.query.id || root.$store.getters['infoDetail/infoId'],
+        id: root.$route.query.id || root.$store.getters["infoDetail/infoId"],
         editorOption: null,
         submitLoading: false,
       }),
-      categoryConfig = reactive({ commitUrl: 'common/infoCategory' }),
+      categoryConfig = reactive({ commitUrl: "common/infoCategory" }),
       uploadConfig = {
-        action: 'http://up-z2.qiniup.com',
-        accessKey: 'Avh-EZZAa4TxqPQZsEW42fXBUbTMFi-RKSZTRKJj',
-        secretKey: '19AXtnhCVkZexXNRcmHXzmecXiCUiLynwGboMeUw',
-        buckety: 'webjshtml',
+        action: "http://up-z2.qiniup.com",
+        accessKey: "Avh-EZZAa4TxqPQZsEW42fXBUbTMFi-RKSZTRKJj",
+        secretKey: "19AXtnhCVkZexXNRcmHXzmecXiCUiLynwGboMeUw",
+        buckety: "webjshtml",
       };
     const submit = () => {
       data.submitLoading = true;
       let { categoryId, title, content, imgUrl } = formData;
       let requestData = { id: data.id, categoryId, title, content, imgUrl };
-      root.$submit(() => EditInfo(requestData)).then(() => (data.submitLoading = false));
+      root
+        .$submit(() => EditInfo(requestData))
+        .then(() => (data.submitLoading = false));
     };
 
     const getInfoCategory = () => {
-      if (!root.$store.getters['common/infoCategory']?.data) root.$store.dispatch('common/getInfoCategory');
+      if (!root.$store.getters["common/infoCategory"]?.data)
+        root.$store.dispatch("common/getInfoCategory");
     };
     const getInfo = (
       requestData = {
@@ -81,7 +102,8 @@ export default {
     };
     onMounted(() => getInfoCategory());
     onActivated(() => {
-      data.id = root.$route.query.id || root.$store.getters['infoDetail/infoId'];
+      data.id =
+        root.$route.query.id || root.$store.getters["infoDetail/infoId"];
       getInfo();
     });
     return {

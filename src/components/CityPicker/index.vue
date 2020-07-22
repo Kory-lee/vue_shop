@@ -1,7 +1,11 @@
 <template>
   <el-row :gutter="10" ref="picker">
     <div class="overflow-hidden">
-      <el-col :span="24 / pickSizes.length" v-for="(item, index) in pickSizes" :key="item">
+      <el-col
+        :span="24 / pickSizes.length"
+        v-for="(item, index) in pickSizes"
+        :key="item"
+      >
         <el-select
           v-model="picker[`${item}`]"
           clearable
@@ -23,15 +27,15 @@
 </template>
 
 <script>
-import { GetCityPicker } from '@api/user';
-import { reactive, onBeforeMount, computed, watch } from '@vue/composition-api';
+import { GetCityPicker } from "@api/user";
+import { reactive, onBeforeMount, computed, watch } from "@vue/composition-api";
 const initData = (arr) => {
   let obj = {};
   arr.forEach((item) => (obj[item] = []));
   return obj;
 };
 export default {
-  name: 'CityPicker',
+  name: "CityPicker",
   props: {
     config: {
       type: Array,
@@ -62,10 +66,10 @@ export default {
       if (index === pickSizes.length - 1) return;
       // 清空该选择框后所有选择框的值（若有的话
       for (; index < pickSizes.length - 1; index++) {
-        picker.value[`${pickSizes[index + 1]}`] = '';
+        picker.value[`${pickSizes[index + 1]}`] = "";
         options[`${pickSizes[index + 2]}`] = [];
       }
-      emit('input', picker);
+      emit("input", picker);
       // getProvincePicker(index, val);
     };
     const getProvincePicker = async (index = 0, val) => {

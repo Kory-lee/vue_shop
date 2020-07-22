@@ -1,7 +1,17 @@
 <template>
   <div>
-    <el-table ref="multipleSelection" :data="tableConfig.tableData.data" border @selection-change="emitDeleteItem">
-      <el-table-column v-if="tableConfig.selection.show" type="selection" align="center"> </el-table-column>
+    <el-table
+      ref="multipleSelection"
+      :data="tableConfig.tableData.data"
+      border
+      @selection-change="emitDeleteItem"
+    >
+      <el-table-column
+        v-if="tableConfig.selection.show"
+        type="selection"
+        align="center"
+      >
+      </el-table-column>
 
       <template v-for="item in tableConfig.head">
         <el-table-column
@@ -52,10 +62,10 @@
 <!-- hide-on-single-page="true" -->
 
 <script>
-import { reactive, onBeforeMount } from '@vue/composition-api';
-import { responseInit } from '@utils/common';
+import { reactive, onBeforeMount } from "@vue/composition-api";
+import { responseInit } from "@utils/common";
 export default {
-  name: 'Table',
+  name: "Table",
   props: {
     config: { type: Object, default: () => {} },
     page: { type: Number, default: 1 },
@@ -73,16 +83,16 @@ export default {
     const emitDeleteItem = (val) => {
       let ids = val?.map((item) => item.id);
       tableConfig.selection.selectedIds = ids;
-      emit('update:selectedIds', ids);
+      emit("update:selectedIds", ids);
     };
     // pagination
     const handleSizeChange = (val) => {
       pages.pageSize = val;
-      emit('update:limit', val);
+      emit("update:limit", val);
     };
     const handleCurrentChange = (val) => {
       pages.pageNumber = val;
-      emit('update:page', val);
+      emit("update:page", val);
     };
     onBeforeMount(() => {
       responseInit(tableConfig, props.config);

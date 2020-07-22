@@ -1,6 +1,6 @@
-import { GetUserList } from '@api/user';
-import { Request } from '@/plugins/element';
-import { indexArr, responseInit } from '@utils/common';
+import { GetUserList } from "@api/user";
+import { Request } from "@/plugins/element";
+import { indexArr, responseInit } from "@utils/common";
 const state = {
   userList: { data: null },
 };
@@ -18,7 +18,7 @@ const mutations = {
 };
 const actions = {
   async getUserList({ commit }, params) {
-    commit('UPDATE_USER_LIST', await Request(() => GetUserList(params)));
+    commit("UPDATE_USER_LIST", await Request(() => GetUserList(params)));
   },
 };
 export default { namespaced: true, state, mutations, actions, getters };

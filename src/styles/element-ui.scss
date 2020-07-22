@@ -1,4 +1,46 @@
+$--color-primary: teal;
+
 /* icon font path, required */
-$--font-path: '~element-ui/lib/theme-chalk/fonts';
-@import '~element-ui/lib/theme-chalk/base.css';
-@import '~element-ui/lib/theme-chalk/index.css';
+$--font-path: "~element-ui/lib/theme-chalk/fonts";
+@import "~element-ui/packages/theme-chalk/src/index";
+
+.el-card {
+  height: inherit;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+.el-submenu .el-menu-item {
+  font-size: 14px;
+  padding-left: 50px;
+  transition: background-color 0.3s ease;
+  &.is-active {
+    background-color: rgba($mainColor, 0.2) !important;
+  }
+}
+li.el-submenu {
+  &.is-active.is-opened .el-submenu__title {
+    background-color: $mainColor !important;
+  }
+}
+
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+}
+.el-menu-vertical-demo {
+  height: 100%;
+}
+// dialog
+.el-dialog .el-dialog__body {
+  padding: 30px 47px;
+}
+.el-dialog__title {
+  // 首字母大写
+  text-transform: capitalize;
+}
+.el-dialog .el-form .el-form-item:last-child {
+  margin-bottom: 0;
+}
+
+.dialog-footer {
+  text-align: center;
+}

@@ -17,21 +17,25 @@
 </template>
 
 <script>
-import { computed } from '@vue/composition-api';
+import { computed } from "@vue/composition-api";
 export default {
   setup(props, { root }) {
     const username = computed(() => root.$store.state.login.username);
     const exitButton = () => {
       root
-        .$confirm('确认退出?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
+        .$confirm("确认退出?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
         })
         .then(() => {
-          root.$store.dispatch('login/exit').then(() => {
-            root.$router.push({ name: 'Login' });
-            root.$notify({ title: '成功', message: '已成功退出', type: 'success' });
+          root.$store.dispatch("login/exit").then(() => {
+            root.$router.push({ name: "Login" });
+            root.$notify({
+              title: "成功",
+              message: "已成功退出",
+              type: "success",
+            });
           });
         })
         .catch(() => {
@@ -39,7 +43,7 @@ export default {
         });
     };
     const navMenuState = () => {
-      root.$store.commit('app/SET_COLLAPSE');
+      root.$store.commit("app/SET_COLLAPSE");
     };
     return {
       navMenuState,
@@ -105,7 +109,7 @@ export default {
   // img标签下使用object-fit：
   // 1.fill 拉伸以适应 2.contain 添加黑边 3.cover 裁剪以适应 4. none
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: 10%;

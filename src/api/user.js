@@ -1,15 +1,15 @@
-import { post } from './index';
+import { post } from "./index";
 const user = {
-  cityPicker: '/cityPicker/',
-  role: '/role/',
-  system: '/system/',
-  permButton: '/permButton/',
-  getList: '/user/getList/',
-  add: '/user/add/',
-  edit: '/user/edit/',
-  delete: '/user/delete/',
-  actives: '/user/actives/',
-  userRole: '/userRole/',
+  cityPicker: "/cityPicker/",
+  role: "/role/",
+  system: "/system/",
+  permButton: "/permButton/",
+  getList: "/user/getList/",
+  add: "/user/add/",
+  edit: "/user/edit/",
+  delete: "/user/delete/",
+  actives: "/user/actives/",
+  userRole: "/userRole/",
 };
 export const GetCityPicker = (data) => post(user.cityPicker, data);
 export const GetRole = (data) => post(user.role, data);

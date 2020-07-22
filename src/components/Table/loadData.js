@@ -1,4 +1,4 @@
-import { reactive } from '@vue/composition-api';
+import { reactive } from "@vue/composition-api";
 export default function loadData() {
   const tableData = reactive({
     item: [],

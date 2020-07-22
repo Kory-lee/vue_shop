@@ -1,8 +1,8 @@
-import store from '@store';
-import { getToken } from '@utils/cookie';
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import { defaultRoutersMap } from './routes';
+import store from "@store";
+import { getToken } from "@utils/cookie";
+import Vue from "vue";
+import VueRouter from "vue-router";
+import { defaultRoutersMap } from "./routes";
 Vue.use(VueRouter);
 
 // Vue.use(VueRouter);
@@ -12,21 +12,21 @@ VueRouter.prototype.push = function push(location) {
 };
 // 系统分配
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes: defaultRoutersMap,
 });
 // 路由守卫
 // 白名单
-const whiteRouter = ['/login', 'login'];
+const whiteRouter = ["/login", "login"];
 router.beforeEach((to, from, next) => {
   if (to.meta.name) document.title = to.meta.name;
   if (getToken())
-    if (!store.getters['permission/roles']?.length)
-      store.dispatch('permission/getUserRoles').then(({ role }) =>
-        store.dispatch('permission/createRouter', role).then(() => {
-          let addRouters = store.getters['permission/addRouters'];
-          let allRouters = store.getters['permission/allRouters'];
+    if (!store.getters["permission/roles"]?.length)
+      store.dispatch("permission/getUserRoles").then(({ role }) =>
+        store.dispatch("permission/createRouter", role).then(() => {
+          let addRouters = store.getters["permission/addRouters"];
+          let allRouters = store.getters["permission/allRouters"];
           // 路由更新
           router.options.routes = allRouters;
           // 动态路由
@@ -38,7 +38,7 @@ router.beforeEach((to, from, next) => {
     else next();
   else {
     if (whiteRouter.includes(to.path)) next();
-    else next('/login');
+    else next("/login");
   }
 });
 

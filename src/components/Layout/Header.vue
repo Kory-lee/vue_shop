@@ -10,7 +10,9 @@
             <el-avatar><img :src="avatarImg" alt="" /></el-avatar>
           </div>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-user-solid">{{ username }}</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-user-solid">{{
+              username
+            }}</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
 
@@ -23,21 +25,31 @@
 </template>
 
 <script>
-import { computed } from '@vue/composition-api';
-import { avatarImg } from '@/config';
+import { computed } from "@vue/composition-api";
+import { avatarImg } from "@/config";
 export default {
   setup(props, { root }) {
     const username = computed(() =>
-      root.$store.state.login.username.replace(/@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,8})$/, '')
+      root.$store.state.login.username.replace(
+        /@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,8})$/,
+        ""
+      )
     );
-    const exitButton = () => root.$confirm({ content: '确认退出?', fn: exitConfirm });
+    const exitButton = () =>
+      root.$confirm({ content: "确认退出?", fn: exitConfirm });
     const exitConfirm = () =>
       root.$store
-        .dispatch('login/exit')
-        .then(() => root.$router.push({ name: 'Login' }))
-        .then(() => root.$notify({ title: '成功', message: '已成功退出', type: 'success' }));
+        .dispatch("login/exit")
+        .then(() => root.$router.push({ name: "Login" }))
+        .then(() =>
+          root.$notify({
+            title: "成功",
+            message: "已成功退出",
+            type: "success",
+          })
+        );
 
-    const navMenuState = () => root.$store.commit('app/SET_COLLAPSE');
+    const navMenuState = () => root.$store.commit("app/SET_COLLAPSE");
 
     return {
       navMenuState,

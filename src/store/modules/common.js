@@ -1,13 +1,18 @@
-import { GetCategoryAll, GetCategory, GetList, DeleteCategory } from '@api/news';
-import { Request } from '@/plugins/element';
-import { indexArr, responseInit } from '@utils/common';
-const initCategory = (value, id = 'id', category_name = 'category_name') =>
+import {
+  GetCategoryAll,
+  GetCategory,
+  GetList,
+  DeleteCategory,
+} from "@api/news";
+import { Request } from "@/plugins/element";
+import { indexArr, responseInit } from "@utils/common";
+const initCategory = (value, id = "id", category_name = "category_name") =>
   value?.map((item) => {
     return { value: item[id], label: item[category_name] };
   });
 
 const state = {
-  qiniuUrl: 'http://www-web-jshtml-cn-idva7mx.web-jshtml.cn',
+  qiniuUrl: "http://www-web-jshtml-cn-idva7mx.web-jshtml.cn",
   infoCategory: { data: null },
   infoList: { data: null, total: null },
 };
@@ -29,24 +34,24 @@ const mutations = {
     responseInit(state.infoList.data[index], data);
   },
   DELETE_CATEGORY(state, deleteId) {
-    let index = indexArr(state.infoCategory.data, deleteId, 'value');
+    let index = indexArr(state.infoCategory.data, deleteId, "value");
     state.infoCategory.data?.splice(index, 1);
   },
 };
 const actions = {
   async getInfoCategory({ commit }, params) {
-    return commit('UPDATE_CATEGORY', await Request(() => GetCategory(params)));
+    return commit("UPDATE_CATEGORY", await Request(() => GetCategory(params)));
   },
   getAllInfoCateGory() {
     return GetCategoryAll({});
   },
   async getInfoList({ commit }, params) {
-    commit('UPDATE_INFO_LIST', await Request(() => GetList(params)));
+    commit("UPDATE_INFO_LIST", await Request(() => GetList(params)));
   },
   async deleteInfoCategory({ commit }, id) {
     Request(
       () => DeleteCategory({ categoryId: id }),
-      () => commit('DELETE_CATEGORY', id)
+      () => commit("DELETE_CATEGORY", id)
     );
   },
 };

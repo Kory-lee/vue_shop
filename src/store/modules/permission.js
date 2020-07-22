@@ -1,7 +1,8 @@
-import { GetUserRole } from '@api/user';
-import { defaultRoutersMap, asyncRoutersMap } from '@router/routes';
+import { GetUserRole } from "@api/user";
+import { defaultRoutersMap, asyncRoutersMap } from "@router/routes";
 function hasPermission(roles, router) {
-  if (router.meta && router.meta.role) return roles.some((item) => router.meta.role.includes(item));
+  if (router.meta && router.meta.role)
+    return roles.some((item) => router.meta.role.includes(item));
 }
 const state = {
   roles: [],
@@ -44,9 +45,9 @@ const actions = {
       GetUserRole(params)
         .then(({ data }) => {
           let { role, btnPerm, button } = data;
-          commit('SET_ROLES', role);
-          commit('SET_BUTTON', button);
-          commit('SET_BTNPERM', btnPerm);
+          commit("SET_ROLES", role);
+          commit("SET_BUTTON", button);
+          commit("SET_BTNPERM", btnPerm);
           resolve(data);
         })
         .catch((err) => reject(err))
@@ -56,7 +57,7 @@ const actions = {
     return new Promise((resolve) => {
       let role = data;
       let addRouters;
-      if (role.includes('admin')) addRouters = asyncRoutersMap;
+      if (role.includes("admin")) addRouters = asyncRoutersMap;
       else {
         addRouters = asyncRoutersMap.filter((item) => {
           if (hasPermission(role, item)) {
@@ -73,7 +74,7 @@ const actions = {
         // 404page-error
         addRouters.push(asyncRoutersMap.splice(asyncRoutersMap.length - 1));
       }
-      commit('SET_ROUTES', addRouters);
+      commit("SET_ROUTES", addRouters);
       resolve();
     });
   },

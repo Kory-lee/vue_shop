@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { getToken, getUsername } from './cookie';
+import axios from "axios";
+import { getToken, getUsername } from "./cookie";
 /**
 初始化axios实例时，设置baseURL，是在访问的接口之前加了一个前缀，比如本来要访问/getSms,但是加了一个前缀就变成了访问/devapi/getSms，这时就需要在代理设置中将前缀给去掉
 * 代理设置。当访问域名的时候，碰到/devapi时，将前面的域名转换成target的属性值
@@ -20,8 +20,8 @@ const service = axios.create({
 service.interceptors.request.use(
   function (config) {
     // 在请求头添加参数 sui Tokey userId
-    config.headers['Tokey'] = getToken();
-    config.headers['UserName'] = getUsername();
+    config.headers["Tokey"] = getToken();
+    config.headers["UserName"] = getUsername();
     return config;
   },
   (error) => Promise.reject(error)

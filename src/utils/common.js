@@ -1,10 +1,10 @@
-import { computed } from '@vue/composition-api';
+import { computed } from "@vue/composition-api";
 /**
  * @function timestampToTime 时间戳转换
  */
 export function timestampToTime(timestamp = Date.now()) {
   let date = new Date(+timestamp + 8 * 3600 * 1000);
-  return date.toJSON()?.substring(0, 19).replace('T', ' ');
+  return date.toJSON()?.substring(0, 19).replace("T", " ");
   // new Date(Date.now()+8*3600*1000).toISOString()
 }
 /**
@@ -12,7 +12,7 @@ export function timestampToTime(timestamp = Date.now()) {
  */
 export function transformTime(timestamp = +new Date()) {
   function addZero(m) {
-    return m < 10 ? '0' + m : m;
+    return m < 10 ? "0" + m : m;
   }
   if (timestamp) {
     var time = new Date(timestamp);
@@ -22,13 +22,25 @@ export function transformTime(timestamp = +new Date()) {
     var h = time.getHours();
     var m = time.getMinutes();
     var s = time.getSeconds();
-    return y + '-' + addZero(M) + '-' + addZero(d) + ' ' + addZero(h) + ':' + addZero(m) + ':' + addZero(s);
+    return (
+      y +
+      "-" +
+      addZero(M) +
+      "-" +
+      addZero(d) +
+      " " +
+      addZero(h) +
+      ":" +
+      addZero(m) +
+      ":" +
+      addZero(s)
+    );
   } else {
-    return '';
+    return "";
   }
 }
 
-export function indexArr(arr, key, id = 'id') {
+export function indexArr(arr, key, id = "id") {
   return arr?.findIndex((item) => item[id] == key);
 }
 export const responseInit = (formatter, data) => {
@@ -50,7 +62,11 @@ export const initObj = (arr, obj = {}) => {
  * @param {boolean} first 开始触发时是否立即执行
  * @param {boolean} last 停止触发时触发时是否继续执行
  **/
-export const throttle = (fn, wait = 300, { first = false, last = true } = {}) => {
+export const throttle = (
+  fn,
+  wait = 300,
+  { first = false, last = true } = {}
+) => {
   let timeId,
     prev = 0;
   let later = (args) => {

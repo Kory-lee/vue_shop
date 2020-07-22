@@ -6,23 +6,51 @@
     <div v-loading="loadingData">
       <el-row :gutter="30">
         <el-col :span="10">
-          <div v-for="item in categoryData.data" :key="item.id" class="category">
+          <div
+            v-for="item in categoryData.data"
+            :key="item.id"
+            class="category"
+          >
             <h4>
               <i
                 :class="
-                  item.id === showMenu || !item.children ? 'el-icon-remove-outline' : 'el-icon-circle-plus-outline'
+                  item.id === showMenu || !item.children
+                    ? 'el-icon-remove-outline'
+                    : 'el-icon-circle-plus-outline'
                 "
                 @click="openMenu(item)"
               ></i>
               {{ item.category_name }}
               <div class="button-group">
-                <el-button size="mini" type="danger" round @click="handlerEdit({ item, type: 'edit', level: 0 })"
-                  >编辑
-                </el-button>
-                <el-button size="mini" type="success" round @click="handlerAdd({ item, type: 'add', level: 1 })"
-                  >添加子级
-                </el-button>
-                <el-button size="mini" round @click="deleteConfirm(item.id)">删除</el-button>
+                <el-tooltip effect="dark" content="编辑" placement="top">
+                  <el-button
+                    size="mini"
+                    icon="el-icon-edit"
+                    type="primary"
+                    circle
+                    @click="handlerEdit({ item, type: 'edit', level: 0 })"
+                  >
+                  </el-button>
+                </el-tooltip>
+                <el-tooltip effect="dark" content="添加子级" placement="top">
+                  <el-button
+                    size="mini"
+                    circle
+                    type="success"
+                    icon="el-icon-circle-plus-outline"
+                    @click="handlerAdd({ item, type: 'add', level: 1 })"
+                  >
+                  </el-button>
+                </el-tooltip>
+                <el-tooltip effect="dark" content="删除" placement="top">
+                  <el-button
+                    type="danger"
+                    size="mini"
+                    icon="el-icon-delete"
+                    circle
+                    @click="deleteConfirm(item.id)"
+                  ></el-button>
+                </el-tooltip>
               </div>
             </h4>
             <el-collapse-transition>
@@ -34,7 +62,9 @@
                       size="mini"
                       type="danger"
                       round
-                      @click="handlerEdit({ childItem, type: 'edit', level: 1 })"
+                      @click="
+                        handlerEdit({ childItem, type: 'edit', level: 1 })
+                      "
                       >编辑
                     </el-button>
                     <el-button size="mini" round>删除</el-button>
@@ -47,15 +77,35 @@
 
         <el-col :span="14">
           <h4 class="menu-title">一级分类编辑</h4>
-          <el-form ref="formData" :model="formData" label-width="142px" class="form-wrap">
+          <el-form
+            ref="formData"
+            :model="formData"
+            label-width="142px"
+            class="form-wrap"
+          >
             <el-form-item label="一级分类编辑：" prop="categoryName">
-              <el-input v-model="formData.categoryName" :disabled="addFirstDisable"></el-input>
+              <el-input
+                v-model="formData.categoryName"
+                :disabled="addFirstDisable"
+              ></el-input>
             </el-form-item>
-            <el-form-item v-if="addFirstDisable" label="二级分类编辑：" prop="secCategoryName">
-              <el-input v-model="formData.secCategoryName" :disabled="addSecDisable"></el-input>
+            <el-form-item
+              v-if="addFirstDisable"
+              label="二级分类编辑："
+              prop="secCategoryName"
+            >
+              <el-input
+                v-model="formData.secCategoryName"
+                :disabled="addSecDisable"
+              ></el-input>
             </el-form-item>
             <el-form-item center>
-              <el-button type="danger" :loading="submit_loading" :disabled="submit_disabled" @click="submit">
+              <el-button
+                type="danger"
+                :loading="submit_loading"
+                :disabled="submit_disabled"
+                @click="submit"
+              >
                 确定
               </el-button>
             </el-form-item>
@@ -67,21 +117,28 @@
 </template>
 
 <script>
-import { AddFirstCategory, DeleteCategory, EditCategory, AddChildrenCategory } from '@api/news';
-import { reactive, ref, onMounted, computed } from '@vue/composition-api';
-import { indexArr } from '@utils/common';
+import {
+  AddFirstCategory,
+  DeleteCategory,
+  EditCategory,
+  AddChildrenCategory,
+} from "@api/news";
+import { reactive, ref, onMounted, computed } from "@vue/composition-api";
+import { indexArr } from "@utils/common";
 export default {
-  name: 'InfoCategory',
+  name: "InfoCategory",
   setup(props, { root, refs }) {
     const addFirstDisable = ref(true),
       addSecDisable = ref(true),
       submit_loading = ref(false),
       showMenu = ref(null);
     // submit_disabled = ref(true);
-    const formData = reactive({ categoryName: '', secCategoryName: '' }),
+    const formData = reactive({ categoryName: "", secCategoryName: "" }),
       categoryData = reactive({ data: null }),
       submitStatus = reactive({ data: null, type: null, level: null });
-    const submit_disabled = computed(() => !(!addFirstDisable.value || !addSecDisable.value));
+    const submit_disabled = computed(
+      () => !(!addFirstDisable.value || !addSecDisable.value)
+    );
     const loadingData = computed(() => !categoryData.data);
     // }
     // 工具函数
@@ -107,10 +164,15 @@ export default {
       edit() {
         root
           .$submit(
-            () => EditCategory({ id: submitStatus.data.id, categoryName: formData.categoryName }),
             () =>
-              (categoryData.data[indexArr(categoryData.data, submitStatus.data.id)].category_name =
-                formData.categoryName)
+              EditCategory({
+                id: submitStatus.data.id,
+                categoryName: formData.categoryName,
+              }),
+            () =>
+              (categoryData.data[
+                indexArr(categoryData.data, submitStatus.data.id)
+              ].category_name = formData.categoryName)
           )
           .then(initForm);
       },
@@ -119,10 +181,19 @@ export default {
       add() {
         root
           .$submit(
-            () => AddChildrenCategory({ categoryName: formData.secCategoryName, parentId: submitStatus.data.id }),
+            () =>
+              AddChildrenCategory({
+                categoryName: formData.secCategoryName,
+                parentId: submitStatus.data.id,
+              }),
             (result) => {
-              let parent = categoryData.data[indexArr(categoryData.data, submitStatus.data.id)];
-              return parent.children ? parent.children.push(result.data) : (parent.children = [result.data]);
+              let parent =
+                categoryData.data[
+                  indexArr(categoryData.data, submitStatus.data.id)
+                ];
+              return parent.children
+                ? parent.children.push(result.data)
+                : (parent.children = [result.data]);
             }
           )
           .then(initForm);
@@ -150,12 +221,13 @@ export default {
     const addFirstInput = () => {
       addFirstDisable.value = false;
       addSecDisable.value = true;
-      editStatus({ type: 'add', level: 0 });
+      editStatus({ type: "add", level: 0 });
     };
     const handlerAdd = (param) => {
       addFirstDisable.value = true;
       addSecDisable.value = false;
       editStatus(param);
+      formData.categoryName = param.item.category_name;
     };
     const handlerEdit = (param) => {
       addFirstDisable.value = false;
@@ -163,21 +235,23 @@ export default {
       formData.categoryName = param.item.category_name;
     };
     const deleteConfirm = (id) =>
-      root.confirm({
-        content: '确认删除？',
+      root.$confirm({
+        content: "确认删除？",
         fn: () => deleteFirst(id),
       });
 
     const submit = () => {
-      if (!(submitStatus.level ? formData.secCategoryName : formData.categoryName))
-        return root.$message.error('分类名称不能为空');
+      if (
+        !(submitStatus.level ? formData.secCategoryName : formData.categoryName)
+      )
+        return root.$message.error("分类名称不能为空");
       submit_loading.value = true;
       if (submitStatus.level) Child[submitStatus.type]();
       else Parent[submitStatus.type]();
     };
     const getCategoryAll = () =>
       root.$store
-        .dispatch('common/getAllInfoCateGory')
+        .dispatch("common/getAllInfoCateGory")
         .then((result) => (categoryData.data = result.data))
         .catch((err) => root.$message.error(err));
 
@@ -210,7 +284,7 @@ export default {
   position: relative;
   cursor: pointer;
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     z-index: 2;
     top: 31px;
@@ -254,7 +328,7 @@ export default {
     list-style: none;
     margin-left: 8px;
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 22px;
       left: 0px;

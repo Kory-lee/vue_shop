@@ -1,7 +1,7 @@
-import service from '@utils/request';
+import service from "@utils/request";
 export function post(url, data) {
   return service.request({
-    method: 'post',
+    method: "post",
     url,
     data,
   });

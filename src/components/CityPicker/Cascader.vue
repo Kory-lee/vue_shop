@@ -1,5 +1,9 @@
 <template>
-  <el-cascader :options="options" :props="{ checkStrictly: true }" clearable></el-cascader>
+  <el-cascader
+    :options="options"
+    :props="{ checkStrictly: true }"
+    clearable
+  ></el-cascader>
 </template>
 
 <script>

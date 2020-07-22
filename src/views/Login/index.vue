@@ -6,14 +6,30 @@
           <el-collapse-transition>
             <h2 v-show="!isSignUp">欢迎回来,</h2>
           </el-collapse-transition>
-          <el-form-item label="邮箱" prop="email" class="item-form" :rules="rules.email">
-            <el-input v-model="ruleForm.email" type="text" placeholder="请输入邮箱" autocomplete="off" clearable>
+          <el-form-item
+            label="邮箱"
+            prop="email"
+            class="item-form"
+            :rules="rules.email"
+          >
+            <el-input
+              v-model="ruleForm.email"
+              type="text"
+              placeholder="请输入邮箱"
+              autocomplete="off"
+              clearable
+            >
               <template #prepend>
                 <svg-icon iconName="email" class="regular"></svg-icon>
               </template>
             </el-input>
           </el-form-item>
-          <el-form-item label="密码" prop="pass" class="item-form" :rules="rules.pass">
+          <el-form-item
+            label="密码"
+            prop="pass"
+            class="item-form"
+            :rules="rules.pass"
+          >
             <el-input
               v-model="ruleForm.pass"
               type="password"
@@ -23,11 +39,19 @@
               maxlength="20"
               placeholder="请输入密码"
             >
-              <template #prepend> <svg-icon iconName="password" class="regular"></svg-icon> </template>
+              <template #prepend>
+                <svg-icon iconName="password" class="regular"></svg-icon>
+              </template>
             </el-input>
           </el-form-item>
           <el-collapse-transition>
-            <el-form-item v-if="isSignUp" label="确认密码" prop="pass2" class="item-form" :rules="rules.pass2">
+            <el-form-item
+              v-if="isSignUp"
+              label="确认密码"
+              prop="pass2"
+              class="item-form"
+              :rules="rules.pass2"
+            >
               <el-input
                 v-model="ruleForm.pass2"
                 type="password"
@@ -37,12 +61,21 @@
                 minlength="6"
                 maxlength="20"
               >
-                <template #prepend> <svg-icon iconName="password" class="regular"></svg-icon> </template
+                <template #prepend>
+                  <svg-icon
+                    iconName="password"
+                    class="regular"
+                  ></svg-icon> </template
               ></el-input>
             </el-form-item>
           </el-collapse-transition>
 
-          <el-form-item label="验证码" prop="code" class="item-form" :rules="rules.code">
+          <el-form-item
+            label="验证码"
+            prop="code"
+            class="item-form"
+            :rules="rules.code"
+          >
             <el-row :gutter="10" class="clearfix">
               <el-col :span="16">
                 <el-input
@@ -59,19 +92,31 @@
                 </el-input>
               </el-col>
               <el-col :span="8">
-                <el-button type="success" class="block" :disabled="codeButton.status" @click="getSms">
+                <el-button
+                  type="success"
+                  class="block"
+                  :disabled="codeButton.status"
+                  @click="getSms"
+                >
                   {{ codeButton.text }}
                 </el-button>
               </el-col>
             </el-row>
           </el-form-item>
           <el-form-item>
-            <el-button type="danger" :disabled="loginButtonStatus" class="login-btn block" @click="submitForm">
-              {{ isSignUp ? '注册' : '登录' }}
+            <el-button
+              type="danger"
+              :disabled="loginButtonStatus"
+              class="login-btn block"
+              @click="submitForm"
+            >
+              {{ isSignUp ? "注册" : "登录" }}
             </el-button>
           </el-form-item>
           <transition name="el-fade-in-linear">
-            <el-link type="info" v-show="!isSignUp" class="forgot-pass">Forgot password?</el-link>
+            <el-link type="info" v-show="!isSignUp" class="forgot-pass"
+              >Forgot password?</el-link
+            >
           </transition>
         </el-form>
       </div>
@@ -83,9 +128,15 @@
           </div>
           <div class="img__text m--in">
             <h2>One of us?</h2>
-            <p>If you already has an account, just sign in. We've missed you!</p>
+            <p>
+              If you already has an account, just sign in. We've missed you!
+            </p>
           </div>
-          <div class="img__btn" @click="handleToggle" style="user-select: none;">
+          <div
+            class="img__btn"
+            @click="handleToggle"
+            style="user-select: none;"
+          >
             <span class="m--up">Sign Up</span>
             <span class="m--in">Sign In</span>
           </div>
@@ -96,27 +147,32 @@
 </template>
 
 <script>
-import sha1 from 'js-sha1';
-import { GetSms, Register } from '@api/login';
-import { reactive, ref, onUnmounted, computed } from '@vue/composition-api';
-import validator from '@utils/validate';
+import sha1 from "js-sha1";
+import { GetSms, Register } from "@api/login";
+import { reactive, ref, onUnmounted, computed } from "@vue/composition-api";
+import validator from "@utils/validate";
 
 export default {
-  name: 'Login',
+  name: "Login",
   setup(props, { refs, root }) {
     /**
       context: { attrs, emit, listeners, parent, refs, root }
      */
     let timer;
     let loginCountdown = 60;
-    const model = ref('login'),
+    const model = ref("login"),
       isSignUp = ref(false),
       timerId = ref(60);
-    const codeButton = reactive({ text: '获取验证码', status: false }),
-      ruleForm = reactive({ email: '923033576@qq.com', pass: 'hql971028', code: '', pass2: '' });
+    const codeButton = reactive({ text: "获取验证码", status: false }),
+      ruleForm = reactive({
+        email: "923033576@qq.com",
+        pass: "hql971028",
+        code: "",
+        pass2: "",
+      });
     const loginButtonStatus = computed({
       set: (val) => val,
-      get: () => {
+      get() {
         if (timerId.value !== loginCountdown) return false;
         else return true;
       },
@@ -125,15 +181,15 @@ export default {
     const { email, pass, code, pass2 } = validator(ruleForm);
 
     const rules = {
-      email: [{ validator: email, trigger: 'blur' }],
-      pass: [{ require: true, validator: pass, trigger: 'blur' }],
-      pass2: [{ validator: pass2, trigger: 'blur' }],
-      code: [{ validator: code, trigger: 'blur' }],
+      email: [{ validator: email, trigger: "blur" }],
+      pass: [{ require: true, validator: pass, trigger: "blur" }],
+      pass2: [{ validator: pass2, trigger: "blur" }],
+      code: [{ validator: code, trigger: "blur" }],
     };
     // 重置表单数据
     const resetFormData = () => refs.ruleForm.resetFields();
 
-    const initCountDown = (text = '获取验证码') => {
+    const initCountDown = (text = "获取验证码") => {
       timer && clearInterval(timer);
       timer = null;
       updateCodeButton({ status: false, text });
@@ -145,7 +201,7 @@ export default {
     };
     const handleToggle = () => {
       isSignUp.value = !isSignUp.value;
-      if (isSignUp.value) (ruleForm.email = ''), (ruleForm.pass = '');
+      if (isSignUp.value) (ruleForm.email = ""), (ruleForm.pass = "");
       else resetFormData();
       initCountDown();
     };
@@ -155,24 +211,24 @@ export default {
       timer = setInterval(() => {
         timerId.value--;
         codeButton.text = `倒计时${timerId.value}秒`;
-        if (!timerId.value) initCountDown('重新获取');
+        if (!timerId.value) initCountDown("重新获取");
       }, 1000);
     };
     // 获取验证码
     const getSms = () => {
-      refs.ruleForm.validateField('email', (valid) => {
-        if (valid) root.$$message.error('请输入正确的邮箱地址');
+      refs.ruleForm.validateField("email", (valid) => {
+        if (valid) root.$$message.error("请输入正确的邮箱地址");
         else {
-          updateCodeButton({ text: '发送中', status: true });
+          updateCodeButton({ text: "发送中", status: true });
           loginButtonStatus.value = false;
-          let module = isSignUp ? 'register' : 'login';
+          let module = isSignUp ? "register" : "login";
           root.$submit(
             () => GetSms({ username: ruleForm.email, module }),
             () => {
               timer && clearInterval(timer);
               countDown();
             },
-            () => initCountDown('重新获取')
+            () => initCountDown("重新获取")
           );
         }
       });
@@ -180,12 +236,12 @@ export default {
     // 登录与注册
     const login = (data) =>
       root.$store
-        .dispatch('login/login', data)
-        .then(() => root.$router.push({ name: 'Index' }))
-        .then(() => root.$message.success('登陆成功!'))
+        .dispatch("login/login", data)
+        .then(() => root.$router.push({ name: "Index" }))
+        .then(() => root.$message.success("登陆成功!"))
         .catch(() => {
-          initCountDown('重新获取');
-          root.$message.error('登陆失败!');
+          initCountDown("重新获取");
+          root.$message.error("登陆失败!");
         });
     const register = (data) => {
       root.$submit(
@@ -202,9 +258,14 @@ export default {
         // 表单验证
         if (valid)
           isSignUp.value
-            ? register({ username: email, password: sha1(pass), code, module: 'register' })
+            ? register({
+                username: email,
+                password: sha1(pass),
+                code,
+                module: "register",
+              })
             : login({ username: email, password: sha1(pass), code });
-        else return root.$message.error('请填写信息', valid);
+        else return root.$message.error("请填写信息", valid);
       });
     };
     onUnmounted(() => initCountDown());
@@ -243,7 +304,6 @@ $contW: 900px;
 $imgW: 260px;
 $formW: $contW - $imgW;
 $switchAT: 1.2s;
-
 $inputW: 260px;
 $btnH: 36px;
 
@@ -303,7 +363,7 @@ $diffRatio: ($contW - $imgW) / $contW;
   height: 100%;
   padding-top: 360px;
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     right: 0;
     top: 0;
@@ -318,7 +378,7 @@ $diffRatio: ($contW - $imgW) / $contW;
   }
 
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: 0;
@@ -385,7 +445,7 @@ $diffRatio: ($contW - $imgW) / $contW;
     cursor: pointer;
 
     &:after {
-      content: '';
+      content: "";
       z-index: 2;
       position: absolute;
       left: 0;
@@ -431,7 +491,7 @@ h2 {
   width: 100%;
   font-size: 28px;
   margin: 0;
-  padding: 0.93em 0;
+  padding: 0.8em 0;
   text-align: center;
 }
 

@@ -1,5 +1,5 @@
-import store from '@store';
+import store from "@store";
 export function buttonPermission(permission) {
-  const button = store.getters['permission/button'];
+  const button = store.getters["permission/button"];
   return button.indexOf(permission) !== -1;
 }
