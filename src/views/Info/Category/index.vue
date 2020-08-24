@@ -7,6 +7,13 @@
       <el-row :gutter="30">
         <el-col :span="10">
           <div
+            class="noData"
+            v-show="!(categoryData.data && categoryData.data.length)"
+          >
+            暂无数据
+          </div>
+
+          <div
             v-for="item in categoryData.data"
             :key="item.id"
             class="category"
@@ -123,7 +130,7 @@ import {
   EditCategory,
   AddChildrenCategory,
 } from "@api/news";
-import { reactive, ref, onMounted, computed } from "@vue/composition-api";
+import { reactive, ref, computed, onBeforeMount } from "@vue/composition-api";
 import { indexArr } from "@utils/common";
 export default {
   name: "InfoCategory",
@@ -131,7 +138,8 @@ export default {
     const addFirstDisable = ref(true),
       addSecDisable = ref(true),
       submit_loading = ref(false),
-      showMenu = ref(null);
+      showMenu = ref(null),
+      loadingData = ref(true);
     // submit_disabled = ref(true);
     const formData = reactive({ categoryName: "", secCategoryName: "" }),
       categoryData = reactive({ data: null }),
@@ -139,8 +147,7 @@ export default {
     const submit_disabled = computed(
       () => !(!addFirstDisable.value || !addSecDisable.value)
     );
-    const loadingData = computed(() => !categoryData.data);
-    // }
+
     // 工具函数
     const initForm = () => {
       refs.formData.resetFields();
@@ -214,10 +221,8 @@ export default {
       if (showMenu.value === item.id) showMenu.value = null;
       if (item.children) showMenu.value = item.id;
     };
-    const menuHidden = (id) => {
-      if (id === showMenu.value) return true;
-      return false;
-    };
+    const menuHidden = (id) => id === showMenu.value;
+
     const addFirstInput = () => {
       addFirstDisable.value = false;
       addSecDisable.value = true;
@@ -252,11 +257,14 @@ export default {
     const getCategoryAll = () =>
       root.$store
         .dispatch("common/getAllInfoCateGory")
-        .then((result) => (categoryData.data = result.data))
+        .then((result) => {
+          categoryData.data = result.data;
+          loadingData.value = false;
+        })
         .catch((err) => root.$message.error(err));
 
     // Dom挂载完成
-    onMounted(() => getCategoryAll());
+    onBeforeMount(() => getCategoryAll());
     return {
       addFirstDisable,
       showMenu,
@@ -295,34 +303,6 @@ export default {
   &:last-child::before {
     height: calc(100% - 51px);
   }
-  // & :first-child::after {
-  //   height: 59px;
-  // }
-  // ul {
-  //   position: relative;
-  //   &::before {
-  //     content: '';
-  //     height: calc(100% - 41px);
-  //     position: absolute;
-  //     bottom: 22px;
-  //     left: 47px;
-  //     border-left: 1px dotted #000;
-  //   }
-  // }
-  // h4::before {
-  //   position: absolute;
-  //   content: '';
-  //   height: 55px;
-  //   top: 28px;
-  //   left: 47px;
-  //   border-left: 1px dotted #000;
-  //   transition: all 0.3s ease 0s;
-  // }
-  // h4:not(:first-of-type)::before {
-  //   height: 124px;
-  //   top: -42px;
-  //   // height: calc(100% + 17px);
-  // }
   li {
     position: relative;
     list-style: none;
@@ -391,5 +371,8 @@ h4 {
 .el-col-14 {
   position: sticky;
   top: 15px;
+}
+.noData {
+  text-align: center;
 }
 </style>
