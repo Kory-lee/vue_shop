@@ -7,10 +7,11 @@
 
 ```bash
 #克隆项目
-git clone https://github.com/Kory-lee/admin-demo
+git clone https://github.com/Kory-lee/admin
 
 cd admin-demo
 
 npm i
 npm run serve
 ```
+
