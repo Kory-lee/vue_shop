@@ -1,14 +1,22 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+  <img alt="Vue logo" src="./assets/logo.png" />
+  <a-button :loading="loading" @click="handleClick">ant-design </a-button>
+  <!-- <router-view /> -->
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
-</style>
+<script lang="ts">
+import { Button as AButton } from "ant-design-vue";
+import { ref } from "vue";
+export default {
+  name: "App",
+  components: { AButton },
+  setup() {
+    const loading = ref(false);
+    const handleClick = () => {
+      console.log("1231");
+      loading.value = !loading.value;
+    };
+    return { loading, handleClick };
+  },
+};
+</script>
