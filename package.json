@@ -1,9 +1,10 @@
 {
-  "name": "vue-kory-admin",
-  "version": "0.0.0",
+  "name": "admin",
+  "version": "1.1.1",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "update": "yarn upgrade-interactive --latest"
   },
   "dependencies": {
     "ant-design-vue": "^2.0.0-beta.10",
@@ -33,7 +34,7 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/vue3-recommended",
+      "plugin:vue/vue3-strongly-recommended",
       "plugin:@typescript-eslint/recommended",
       "prettier/@typescript-eslint",
       "plugin:prettier/recommended"
