@@ -1,7 +1,6 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
-  <a-button :loading="loading" @click="handleClick">ant-design </a-button>
-  <!-- <router-view /> -->
+  <router-view />
 </template>
 
 <script lang="ts">
@@ -20,3 +19,6 @@ export default {
   },
 };
 </script>
+<style lang="less">
+@import "./styles/index.less";
+</style>

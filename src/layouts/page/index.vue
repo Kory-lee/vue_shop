@@ -1,7 +1,12 @@
-<template></template>
+<template>
+  <a-button>page</a-button>
+  <router-view />
+</template>
 
 <script lang="ts">
-export default {};
+import { defineComponent } from "vue";
+
+export default defineComponent({});
 </script>
 
 <style lang="less"></style>

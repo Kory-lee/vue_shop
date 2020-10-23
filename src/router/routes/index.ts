@@ -1,9 +1,14 @@
-import type { AppRouteModule, AppRouteRecordRaw } from "../types";
 import { DEFAULT_LAYOUT_COMPONENT } from "../constant";
-// import modules from "globby!/@/router/routes/modules/**/*.@(ts)";
+import type { AppRouteModule, AppRouteRecordRaw } from "../types";
+import dashboard from "./modules/dashboard";
+import { getRouteModule } from "/@/utils/routeHelper";
 
-// const routeModuleList: AppRouteModule[] = [];
+const routeModuleList: AppRouteModule[] = [dashboard];
 // Object.keys(modules).forEach((key) => routeModuleList.push(modules[key]));
+/*
+TODO 在store进行权限分配 动态引入
+*/
+export const asyncRoutes = [...getRouteModule(routeModuleList)];
 
 export const RootRoute: AppRouteRecordRaw = {
   path: "/",
@@ -13,5 +18,10 @@ export const RootRoute: AppRouteRecordRaw = {
   meta: { title: "Root" },
   children: [],
 };
-
-export const basicRoutes = [RootRoute];
+export const LoginRoute: AppRouteRecordRaw = {
+  path: "/login",
+  name: "Login",
+  component: () => import("/@/views/sys/login/Login.vue"),
+  meta: { title: "登录" },
+};
+export const basicRoutes = [RootRoute, ...asyncRoutes];

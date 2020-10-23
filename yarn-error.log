@@ -1,8 +1,8 @@
 Arguments: 
-  D:\Program Files\nodejs\node.exe C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add -D eslint-plugin-prettier
+  D:\Program Files\nodejs\node.exe C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add -D eslint-plugin-vue@next
 
 PATH: 
-  C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\Program Files\Git\cmd;D:\Program Files\nodejs\;C:\Users\Administrator\AppData\Local\Programs\Python\Python38-32\Scripts\;C:\Users\Administrator\AppData\Local\Programs\Python\Python38-32\;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;D:\Program Files (x86)\Egret\Egret Wing 3\bin;D:\AppData\Local\Programs\Microsoft VS Code\bin;D:\Program Files\Huawei\DevEco Studio\bin;;C:\Users\Administrator\AppData\Roaming\npm;C:\Users\Administrator\AppData\Roaming\npm;C:\Users\Administrator\AppData\Local\GitHubDesktop\bin;D:\Program Files (x86)\GitHub CLI\
+  C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\Program Files\Git\cmd;D:\Program Files\nodejs\;C:\Users\Administrator\AppData\Local\Programs\Python\Python38-32\Scripts\;C:\Users\Administrator\AppData\Local\Programs\Python\Python38-32\;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;D:\Program Files (x86)\Egret\Egret Wing 3\bin;D:\AppData\Local\Programs\Microsoft VS Code\bin;D:\Program Files\Huawei\DevEco Studio\bin;;C:\Users\Administrator\AppData\Roaming\npm;C:\Users\Administrator\AppData\Roaming\npm;C:\Users\Administrator\AppData\Local\GitHubDesktop\bin;D:\Program Files (x86)\GitHub CLI\;D:\Program Files\JetBrains\WebStorm 2020.2.3\bin;
 
 Yarn version: 
   1.22.10
@@ -14,17 +14,12 @@ Platform:
   win32 x64
 
 Trace: 
-  SyntaxError: E:\code\vue-kory-admin\package.json: Unexpected token ] in JSON at position 843
-      at JSON.parse (<anonymous>)
-      at C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:1625:59
-      at Generator.next (<anonymous>)
-      at step (C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:310:30)
-      at C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:321:13
+  Error: EPERM: operation not permitted, unlink 'E:\Documents\GitHub\admin\node_modules\vite\node_modules\esbuild\esbuild.exe'
 
 npm manifest: 
   {
-    "name": "vue-kory-admin",
-    "version": "0.0.0",
+    "name": "admin",
+    "version": "1.1.1",
     "scripts": {
       "dev": "vite",
       "build": "vite build"
@@ -37,15 +32,19 @@ npm manifest:
       "vuex": "^4.0.0-beta.4"
     },
     "devDependencies": {
-      "@vue/compiler-sfc": "^3.0.0-rc.1",
+      "@vue/compiler-sfc": "^3.0.2",
       "dotenv": "^8.2.0",
       "eslint": "^7.11.0",
-      "eslint-plugin-vue": "^7.0.0-beta.4",
+      "eslint-config-prettier": "^6.14.0",
+      "eslint-plugin-prettier": "^3.1.4",
+      "eslint-plugin-vue": "^7.1.0",
       "less": "^3.12.2",
       "prettier": "^2.1.2",
+      "rollup-plugin-analyzer": "^3.3.0",
       "ts-node": "^9.0.0",
       "typescript": "^4.0.3",
-      "vite": "^1.0.0-rc.4"
+      "vite": "^1.0.0-rc.4",
+      "vite-plugin-mock": "^1.0.2"
     },
     "eslintConfig": {
       "root": true,
@@ -56,7 +55,7 @@ npm manifest:
         "plugin:vue/vue3-recommended",
         "plugin:@typescript-eslint/recommended",
         "prettier/@typescript-eslint",
-        "plugin:prettier/recommended",
+        "plugin:prettier/recommended"
       ],
       "parserOptions": {
         "parser": "babel-eslint",
@@ -218,6 +217,18 @@ Lockfile:
       is-module "^1.0.0"
       resolve "^1.17.0"
   
+  "@rollup/plugin-node-resolve@^9.0.0":
+    version "9.0.0"
+    resolved "https://registry.npm.taobao.org/@rollup/plugin-node-resolve/download/@rollup/plugin-node-resolve-9.0.0.tgz?cache=0&sync_timestamp=1597328884850&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40rollup%2Fplugin-node-resolve%2Fdownload%2F%40rollup%2Fplugin-node-resolve-9.0.0.tgz#39bd0034ce9126b39c1699695f440b4b7d2b62e6"
+    integrity sha1-Ob0ANM6RJrOcFplpX0QLS30rYuY=
+    dependencies:
+      "@rollup/pluginutils" "^3.1.0"
+      "@types/resolve" "1.17.1"
+      builtin-modules "^3.1.0"
+      deepmerge "^4.2.2"
+      is-module "^1.0.0"
+      resolve "^1.17.0"
+  
   "@rollup/pluginutils@^3.0.8", "@rollup/pluginutils@^3.0.9", "@rollup/pluginutils@^3.1.0":
     version "3.1.0"
     resolved "https://registry.npm.taobao.org/@rollup/pluginutils/download/@rollup/pluginutils-3.1.0.tgz?cache=0&sync_timestamp=1597328386643&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40rollup%2Fpluginutils%2Fdownload%2F%40rollup%2Fpluginutils-3.1.0.tgz#706b4524ee6dc8b103b3c995533e5ad680c02b9b"
@@ -225,6 +236,15 @@ Lockfile:
     dependencies:
       "@types/estree" "0.0.39"
       estree-walker "^1.0.1"
+      picomatch "^2.2.2"
+  
+  "@rollup/pluginutils@^4.0.0":
+    version "4.0.0"
+    resolved "https://registry.npm.taobao.org/@rollup/pluginutils/download/@rollup/pluginutils-4.0.0.tgz?cache=0&sync_timestamp=1597328386643&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40rollup%2Fpluginutils%2Fdownload%2F%40rollup%2Fpluginutils-4.0.0.tgz#e18e9f5a3925779fc15209dd316c1bd260d195ef"
+    integrity sha1-4Y6fWjkld5/BUgndMWwb0mDRle8=
+    dependencies:
+      "@types/estree" "0.0.45"
+      estree-walker "^2.0.1"
       picomatch "^2.2.2"
   
   "@simonwep/pickr@~1.7.0":
@@ -272,7 +292,7 @@ Lockfile:
       "@types/keygrip" "*"
       "@types/node" "*"
   
-  "@types/estree@*":
+  "@types/estree@*", "@types/estree@0.0.45":
     version "0.0.45"
     resolved "https://registry.npm.taobao.org/@types/estree/download/@types/estree-0.0.45.tgz#e9387572998e5ecdac221950dab3e8c3b16af884"
     integrity sha1-6Th1cpmOXs2sIhlQ2rPow7Fq+IQ=
@@ -415,7 +435,7 @@ Lockfile:
       "@vue/compiler-core" "3.0.2"
       "@vue/shared" "3.0.2"
   
-  "@vue/compiler-sfc@^3.0.0-rc.1", "@vue/compiler-sfc@^3.0.0-rc.5":
+  "@vue/compiler-sfc@^3.0.0-rc.5":
     version "3.0.1"
     resolved "https://registry.npm.taobao.org/@vue/compiler-sfc/download/@vue/compiler-sfc-3.0.1.tgz?cache=0&sync_timestamp=1602780329183&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40vue%2Fcompiler-sfc%2Fdownload%2F%40vue%2Fcompiler-sfc-3.0.1.tgz#f340f8f75b5c1c4509e0f3a12c79d1544899b663"
     integrity sha1-80D491tcHEUJ4POhLHnRVEiZtmM=
@@ -437,6 +457,28 @@ Lockfile:
       postcss-selector-parser "^6.0.4"
       source-map "^0.6.1"
   
+  "@vue/compiler-sfc@^3.0.2":
+    version "3.0.2"
+    resolved "https://registry.npm.taobao.org/@vue/compiler-sfc/download/@vue/compiler-sfc-3.0.2.tgz#22c70fed72c347a4d5fa2db2e80594b3193dce57"
+    integrity sha1-IscP7XLDR6TV+i2y6AWUsxk9zlc=
+    dependencies:
+      "@babel/parser" "^7.12.0"
+      "@babel/types" "^7.12.0"
+      "@vue/compiler-core" "3.0.2"
+      "@vue/compiler-dom" "3.0.2"
+      "@vue/compiler-ssr" "3.0.2"
+      "@vue/shared" "3.0.2"
+      consolidate "^0.16.0"
+      estree-walker "^2.0.1"
+      hash-sum "^2.0.0"
+      lru-cache "^5.1.1"
+      magic-string "^0.25.7"
+      merge-source-map "^1.1.0"
+      postcss "^7.0.32"
+      postcss-modules "^3.2.2"
+      postcss-selector-parser "^6.0.4"
+      source-map "^0.6.1"
+  
   "@vue/compiler-ssr@3.0.1":
     version "3.0.1"
     resolved "https://registry.npm.taobao.org/@vue/compiler-ssr/download/@vue/compiler-ssr-3.0.1.tgz?cache=0&sync_timestamp=1602780331061&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40vue%2Fcompiler-ssr%2Fdownload%2F%40vue%2Fcompiler-ssr-3.0.1.tgz#0455b011d72d4ed02faa93610f14981c3d44a079"
@@ -444,6 +486,14 @@ Lockfile:
     dependencies:
       "@vue/compiler-dom" "3.0.1"
       "@vue/shared" "3.0.1"
+  
+  "@vue/compiler-ssr@3.0.2":
+    version "3.0.2"
+    resolved "https://registry.npm.taobao.org/@vue/compiler-ssr/download/@vue/compiler-ssr-3.0.2.tgz?cache=0&sync_timestamp=1603225505275&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40vue%2Fcompiler-ssr%2Fdownload%2F%40vue%2Fcompiler-ssr-3.0.2.tgz#73af4d274a79bfcc72a996a9b45f1072e7deaa26"
+    integrity sha1-c69NJ0p5v8xyqZaptF8QcufeqiY=
+    dependencies:
+      "@vue/compiler-dom" "3.0.2"
+      "@vue/shared" "3.0.2"
   
   "@vue/reactivity@3.0.1":
     version "3.0.1"
@@ -712,6 +762,11 @@ Lockfile:
     resolved "https://registry.npm.taobao.org/builtin-modules/download/builtin-modules-3.1.0.tgz#aad97c15131eb76b65b50ef208e7584cd76a7484"
     integrity sha1-qtl8FRMet2tltQ7yCOdYTNdqdIQ=
   
+  bytes@3.1.0:
+    version "3.1.0"
+    resolved "https://registry.npm.taobao.org/bytes/download/bytes-3.1.0.tgz#f6cf7933a360e0588fa9fde85651cdc7f805d1f6"
+    integrity sha1-9s95M6Ng4FiPqf3oVlHNx/gF0fY=
+  
   cache-content-type@^1.0.0:
     version "1.0.1"
     resolved "https://registry.npm.taobao.org/cache-content-type/download/cache-content-type-1.0.1.tgz#035cde2b08ee2129f4a8315ea8f00a00dba1453c"
@@ -761,7 +816,7 @@ Lockfile:
       ansi-styles "^4.1.0"
       supports-color "^7.1.0"
   
-  chalk@^4.0.0:
+  chalk@^4.0.0, chalk@^4.1.0:
     version "4.1.0"
     resolved "https://registry.npm.taobao.org/chalk/download/chalk-4.1.0.tgz?cache=0&sync_timestamp=1593529719605&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fchalk%2Fdownload%2Fchalk-4.1.0.tgz#4e14870a618d9e2edd97dd8345fd9d9dc315646a"
     integrity sha1-ThSHCmGNni7dl92DRf2dncMVZGo=
@@ -769,7 +824,7 @@ Lockfile:
       ansi-styles "^4.1.0"
       supports-color "^7.1.0"
   
-  chokidar@^3.3.1:
+  chokidar@^3.3.1, chokidar@^3.4.2:
     version "3.4.3"
     resolved "https://registry.npm.taobao.org/chokidar/download/chokidar-3.4.3.tgz?cache=0&sync_timestamp=1602585438968&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fchokidar%2Fdownload%2Fchokidar-3.4.3.tgz#c1df38231448e45ca4ac588e6c79573ba6a57d5b"
     integrity sha1-wd84IxRI5FykrFiObHlXO6alfVs=
@@ -807,6 +862,16 @@ Lockfile:
     version "1.0.4"
     resolved "https://registry.npm.taobao.org/clone/download/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
     integrity sha1-2jCcwmPfFZlMaIypAheco8fNfH4=
+  
+  co-body@^6.0.0:
+    version "6.1.0"
+    resolved "https://registry.npm.taobao.org/co-body/download/co-body-6.1.0.tgz#d87a8efc3564f9bfe3aced8ef5cd04c7a8766547"
+    integrity sha1-2HqO/DVk+b/jrO2O9c0Ex6h2ZUc=
+    dependencies:
+      inflation "^2.0.0"
+      qs "^6.5.2"
+      raw-body "^2.3.3"
+      type-is "^1.6.16"
   
   co@^4.6.0:
     version "4.6.0"
@@ -895,6 +960,11 @@ Lockfile:
     dependencies:
       depd "~2.0.0"
       keygrip "~1.1.0"
+  
+  copy-to@^2.0.1:
+    version "2.0.1"
+    resolved "https://registry.npm.taobao.org/copy-to/download/copy-to-2.0.1.tgz#2680fbb8068a48d08656b6098092bdafc906f4a5"
+    integrity sha1-JoD7uAaKSNCGVrYJgJK9r8kG9KU=
   
   core-js@^3.6.5:
     version "3.6.5"
@@ -1112,6 +1182,11 @@ Lockfile:
     resolved "https://registry.npm.taobao.org/esbuild/download/esbuild-0.6.34.tgz#76565a60e006f45d5f273b6e59e61ed0816551f5"
     integrity sha1-dlZaYOAG9F1fJztuWeYe0IFlUfU=
   
+  esbuild@^0.7.1:
+    version "0.7.19"
+    resolved "https://registry.npm.taobao.org/esbuild/download/esbuild-0.7.19.tgz?cache=0&sync_timestamp=1603264728079&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fesbuild%2Fdownload%2Fesbuild-0.7.19.tgz#6f8b94445e06f8bf6125183a877de6046c965abc"
+    integrity sha1-b4uURF4G+L9hJRg6h33mBGyWWrw=
+  
   escape-html@^1.0.3:
     version "1.0.3"
     resolved "https://registry.npm.taobao.org/escape-html/download/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
@@ -1122,15 +1197,29 @@ Lockfile:
     resolved "https://registry.npm.taobao.org/escape-string-regexp/download/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
     integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
   
-  eslint-plugin-vue@^7.0.0-beta.4:
-    version "7.0.0-beta.4"
-    resolved "https://registry.npm.taobao.org/eslint-plugin-vue/download/eslint-plugin-vue-7.0.0-beta.4.tgz?cache=0&sync_timestamp=1603027037416&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Feslint-plugin-vue%2Fdownload%2Feslint-plugin-vue-7.0.0-beta.4.tgz#aa13b946702c4de1b8f7c3467698185775b11fdb"
-    integrity sha1-qhO5RnAsTeG498NGdpgYV3WxH9s=
+  eslint-config-prettier@^6.14.0:
+    version "6.14.0"
+    resolved "https://registry.npm.taobao.org/eslint-config-prettier/download/eslint-config-prettier-6.14.0.tgz?cache=0&sync_timestamp=1603294482859&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Feslint-config-prettier%2Fdownload%2Feslint-config-prettier-6.14.0.tgz#390e7863a8ae99970981933826476169285b3a27"
+    integrity sha1-OQ54Y6iumZcJgZM4JkdhaShbOic=
+    dependencies:
+      get-stdin "^6.0.0"
+  
+  eslint-plugin-prettier@^3.1.4:
+    version "3.1.4"
+    resolved "https://registry.npm.taobao.org/eslint-plugin-prettier/download/eslint-plugin-prettier-3.1.4.tgz#168ab43154e2ea57db992a2cd097c828171f75c2"
+    integrity sha1-Foq0MVTi6lfbmSos0JfIKBcfdcI=
+    dependencies:
+      prettier-linter-helpers "^1.0.0"
+  
+  eslint-plugin-vue@^7.1.0:
+    version "7.1.0"
+    resolved "https://registry.npm.taobao.org/eslint-plugin-vue/download/eslint-plugin-vue-7.1.0.tgz#832d83e4e1e480c7285b2bc3ff1076cd0dca7a5b"
+    integrity sha1-gy2D5OHkgMcoWyvD/xB2zQ3Kels=
     dependencies:
       eslint-utils "^2.1.0"
       natural-compare "^1.4.0"
       semver "^7.3.2"
-      vue-eslint-parser "^7.1.0"
+      vue-eslint-parser "^7.1.1"
   
   eslint-scope@^5.0.0, eslint-scope@^5.1.1:
     version "5.1.1"
@@ -1297,6 +1386,11 @@ Lockfile:
     resolved "https://registry.npm.taobao.org/fast-deep-equal/download/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
     integrity sha1-On1WtVnWy8PrUSMlJE5hmmXGxSU=
   
+  fast-diff@^1.1.2:
+    version "1.2.0"
+    resolved "https://registry.npm.taobao.org/fast-diff/download/fast-diff-1.2.0.tgz#73ee11982d86caaf7959828d519cfe927fac5f03"
+    integrity sha1-c+4RmC2Gyq95WYKNUZz+kn+sXwM=
+  
   fast-glob@^3.1.1:
     version "3.2.4"
     resolved "https://registry.npm.taobao.org/fast-glob/download/fast-glob-3.2.4.tgz#d20aefbf99579383e7f3cc66529158c9b98554d3"
@@ -1396,6 +1490,11 @@ Lockfile:
     dependencies:
       loader-utils "^1.1.0"
   
+  get-stdin@^6.0.0:
+    version "6.0.0"
+    resolved "https://registry.npm.taobao.org/get-stdin/download/get-stdin-6.0.0.tgz#9e09bf712b360ab9225e812048f71fde9c89657b"
+    integrity sha1-ngm/cSs2CrkiXoEgSPcf3pyJZXs=
+  
   get-stream@^5.0.0:
     version "5.2.0"
     resolved "https://registry.npm.taobao.org/get-stream/download/get-stream-5.2.0.tgz?cache=0&sync_timestamp=1597056544847&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fget-stream%2Fdownload%2Fget-stream-5.2.0.tgz#4966a1795ee5ace65e706c4b7beb71257d6e22d3"
@@ -1410,7 +1509,7 @@ Lockfile:
     dependencies:
       is-glob "^4.0.1"
   
-  glob@^7.1.2, glob@^7.1.3:
+  glob@^7.1.2, glob@^7.1.3, glob@^7.1.6:
     version "7.1.6"
     resolved "https://registry.npm.taobao.org/glob/download/glob-7.1.6.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fglob%2Fdownload%2Fglob-7.1.6.tgz#141f33b81a7c2492e125594307480c46679278a6"
     integrity sha1-FB8zuBp8JJLhJVlDB0gMRmeSeKY=
@@ -1469,6 +1568,17 @@ Lockfile:
       deep-equal "~1.0.1"
       http-errors "~1.7.2"
   
+  http-errors@1.7.3, http-errors@~1.7.2:
+    version "1.7.3"
+    resolved "https://registry.npm.taobao.org/http-errors/download/http-errors-1.7.3.tgz#6c619e4f9c60308c38519498c14fbb10aacebb06"
+    integrity sha1-bGGeT5xgMIw4UZSYwU+7EKrOuwY=
+    dependencies:
+      depd "~1.1.2"
+      inherits "2.0.4"
+      setprototypeof "1.1.1"
+      statuses ">= 1.5.0 < 2"
+      toidentifier "1.0.0"
+  
   http-errors@^1.6.3, http-errors@^1.7.3:
     version "1.8.0"
     resolved "https://registry.npm.taobao.org/http-errors/download/http-errors-1.8.0.tgz#75d1bbe497e1044f51e4ee9e704a62f28d336507"
@@ -1498,17 +1608,6 @@ Lockfile:
       setprototypeof "1.1.0"
       statuses ">= 1.4.0 < 2"
   
-  http-errors@~1.7.2:
-    version "1.7.3"
-    resolved "https://registry.npm.taobao.org/http-errors/download/http-errors-1.7.3.tgz#6c619e4f9c60308c38519498c14fbb10aacebb06"
-    integrity sha1-bGGeT5xgMIw4UZSYwU+7EKrOuwY=
-    dependencies:
-      depd "~1.1.2"
-      inherits "2.0.4"
-      setprototypeof "1.1.1"
-      statuses ">= 1.5.0 < 2"
-      toidentifier "1.0.0"
-  
   http-proxy@^1.16.2:
     version "1.18.1"
     resolved "https://registry.npm.taobao.org/http-proxy/download/http-proxy-1.18.1.tgz?cache=0&sync_timestamp=1593529719673&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fhttp-proxy%2Fdownload%2Fhttp-proxy-1.18.1.tgz#401541f0534884bbf95260334e72f88ee3976549"
@@ -1522,6 +1621,13 @@ Lockfile:
     version "1.1.1"
     resolved "https://registry.npm.taobao.org/human-signals/download/human-signals-1.1.1.tgz#c5b1cd14f50aeae09ab6c59fe63ba3395fe4dfa3"
     integrity sha1-xbHNFPUK6uCatsWf5jujOV/k36M=
+  
+  iconv-lite@0.4.24:
+    version "0.4.24"
+    resolved "https://registry.npm.taobao.org/iconv-lite/download/iconv-lite-0.4.24.tgz?cache=0&sync_timestamp=1594184250387&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ficonv-lite%2Fdownload%2Ficonv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
+    integrity sha1-ICK0sl+93CHS9SSXSkdKr+czkIs=
+    dependencies:
+      safer-buffer ">= 2.1.2 < 3"
   
   icss-replace-symbols@^1.1.0:
     version "1.1.0"
@@ -1589,6 +1695,11 @@ Lockfile:
     version "1.0.1"
     resolved "https://registry.npm.taobao.org/indexes-of/download/indexes-of-1.0.1.tgz#f30f716c8e2bd346c7b67d3df3915566a7c05607"
     integrity sha1-8w9xbI4r00bHtn0985FVZqfAVgc=
+  
+  inflation@^2.0.0:
+    version "2.0.0"
+    resolved "https://registry.npm.taobao.org/inflation/download/inflation-2.0.0.tgz#8b417e47c28f925a45133d914ca1fd389107f30f"
+    integrity sha1-i0F+R8KPklpFEz2RTKH9OJEH8w8=
   
   inflight@^1.0.4:
     version "1.0.6"
@@ -1736,6 +1847,11 @@ Lockfile:
       merge-stream "^2.0.0"
       supports-color "^6.1.0"
   
+  joycon@^2.2.5:
+    version "2.2.5"
+    resolved "https://registry.npm.taobao.org/joycon/download/joycon-2.2.5.tgz#8d4cf4cbb2544d7b7583c216fcdfec19f6be1615"
+    integrity sha1-jUz0y7JUTXt1g8IW/N/sGfa+FhU=
+  
   "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
     version "4.0.0"
     resolved "https://registry.npm.taobao.org/js-tokens/download/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -1793,6 +1909,14 @@ Lockfile:
     integrity sha1-hxsWgdXhWcYqRFsMdLYV4JF+ciY=
     dependencies:
       tsscmp "1.0.6"
+  
+  koa-bodyparser@^4.3.0:
+    version "4.3.0"
+    resolved "https://registry.npm.taobao.org/koa-bodyparser/download/koa-bodyparser-4.3.0.tgz#274c778555ff48fa221ee7f36a9fbdbace22759a"
+    integrity sha1-J0x3hVX/SPoiHufzap+9us4idZo=
+    dependencies:
+      co-body "^6.0.0"
+      copy-to "^2.0.1"
   
   koa-compose@^3.0.0:
     version "3.2.1"
@@ -2370,6 +2494,13 @@ Lockfile:
     resolved "https://registry.npm.taobao.org/prelude-ls/download/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
     integrity sha1-3rxkidem5rDnYRiIzsiAM30xY5Y=
   
+  prettier-linter-helpers@^1.0.0:
+    version "1.0.0"
+    resolved "https://registry.npm.taobao.org/prettier-linter-helpers/download/prettier-linter-helpers-1.0.0.tgz#d23d41fe1375646de2d0104d3454a3008802cf7b"
+    integrity sha1-0j1B/hN1ZG3i0BBNNFSjAIgCz3s=
+    dependencies:
+      fast-diff "^1.1.2"
+  
   prettier@^2.1.2:
     version "2.1.2"
     resolved "https://registry.npm.taobao.org/prettier/download/prettier-2.1.2.tgz?cache=0&sync_timestamp=1600215475668&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fprettier%2Fdownload%2Fprettier-2.1.2.tgz#3050700dae2e4c8b67c4c3f666cdb8af405e1ce5"
@@ -2398,6 +2529,11 @@ Lockfile:
     resolved "https://registry.npm.taobao.org/punycode/download/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
     integrity sha1-tYsBCsQMIsVldhbI0sLALHv0eew=
   
+  qs@^6.5.2:
+    version "6.9.4"
+    resolved "https://registry.npm.taobao.org/qs/download/qs-6.9.4.tgz#9090b290d1f91728d3c22e54843ca44aea5ab687"
+    integrity sha1-kJCykNH5FyjTwi5UhDykSupatoc=
+  
   raf@^3.4.0:
     version "3.4.1"
     resolved "https://registry.npm.taobao.org/raf/download/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
@@ -2411,6 +2547,16 @@ Lockfile:
     integrity sha1-32+ENy8CcNxlzfYpE0mrekc9Tyo=
     dependencies:
       safe-buffer "^5.1.0"
+  
+  raw-body@^2.3.3:
+    version "2.4.1"
+    resolved "https://registry.npm.taobao.org/raw-body/download/raw-body-2.4.1.tgz#30ac82f98bb5ae8c152e67149dac8d55153b168c"
+    integrity sha1-MKyC+Yu1rowVLmcUnayNVRU7Fow=
+    dependencies:
+      bytes "3.1.0"
+      http-errors "1.7.3"
+      iconv-lite "0.4.24"
+      unpipe "1.0.0"
   
   read-cache@^1.0.0:
     version "1.0.0"
@@ -2491,6 +2637,11 @@ Lockfile:
     dependencies:
       glob "^7.1.3"
   
+  rollup-plugin-analyzer@^3.3.0:
+    version "3.3.0"
+    resolved "https://registry.npm.taobao.org/rollup-plugin-analyzer/download/rollup-plugin-analyzer-3.3.0.tgz#52fb30465ae927d9c078b6ec90c578cfb9164fc2"
+    integrity sha1-UvswRlrpJ9nAeLbskMV4z7kWT8I=
+  
   rollup-plugin-dynamic-import-variables@^1.0.1:
     version "1.1.0"
     resolved "https://registry.npm.taobao.org/rollup-plugin-dynamic-import-variables/download/rollup-plugin-dynamic-import-variables-1.1.0.tgz#4981d38907a471b35234398a09047bef47a2006a"
@@ -2500,6 +2651,15 @@ Lockfile:
       estree-walker "^2.0.1"
       globby "^11.0.0"
       magic-string "^0.25.7"
+  
+  rollup-plugin-esbuild@^2.5.0:
+    version "2.5.2"
+    resolved "https://registry.npm.taobao.org/rollup-plugin-esbuild/download/rollup-plugin-esbuild-2.5.2.tgz#fd7d4a88518898012a9d07e4c3ef8b4009c244d3"
+    integrity sha1-/X1KiFGImAEqnQfkw++LQAnCRNM=
+    dependencies:
+      "@rollup/pluginutils" "^4.0.0"
+      joycon "^2.2.5"
+      strip-json-comments "^3.1.1"
   
   rollup-plugin-terser@^5.3.0:
     version "5.3.1"
@@ -2540,6 +2700,13 @@ Lockfile:
     optionalDependencies:
       fsevents "~2.1.2"
   
+  rollup@^2.26.11:
+    version "2.32.1"
+    resolved "https://registry.npm.taobao.org/rollup/download/rollup-2.32.1.tgz?cache=0&sync_timestamp=1603264977535&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frollup%2Fdownload%2Frollup-2.32.1.tgz#625a92c54f5b4d28ada12d618641491d4dbb548c"
+    integrity sha1-YlqSxU9bTSitoS1hhkFJHU27VIw=
+    optionalDependencies:
+      fsevents "~2.1.2"
+  
   run-parallel@^1.1.9:
     version "1.1.9"
     resolved "https://registry.npm.taobao.org/run-parallel/download/run-parallel-1.1.9.tgz#c9dd3a7cf9f4b2c4b6244e173a6ed866e61dd679"
@@ -2554,6 +2721,11 @@ Lockfile:
     version "5.2.1"
     resolved "https://registry.npm.taobao.org/safe-buffer/download/safe-buffer-5.2.1.tgz#1eaf9fa9bdb1fdd4ec75f58f9cdb4e6b7827eec6"
     integrity sha1-Hq+fqb2x/dTsdfWPnNtOa3gn7sY=
+  
+  "safer-buffer@>= 2.1.2 < 3":
+    version "2.1.2"
+    resolved "https://registry.npm.taobao.org/safer-buffer/download/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
+    integrity sha1-RPoWGwGHuVSd2Eu5GAL5vYOFzWo=
   
   scroll-into-view-if-needed@^2.2.25:
     version "2.2.26"
@@ -2850,6 +3022,11 @@ Lockfile:
     resolved "https://registry.npm.taobao.org/universalify/download/universalify-1.0.0.tgz#b61a1da173e8435b2fe3c67d29b9adf8594bd16d"
     integrity sha1-thodoXPoQ1sv48Z9Kbmt+FlL0W0=
   
+  unpipe@1.0.0:
+    version "1.0.0"
+    resolved "https://registry.npm.taobao.org/unpipe/download/unpipe-1.0.0.tgz#b2bf4ee8514aae6165b4817829d21b2ef49904ec"
+    integrity sha1-sr9O6FFKrmFltIF4KdIbLvSZBOw=
+  
   uri-js@^4.2.2:
     version "4.4.0"
     resolved "https://registry.npm.taobao.org/uri-js/download/uri-js-4.4.0.tgz?cache=0&sync_timestamp=1598814447081&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Furi-js%2Fdownload%2Furi-js-4.4.0.tgz#aa714261de793e8a82347a7bcc9ce74e86f28602"
@@ -2871,6 +3048,20 @@ Lockfile:
     version "1.1.2"
     resolved "https://registry.npm.taobao.org/vary/download/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
     integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
+  
+  vite-plugin-mock@^1.0.2:
+    version "1.0.2"
+    resolved "https://registry.npm.taobao.org/vite-plugin-mock/download/vite-plugin-mock-1.0.2.tgz#07bdd67a8006fd60a6a83198479f3c0c57c7df53"
+    integrity sha1-B73WeoAG/WCmqDGYR588DFfH31M=
+    dependencies:
+      "@rollup/plugin-node-resolve" "^9.0.0"
+      chalk "^4.1.0"
+      chokidar "^3.4.2"
+      esbuild "^0.7.1"
+      glob "^7.1.6"
+      koa-bodyparser "^4.3.0"
+      rollup "^2.26.11"
+      rollup-plugin-esbuild "^2.5.0"
   
   vite@^1.0.0-rc.4:
     version "1.0.0-rc.4"
@@ -2928,7 +3119,7 @@ Lockfile:
       vue "^3.0.0-rc.5"
       ws "^7.2.3"
   
-  vue-eslint-parser@^7.1.0:
+  vue-eslint-parser@^7.1.1:
     version "7.1.1"
     resolved "https://registry.npm.taobao.org/vue-eslint-parser/download/vue-eslint-parser-7.1.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-eslint-parser%2Fdownload%2Fvue-eslint-parser-7.1.1.tgz#c43c1c715ff50778b9a7e9a4e16921185f3425d3"
     integrity sha1-xDwccV/1B3i5p+mk4WkhGF80JdM=

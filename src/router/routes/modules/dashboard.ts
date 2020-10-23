@@ -1,5 +1,5 @@
+import { PAGE_LAYOUT_COMPONENT } from '/@/router/constant';
 import type { AppRouteModule } from "/@/router/types";
-import {PAGE_LAYOUT_COMPONENT} from '/@/router/constant'
 export default {
   layout: {
     path: "/dashboard",
