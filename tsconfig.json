@@ -14,12 +14,21 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "experimentalDecorators": true,
-    "lib": ["dom", "esnext"],
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "incremental": true,
     "skipLibCheck": true,
     "paths": {
-      "/@/*": ["src/*"]
+      "/@/*": [
+        "src/*"
+      ]
     }
   },
-  "exclude": ["node_modules", "**/node_modules/*", "dist", "**/*.js"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.js"
+  ]
 }
