@@ -1,5 +1,5 @@
+import { Button, Form, Input } from "ant-design-vue";
 import type { App } from "vue";
-import { Form, Input, Button } from "ant-design-vue";
 
 export default {
   install(app: App<Element>) {

@@ -5,6 +5,7 @@ import { getRouteModule } from "/@/utils/routeHelper";
 
 const routeModuleList: AppRouteModule[] = [dashboard];
 // Object.keys(modules).forEach((key) => routeModuleList.push(modules[key]));
+
 /*
 TODO 在store进行权限分配 动态引入
 */
@@ -16,7 +17,14 @@ export const RootRoute: AppRouteRecordRaw = {
   component: DEFAULT_LAYOUT_COMPONENT,
   redirect: "/dashboard",
   meta: { title: "Root" },
-  children: [],
+  children: [
+    {
+      path: "dashboard",
+      name: "Dashboard",
+      component: () => import("/@/views/dashboard/index"),
+      meta: { title: "首页", icon: "home-4-line" },
+    },
+  ],
 };
 export const LoginRoute: AppRouteRecordRaw = {
   path: "/login",
@@ -24,4 +32,4 @@ export const LoginRoute: AppRouteRecordRaw = {
   component: () => import("/@/views/sys/login/Login.vue"),
   meta: { title: "登录" },
 };
-export const basicRoutes = [RootRoute, ...asyncRoutes];
+export const basicRoutes = [RootRoute];

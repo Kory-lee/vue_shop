@@ -11,9 +11,9 @@ export function getRouteModule(moduleList: AppRouteModule[]) {
     const flatList = toRaw(router.getRoutes()).filter(
       (item) => item.children?.length === 0
     );
-    try {
-      (router as any) = null;
-    } catch (error) {}
+    // try {
+    //   (router as any) = null;
+    // } catch (error) {}
     flatList.forEach((item) => (item.path = `${layout.path}${item.path}`));
     layout.children = (flatList as unknown) as AppRouteRecordRaw[];
     ret.push(layout);
