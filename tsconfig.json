@@ -7,28 +7,20 @@
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "strictFunctionTypes": false,
-    "jsx": "react",
+    "jsx": "preserve",
     "baseUrl": ".",
     "allowJs": true,
     "esModuleInterop": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "experimentalDecorators": true,
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "incremental": true,
     "skipLibCheck": true,
     "paths": {
-      "/@/*": [
-        "src/*"
-      ]
+      "/@/*": ["src/*"],
+      "/*/":["/"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.js"
-  ]
+  "exclude": ["node_modules", "dist", "**/*.js"]
 }

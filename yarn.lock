@@ -314,6 +314,11 @@
   resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-14.11.10.tgz?cache=0&sync_timestamp=1602874307949&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-14.11.10.tgz#8c102aba13bf5253f35146affbf8b26275069bef"
   integrity sha1-jBAquhO/UlPzUUav+/iyYnUGm+8=
 
+"@types/node@^14.14.7":
+  version "14.14.7"
+  resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-14.14.7.tgz#8ea1e8f8eae2430cf440564b98c6dfce1ec5945d"
+  integrity sha1-jqHo+OriQwz0QFZLmMbfzh7FlF0=
+
 "@types/parse-json@^4.0.0":
   version "4.0.0"
   resolved "https://registry.npm.taobao.org/@types/parse-json/download/@types/parse-json-4.0.0.tgz?cache=0&sync_timestamp=1596840197198&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fparse-json%2Fdownload%2F%40types%2Fparse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
@@ -2915,6 +2920,11 @@ vite-plugin-mock@^1.0.6:
     koa-bodyparser "^4.3.0"
     rollup "^2.32.1"
     rollup-plugin-esbuild "^2.5.2"
+
+vite-transform-globby-import@^1.0.0-rc.7:
+  version "1.0.0-rc.7"
+  resolved "https://registry.npm.taobao.org/vite-transform-globby-import/download/vite-transform-globby-import-1.0.0-rc.7.tgz#605fd29778f142181b668cfc9398b8272e5a7e44"
+  integrity sha1-YF/Sl3jxQhgbZoz8k5i4Jy5afkQ=
 
 vite@^1.0.0-rc.9:
   version "1.0.0-rc.9"
