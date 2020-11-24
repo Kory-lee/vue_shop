@@ -8,6 +8,6 @@ Object.keys(files).forEach((key: string) => {
   modules[obj.name] = obj;
   // delete modules[obj.name].name;
 });
-console.log("files", modules);
+// console.log("files", modules);
 
 export default createStore(modules);

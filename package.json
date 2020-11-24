@@ -7,25 +7,25 @@
     "update": "yarn upgrade-interactive --latest"
   },
   "dependencies": {
-    "ant-design-vue": "^2.0.0-beta.15",
+    "ant-design-vue": "^2.0.0-rc.1",
     "vue": "^3.0.2",
     "vue-i18n": "^9.0.0-beta.6",
     "vue-router": "^4.0.0-rc.2",
     "vuex": "^4.0.0-rc.1"
   },
   "devDependencies": {
-    "@types/node": "^14.14.7",
+    "@types/node": "^14.14.9",
     "@vue/compiler-sfc": "^3.0.2",
     "dotenv": "^8.2.0",
-    "eslint": "^7.13.0",
+    "eslint": "^7.14.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-vue": "^7.1.0",
     "less": "^3.12.2",
-    "prettier": "^2.1.2",
+    "prettier": "^2.2.0",
     "rollup-plugin-analyzer": "^3.3.0",
     "ts-node": "^9.0.0",
-    "typescript": "^4.0.5",
+    "typescript": "^4.1.2",
     "vite": "^1.0.0-rc.9",
     "vite-plugin-mock": "^1.0.6",
     "vite-transform-globby-import": "^1.0.0-rc.7"
