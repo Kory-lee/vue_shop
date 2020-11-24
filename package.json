@@ -6,8 +6,10 @@
     "build": "vite build"
   },
   "dependencies": {
+    "ant-design-vue": "^2.0.0-rc.1",
     "vue": "^3.0.2",
-    "vue-router": "^4.0.0-rc.5"
+    "vue-router": "^4.0.0-rc.5",
+    "vuex": "^4.0.0-rc.1"
   },
   "devDependencies": {
     "@vue/compiler-sfc": "^3.0.2",
