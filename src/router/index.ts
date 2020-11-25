@@ -1,8 +1,8 @@
 import type { App } from "vue";
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import { basicRoutes } from "./routes";
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: basicRoutes as RouteRecordRaw[],
   strict: true,
 });
