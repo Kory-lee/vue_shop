@@ -1,10 +1,7 @@
-import {
-  createRouter,
-  createWebHashHistory,
-
-  RouteRecordRaw
-} from "vue-router";
-import {
+import { toRaw } from "vue";
+import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+import { omit } from '../common';
+import type {
   AppRouteModule,
   AppRouteRecordRaw,
   RouteModule
@@ -15,7 +12,7 @@ export function genRouteModule(
   const ret: AppRouteRecordRaw[] = [];
   for (const routeMod of moduleList) {
     let routes: RouteRecordRaw[] = [],
-      layout;
+      layout: AppRouteRecordRaw | undefined;
     if (Reflect.has(routeMod, "routes")) {
       routes = (<RouteModule>routeMod).routes as any;
       layout = (<RouteModule>routeMod).layout;
@@ -25,11 +22,17 @@ export function genRouteModule(
         (routeMod.children as RouteRecordRaw[]) || ([] as RouteRecordRaw[]);
     }
     const router = createRouter({ routes, history: createWebHashHistory() });
-    console.log(routes);
-    console.log(router.getRoutes());
+    const flatList = (toRaw(router.getRoutes()).filter(
+      (item) => item.children.length === 0
+    ) as unknown) as AppRouteRecordRaw[];
+    flatList.forEach(
+      (item) => (item.path = `${layout ? layout.path : ""}${item.path}`)
+    );
+    if (layout) {
+      layout.children = flatList;
+      ret.push(layout);
+    } else ret.push(...flatList);
   }
+  return ret as RouteRecordRaw[];
 }
-function omit(obj: { [propertyName: string]: any }, attr: string) {
-  const { [attr]: _, ...newObj } = obj;
-  return newObj;
-}
+

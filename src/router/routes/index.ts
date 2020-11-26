@@ -1,13 +1,17 @@
 import modules from "globby!/@/router/routes/modules/**/*.@(ts)";
-import { DEFAULT_LAYOUT_COMPONENT } from "../constant";
+import { DEFAULT_LAYOUT_COMPONENT, PAGE_NOT_FOUND_ROUTE } from "../constant";
 import type { AppRouteModule, AppRouteRecordRaw } from "/@/router/types";
 import { genRouteModule } from "/@/utils/helper/routeHelper";
 
 const routeModuleList: AppRouteModule[] = [];
 Object.keys(modules).forEach((key) => routeModuleList.push(modules[key]));
-// console.log(routeModuleList);
 
-export const asyncRouts = [genRouteModule(routeModuleList)];
+export const asyncRoutes = [
+  PAGE_NOT_FOUND_ROUTE,
+  ...genRouteModule(routeModuleList),
+];
+console.log(asyncRoutes);
+
 export const RootRoute: AppRouteRecordRaw = {
   path: "/",
   name: "Root",
