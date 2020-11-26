@@ -2194,7 +2194,7 @@ source-map-support@~0.5.19:
     buffer-from "^1.0.0"
     source-map "^0.6.0"
 
-source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.0:
+source-map@0.6.1, source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.0:
   version "0.6.1"
   resolved "https://registry.npm.taobao.org/source-map/download/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha1-dHIq8y6WFOnCh6jQu95IteLxomM=
@@ -2388,6 +2388,13 @@ vite@^1.0.0-rc.9:
     slash "^3.0.0"
     vue "^3.0.2"
     ws "^7.3.1"
+
+vue-i18n@^9.0.0-beta.8:
+  version "9.0.0-beta.8"
+  resolved "https://registry.npm.taobao.org/vue-i18n/download/vue-i18n-9.0.0-beta.8.tgz#92282d5b5e0e6f15cc04943ce11bf49db610468f"
+  integrity sha1-kigtW14ObxXMBJQ84Rv0nbYQRo8=
+  dependencies:
+    source-map "0.6.1"
 
 vue-router@^4.0.0-rc.5:
   version "4.0.0-rc.5"
