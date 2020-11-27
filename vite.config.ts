@@ -17,7 +17,7 @@ const config: UserConfig = {
   transforms: [
     globbyTransform({
       ...sharedConfig,
-      includes: [resolve("src/router"), resolve("src/locales")],
+      includes: [resolve("src/router"), resolve("src/plugins/i18n")],
     }),
   ],
   // transforms: [require("vite-transform-globby-import")(sharedConfig)],
