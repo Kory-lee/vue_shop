@@ -1,5 +1,5 @@
-import { UserConfig } from "vite";
 import { resolve } from "path";
+import { UserConfig } from "vite";
 const pathResolve = (dir: string): string => resolve(__dirname, dir);
 
 const config: UserConfig = {

@@ -1,16 +1,7 @@
+import { RouteRecordRaw } from "vue-router";
 import { DEFAULT_LAYOUT_COMPONENT } from "../constant";
-import type { AppRouteModule, AppRouteRecordRaw } from "../types";
-import dashboard from "./modules/dashboard";
-import { getRouteModule } from "/@/utils/routeHelper";
 
-const routeModuleList: AppRouteModule[] = [dashboard];
-// Object.keys(modules).forEach((key) => routeModuleList.push(modules[key]));
-/*
-TODO 在store进行权限分配 动态引入
-*/
-export const asyncRoutes = [...getRouteModule(routeModuleList)];
-
-export const RootRoute: AppRouteRecordRaw = {
+export const RootRoute: RouteRecordRaw = {
   path: "/",
   name: "Root",
   component: DEFAULT_LAYOUT_COMPONENT,
@@ -18,10 +9,17 @@ export const RootRoute: AppRouteRecordRaw = {
   meta: { title: "Root" },
   children: [],
 };
-export const LoginRoute: AppRouteRecordRaw = {
+const ButtonRoute = {
+  path: "/button",
+  name: "ButtonDemo",
+  component: () => import("/@/views/button/index.vue"),
+  meta: { title: "ButtonDemo" },
+};
+
+export const LoginRoute = {
   path: "/login",
   name: "Login",
   component: () => import("/@/views/sys/login/Login.vue"),
   meta: { title: "登录" },
 };
-export const basicRoutes = [RootRoute, ...asyncRoutes];
+export const basicRoutes = [RootRoute, ButtonRoute];

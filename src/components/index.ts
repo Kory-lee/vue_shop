@@ -1,10 +1,11 @@
+import type { App, DefineComponent } from "vue";
+import { default as Button } from "./Button";
+const components = [Button];
 
-// import { App } from "vue";
-// import { default as Button } from "./Button";
-// const components = [Button];
+const install = (app: App<Element>) =>
+  components.map((component: DefineComponent<{}, {}, any>) =>
+    app.component(component.name, component)
+  );
 
-// const install = (app: App<Element>) =>
-//   components.map((component) => app.use(component));
-
-// export { install, Button };
-// export default { install };
+export { install, Button };
+export default { install };
