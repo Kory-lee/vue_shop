@@ -1,16 +1,21 @@
 <template>
   <a-button>ant-button<span>按钮</span></a-button>
-  <KoButton :loading="loading" :size="size" @click="handleClick"
-    >button<span>按钮</span></KoButton
+  <Button
+    :loading="loading"
+    :size="size"
+    @click="handleClick"
+    id="kory"
+    class="kory"
+    >button<span>按钮</span></Button
   >
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import KoButton from "/@/components/Button/button.vue";
+import Button from "/@/components/Button/button.vue";
 export default defineComponent({
   name: "ButtonDemo",
-  components: { KoButton },
+  components: { Button },
   setup() {
     const loading = ref(false),
       size = ref("large");

@@ -23,7 +23,7 @@ export default {
   disabled: Boolean,
   block: Boolean,
   shape: String as PropType<"circle" | "circle-outline" | "round">,
-  ghost: Boolean,
+  ghost: { type: Boolean, default: false },
   icon: null,
   onClick: Function,
   // throttle: {},

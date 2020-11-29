@@ -2725,7 +2725,7 @@ source-map-support@^0.5.17, source-map-support@~0.5.19:
     buffer-from "^1.0.0"
     source-map "^0.6.0"
 
-source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.0:
+source-map@0.6.1, source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.0:
   version "0.6.1"
   resolved "https://registry.npm.taobao.org/source-map/download/source-map-0.6.1.tgz?cache=0&sync_timestamp=1593529658602&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsource-map%2Fdownload%2Fsource-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha1-dHIq8y6WFOnCh6jQu95IteLxomM=
@@ -3025,12 +3025,12 @@ vue-eslint-parser@^7.1.1:
     esquery "^1.0.1"
     lodash "^4.17.15"
 
-vue-i18n@^9.0.0-beta.6:
-  version "9.0.0-beta.6"
-  resolved "https://registry.npm.taobao.org/vue-i18n/download/vue-i18n-9.0.0-beta.6.tgz?cache=0&sync_timestamp=1603122606171&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-i18n%2Fdownload%2Fvue-i18n-9.0.0-beta.6.tgz#ea89cee5ade18f2a2d0f2ead0ac4a6bedccade6e"
-  integrity sha1-6onO5a3hjyotDy6tCsSmvtzK3m4=
+vue-i18n@^9.0.0-beta.8:
+  version "9.0.0-beta.8"
+  resolved "https://registry.npm.taobao.org/vue-i18n/download/vue-i18n-9.0.0-beta.8.tgz#92282d5b5e0e6f15cc04943ce11bf49db610468f"
+  integrity sha1-kigtW14ObxXMBJQ84Rv0nbYQRo8=
   dependencies:
-    source-map "^0.6.1"
+    source-map "0.6.1"
 
 vue-router@^4.0.0-rc.5:
   version "4.0.0-rc.5"

@@ -25,17 +25,14 @@ export default defineComponent({
   inheritAttrs: false,
   props,
   setup(props, { attrs, emit, slots }: any) {
-    let delayTimeout: number,
-      iconCom: any = null;
+    let delayTimeout: number;
     const buttonNode = ref<Element | null>(null),
-      sLoading = ref<boolean>(!!props.loading),
-      hasTwoCNChar = ref(false);
-    const data = reactive({
-      children: <any[]>[],
-      loading: ref(!!props.loading),
-      hasTwoCNChar: ref(false),
-      icon: ref(undefined),
-    });
+      data = reactive({
+        children: <any[]>[],
+        loading: ref(!!props.loading),
+        hasTwoCNChar: ref(false),
+        icon: ref(undefined),
+      });
 
     const configProvider = inject("configProvider", ConfigConsumerProps);
     const autoInsertSpace = true;
@@ -56,7 +53,7 @@ export default defineComponent({
         [`${prefixCls}-background-ghost`]:
           props.ghost || props.type === "ghost",
         [`${prefixCls}-two-chinese-chars`]:
-          hasTwoCNChar.value && autoInsertSpace,
+          data.hasTwoCNChar && autoInsertSpace,
         [`${prefixCls}-block`]: props.block,
       };
     };
@@ -81,12 +78,12 @@ export default defineComponent({
       if (!buttonNode.value) return;
       const buttonText = buttonNode.value.textContent;
       if (isNeedInserted() && isTwoCNChar(buttonText)) {
-        if (!hasTwoCNChar.value) hasTwoCNChar.value = true;
-      } else if (hasTwoCNChar.value) hasTwoCNChar.value = false;
+        if (!data.hasTwoCNChar) data.hasTwoCNChar = true;
+      } else if (data.hasTwoCNChar) data.hasTwoCNChar = false;
     };
 
     const handleClick = ($event: Event) => {
-      if (sLoading.value) return false;
+      if (data.loading) return false;
       emit("click", $event);
     };
     const insertSpacer = (child: VNode, needInserted: boolean) => {
@@ -98,6 +95,7 @@ export default defineComponent({
       }
       return child;
     };
+
     onMounted(() => fixTwoCNChar());
     onUpdated(() => fixTwoCNChar());
     onBeforeUnmount(() => {
@@ -110,17 +108,14 @@ export default defineComponent({
       const kids = children.map((child) =>
         insertSpacer(child, isNeedInserted())
       );
-
-      const classes = getClass();
-      console.log(classes);
       const buttonProps = {
         ...attrs,
-        class: classes,
+        class: getClass(),
         ref: buttonNode,
         onClick: handleClick,
         disabled: props.disabled,
       };
-      const iconNode = data.loading ? h(LoadingOutlined) : iconCom;
+      const iconNode = data.loading ? h(LoadingOutlined) : data.icon;
 
       if (attrs.href !== undefined)
         return h("a", buttonProps, [iconNode, kids]);
