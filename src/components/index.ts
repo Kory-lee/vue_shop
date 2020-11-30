@@ -1,5 +1,5 @@
-import type { App, DefineComponent } from "vue";
-import { default as Button } from "./Button";
+import type { App, DefineComponent } from 'vue';
+import { default as Button } from './Button';
 const components = [Button];
 
 const install = (app: App<Element>) =>
