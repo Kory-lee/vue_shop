@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { VNode } from 'vue';
+import { resolveDynamicComponent, VNode } from 'vue';
 import props, { ButtonSizes } from './buttonTypes';
 import {
   h,
@@ -14,6 +14,7 @@ import {
   onUpdated,
 } from 'vue';
 import { ConfigConsumerProps } from '../config-provider';
+// 图标有毛病,好卡
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { getSlot } from '../_utils/props-utils';
 const rxTwoCNChar = /^[\u4e00-\u9fa5]{2}$/;
@@ -22,6 +23,7 @@ export default defineComponent({
   name: 'KoButton',
   inheritAttrs: false,
   props,
+  components: { LoadingOutlined },
   setup(props, { attrs, emit, slots }: any) {
     let delayTimeout: number;
     const buttonNode = ref<Element | null>(null),
@@ -29,7 +31,7 @@ export default defineComponent({
         children: <any[]>[],
         loading: ref(!!props.loading),
         hasTwoCNChar: ref(false),
-        icon: ref(undefined),
+        icon: ref<string>(''),
       });
 
     const configProvider = inject('configProvider', ConfigConsumerProps);
@@ -86,7 +88,6 @@ export default defineComponent({
       }
       return child;
     };
-
     onMounted(() => fixTwoCNChar());
     onUpdated(() => fixTwoCNChar());
     onBeforeUnmount(() => {
@@ -105,14 +106,15 @@ export default defineComponent({
         onClick: handleClick,
         disabled: props.disabled,
       };
+      resolveDynamicComponent(LoadingOutlined.name);
       const iconNode = data.loading ? h(LoadingOutlined) : data.icon;
 
-      if (attrs.href !== undefined) return h('a', buttonProps, { default: () => [iconNode, kids] });
-      const button = h(
-        'button',
-        { ...buttonProps, type: props.htmlType },
-        { default: () => [iconNode, kids] }
-      );
+      if (attrs.href !== undefined) return h('a', buttonProps, [iconNode, kids]);
+      const button = h('button', { ...buttonProps, type: props.htmlType }, [
+        iconNode,
+        h(LoadingOutlined),
+        kids,
+      ]);
       if (props.type === 'link') return button;
       return button;
     };

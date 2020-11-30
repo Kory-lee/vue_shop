@@ -4,9 +4,7 @@ export enum ButtonSizes {
   small = 'sm',
   default = '',
 }
-interface Loading {
-  valueOf(): boolean | { delay: number };
-}
+
 export default {
   prefixCls: String,
   type: {
@@ -30,7 +28,7 @@ export default {
   block: Boolean,
   shape: String as PropType<'circle' | 'circle-outline' | 'round'>,
   ghost: { type: Boolean, default: false },
-  icon: null,
+  icon: String,
   onClick: Function,
   // throttle: {},
 };
