@@ -3,7 +3,7 @@ import { default as Button } from './Button';
 const components = [Button];
 
 const install = (app: App<Element>) =>
-  components.map((component: DefineComponent<{}, {}, any>) =>
+  components.forEach((component: DefineComponent<{}, {}, any>) =>
     app.component(component.name, component)
   );
 
