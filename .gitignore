@@ -4,3 +4,4 @@ dist
 *.local
 *.lock
 *.log
+yarn.lock
