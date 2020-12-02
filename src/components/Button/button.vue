@@ -110,11 +110,11 @@ export default defineComponent({
       const iconNode = data.loading ? h(LoadingOutlined) : data.icon;
 
       if (attrs.href !== undefined) return h('a', buttonProps, [iconNode, kids]);
-      const button = h('button', { ...buttonProps, type: props.htmlType }, [
-        iconNode,
-        h(LoadingOutlined),
-        kids,
-      ]);
+      const button = h(
+        'button',
+        { ...buttonProps, type: props.htmlType, autofocus: props.autofocus },
+        [iconNode, h(LoadingOutlined), kids]
+      );
       if (props.type === 'link') return button;
       return button;
     };
@@ -123,7 +123,7 @@ export default defineComponent({
 </script>
 
 <style lang="less">
-@import "../_styles/theme/deault";
+@import "../_styles/theme/deault.less";
 
 @btn-prefix-cls: ~'@{ant-prefix}-btn';
 
@@ -133,5 +133,9 @@ export default defineComponent({
     // transition: margin-left 0.3s @ease-in-out;
     pointer-events: none;
   }
+&-primary{
+  // .btn-primary;
+  // .@{btn-prefix-cls}-group{}
+}
 }
 </style>
