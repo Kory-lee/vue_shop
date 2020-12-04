@@ -2,11 +2,11 @@ import messages from 'globby?locale!/@/plugins/i18n/lang/**/*.@(ts)';
 import { createI18n, I18n, I18nOptions } from 'vue-i18n';
 
 export const localeList = [
-  { text: '简体中文', event: 'zh-CN' },
+  { text: '简体中文', event: 'zh_CN' },
   { text: 'English', event: 'en' },
 ];
 console.log(messages);
-const lang = 'zh';
+const lang = 'zh_CN';
 const localData: I18nOptions = {
   legacy: false,
   locale: lang,
