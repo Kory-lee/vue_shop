@@ -4,9 +4,10 @@ import { Result, Button } from 'ant-design-vue';
 import { ExceptionEnum } from '/@/enums/exceptionEnum';
 import { useI18n } from '/@/plugins/i18n';
 import { useRoute } from 'vue-router';
-import { useRefresh } from '/@/hooks/web/usePage';
+import { useGo, useRefresh } from '/@/hooks/web/usePage';
 import NoDataImg from '/@/assets/img/exception/no-data.png';
 import netWorkImg from '/@/assets/img/exception/net-work.png';
+import { PageEnum } from '/@/enums/PageEnum';
 interface MapValue {
   title: string;
   status?: string;
@@ -28,7 +29,8 @@ export default defineComponent({
     const statusMapRef = new Map<string | number, MapValue>();
     const { t } = useI18n('sys.exception'),
       route = useRoute(),
-      refresh = useRefresh();
+      refresh = useRefresh(),
+      go = useGo();
 
     const getStatus = computed(() => {
         const status = Number(route.query.status);
@@ -45,30 +47,33 @@ export default defineComponent({
         status: `${ExceptionEnum.PAGE_NOT_ACCESS}`,
         subTitle: t('subTitle403'),
         btnText: props.full ? backLoginI18n : backHomeI18n,
+        handler: () => (props.full ? go(PageEnum.BASE_LOGIN) : go()),
       })
       .set(ExceptionEnum.PAGE_NOT_FOUND, {
         title: '404',
         status: `${ExceptionEnum.PAGE_NOT_FOUND}`,
         subTitle: t('subTitle404'),
         btnText: props.full ? backLoginI18n : backHomeI18n,
+        handler: () => (props.full ? go(PageEnum.BASE_LOGIN) : go()),
       })
       .set(ExceptionEnum.ERROR, {
         title: '500',
         status: `${ExceptionEnum.ERROR}`,
         subTitle: t('subTitle500'),
         btnText: backHomeI18n,
+        handler: () => go(),
       })
       .set(ExceptionEnum.PAGE_NOT_DATA, {
         title: t('noDataTitle'),
         subTitle: '',
-        btnText: t('redo'),
+        btnText: t('refresh'),
         handler: () => refresh(),
         icon: NoDataImg,
       })
       .set(ExceptionEnum.NET_WORK_ERROR, {
         title: t('networkErrorTitle'),
         subTitle: t('networkErrorSubTitle'),
-        btnText: t('redo'),
+        btnText: t('refresh'),
         icon: netWorkImg,
         handler: () => refresh(),
       });
@@ -82,7 +87,6 @@ export default defineComponent({
           status: status as any,
           title: props.title || title,
           subTitle: props.subTitle || subTitle,
-          onClick: handler,
         },
         {
           extra: () => h(Button, { type: 'primary', onClick: handler }, { default: () => btnText }),
