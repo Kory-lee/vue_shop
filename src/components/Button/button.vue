@@ -14,7 +14,6 @@ import {
   onUpdated,
 } from 'vue';
 import { ConfigConsumerProps } from '../config-provider';
-// 图标有毛病,好卡
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { getSlot } from '../_utils/props-utils';
 const rxTwoCNChar = /^[\u4e00-\u9fa5]{2}$/;
@@ -122,20 +121,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="less">
-@import "../_styles/theme/deault.less";
-
-@btn-prefix-cls: ~'@{ant-prefix}-btn';
-
-.@{btn-prefix-cls}{
-  > i,>span{
-    display: inline-block;
-    // transition: margin-left 0.3s @ease-in-out;
-    pointer-events: none;
-  }
-&-primary{
-  // .btn-primary;
-  // .@{btn-prefix-cls}-group{}
-}
-}
-</style>
+<style lang="scss"></style>
