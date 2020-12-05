@@ -1,11 +1,11 @@
-import { resolve } from "path";
-import type { UserConfig } from "vite";
-import globbyTransform from "./build/vite/plugins/transform/globby";
+import { resolve } from 'path';
+import type { UserConfig } from 'vite';
+import globbyTransform from './build/vite/plugins/transform/globby';
 
 const pathResolve = (dir: string): string => resolve(__dirname, dir);
 
 const sharedConfig = {
-  alias: { "/@/": pathResolve("src") },
+  alias: { '/@/': pathResolve('src') },
 };
 const config: UserConfig = {
   /**
@@ -17,9 +17,10 @@ const config: UserConfig = {
   transforms: [
     globbyTransform({
       ...sharedConfig,
-      includes: [resolve("src/router"), resolve("src/plugins/i18n")],
+      includes: [resolve('src/router'), resolve('src/plugins/i18n')],
     }),
   ],
+  optimizeDeps: { include: ['@ant-design/icons-vue'] },
   // transforms: [require("vite-transform-globby-import")(sharedConfig)],
 };
 
