@@ -3,5 +3,4 @@ node_modules
 dist
 *.local
 *.log
-yarn.lock
 package-lock.json
