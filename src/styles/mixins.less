@@ -1,0 +1,10 @@
+.respond-to(small,@content) {
+  @media only screen and (min-width: @screen-sm-min) {
+    @content();
+  }
+}
+.respond-to(xlarge, @content) {
+  @media only screen and (min-width: @screen-xl-min) {
+    @content();
+  }
+}
