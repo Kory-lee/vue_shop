@@ -4,6 +4,7 @@
     <div class="login__form-wrap">
       <div class="login__form mx-6">
         <div class="login__form_content" px-2 py-10>
+          <LangPicker />
           <header>
             <img src="" alt="" />
             <h1></h1>
@@ -56,15 +57,18 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
-import { useI18n } from '/@/plugins/i18n';
+import { useI18n, default as i18n } from '/@/plugins/i18n';
 import { Checkbox } from 'ant-design-vue';
+import LangPicker from '/@/components/LangPicker/index.vue';
+
 export default defineComponent({
   name: 'Login',
-  components: { ACheckbox: Checkbox },
+  components: { ACheckbox: Checkbox, LangPicker },
   setup() {
     const formRef = ref(null),
       autoLogin = ref(false);
     const { t } = useI18n('sys.login');
+    console.log(i18n);
 
     const formData = reactive({ account: 'kory', password: 123456 });
     const formState = reactive({ loading: ref(false) });
@@ -89,7 +93,7 @@ export default defineComponent({
   }
   &__form {
     position: relative;
-    bottom: 60px;
+    // bottom: 60px;
     width: 400px;
     border: 10px solid rgba(255, 255, 255, 0.5);
     border-width: 8px;
