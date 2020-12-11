@@ -1,16 +1,19 @@
-import { LAYOUT } from '/@/router/constant';
+import { PAGE_LAYOUT_COMPONENT } from "/@/router/constant";
 const dashboard = {
-  path: '/dashboard',
-  name: 'Dashboard',
-  component: LAYOUT,
-  redirect: '/dashboard/workbench',
-  meta: { icon: 'ant-design:home-outlined', title: 'Dashboard' },
-  children: [
+  layout: {
+    path: "/dashboard",
+    name: "Dashboard",
+    component: PAGE_LAYOUT_COMPONENT,
+    redirect: "/dashboard/workbench",
+    meta: { icon: "ant-design:home-outlined", title: "Dashboard" },
+  },
+  routes: [
+    { path: "/welcome", name: "Welcome" },
     {
-      path: 'workbench',
-      name: 'Workbench',
-      component: () => import('/@/views/dashboard/workbench/index.vue'),
-      meta: { title: '工作台', affix: true },
+      path: "/workbench",
+      name: "Workbench",
+      component: () => import("/@/views/dashboard/workbench/index.vue"),
+      meta: { title: "工作台", affix: true },
     },
   ],
 };
