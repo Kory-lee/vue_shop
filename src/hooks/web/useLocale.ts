@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { ref } from 'vue';
-import i18n from '/@/plugins/i18n';
-import { LocaleType } from '/@/plugins/i18n/types';
+import i18n from '../../plugins/i18n';
+import { LocaleType } from '../../locales/types';
 const antConfigLocaleRef = ref<any>(null);
 export function useLocale() {
   function changeLocale(lang: LocaleType) {
