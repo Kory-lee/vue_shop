@@ -5,7 +5,7 @@ import antD from './plugins/antD';
 import i18n from './plugins/i18n';
 import router from './router';
 import store from './store';
-import './styles/index.less';
+// import './styles/index.less';
 
 const app = createApp(App);
 

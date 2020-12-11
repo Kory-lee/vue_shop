@@ -17,7 +17,7 @@ const config: UserConfig = {
   transforms: [
     globbyTransform({
       ...sharedConfig,
-      includes: [resolve('src/router'), resolve('src/plugins/i18n')],
+      includes: [resolve('src/router'), resolve('src/locales')],
     }),
   ],
   optimizeDeps: { include: ['@ant-design/icons-vue'] },
