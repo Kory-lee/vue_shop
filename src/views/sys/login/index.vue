@@ -9,6 +9,7 @@
             <img src="" class="mr-4" />
             <h1></h1>
           </header>
+
           <a-form class="mx-auto mt-10" :model="formData" :rules="formRules" ref="formRef">
             <a-form-item name="account">
               <a-input
@@ -17,6 +18,7 @@
                 placeholder="username: kory"
               ></a-input>
             </a-form-item>
+
             <a-form-item name="password">
               <a-input-password
                 size="large"
@@ -34,7 +36,9 @@
                 </a-form-item>
               </a-col>
               <a-col :span="12">
-                <a-form-item style="{ 'text-align': 'right' }"></a-form-item>
+                <a-form-item style="{ 'text-align': 'right' }">
+                  <a-button type="link" size="small">{{ t('forgetPassword') }}</a-button>
+                </a-form-item>
               </a-col>
             </a-row>
             <a-form-item>
@@ -94,25 +98,27 @@ export default defineComponent({
 .login {
   position: relative;
   height: 100vh;
-  background: url('../../../assets/img/login/login-bg.png') no-repeat;
-  background-size: 100% 100%;
+  background: url('/@/assets/img/login/login-bg.png') ~'0% 0% / 100% 100%' no-repeat;
+
   &__mask {
     display: none;
     height: 100%;
-    background: url(../../../assets/img/login/login-in.png);
-    background-position: 30% 30%;
-    background-size: 80% 80%;
-    // .respond-to(xlarge,{display: block;});
+    background: url('/@/assets/img/login/login-in.png') ~'30% 30% / 80% 80%' no-repeat;
+    // background-position: 30% 30%;
+    // background-size: 80% 80%;
+    .respond-to(xlarge,{display: block;});
   }
   &__form {
     position: relative;
     bottom: 60px;
     width: 400px;
+    background: @white;
     border: 10px solid rgba(255, 255, 255, 0.5);
     border-width: 8px;
     border-radius: 4px;
     background-clip: padding-box;
-    // .respond-to(xlarge,{margin: 0 120px 0 50px});
+    .respond-to(xlarge,{margin: 0 120px 0 50px});
+
     &-wrap {
       position: absolute;
       top: 0;
@@ -122,6 +128,7 @@ export default defineComponent({
       height: 100%;
       justify-content: center;
       align-items: center;
+      .respond-to(xlarge,{justify-content:flex-end});
     }
     &-content {
       position: relative;
@@ -134,6 +141,18 @@ export default defineComponent({
         display: flex;
         justify-content: center;
         align-items: center;
+      }
+      img {
+        display: inline-block;
+        width: 48px;
+      }
+      h1 {
+        margin-bottom: 0;
+        font-size: 24px;
+        text-align: center;
+      }
+      form {
+        width: 80%;
       }
     }
   }
