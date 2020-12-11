@@ -6,7 +6,7 @@
         <LangPicker class="login__form-locales" />
         <div class="login__form-content px-2 py-10">
           <header>
-            <img src="" alt="" />
+            <img src="" class="mr-4" />
             <h1></h1>
           </header>
           <a-form class="mx-auto mt-10" :model="formData" :rules="formRules" ref="formRef">
