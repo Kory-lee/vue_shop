@@ -14,6 +14,7 @@ const localData: I18nOptions = {
 };
 
 const i18n = createI18n(localData) as I18n;
+
 export function useI18n(namespace?: string) {
   function getKey(key: string): string {
     if (!namespace || key.startsWith(namespace)) return key;
@@ -22,11 +23,23 @@ export function useI18n(namespace?: string) {
   const normal = { t: (key: string) => getKey(key) };
   if (!i18n) return normal;
 
-  const { t, ...methods } = i18n.global;
+  const { t } = i18n.global;
   return {
-    ...methods,
-    t: (key: string, ...arg: Parameters<typeof t>) => t(getKey(key), ...arg),
+    ...i18n.global,
+    t:(key: string, ...arg: Parameters<typeof t>) => t(getKey(key), ...arg),
   };
+}
+export function setI18nLanguage(i18n: I18n, locale: any): void {
+  if (i18n.mode === 'legacy') i18n.global.locale = locale;
+  else i18n.global.locale.value = locale;
+  document.querySelector('html')?.setAttribute('lang', locale);
+}
+
+export async function loadLocaleMessage(i18n: I18n, locale: any) {
+  if (i18n.global.availableLocales.includes(locale)) {
+    const message = await import(`/@/locales/${locale}.js`);
+    i18n.global.setLocaleMessage(locale, message.default);
+  }
 }
 
 export default i18n;
