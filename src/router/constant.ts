@@ -2,7 +2,7 @@ import { AppRouteRecordRaw } from './types';
 
 const EXCEPTION_COMPONENT = () => import('/@/views/sys/exception/index.vue');
 
-export const LAYOUT = () => import('/@/layouts/default/index');
+export const LAYOUT = () => import('/@/layouts/default/index.vue');
 
 export const getParentLayout = (name: string) => {
   return () => new Promise((resolve) => resolve({ name }));

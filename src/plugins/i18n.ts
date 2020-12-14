@@ -1,11 +1,10 @@
 import { createI18n, I18n, I18nOptions } from 'vue-i18n';
-import messages from '/@/locales';
-console.log(messages);
-const lang = 'zh_CN';
+import zh_CN from '/@/locales/lang/zh_CN';
+
 const localData: I18nOptions = {
   legacy: false,
-  locale: lang,
-  messages,
+  locale: 'zh_CN',
+  messages: { zh_CN },
   sync: true, //If you don’t want to inherit locale from global scope, you need to set sync of i18n component option to false.
   silentFallbackWarn: true,
   silentTranslationWarn: false,
@@ -26,7 +25,7 @@ export function useI18n(namespace?: string) {
   const { t } = i18n.global;
   return {
     ...i18n.global,
-    t:(key: string, ...arg: Parameters<typeof t>) => t(getKey(key), ...arg),
+    t: (key: string, ...arg: Parameters<typeof t>) => t(getKey(key), ...arg),
   };
 }
 export function setI18nLanguage(i18n: I18n, locale: any): void {
@@ -37,9 +36,11 @@ export function setI18nLanguage(i18n: I18n, locale: any): void {
 
 export async function loadLocaleMessage(i18n: I18n, locale: any) {
   if (i18n.global.availableLocales.includes(locale)) {
-    const message = await import(`/@/locales/${locale}.js`);
+    const message = await import(`/@/locales/lang/${locale}`);
+    console.log(message);
     i18n.global.setLocaleMessage(locale, message.default);
   }
 }
+loadLocaleMessage(i18n, 'en');
 
 export default i18n;

@@ -1,6 +1,6 @@
 import modules from 'globby!/@/router/routes/modules/**/*.@(ts)';
 import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '../constant';
-import { PageEnum } from '/@/enums/PageEnum';
+import { PageEnum } from '../../enums/pageEnum';
 import { useI18n } from '/@/plugins/i18n';
 import type { AppRouteModule, AppRouteRecordRaw } from '/@/router/types';
 const routeModuleList: AppRouteModule[] = [];
