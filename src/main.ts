@@ -1,4 +1,3 @@
-// import 'ant-design-vue/dist/antd.css';
 import { createApp } from 'vue';
 import App from './App.vue';
 import antD from './plugins/ant-design-vue';

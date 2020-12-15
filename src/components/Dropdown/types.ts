@@ -2,7 +2,7 @@ export interface DropMenu {
   to?: string;
   icon?: string;
   event: string | number;
-  test: string;
+  text: string;
   disabled?: boolean;
   divider?: boolean;
 }
