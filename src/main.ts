@@ -1,7 +1,7 @@
 // import 'ant-design-vue/dist/antd.css';
 import { createApp } from 'vue';
 import App from './App.vue';
-import antD from './plugins/antD';
+import antD from './plugins/ant-design-vue';
 import i18n from './plugins/i18n';
 import router from './router';
 import store from './store';

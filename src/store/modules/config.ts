@@ -28,6 +28,14 @@ class Config extends VuexModule {
   commitPageLoadingState(loading: boolean): void {
     this.pageLoadingState = loading;
   }
+  @Mutation
+  commitLockMainScrollState(lock: boolean): void {
+    this.lockMainScrollState = lock;
+  }
+  @Mutation
+  commitProjectConfigState(config: DeepPartial<ProjectConfig>): void {
+    // this.projectConfigState = deepMerge;
+  }
 }
 
 export default getModule(Config);

@@ -1,3 +1,4 @@
+import { RouterTransitionEnum } from '../enums/configEnum';
 import type { LocaleType } from '../locales/types';
 import { Menu } from '../router/types';
 export interface MenuSetting {
@@ -35,9 +36,11 @@ export interface HeaderSetting {
   showSearch: boolean;
 }
 export interface TransitionSetting {
-  // whether toopen thepage switching animation
+  // whether to open thepage switching animation
   enable: boolean;
-  //  Route basic switching animation
+  // route basic switching animation
+  basicTransition: RouterTransitionEnum;
+  //whether  to open page switching loading
   openPageLoading: boolean;
 
   // whether to open the top progress bar
@@ -86,7 +89,7 @@ export interface ProjectConfig {
   removeAllHttpPending: boolean;
 }
 
-export interface GlobConfig {
+export interface GlobalConfig {
   title: string;
   apiUrl: string;
   shortName: string;
@@ -94,7 +97,7 @@ export interface GlobConfig {
   urlPrefix?: string;
 }
 
-export interface GlobEnvConfig {
+export interface GlobalEnvConfig {
   // 网站标题
   VITE_GLOB_APP_TITLE: string;
   VITE_GLOB_API_URL: string;

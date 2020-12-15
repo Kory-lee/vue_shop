@@ -3,7 +3,7 @@
     <div class="login__mask" />
     <div class="login__form-wrap">
       <div class="login__form mx-6">
-        <LangPicker class="login__form-locales" />
+        <!-- <LangPicker class="login__form-locales" /> -->
         <div class="login__form-content px-2 py-10">
           <header>
             <img src="" class="mr-4" />
@@ -36,7 +36,7 @@
                 </a-form-item>
               </a-col>
               <a-col :span="12">
-                <a-form-item style="{ 'text-align': 'right' }">
+                <a-form-item :style="{ 'text-align': 'right' }">
                   <a-button type="link" size="small">{{ t('forgetPassword') }}</a-button>
                 </a-form-item>
               </a-col>
@@ -61,18 +61,17 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
-import { useI18n, default as i18n } from '/@/plugins/i18n';
+import { useI18n } from '/@/plugins/i18n';
 import { Checkbox } from 'ant-design-vue';
-import LangPicker from '/@/components/LangPicker/index.vue';
+// import LangPicker from '/@/components/LangPicker/index.vue';
 
 export default defineComponent({
   name: 'Login',
-  components: { ACheckbox: Checkbox, LangPicker },
+  components: { ACheckbox: Checkbox },
   setup() {
     const formRef = ref(null),
       autoLogin = ref(false);
     const { t } = useI18n('sys.login');
-    console.log(i18n);
 
     const formData = reactive({ account: 'kory', password: 123456 });
     const formState = reactive({ loading: ref(false) });

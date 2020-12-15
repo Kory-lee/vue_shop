@@ -1,7 +1,6 @@
-import type { App } from 'vue';
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import { asyncRoutes, basicRoutes } from './routes';
-console.log(asyncRoutes)
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [...basicRoutes, ...asyncRoutes] as RouteRecordRaw[],
@@ -17,9 +16,4 @@ export function resetRouter() {
   });
 }
 
-export default {
-  install(app: App<Element>) {
-    app.use(router);
-    // createGuard(router)
-  },
-};
+export default router;

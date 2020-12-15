@@ -1,16 +1,35 @@
 <template>
-  <div>
-    <transition name="fade" mode="out-in" :duration="{ enter: 500, leave: 800 }"> </transition>
+  <div :class="[getLayoutContentMode]">
+    <transition name="fade">
+      <Loading
+        v-if="getOpenPageLoading"
+        :loading="getPageLoading"
+        background="rgba(240,242,245,0.6)"
+        absolute
+        :class="`-loading`"
+      />
+    </transition>
   </div>
   <PageLayout />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { getLayoutContentMode, getPageLoading } from '/@/hooks/setting/RootSetting';
+import useTransitionSetting from '/@/hooks/setting/TransitionSetting';
 import PageLayout from '/@/layouts/page/index.vue';
+import Loading from '/@/components/Loading';
+
 export default defineComponent({
   name: 'LayoutContent',
-  components: { PageLayout },
+  components: { PageLayout, Loading },
+  setup() {
+    const { getOpenPageLoading } = useTransitionSetting();
+    console.log(getLayoutContentMode);
+    // TODO prefixClass
+    // const { getLayoutContentMode, getPageLoading } = useRootSetting();
+    return { getOpenPageLoading, getPageLoading, getLayoutContentMode };
+  },
 });
 </script>
 

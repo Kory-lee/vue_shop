@@ -1,6 +1,72 @@
+import { computed, unref } from 'vue';
+import { ContentEnum } from '/@/enums/configEnum';
+import configStore from '/@/store/modules/config';
 import type { ProjectConfig } from '/@/types/config';
-
 type RootSetting = Omit<
   ProjectConfig,
   'locale' | 'headerSetting' | 'menuSetting' | 'multiTabsSettting'
 >;
+export const getRootSetting = computed((): RootSetting => configStore.getProjectConfig);
+
+export const getPageLoading = computed(() => configStore.getPageLoading);
+
+export const getOpenKeepAlive = computed(() => unref(getRootSetting).openKeepAlive);
+
+export const getCanEmbedIFramePage = computed(() => getRootSetting.value.canEmbedIFramePage);
+
+export const getPermissionMode = computed(() => getRootSetting.value.permissionMode);
+
+export const getShowLogo = computed(() => getRootSetting.value.showLogo);
+
+export const getContentMode = computed(() => getRootSetting.value.contentMode);
+
+export const getUseOpenBackTop = computed(() => getRootSetting.value.useOpenBackTop);
+
+export const getShowSettingButton = computed(() => getRootSetting.value.showSettingButton);
+
+export const getUseErrorHandle = computed(() => getRootSetting.value.useErrorHandle);
+
+export const getShowFooter = computed(() => getRootSetting.value.showFooter);
+
+export const getShowbreadCrumb = computed(() => getRootSetting.value.showBreadCrumb);
+
+export const getShowbreadCrumbIcon = computed(() => getRootSetting.value.showBreadCrumbIcon);
+
+export const getFullContent = computed(() => getRootSetting.value.fullContent);
+
+export const getColorWeak = computed(() => getRootSetting.value.colorWeak);
+
+export const getGrayMode = computed(() => getRootSetting.value.grayMode);
+
+export const getLockTime = computed(() => getRootSetting.value.lockTime);
+
+export const getLayoutContentMode = computed(() =>
+  getRootSetting.value.contentMode === ContentEnum.FULL ? ContentEnum.FULL : ContentEnum.FIXED
+);
+
+export function setRootSetting(setting: Partial<RootSetting>) {
+  configStore.commitProjectConfigState(setting);
+}
+
+export default function useRootSetting() {
+  return {
+    setRootSetting,
+    getOpenKeepAlive,
+    getPageLoading,
+    getCanEmbedIFramePage,
+    getPermissionMode,
+    getShowLogo,
+    getContentMode,
+    getUseOpenBackTop,
+    getShowSettingButton,
+    getUseErrorHandle,
+    getShowFooter,
+    getShowbreadCrumb,
+    getShowbreadCrumbIcon,
+    getFullContent,
+    getColorWeak,
+    getGrayMode,
+    getLockTime,
+    getLayoutContentMode,
+  };
+}

@@ -1,6 +1,5 @@
 import { createI18n, I18n, I18nOptions } from 'vue-i18n';
 import zh_CN from '/@/locales/lang/zh_CN';
-
 const localData: I18nOptions = {
   legacy: false,
   locale: 'zh_CN',
@@ -25,7 +24,7 @@ export function useI18n(namespace?: string) {
   const { t } = i18n.global;
   return {
     ...i18n.global,
-    t: (key: string, ...arg: Parameters<typeof t>) => t(getKey(key), ...arg),
+    t: (key: string, ...arg: any) => t(getKey(key), ...(arg as Parameters<typeof t>)),
   };
 }
 export function setI18nLanguage(i18n: I18n, locale: any): void {
