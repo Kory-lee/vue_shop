@@ -2,6 +2,7 @@ import { computed, unref } from 'vue';
 import { ContentEnum } from '/@/enums/configEnum';
 import configStore from '/@/store/modules/config';
 import type { ProjectConfig } from '/@/types/config';
+
 type RootSetting = Omit<
   ProjectConfig,
   'locale' | 'headerSetting' | 'menuSetting' | 'multiTabsSettting'

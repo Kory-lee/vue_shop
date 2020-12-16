@@ -1,11 +1,12 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import antD from './plugins/ant-design-vue';
 import i18n from './plugins/i18n';
+// This Module only introduces components globally before login
+import antDesign from './plugins/registerComponents';
 import router from './router';
 import store from './store';
-// import './styles/index.less';
 
-const app = createApp(App);
+export const app = createApp(App);
 
-app.use(store).use(router).use(antD).use(i18n).mount('#app');
+app.use(antDesign).use(i18n).use(store).use(router).mount('#app');
+
