@@ -2,8 +2,8 @@
 import { Dropdown, Menu } from 'ant-design-vue';
 import { defineComponent, h } from 'vue';
 import type { PropType } from 'vue';
-import type { DropMenu } from './types';
-import { Trigger } from '../DropDown/types';
+import type { DropMenu, Trigger } from './types';
+
 //TODO Icon component
 const Icon = h('i');
 export default defineComponent({

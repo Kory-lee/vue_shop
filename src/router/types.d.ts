@@ -1,5 +1,5 @@
-import type { RouteRecordRaw } from "vue-router";
-import { RoleEnum } from "/@/enums/roleEnum";
+import type { RouteRecordRaw } from 'vue-router';
+import { RoleEnum } from '/@/enums/roleEnum';
 export interface RouteMeta {
   // title
   title: string;
@@ -35,7 +35,7 @@ export interface RouteMeta {
   carryParam?: boolean;
 }
 
-export interface AppRouteRecordRaw extends Omit<RouteRecordRaw, "meta"> {
+export interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'meta'> {
   name: string;
   meta: RouteMeta;
   component?: any;
@@ -45,7 +45,7 @@ export interface AppRouteRecordRaw extends Omit<RouteRecordRaw, "meta"> {
   fullPath?: string;
 }
 export interface MenuTag {
-  type?: "primary" | "error" | "warn" | "success";
+  type?: 'primary' | 'error' | 'warn' | 'success';
   content?: string;
   dot?: boolean;
 }

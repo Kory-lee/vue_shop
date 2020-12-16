@@ -20,7 +20,13 @@ const config: UserConfig = {
       includes: [resolve('src/router'), resolve('src/locales')],
     }),
   ],
-  optimizeDeps: { include: ['@ant-design/icons-vue'] },
+  optimizeDeps: {
+    include: [
+      // 'ant-design-vue/es/locale/zh_CN',
+      // 'ant-design-vue/es/locale/en_US',
+      '@ant-design/icons-vue',
+    ],
+  },
   // transforms: [require("vite-transform-globby-import")(sharedConfig)],
 };
 
