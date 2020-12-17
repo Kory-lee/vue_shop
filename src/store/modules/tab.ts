@@ -1,9 +1,12 @@
+import { unref } from 'vue';
 import { RouteLocationNormalized, useRouter } from 'vue-router';
-import { getModule, Module, VuexModule } from 'vuex-module-decorators';
+import { getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators';
+import { PageEnum } from '/@/enums/pageEnum';
+import { useGo } from '/@/hooks/web/usePage';
+import router from '/@/router';
 import store from '/@/store';
 const NAME = 'tab';
 export const PAGE_LAYOUT_KEY = '__PAGE__LAYOUT__';
-
 @Module({ namespaced: true, name: NAME, dynamic: true, store })
 class Tab extends VuexModule {
   cachedMapState = new Map<string, string[]>();
@@ -20,6 +23,37 @@ class Tab extends VuexModule {
   }
   get getCachedMapState() {
     return this.cachedMapState;
+  }
+  get getLastDragEndIndexState() {
+    return this.lastDragEndIndexState;
+  }
+
+  @Mutation
+  commitClearCache() {
+    this.cachedMapState = new Map();
+  }
+
+  @Mutation
+  goToPage() {
+    const go = useGo();
+    const len = this.tabsState.length;
+    const { path } = unref(router.currentRoute);
+    let toPath: PageEnum | string = PageEnum.BASE_HOME;
+    if (len > 0) {
+      const page = this.tabsState[len - 1];
+      const p = page.fullPath || page.path;
+      if (p) toPath = p;
+    }
+
+    path !== toPath && go(toPath, true);
+  }
+
+  @Mutation
+  commitCacheMapState() {
+    const cacheMap = new Map<string, string[]>();
+    const pageCacheSet = new Set<string>();
+
+    this.tabsState.forEach((tab) => {});
   }
 }
 

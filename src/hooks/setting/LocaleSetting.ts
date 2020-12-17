@@ -1,3 +1,5 @@
-// import type { LocaleSetting } from '/@/types/config';
+import { computed } from 'vue';
+import configStore from '/@/store/modules/config';
 
-export function useLocaleSetting(){}
+export const getLocale = computed(() => configStore.getProjectConfig.locale);
+export function useLocaleSetting() {}

@@ -22,8 +22,8 @@ const config: UserConfig = {
   ],
   optimizeDeps: {
     include: [
-      // 'ant-design-vue/es/locale/zh_CN',
-      // 'ant-design-vue/es/locale/en_US',
+      'ant-design-vue/es/locale/zh_CN',
+      'ant-design-vue/es/locale/en_US',
       '@ant-design/icons-vue',
     ],
   },
