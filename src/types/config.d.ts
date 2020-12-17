@@ -1,6 +1,6 @@
 import { RouterTransitionEnum } from '../enums/configEnum';
+import { MenuModeEnum, MenuTypeEnum } from '../enums/menuEnums';
 import type { LocaleType } from '../locales/types';
-import { Menu } from '../router/types';
 export interface MenuSetting {
   bgColor: string | number;
   fixed: boolean;
@@ -8,6 +8,7 @@ export interface MenuSetting {
   collapsedShowTitle: boolean;
   canDrag: boolean;
   show: boolean;
+  hidden: boolean;
   split: boolean;
   menuWidth: number;
   mode: MenuModeEnum;
@@ -22,13 +23,14 @@ export interface MultiTabsSetting {
   show: boolean;
   showQuick: boolean; //开启快速操作
   canDrag: boolean;
+  showRefresh: true;
 }
 export interface HeaderSetting {
   bgColor: string | number;
   fixed: boolean;
   show: boolean;
   theme: ThemeEnum;
-  showRefresh: boolean; // 显示刷新按钮
+
   showFullScreen: boolean; //全屏按钮
   useLockpage: boolean; //开启全屏功能
   showDoc: boolean; //文档按钮
