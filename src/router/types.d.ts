@@ -60,7 +60,6 @@ export interface Menu {
   roles?: RoleEnum[];
 
   meta?: Partial<RouteMeta>;
-
   tag?: MenuTag;
 }
 

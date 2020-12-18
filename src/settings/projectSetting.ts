@@ -4,7 +4,7 @@ import {
   ContentEnum,
   PermissionModeEnum,
   RouterTransitionEnum,
-  ThemeEnum
+  ThemeEnum,
 } from '../enums/configEnum';
 import { MenuModeEnum, MenuTypeEnum, TriggerEnum } from '../enums/menuEnums';
 import { ProjectConfig } from '../types/config';

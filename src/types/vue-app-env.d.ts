@@ -22,7 +22,7 @@ declare namespace NodeJS {
   }
 }
 
-// declare let process: NodeJS.Process;
+declare let process: NodeJS.Process;
 
 declare module "*.bmp" {
   const src: string;

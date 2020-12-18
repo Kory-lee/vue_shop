@@ -1,6 +1,7 @@
 import { useI18n } from '/@/plugins/i18n';
 import { LAYOUT } from '/@/router/constant';
-const { t } = useI18n();
+
+const { t } = useI18n('routes.dashboard');
 const dashboard = {
   path: '/dashboard',
   name: 'Dashboard',
@@ -12,13 +13,13 @@ const dashboard = {
       path: 'workbench',
       name: 'Workbench',
       component: () => import('/@/views/dashboard/workbench/index.vue'),
-      meta: { title: t('routes.dashboard.workbench'), affix: true },
+      meta: { title: t('workbench'), affix: true },
     },
     {
       path: 'analysis',
       name: 'Analysis',
       components: () => {},
-      meta: { title: t('routes.dashboard.analysis') },
+      meta: { title: t('analysis') },
     },
   ],
 };

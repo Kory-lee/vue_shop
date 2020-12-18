@@ -8,5 +8,5 @@ import store from './store';
 
 export const app = createApp(App);
 
-app.use(antDesign).use(i18n).use(store).use(router).mount('#app');
-
+app.use(i18n).use(antDesign).use(router).use(store);
+router.isReady().then(() => app.mount('#app'));

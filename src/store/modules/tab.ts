@@ -5,8 +5,10 @@ import { PageEnum } from '/@/enums/pageEnum';
 import { useGo } from '/@/hooks/web/usePage';
 import router from '/@/router';
 import store from '/@/store';
+import { getRoute } from '/@/utils/helper/routeHelper';
 const NAME = 'tab';
 export const PAGE_LAYOUT_KEY = '__PAGE__LAYOUT__';
+
 @Module({ namespaced: true, name: NAME, dynamic: true, store })
 class Tab extends VuexModule {
   cachedMapState = new Map<string, string[]>();
@@ -49,11 +51,23 @@ class Tab extends VuexModule {
   }
 
   @Mutation
+  commitResetState() {
+    this.tabsState = [];
+    this.cachedMapState = new Map();
+  }
+
+  @Mutation
   commitCacheMapState() {
     const cacheMap = new Map<string, string[]>();
     const pageCacheSet = new Set<string>();
 
-    this.tabsState.forEach((tab) => {});
+    this.tabsState.forEach((tab) => {
+      const item = getRoute(tab),
+        needCache = !item.meta?.ignoreKeepAlive;
+      if (!needCache) return;
+      if (item.meta?.affix) {
+      }
+    });
   }
 }
 
