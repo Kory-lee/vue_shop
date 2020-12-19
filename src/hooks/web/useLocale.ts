@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { ref, unref } from 'vue';
-import { I18n } from 'vue-i18n';
+import { Composer, I18n } from 'vue-i18n';
 import { getLang, getLocale, setLocale } from '/@/hooks/setting/LocaleSetting';
 import { LocaleType } from '/@/locales/types';
 import i18n, { useI18n } from '/@/plugins/i18n';
@@ -19,7 +19,7 @@ export async function loadLocaleMessage(i18n: I18n, locale: any) {
 export function useLocale() {
   function changeLocale(lang: LocaleType) {
     if (i18n.mode === 'legacy') i18n.global.locale = lang;
-    else i18n.global.locale.value = lang;
+    else ((i18n.global as unknown) as Composer).locale.value = lang;
     loadLocaleMessage(i18n, lang);
     document.querySelector('html')?.setAttribute('lang', lang);
     setLocale({ lang });

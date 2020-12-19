@@ -12,11 +12,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, inject } from 'vue';
 import { Layout } from 'ant-design-vue';
 
-import LayoutHeader from './components/header//index.vue';
+import LayoutHeader from './components/header/index.vue';
 import LayoutContent from './components/content.vue';
+import { getPrefixCls as customizePrefixCls } from '/@/components/Application';
 
 import createAsyncComponent from '/@/utils/factory/createAsyncComponent';
 export default defineComponent({
@@ -28,8 +29,11 @@ export default defineComponent({
     Layout,
   },
   setup() {
+    const isMobile = inject('isMobile');
+    const getPrefixCls = inject('getPrefixCls', customizePrefixCls);
+    // const get
     return {
-      prefixCls: '',
+      prefixCls: getPrefixCls('default-layout'),
     };
   },
 });

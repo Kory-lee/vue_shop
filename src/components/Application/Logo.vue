@@ -14,6 +14,7 @@ export default defineComponent({
     theme: { type: String as PropType<'light' | 'dark'> },
     showTitle: { type: Boolean, default: true },
   },
+  setup() {},
 });
 </script>
 

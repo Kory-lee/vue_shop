@@ -8,6 +8,7 @@ import { Layout } from 'ant-design-vue';
 export default defineComponent({
   name: 'LayoutHeader',
   components: { Header: Layout.Header },
+  setup() {},
 });
 </script>
 
