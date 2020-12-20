@@ -18,7 +18,7 @@ export function setLocale(locale: Partial<LocaleSetting>) {
   configStore.commitProjectConfigState({ locale });
 }
 
-export default function useLocaleSetting() {
+export function useLocaleSetting() {
   return {
     setLocale,
 
