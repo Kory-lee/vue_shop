@@ -29,7 +29,7 @@ export const getUseErrorHandle = computed(() => getRootSetting.value.useErrorHan
 
 export const getShowFooter = computed(() => getRootSetting.value.showFooter);
 
-export const getShowbreadCrumb = computed(() => getRootSetting.value.showBreadCrumb);
+export const getShowBreadCrumb = computed(() => getRootSetting.value.showBreadCrumb);
 
 export const getShowbreadCrumbIcon = computed(() => getRootSetting.value.showBreadCrumbIcon);
 
@@ -62,7 +62,7 @@ export default function useRootSetting() {
     getShowSettingButton,
     getUseErrorHandle,
     getShowFooter,
-    getShowbreadCrumb,
+    getShowBreadCrumb,
     getShowbreadCrumbIcon,
     getFullContent,
     getColorWeak,

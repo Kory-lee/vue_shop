@@ -1,4 +1,4 @@
-import { createStorage as create } from './storageCache';
+import { initStorage as create } from './storageCache';
 import { enableStorageEncryption } from '/@/settings/encryptionSetting';
 
 const createOptions = (storage = sessionStorage) => {

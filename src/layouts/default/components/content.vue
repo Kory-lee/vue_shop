@@ -25,7 +25,6 @@ export default defineComponent({
   components: { PageLayout, Loading },
   setup() {
     const { getOpenPageLoading } = useTransitionSetting();
-    console.log(getLayoutContentMode);
     // TODO prefixClass
     // const { getLayoutContentMode, getPageLoading } = useRootSetting();
     return { getOpenPageLoading, getPageLoading, getLayoutContentMode };

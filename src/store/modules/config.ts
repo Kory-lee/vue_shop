@@ -1,10 +1,11 @@
 import { Action, getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators';
 import tabStore from './tab';
+import { PROJ_CFG_KEY } from '/@/enums/cacheEnum';
 import { resetRouter } from '/@/router';
 import store from '/@/store';
 import { ProjectConfig } from '/@/types/config';
-
-// import { PROJ_CFG_KEY } from '/@/enums/cacheEnum';
+import { deepMerge } from '/@/utils/common';
+import { getLocal } from '/@/utils/helper/persistent';
 
 export interface LockInfo {
   pwd: string | undefined;
@@ -16,7 +17,7 @@ const NAME = 'config';
 @Module({ dynamic: true, namespaced: true, store, name: NAME })
 class Config extends VuexModule {
   private pageLoadingState = false;
-  private projectConfigState: ProjectConfig | null;
+  private projectConfigState: ProjectConfig | null = getLocal(PROJ_CFG_KEY);
   private lockMainScrollState = false;
 
   get getPageLoading() {
@@ -38,7 +39,7 @@ class Config extends VuexModule {
   }
   @Mutation
   commitProjectConfigState(config: DeepPartial<ProjectConfig>): void {
-    // this.projectConfigState = deepMerge;
+    this.projectConfigState = deepMerge(this.projectConfigState || {}, config);
   }
 
   @Action

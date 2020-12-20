@@ -11,7 +11,7 @@ export interface CreateStorageParams extends EncryptionParams {
  * @param storage 缓存,默认使用 sessionStorage
  * @param hasEncrypt 确认加密
  */
-export const createStorage = ({
+export const initStorage = ({
   prefixKey = '',
   storage = sessionStorage,
   key = cacheCipher.key,

@@ -5,7 +5,6 @@
     </a-col>
     <a-col :md="24" :lg="7"></a-col>
   </a-row>
-  <div>workbench</div>
 </template>
 
 <script lang="ts">
