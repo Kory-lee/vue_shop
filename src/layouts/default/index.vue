@@ -15,15 +15,15 @@
 import { defineComponent, inject } from 'vue';
 import { Layout } from 'ant-design-vue';
 
-import LayoutHeader from './components/header/index.vue';
-import LayoutContent from './components/content.vue';
+import LayoutHeader from './header/index.vue';
+import LayoutContent from './content.vue';
 import { getPrefixCls as customizePrefixCls } from '/@/components/Application';
 
 import createAsyncComponent from '/@/utils/factory/createAsyncComponent';
 export default defineComponent({
   components: {
-    LayoutFeature: createAsyncComponent(() => import('./components/feature.vue')),
-    LayoutFooter: createAsyncComponent(() => import('./components/footer.vue')),
+    LayoutFeature: createAsyncComponent(() => import('./feature.vue')),
+    LayoutFooter: createAsyncComponent(() => import('./footer.vue')),
     LayoutContent,
     LayoutHeader,
     Layout,

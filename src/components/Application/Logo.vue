@@ -1,5 +1,9 @@
 <template>
-  <div class="anticon" :class="[theme, prefixCls]" @click="handleGoHome">
+  <div
+    class="anticon"
+    :class="[theme, prefixCls, { 'collapsed-show-title': getCollapsedShowTitle }]"
+    @click="handleGoHome"
+  >
     <img src="/@/assets/img/logo.png" alt="" />
     <div class="ml-2 ellipsis" :class="`${prefixCls}__title`" v-show="showTitle"></div>
   </div>
@@ -10,6 +14,7 @@ import { defineComponent, inject, PropType } from 'vue';
 import { getPrefixCls as customizePrefixCls } from '/@/components/Application';
 import { PageEnum } from '/@/enums/pageEnum';
 import { useGo } from '/@/hooks/web/usePage';
+import { getCollapsedShowTitle } from '/@/hooks/setting/menuSetting';
 // import {getCollapsedShowTitle}
 export default defineComponent({
   name: 'Logo',
@@ -22,7 +27,7 @@ export default defineComponent({
     const handleGoHome = () => go(PageEnum.BASE_HOME);
     const getPrefixCls = inject('getPrefixCls', customizePrefixCls);
     const prefixCls = getPrefixCls('app-logo');
-    return { prefixCls, handleGoHome };
+    return { prefixCls, handleGoHome, getCollapsedShowTitle };
   },
 });
 </script>

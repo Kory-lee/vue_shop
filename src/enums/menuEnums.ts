@@ -1,5 +1,6 @@
 export enum MenuTypeEnum {
   SIDEBAR = 'sidebar',
+  MIX_SIDEBAR = 'mix-sidebar',
   MIX = 'mix',
   TOP_MENU = 'top-menu',
 }

@@ -37,6 +37,7 @@ export const getShowHeaderTrigger = computed(() => {
 
 export const getIsHorizontal = computed(() => unref(getMenuMode) === MenuModeEnum.HORIZONTAL);
 
+export const getIsMixSidebar = computed(() => unref(getMenuType) === MenuTypeEnum.MIX_SIDEBAR);
 export const getIsMixMode = computed(
   () => unref(getMenuMode) === MenuModeEnum.INLINE && unref(getMenuType) === MenuTypeEnum.MIX
 );
@@ -52,6 +53,8 @@ export const getCalcContentWidth = computed(() => {
   const width =
     unref(getIsTopMenu) || !unref(getShowMenu) || (unref(getSplit) && unref(getMenuHidden))
       ? 0
+      : unref(getIsMixSidebar)
+      ? SIDE_BAR_SHOW_TIT_MINI_WIDTH
       : unref(getRealWidth);
   return `calc(100% - ${width}px)`;
 });

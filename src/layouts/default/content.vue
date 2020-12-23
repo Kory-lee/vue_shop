@@ -1,12 +1,12 @@
 <template>
-  <div :class="[getLayoutContentMode]">
+  <div :class="[prefixCls, getLayoutContentMode]">
     <transition name="fade">
       <Loading
         v-if="getOpenPageLoading"
         :loading="getPageLoading"
         background="rgba(240,242,245,0.6)"
         absolute
-        :class="`-loading`"
+        :class="`${prefixCls}-loading`"
       />
     </transition>
   </div>
@@ -14,20 +14,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, inject } from 'vue';
 import { getLayoutContentMode, getPageLoading } from '/@/hooks/setting/RootSetting';
 import { getOpenPageLoading } from '/@/hooks/setting/TransitionSetting';
 import PageLayout from '/@/layouts/page';
 import Loading from '/@/components/Loading';
+import { getPrefixCls as customizePrefixCls } from '/@/components/Application';
 
 export default defineComponent({
   name: 'LayoutContent',
   components: { PageLayout, Loading },
   setup() {
-    // const { getOpenPageLoading } = useTransitionSetting();
-    // TODO prefixClass
-    // const { getLayoutContentMode, getPageLoading } = useRootSetting();
-    return { getOpenPageLoading, getPageLoading, getLayoutContentMode };
+    const getPrefixCls = inject('getPrefixCls', customizePrefixCls);
+    return {
+      prefixCls: getPrefixCls('layout-content'),
+      getOpenPageLoading,
+      getPageLoading,
+      getLayoutContentMode,
+    };
   },
 });
 </script>

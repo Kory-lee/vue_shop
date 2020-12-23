@@ -1,5 +1,5 @@
 <template>
-  <section class="full-loading" :class="absolute" v-show="loading" :style="style">
+  <section class="full-loading" :class="{ absolute }" v-show="loading" :style="style">
     <Spin v-bind="$attrs" :tip="tip" :size="size" :spinning="loading" />
   </section>
 </template>
