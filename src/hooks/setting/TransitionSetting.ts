@@ -1,10 +1,10 @@
-import { computed } from 'vue';
+import { computed, unref } from 'vue';
 import configStore from '/@/store/modules/config';
 import { TransitionSetting } from '/@/types/config';
 
 export const getTransitionSetting = computed(() => configStore.getProjectConfig.transitionSetting);
 
-export const getEnabledTransition = computed(() => getTransitionSetting.value?.enable);
+export const getEnabledTransition = computed(() => unref(getTransitionSetting)?.enable);
 
 export const getOpenNProgress = computed(() => getTransitionSetting.value?.openNProgress);
 

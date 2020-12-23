@@ -49,7 +49,7 @@ export function setRootSetting(setting: Partial<RootSetting>) {
   configStore.commitProjectConfigState(setting);
 }
 
-export default function useRootSetting() {
+export  function useRootSetting() {
   return {
     setRootSetting,
     getOpenKeepAlive,

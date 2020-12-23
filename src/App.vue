@@ -8,13 +8,13 @@
 import { defineComponent } from 'vue';
 import Provider from '/@/components/Application/Provider/index';
 import { antConfigLocaleRef as antConfigLocale } from '/@/hooks/web/useLocale';
-import { getFullContent } from '/@/hooks/web/useFullContent';
+import { initConfigStore } from '/@/plugins/init';
 export default defineComponent({
   name: 'App',
   components: { Provider },
   setup() {
-    console.log(getFullContent);
-
+    initConfigStore();
+    // console.log(getFullContent);
     return { antConfigLocale };
   },
 });
