@@ -39,4 +39,20 @@ export default defineComponent({
 });
 </script>
 
-<style lang="less"></style>
+<style lang="less">
+@import (reference) '../../styles/index.less';
+@prefix-cls: ~'@{namespace}-default-layout';
+.@{prefix-cls}{
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+  background: @content-bg;
+  flex-direction: column;
+  > .ant-layout{
+    min-height: 100%;
+  }
+  &__main{
+    margin-left: 1px;
+  }
+}
+</style>

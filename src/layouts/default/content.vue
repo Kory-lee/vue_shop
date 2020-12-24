@@ -4,13 +4,13 @@
       <Loading
         v-if="getOpenPageLoading"
         :loading="getPageLoading"
-        background="rgba(240,242,245,0.6)"
+        background="rgba(240, 242, 245, 0.6)"
         absolute
         :class="`${prefixCls}-loading`"
       />
     </transition>
+    <PageLayout />
   </div>
-  <PageLayout />
 </template>
 
 <script lang="ts">
@@ -36,4 +36,23 @@ export default defineComponent({
 });
 </script>
 
-<style></style>
+<style lang="less">
+@import (reference) '../../styles/index.less';
+@prefix-cls: ~'@{namespace}-layout-content';
+
+.@{prefix-cls}{
+  position: relative;
+flex: 1 1 auto;
+min-height: 0;
+
+&.fixed{
+  width: 1200px;
+  margin: 0 auto;
+}
+  &-loading{
+    position: absolute;
+    top: 200px;
+z-index: @page-loading-z-index;
+  }
+}
+</style>

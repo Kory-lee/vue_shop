@@ -1,7 +1,6 @@
-import { useI18n } from '/@/plugins/i18n';
+import { t } from '/@/plugins/i18n';
 import { LAYOUT } from '/@/router/constant';
 
-const { t } = useI18n();
 const dashboard = {
   path: '/dashboard',
   name: 'Dashboard',
@@ -18,7 +17,7 @@ const dashboard = {
     {
       path: 'analysis',
       name: 'Analysis',
-      components: () => {},
+      components: () => import('/@/views/dashboard/analysis/index.vue'),
       meta: { title: t('routes.dashboard.analysis') },
     },
   ],
