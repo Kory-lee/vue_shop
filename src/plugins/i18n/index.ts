@@ -38,5 +38,6 @@ export function useI18n(namespace?: string) {
     t: (key: string, ...arg: any) => t(getKey(key), ...(arg as Parameters<typeof t>)),
   };
 }
+export const t = (key: string) => key;
 
 export default i18n;

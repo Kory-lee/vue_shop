@@ -1,5 +1,5 @@
 <template>
-  <Header :class="getHeaderCls">
+  <Header :class="headerCls">
     <div :class="`${prefixCls}-left`">
       <Logo
         v-if="getShowHeaderLogo"
@@ -74,9 +74,10 @@ export default defineComponent({
       getShowHeaderTrigger,
       getSplit,
       getIsMixSidebar,
+      getShowBreadCrumb,
     };
   },
 });
 </script>
 
-<style></style>
+<style lang="less"></style>

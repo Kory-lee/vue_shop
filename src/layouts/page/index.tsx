@@ -26,12 +26,6 @@ export default defineComponent({
   name: 'PageLayout',
   setup() {
     const { getCaches } = useCache(true);
-    // const { getShowMultipleTab } = useMultipleTabSetting();
-
-    // const { getOpenKeepAlive, getCanEmbedIFramePage } = useRootSetting();
-
-    // const { getBasicTransition, getEnableTransition } = useTransitionSetting();
-
     const openCache = computed(() => unref(getOpenKeepAlive));
 
     return () => {
@@ -41,24 +35,23 @@ export default defineComponent({
             {{
               default: ({ Component, route }: DefaultContext) => {
                 // No longer show animations that are already in the tab
-                const cacheTabs = unref(getCaches);
-                const isInCache = cacheTabs.includes(route.name as string);
+                const cacheTabs = unref(getCaches),
+                  isInCache = cacheTabs.includes(route.name as string);
                 const name =
                   isInCache && route.meta.loaded && unref(getEnabledTransition)
                     ? 'fade-slide'
                     : null;
 
                 // When the child element is the parentView, adding the key will cause the component to be executed multiple times. When it is not parentView, you need to add a key, because it needs to be compatible with the same route carrying different parameters
-                const isParentView = Component?.type.parentView;
-                const componentKey = isParentView ? {} : { key: route.fullPath };
+                const isParentView = Component?.type.parentView,
+                  componentKey = isParentView ? {} : { key: route.fullPath };
 
                 const renderComp = h(Component, { ...componentKey });
-
                 const PageContent = unref(openCache)
                   ? h(KeepAlive, { include: cacheTabs }, renderComp)
                   : renderComp;
-                if (!unref(getEnabledTransition)) return PageContent;
 
+                if (!unref(getEnabledTransition)) return PageContent;
                 return (
                   <Transition
                     name={name || route.meta.transitionName || unref(getBasicTransition)}

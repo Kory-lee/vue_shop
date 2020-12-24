@@ -4,4 +4,4 @@ export { getPrefixCls } from './Provider';
 export { Logo };
 
 
-export const Provider = createAsyncComponent(() => import('./Provider/index.vue'));
+export const Provider = createAsyncComponent(() => import('./Provider'));

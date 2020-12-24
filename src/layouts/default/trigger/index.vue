@@ -1,5 +1,5 @@
 <template>
-  <SideBarTrigger v-if="sidebar" />
+  <SidebarTrigger v-if="sidebar" />
   <HeaderTrigger v-else :theme="theme" />
 </template>
 

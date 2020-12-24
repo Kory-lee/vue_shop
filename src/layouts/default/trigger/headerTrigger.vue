@@ -14,7 +14,7 @@ import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue';
 export default defineComponent({
   name: 'HeaderTrigger',
   components: { MenuUnfoldOutlined, MenuFoldOutlined },
-  props: { type: String as PropType<'light' | 'dark'> },
+  props: { theme: { type: String as PropType<'light' | 'dark'> } },
   emits: ['click'],
   setup() {
     const getPrefixCls = inject('getPrefix', customizePrefixCls);
