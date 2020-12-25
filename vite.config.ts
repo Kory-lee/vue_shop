@@ -29,7 +29,7 @@ const config: UserConfig = {
   esbuildTarget: 'es2019',
   cssPreprocessOptions: {
     less: {
-      modifyVars: modifyVars,
+      modifyVars,
       javascriptEnabled: true,
     },
   },

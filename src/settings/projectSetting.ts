@@ -29,7 +29,6 @@ const setting: ProjectConfig = {
   showFooter: true,
   locale: {
     show: true,
-
     lang: 'zh_CN',
     fallback: 'zh_CN',
     availableLocales: ['zh_CN', 'en'],
@@ -51,7 +50,7 @@ const setting: ProjectConfig = {
     fixed: true,
     collapsed: false,
     collapsedShowTitle: false,
-    canDrag: false,
+    canDrag: true,
     show: true,
     hidden: false,
     menuWidth: 210,
@@ -62,6 +61,8 @@ const setting: ProjectConfig = {
     topMenuAlign: 'center',
     trigger: TriggerEnum.HEADER,
     accordion: true,
+
+    closeMixSidebarOnChange: false,
   },
   multiTabsSetting: {
     show: true,

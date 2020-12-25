@@ -31,13 +31,13 @@
               <a-col :span="12">
                 <a-form-item>
                   <a-checkbox v-model:checked="autoLogin" size="small">
-                    {{ t('autoLogin') }}
+                    {{ t('sys.login.autoLogin') }}
                   </a-checkbox>
                 </a-form-item>
               </a-col>
               <a-col :span="12">
                 <a-form-item :style="{ 'text-align': 'right' }">
-                  <a-button type="link" size="small">{{ t('forgetPassword') }}</a-button>
+                  <a-button type="link" size="small">{{ t('sys.login.forgetPassword') }}</a-button>
                 </a-form-item>
               </a-col>
             </a-row>
@@ -49,7 +49,7 @@
                 :block="true"
                 @click="handleClick"
                 :loading="formState.loading"
-                >{{ t('loginButton') }}</a-button
+                >{{ t('sys.login.loginButton') }}</a-button
               >
             </a-form-item>
           </a-form>
@@ -61,7 +61,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
-import { useI18n } from '/@/plugins/i18n';
+import { useI18n } from 'vue-i18n';
 import { Checkbox } from 'ant-design-vue';
 // import LangPicker from '/@/components/LangPicker/index.vue';
 
@@ -71,13 +71,13 @@ export default defineComponent({
   setup() {
     const formRef = ref(null),
       autoLogin = ref(false);
-    const { t } = useI18n('sys.login');
+    const { t } = useI18n();
 
     const formData = reactive({ account: 'kory', password: 123456 });
     const formState = reactive({ loading: ref(false) });
     const formRules = {
-      account: [{ required: true, message: t('accountPlaceholder'), trigger: 'blur' }],
-      password: [{ required: true, message: t('passwordPlaceholder'), trigger: 'blur' }],
+      account: [{ required: true, message: t('sys.login.accountPlaceholder'), trigger: 'blur' }],
+      password: [{ required: true, message: t('sys.login.passwordPlaceholder'), trigger: 'blur' }],
     };
     const handleClick = () => {};
     return { t, formRef, autoLogin, formData, formState, handleClick, formRules };

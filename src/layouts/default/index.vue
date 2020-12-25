@@ -1,8 +1,9 @@
 <template>
   <Layout :class="prefixCls">
     <LayoutFeature />
-    <LayoutHeader />
+    <LayoutHeader fixed v-if="!getShowFullHeaderRef" />
     <Layout>
+      <LayoutSidebar />
       <Layout>
         <LayoutContent />
         <LayoutFooter />
@@ -14,26 +15,29 @@
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
 import { Layout } from 'ant-design-vue';
-
+import LayoutSidebar from './sidebar/index.vue';
 import LayoutHeader from './header/index.vue';
 import LayoutContent from './content.vue';
 import { getPrefixCls as customizePrefixCls } from '/@/components/Application';
-
 import createAsyncComponent from '/@/utils/factory/createAsyncComponent';
+import { getShowFullHeaderRef } from '/@/hooks/setting/headerSetting';
 export default defineComponent({
   components: {
     LayoutFeature: createAsyncComponent(() => import('./feature.vue')),
     LayoutFooter: createAsyncComponent(() => import('./footer.vue')),
     LayoutContent,
     LayoutHeader,
+    LayoutSidebar,
     Layout,
   },
   setup() {
     const isMobile = inject('isMobile');
     const getPrefixCls = inject('getPrefixCls', customizePrefixCls);
-    // const get
+    console.log(getShowFullHeaderRef);
+
     return {
       prefixCls: getPrefixCls('default-layout'),
+      getShowFullHeaderRef,
     };
   },
 });

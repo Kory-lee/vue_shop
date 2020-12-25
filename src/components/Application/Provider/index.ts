@@ -17,14 +17,14 @@ export default defineComponent({
   },
   setup(props, { attrs, slots }) {
     const isMobileRef = ref(false);
-    console.log('attrs', attrs);
-    provide('isMobile', readonly(isMobileRef));
     const getPrefixCls = (scope?: string, customizePrefixCls?: string) => {
       const { prefixCls = styleSetting.prefixCls } = props;
       if (customizePrefixCls) return customizePrefixCls;
       return scope ? `${prefixCls}-${scope}` : prefixCls;
     };
+    provide('isMobile', readonly(isMobileRef));
     provide('getPrefixCls', getPrefixCls);
+
     return () => h(ConfigProvider, { ...attrs }, { default: () => slots.default?.() });
   },
 });

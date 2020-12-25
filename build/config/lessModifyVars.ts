@@ -1,3 +1,4 @@
+import sty from '../../src/settings/styleSetting';
 export const primaryColor = '#018ffb';
 
 export const modifyVars = {
@@ -17,4 +18,5 @@ export const modifyVars = {
   'border0color-base': '#F0F0F0',
   'border0color-split': '#F0F0F0',
   'border-radius-base': '2px',
+  ...sty,
 };

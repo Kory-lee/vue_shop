@@ -1,6 +1,7 @@
 import { computed, unref } from 'vue';
 import { getFullContent } from '../web/useFullContent';
 import {
+  getIsMixSidebar,
   getIsSideBarType,
   getIsTopMenu,
   getMenuMode,
@@ -21,7 +22,8 @@ export const getShowFullHeaderRef = computed(
     !unref(getFullContent) &&
     unref(getShowMixHeaderRef) &&
     unref(getShowHeader) &&
-    !unref(getIsTopMenu)
+    !unref(getIsTopMenu) &&
+    !unref(getIsMixSidebar)
 );
 
 export const getShowInsetHeaderRef = computed(() => {

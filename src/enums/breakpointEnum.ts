@@ -15,5 +15,10 @@ export enum screenEnum {
   XL = 1200,
   XXL = 1600,
 }
-// const screenMap = new Map();
-// export { screenMap };
+export const screenMap = new Map<sizeEnum, number>()
+  .set(sizeEnum.XS, screenEnum.XS)
+  .set(sizeEnum.SM, screenEnum.SM)
+  .set(sizeEnum.MD, screenEnum.MD)
+  .set(sizeEnum.LG, screenEnum.LG)
+  .set(sizeEnum.XL, screenEnum.XL)
+  .set(sizeEnum.XXL, screenEnum.XXL);

@@ -17,6 +17,7 @@ export interface MenuSetting {
   topMenuAlign: 'start' | 'center' | 'end';
   trigger: TriggerEnum;
   accordion: boolean;
+  closeMixSidebarOnChange: boolean;
 }
 export interface MultiTabsSetting {
   // 是否显示

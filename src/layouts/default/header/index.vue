@@ -80,4 +80,12 @@ export default defineComponent({
 });
 </script>
 
-<style lang="less"></style>
+<style lang="less">
+@header-prefix-cls: ~'@{namespace}-layout-header';
+
+.@{header-prefix-cls}{
+  display: flex;
+  padding: 0;
+  margin-left: -1px;
+}
+</style>

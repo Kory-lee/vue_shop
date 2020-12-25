@@ -38,21 +38,21 @@ export default defineComponent({
 
 <style lang="less">
 @import (reference) '../../styles/index.less';
-@prefix-cls: ~'@{namespace}-layout-content';
+@class: ~'@{namespace}-layout-content';
 
-.@{prefix-cls}{
+.@{class} {
   position: relative;
-flex: 1 1 auto;
-min-height: 0;
+  flex: 1 1 auto;
+  min-height: 0;
 
-&.fixed{
-  width: 1200px;
-  margin: 0 auto;
-}
-  &-loading{
+  &.fixed {
+    width: 1200px;
+    margin: 0 auto;
+  }
+  &-loading {
     position: absolute;
     top: 200px;
-z-index: @page-loading-z-index;
+    z-index: @page-loading-z-index;
   }
 }
 </style>
