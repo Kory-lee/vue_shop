@@ -2,7 +2,7 @@ import { RouterTransitionEnum } from '../enums/configEnum';
 import { MenuModeEnum, MenuTypeEnum } from '../enums/menuEnums';
 import type { LocaleType } from '../locales/types';
 export interface MenuSetting {
-  bgColor: string | number;
+  bgColor: string;
   fixed: boolean;
   collapsed: boolean;
   collapsedShowTitle: boolean;
@@ -27,7 +27,7 @@ export interface MultiTabsSetting {
   showRefresh: true;
 }
 export interface HeaderSetting {
-  bgColor: string | number;
+  bgColor: string;
   fixed: boolean;
   show: boolean;
   theme: ThemeEnum;
@@ -65,7 +65,7 @@ export interface ProjectConfig {
   permissionMode: PermissionModeEnum;
   grayMode: boolean; // 网站灰色模式
   colorWeak: boolean; //是否开启色弱模式
-  themeColor: string | number;
+  themeColor: string;
   fullContent: boolean; // 全屏显示主界面,不显示菜单及顶部
   contentMode: ContentMode; //区域宽度
   showLogo: boolean; // 是否显示logo

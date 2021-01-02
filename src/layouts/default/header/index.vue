@@ -81,7 +81,7 @@ export default defineComponent({
 </script>
 
 <style lang="less">
-@header-prefix-cls: ~'@{namespace}-layout-header';
+@header-prefix-cls: ~'@{prefixCls}-layout-header';
 
 .@{header-prefix-cls}{
   display: flex;
