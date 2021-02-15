@@ -1,15 +1,15 @@
-import modules from 'globby!/@/router/routes/modules/**/*.@(ts)';
-import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '../constant';
 import { PageEnum } from '../../enums/pageEnum';
-import { useI18n } from '/@/plugins/i18n';
+import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '../constant';
+import { t } from '/@/plugins/i18n';
 import type { AppRouteModule, AppRouteRecordRaw } from '/@/router/types';
+const modules = import.meta.globEager('./modules/**/*.ts');
 const routeModuleList: AppRouteModule[] = [];
 
-const { t } = useI18n('routes.basic');
 // 浅复制
 Object.keys(modules).forEach((key) => {
-  const mod = Array.isArray(modules[key]) ? [...modules[key]] : [modules[key]];
-  routeModuleList.push(...mod);
+  const mod = modules[key].default || {};
+  const modList = Array.isArray(mod[key]) ? [...mod] : [mod];
+  routeModuleList.push(...modList);
 });
 
 export const asyncRoutes = [PAGE_NOT_FOUND_ROUTE, ...routeModuleList];
@@ -24,7 +24,7 @@ export const RootRoute: AppRouteRecordRaw = {
       name: 'Dashboard',
       path: 'dashboard',
       meta: { title: '控制台' },
-      component: () => import('/@/views/dashboard/index.vue'),
+      component: () => import('/@/views/dashboard/workbench/index.vue'),
     },
   ],
 };
@@ -33,7 +33,7 @@ export const LoginRoute: AppRouteRecordRaw = {
   path: '/login',
   name: 'Login',
   component: () => import('/@/views/sys/login/index.vue'),
-  meta: { title: t('login') },
+  meta: { title: t('routes.basic.login') },
 };
 
 // 基础路由 不用权限

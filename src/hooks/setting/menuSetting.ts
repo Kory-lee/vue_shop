@@ -71,4 +71,5 @@ export function setMenuSetting(menuSetting: Partial<MenuSetting>): void {
 
 export function toggleCollapsed() {
   setMenuSetting({ collapsed: !unref(getCollapsed) });
+  console.log(getIsMixMode, getCollapsed);
 }

@@ -6,7 +6,7 @@ export const workProd = [
 ];
 
 export const todoList = (() => {
-  const ret = [];
+  const ret: {}[] = [];
   for (let id = 0; id < 3; id++) {
     ret.push({
       id,
@@ -20,7 +20,7 @@ export const todoList = (() => {
 })();
 
 export const newList = (() => {
-  const ret = [];
+  const ret: {}[] = [];
   for (let id = 0; id < 3; id++) {
     ret.push({
       id,

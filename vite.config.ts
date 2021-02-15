@@ -1,52 +1,39 @@
+import { createVitePlugins } from './build/vite/plugins';
 import { resolve } from 'path';
-import type { Resolver, UserConfig } from 'vite';
-import { modifyVars } from './build/config/lessModifyVars';
-import { loadEnv } from './build/utils';
-import globbyTransform from './build/vite/plugins/transform/globby';
+import { ConfigEnv, loadEnv, UserConfig } from 'vite';
+import { generateModifyVars } from './build/config/themeConfig';
+import { wrapperEnv } from './build/utils';
+import { createProxy } from './build/vite/proxy';
 
-const pathResolve = (dir: string): string => resolve(__dirname, dir);
-
-const ViteEnv = loadEnv();
-const { VITE_PORT, VITE_PUBLIC_PATH } = ViteEnv;
-const sharedConfig = {
-  alias: { '/@/': pathResolve('src') },
-  root: process.cwd(),
-  resolvers: <Resolver[]>[],
-};
-const config: UserConfig = {
-  /**
-   * 端口号
-   * @default 3000
-   */
-  port: VITE_PORT,
-
-  base: VITE_PUBLIC_PATH,
-  terserOptions: {
-    compress: { keep_infinity: true },
-  },
-
-  ...sharedConfig,
-  esbuildTarget: 'es2019',
-  cssPreprocessOptions: {
-    less: {
-      modifyVars,
-      javascriptEnabled: true,
+const pathResolve = (dir: string): string => resolve(__dirname, '.', dir);
+const root = process.cwd();
+export default ({ command, mode }: ConfigEnv): UserConfig => {
+  const env = loadEnv(mode, root),
+    viteEnv = wrapperEnv(env),
+    { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY, VITE_DROP_CONSOLE, VITE_LEGACY } = viteEnv,
+    isBuild = command === 'build';
+  return {
+    base: VITE_PUBLIC_PATH,
+    root,
+    resolve: { alias: [{ find: /^\/@\//, replacement: pathResolve('src') + '/' }] },
+    server: {
+      port: VITE_PORT,
+      proxy: createProxy(VITE_PROXY),
+      hmr: { overlay: true },
     },
-  },
-  transforms: [
-    globbyTransform({
-      ...sharedConfig,
-      includes: [resolve('src/router'), resolve('src/locales')],
-    }),
-  ],
-  optimizeDeps: {
-    include: [
-      'ant-design-vue/es/locale/zh_CN',
-      'ant-design-vue/es/locale/en_US',
-      '@ant-design/icons-vue',
-    ],
-  },
-  // transforms: [require("vite-transform-globby-import")(sharedConfig)],
+    // TODO
+    build: {},
+    css: {
+      preprocessorOptions: {
+        less: {
+          modifyVars: {
+            hack: `true; @import (reference) "${resolve('src/styles/config.less')}";`,
+            ...generateModifyVars(),
+          },
+          javascriptEnabled: true,
+        },
+      },
+    },
+    plugins: createVitePlugins(viteEnv, isBuild),
+  };
 };
-
-export default config;

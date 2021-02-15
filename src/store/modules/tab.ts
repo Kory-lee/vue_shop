@@ -1,7 +1,7 @@
 import { unref } from 'vue';
 import { RouteLocationNormalized, useRouter } from 'vue-router';
 import { getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators';
-import { PageEnum } from '/@/enums/pageEnum';
+import { PageEnum } from '../../enums/pageEnum';
 import { useGo } from '/@/hooks/web/usePage';
 import router from '/@/router';
 import store from '/@/store';

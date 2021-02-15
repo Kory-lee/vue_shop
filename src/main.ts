@@ -11,5 +11,5 @@ export const app = createApp(App);
 app.use(antDesign).use(i18n).use(router).use(store);
 // console.log(router.isReady());
 
-app.mount('#app', );
+app.mount('#app');
 // router.isReady().then(() => app.mount('#app', true));

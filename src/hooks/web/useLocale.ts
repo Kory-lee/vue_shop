@@ -8,12 +8,12 @@ moment.locale('zh-cn');
 
 export const antConfigLocaleRef = ref<any>(null);
 
-export async function loadLocaleMessage(i18n: I18n, locale: any) {
-  if (i18n.global.availableLocales.includes(locale)) {
-    const message = await import(`/@/locales/lang/${locale}`);
-    i18n.global.setLocaleMessage(locale, message.default);
-  }
-}
+// export async function loadLocaleMessage(i18n: I18n, locale: any) {
+//   if (i18n.global.availableLocales.includes(locale)) {
+//     const message = await import(`/@/locales/lang/${locale}.js`);
+//     i18n.global.setLocaleMessage(locale, message.default);
+//   }
+// }
 export function changeLocale(lang: LocaleType) {
   if (i18n.mode === 'legacy') i18n.global.locale = lang;
   else ((i18n.global as unknown) as Composer).locale.value = lang;
@@ -37,10 +37,12 @@ export function changeLocale(lang: LocaleType) {
       break;
   }
 }
+
 export function setupLocale() {
   const lang = unref(getLang);
   lang && changeLocale(lang);
 }
+
 export function useLocale() {
   return { setupLocale, getLocale, getLang, changeLocale, antConfigLocale: antConfigLocaleRef };
 }

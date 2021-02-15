@@ -27,7 +27,7 @@ export const getShowSettingButton = computed(() => getRootSetting.value.showSett
 
 export const getUseErrorHandle = computed(() => getRootSetting.value.useErrorHandle);
 
-export const getShowFooter = computed(() => getRootSetting.value.showFooter);
+export const getShowFooter = computed(() => unref(getRootSetting).showFooter);
 
 export const getShowBreadCrumb = computed(() => getRootSetting.value.showBreadCrumb);
 
@@ -49,7 +49,7 @@ export function setRootSetting(setting: Partial<RootSetting>) {
   configStore.commitProjectConfigState(setting);
 }
 
-export  function useRootSetting() {
+export function useRootSetting() {
   return {
     setRootSetting,
     getOpenKeepAlive,

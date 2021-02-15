@@ -1,5 +1,6 @@
-import createAsyncComponent from '/@/utils/factory/createAsyncComponent';
+import Loading from './src/index.vue';
 
-const Loading = createAsyncComponent(() => import('./index.vue'));
+export { createLoading } from './src/createLoading';
+export { useLoading } from './src/useLoading';
+export { Loading };
 
-export default Loading;

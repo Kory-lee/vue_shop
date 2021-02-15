@@ -1,12 +1,12 @@
-import { primaryColor } from '../../build/config/lessModifyVars';
-import { CacheTypeEnum } from '../enums/cacheEnum';
+import { primaryColor, themeMode } from '../../build/config/themeConfig';
+import { CacheTypeEnum } from '/@/enums/cacheEnum';
 import {
   ContentEnum,
   PermissionModeEnum,
   RouterTransitionEnum,
   ThemeEnum,
 } from '../enums/configEnum';
-import { MenuModeEnum, MenuTypeEnum, TriggerEnum } from '../enums/menuEnums';
+import { MenuModeEnum, MenuTypeEnum, MixSidebarTriggerEnum, TriggerEnum } from '../enums/menuEnums';
 import { ProjectConfig } from '../types/config';
 import { isProdMode } from '/@/utils/env';
 
@@ -18,6 +18,8 @@ const setting: ProjectConfig = {
 
   // color
   themeColor: primaryColor,
+  themeMode: themeMode,
+
   grayMode: true,
 
   colorWeak: false,
@@ -26,7 +28,7 @@ const setting: ProjectConfig = {
   contentMode: ContentEnum.FULL,
 
   showLogo: true,
-  showFooter: true,
+  showFooter: false,
   locale: {
     show: true,
     lang: 'zh_CN',
@@ -38,8 +40,7 @@ const setting: ProjectConfig = {
     fixed: true,
     show: true,
     theme: ThemeEnum.LIGHT,
-    useLockpage: true,
-
+    useLockPage: true,
     showFullScreen: true,
     showDoc: true,
     showNotice: true,
@@ -61,14 +62,16 @@ const setting: ProjectConfig = {
     topMenuAlign: 'center',
     trigger: TriggerEnum.HEADER,
     accordion: true,
-
     closeMixSidebarOnChange: false,
+    mixSideTrigger: MixSidebarTriggerEnum.CLICK,
+    mixSideFixed: false,
   },
   multiTabsSetting: {
     show: true,
     canDrag: true,
     showQuick: true,
     showRefresh: true,
+    showFold: true,
   },
   transitionSetting: {
     enable: true,

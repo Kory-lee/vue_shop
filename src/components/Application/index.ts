@@ -1,7 +1,5 @@
 import Logo from './Logo.vue';
-import createAsyncComponent from '/@/utils/factory/createAsyncComponent';
-export { getPrefixCls } from './Provider';
-export { Logo };
+import Provider from './Provider';
+export { Logo, Provider };
 
-
-export const Provider = createAsyncComponent(() => import('./Provider'));
+// export const Provider = createAsyncComponent(() => import('./Provider'));

@@ -8,6 +8,11 @@ declare type DeepPartial<T> = {
 
 declare type Nullable<T> = T | null;
 
+declare type Indexable<T extends any = any> = {
+  [key: string]: T;
+};
+
+declare type Recordable<T extends any = any> = Record<string, T>;
 declare interface ComponentElRef<T extends HTMLElement = HTMLDivElement> {
   $el: T;
 }

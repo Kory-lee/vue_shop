@@ -38,8 +38,6 @@ export default defineComponent({
           },
         }
       );
-    console.log(h('span'));
-
     return () =>
       h(
         Dropdown,

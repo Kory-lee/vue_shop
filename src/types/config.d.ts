@@ -1,11 +1,10 @@
-import { RouterTransitionEnum } from '../enums/configEnum';
-import { MenuModeEnum, MenuTypeEnum } from '../enums/menuEnums';
+import { RouterTransitionEnum, ThemeModeEnum } from '../enums/configEnum';
+import { MenuModeEnum, MenuTypeEnum, MixSidebarTriggerEnum } from '../enums/menuEnums';
 import type { LocaleType } from '../locales/types';
 export interface MenuSetting {
   bgColor: string;
   fixed: boolean;
   collapsed: boolean;
-  collapsedShowTitle: boolean;
   canDrag: boolean;
   show: boolean;
   hidden: boolean;
@@ -18,6 +17,9 @@ export interface MenuSetting {
   trigger: TriggerEnum;
   accordion: boolean;
   closeMixSidebarOnChange: boolean;
+  collapsedShowTitle: boolean;
+  mixSideTrigger: MixSidebarTriggerEnum;
+  mixSideFixed: boolean;
 }
 export interface MultiTabsSetting {
   // 是否显示
@@ -25,6 +27,7 @@ export interface MultiTabsSetting {
   showQuick: boolean; //开启快速操作
   canDrag: boolean;
   showRefresh: true;
+  showFold: boolean;
 }
 export interface HeaderSetting {
   bgColor: string;
@@ -33,13 +36,13 @@ export interface HeaderSetting {
   theme: ThemeEnum;
 
   showFullScreen: boolean; //全屏按钮
-  useLockpage: boolean; //开启全屏功能
+  useLockPage: boolean; //开启全屏功能
   showDoc: boolean; //文档按钮
   showNotice: boolean; //显示消息中心按钮
   showSearch: boolean;
 }
 export interface TransitionSetting {
-  // whether to open thepage switching animation
+  // whether to open the page switching animation
   enable: boolean;
   // route basic switching animation
   basicTransition: RouterTransitionEnum;
@@ -66,6 +69,8 @@ export interface ProjectConfig {
   grayMode: boolean; // 网站灰色模式
   colorWeak: boolean; //是否开启色弱模式
   themeColor: string;
+  themeMode: ThemeMode;
+
   fullContent: boolean; // 全屏显示主界面,不显示菜单及顶部
   contentMode: ContentMode; //区域宽度
   showLogo: boolean; // 是否显示logo

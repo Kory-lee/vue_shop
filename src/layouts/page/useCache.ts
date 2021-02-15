@@ -1,10 +1,16 @@
+import type { FunctionalComponent } from 'vue';
 import { computed, ref, unref } from 'vue';
+import type { RouteLocation } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { getOpenKeepAlive } from '/@/hooks/setting/RootSetting';
 import tabStore, { PAGE_LAYOUT_KEY } from '/@/store/modules/tab';
 import { tryTsxEmit } from '/@/utils/helper/vueHelper';
 
-const ParentLayoutName = 'parentLayout';
+const ParentLayoutName = 'ParentLayout';
+
+export function getKey(component: FunctionalComponent & { type: Indexable }, route: RouteLocation) {
+  return !!component?.type.parentView ? {} : { key: route.fullPath };
+}
 export function useCache(isPage: boolean) {
   const name = ref('');
   const { currentRoute } = useRouter();

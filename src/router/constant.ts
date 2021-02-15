@@ -32,9 +32,9 @@ export const REDIRECT_ROUTE: AppRouteRecordRaw = {
   meta: redirect_meta,
   children: [
     {
-      path: '/redirect',
+      path: '/redirect/:path(.*)',
       name: REDIRECT_NAME,
-      component: () => import('/@/view/sys/redirect/index.vue'),
+      component: () => import('/@/views/sys/redirect'),
       meta: redirect_meta,
     },
   ],

@@ -1,13 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "strictFunctionTypes": false,
-    "isolatedModules": true,
     "jsx": "preserve",
     "baseUrl": ".",
     "allowJs": true,
@@ -16,14 +15,34 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "experimentalDecorators": true,
-    "incremental": true,
-    "lib": ["esnext", "dom"],
+    "lib": ["dom", "esnext"],
     "types": ["vite/client"],
+    "incremental": true,
+    "noImplicitAny": false,
+    "skipLibCheck": true,
     "paths": {
       "/@/*": ["src/*"]
-    },
-    "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }]
+    }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "plugins": [
+    {
+      "name": "@vuedx/typescript-plugin-vue"
+    }
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/components/Loading/src/index.vue",
+    "src/layouts/default/content/content.vue",
+    "src/layouts/default/content/index.vue",
+    "src/layouts/default/footer/index.vue",
+    "src/layouts/default/footer/footer.vue",
+    "src/layouts/default/feature/index.vue",
+    "src/layouts/default/feature/feature.vue",
+    "src/layouts/default/sidebar/Sidebar.vue",
+    "src/layouts/default/sidebar/MaxSidebar.vue"
+  ],
   "exclude": ["node_modules", "dist", "**/*.js"]
 }

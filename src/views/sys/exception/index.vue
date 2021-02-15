@@ -7,7 +7,7 @@ import { useRoute } from 'vue-router';
 import { useGo, useRefresh } from '/@/hooks/web/usePage';
 import NoDataImg from '/@/assets/img/exception/no-data.png';
 import netWorkImg from '/@/assets/img/exception/net-work.png';
-import { PageEnum } from '/@/enums/PageEnum';
+import { PageEnum } from '../../../enums/pageEnum';
 interface MapValue {
   title: string;
   status?: string;

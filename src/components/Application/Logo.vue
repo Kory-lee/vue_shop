@@ -10,26 +10,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, PropType } from 'vue';
-import { getPrefixCls as customizePrefixCls } from '/@/components/Application';
-import { PageEnum } from '/@/enums/pageEnum';
-import { useGo } from '/@/hooks/web/usePage';
-import { getCollapsedShowTitle } from '/@/hooks/setting/menuSetting';
-// import {getCollapsedShowTitle}
-export default defineComponent({
-  name: 'Logo',
-  props: {
-    theme: { type: String as PropType<'light' | 'dark'> },
-    showTitle: { type: Boolean, default: true },
-  },
-  setup() {
-    const go = useGo();
-    const handleGoHome = () => go(PageEnum.BASE_HOME);
-    const getPrefixCls = inject('getPrefixCls', customizePrefixCls);
-    const prefixCls = getPrefixCls('app-logo');
-    return { prefixCls, handleGoHome, getCollapsedShowTitle };
-  },
-});
+  import { defineComponent, PropType } from 'vue';
+  import { useProviderContext } from './Provider/useAppContext';
+  import { PageEnum } from '/@/enums/pageEnum';
+  import { getCollapsedShowTitle } from '/@/hooks/setting/menuSetting';
+  import { useGo } from '/@/hooks/web/usePage';
+  // import {getCollapsedShowTitle}
+  export default defineComponent({
+    name: 'Logo',
+    props: {
+      theme: { type: String as PropType<'light' | 'dark'> },
+      showTitle: { type: Boolean, default: true },
+    },
+    setup() {
+      const go = useGo();
+      const handleGoHome = () => go(PageEnum.BASE_HOME);
+      const { getPrefixCls } = useProviderContext(),
+        prefixCls = getPrefixCls('app-logo');
+      return { prefixCls, handleGoHome, getCollapsedShowTitle };
+    },
+  });
 </script>
 
 <style lang="less" scoped></style>

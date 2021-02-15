@@ -60,100 +60,101 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { Checkbox } from 'ant-design-vue';
-// import LangPicker from '/@/components/LangPicker/index.vue';
+  import { Checkbox } from 'ant-design-vue';
+  import { defineComponent, reactive, ref } from 'vue';
+  import { useI18n } from 'vue-i18n';
+  // import LangPicker from '/@/components/LangPicker/index.vue';
 
-export default defineComponent({
-  name: 'Login',
-  components: { ACheckbox: Checkbox },
-  setup() {
-    const formRef = ref(null),
-      autoLogin = ref(false);
-    const { t } = useI18n();
+  export default defineComponent({
+    name: 'Login',
+    components: { ACheckbox: Checkbox },
+    setup() {
+      const formRef = ref(null),
+        autoLogin = ref(false);
+      const { t } = useI18n();
 
-    const formData = reactive({ account: 'kory', password: 123456 });
-    const formState = reactive({ loading: ref(false) });
-    const formRules = {
-      account: [{ required: true, message: t('sys.login.accountPlaceholder'), trigger: 'blur' }],
-      password: [{ required: true, message: t('sys.login.passwordPlaceholder'), trigger: 'blur' }],
-    };
-    const handleClick = () => {};
-    return { t, formRef, autoLogin, formData, formState, handleClick, formRules };
-  },
-});
+      const formData = reactive({ account: 'kory', password: 123456 });
+      const formState = reactive({ loading: ref(false) });
+      const formRules = {
+        account: [{ required: true, message: t('sys.login.accountPlaceholder'), trigger: 'blur' }],
+        password: [
+          { required: true, message: t('sys.login.passwordPlaceholder'), trigger: 'blur' },
+        ],
+      };
+      const handleClick = () => {};
+      return { t, formRef, autoLogin, formData, formState, handleClick, formRules };
+    },
+  });
 </script>
 
 <style lang="less">
-@import (reference) '../../../styles/index.less';
-.login__form-locales {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 1;
-}
-
-.login {
-  position: relative;
-  height: 100vh;
-  background: url('/@/assets/img/login/login-bg.png') ~'0% 0% / 100% 100%' no-repeat;
-
-  &__mask {
-    display: none;
-    height: 100%;
-    background: url('/@/assets/img/login/login-in.png') ~'30% 30% / 80% 80%' no-repeat;
-    // background-position: 30% 30%;
-    // background-size: 80% 80%;
-    .respond-to(xlarge,{display: block;});
+  .login__form-locales {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 1;
   }
-  &__form {
-    position: relative;
-    bottom: 60px;
-    width: 400px;
-    background: @white;
-    border: 10px solid rgba(255, 255, 255, 0.5);
-    border-width: 8px;
-    border-radius: 4px;
-    background-clip: padding-box;
-    .respond-to(xlarge,{margin: 0 120px 0 50px});
 
-    &-wrap {
-      position: absolute;
-      top: 0;
-      right: 0;
-      display: flex;
-      width: 100%;
+  .login {
+    position: relative;
+    height: 100vh;
+    background: url('/@/assets/img/login/login-bg.png') ~'0% 0% / 100% 100%' no-repeat;
+
+    &__mask {
+      display: none;
       height: 100%;
-      justify-content: center;
-      align-items: center;
-      .respond-to(xlarge,{justify-content:flex-end});
+      background: url('/@/assets/img/login/login-in.png') ~'30% 30% / 80% 80%' no-repeat;
+      // background-position: 30% 30%;
+      // background-size: 80% 80%;
+      .respond-to(xlarge,{display: block;});
     }
-    &-content {
+    &__form {
       position: relative;
-      width: 100%;
-      height: 100%;
-      padding: 60px 0 40px 0;
-      border: 1px solid #999;
-      border-radius: 2px;
-      header {
+      bottom: 60px;
+      width: 400px;
+      background: @white;
+      border: 10px solid rgba(255, 255, 255, 0.5);
+      border-width: 8px;
+      border-radius: 4px;
+      background-clip: padding-box;
+      .respond-to(xlarge,{margin: 0 120px 0 50px});
+
+      &-wrap {
+        position: absolute;
+        top: 0;
+        right: 0;
         display: flex;
+        width: 100%;
+        height: 100%;
         justify-content: center;
         align-items: center;
+        .respond-to(xlarge,{justify-content:flex-end});
       }
-      img {
-        display: inline-block;
-        width: 48px;
-      }
-      h1 {
-        margin-bottom: 0;
-        font-size: 24px;
-        text-align: center;
-      }
-      form {
-        width: 80%;
+      &-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 60px 0 40px 0;
+        border: 1px solid #999;
+        border-radius: 2px;
+        header {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        img {
+          display: inline-block;
+          width: 48px;
+        }
+        h1 {
+          margin-bottom: 0;
+          font-size: 24px;
+          text-align: center;
+        }
+        form {
+          width: 80%;
+        }
       }
     }
   }
-}
 </style>

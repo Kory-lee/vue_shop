@@ -4,7 +4,7 @@ import { TransitionSetting } from '/@/types/config';
 
 export const getTransitionSetting = computed(() => configStore.getProjectConfig.transitionSetting);
 
-export const getEnabledTransition = computed(() => unref(getTransitionSetting)?.enable);
+export const getEnableTransition = computed(() => unref(getTransitionSetting)?.enable);
 
 export const getOpenNProgress = computed(() => getTransitionSetting.value?.openNProgress);
 
