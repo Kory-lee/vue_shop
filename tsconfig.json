@@ -29,20 +29,6 @@
       "name": "@vuedx/typescript-plugin-vue"
     }
   ],
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "src/components/Loading/src/index.vue",
-    "src/layouts/default/content/content.vue",
-    "src/layouts/default/content/index.vue",
-    "src/layouts/default/footer/index.vue",
-    "src/layouts/default/footer/footer.vue",
-    "src/layouts/default/feature/index.vue",
-    "src/layouts/default/feature/feature.vue",
-    "src/layouts/default/sidebar/Sidebar.vue",
-    "src/layouts/default/sidebar/MaxSidebar.vue"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "exclude": ["node_modules", "dist", "**/*.js"]
 }
