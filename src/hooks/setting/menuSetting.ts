@@ -20,11 +20,15 @@ export const getTrigger = computed(() => unref(getMenuSetting).trigger);
 export const getMenuTheme = computed(() => unref(getMenuSetting).theme);
 export const getSplit = computed(() => unref(getMenuSetting).split);
 export const getMenuBgColor = computed(() => unref(getMenuSetting).bgColor);
-export const getCanDrag = computed(() => unref(getMenuSetting).canDrag);
-export const getAccording = computed(() => unref(getMenuSetting).accordion);
+export const getCanDrag = computed(() => unref(getMenuSetting).canDrag),
+  getAccording = computed(() => unref(getMenuSetting).accordion),
+  getMixSideFixed = computed(() => unref(getMenuSetting).mixSideFixed);
+export const getCloseMixSidebarOnchange = computed(
+  () => unref(getMenuSetting).closeMixSidebarOnChange
+);
 export const getCollapsedShowTitle = computed(() => unref(getMenuSetting).collapsedShowTitle);
 export const getTopMenuAlign = computed(() => unref(getMenuSetting).topMenuAlign);
-export const getIsSideBarType = computed(() => unref(getMenuType) === MenuTypeEnum.SIDEBAR);
+export const getIsSidebarType = computed(() => unref(getMenuType) === MenuTypeEnum.SIDEBAR);
 export const getIsTopMenu = computed(() => unref(getMenuType) === MenuTypeEnum.TOP_MENU);
 export const getShowTopMenu = computed(
   () => unref(getMenuMode) === MenuModeEnum.HORIZONTAL || unref(getSplit)
@@ -45,9 +49,13 @@ export const getMinWidthNumber = computed(() =>
   unref(getCollapsedShowTitle) ? SIDE_BAR_SHOW_TIT_MINI_WIDTH : SIDE_BAR_MINI_WIDTH
 );
 
-export const getRealWidth = computed(() =>
-  unref(getCollapsed) ? unref(getMinWidthNumber) : unref(getMenuWidth)
-);
+export const getRealWidth = computed(() => {
+  if (unref(getIsMixSidebar))
+    return unref(getCollapsed) && !unref(getMixSideFixed)
+      ? unref(getMinWidthNumber)
+      : unref(getMenuSetting);
+  return unref(getCollapsed) ? unref(getMinWidthNumber) : unref(getMenuWidth);
+});
 
 export const getCalcContentWidth = computed(() => {
   const width =

@@ -1,31 +1,142 @@
 <template>
-  <div v-if="getMenuFixed && !isMobile" />
-  <Sider ref="sideRef" breakpoint="lg" collapsible></Sider>
+  <div v-if="getMenuFixed && !isMobile" :style="getHiddenDomStyle" v-show="showClassSidebarRef" />
+  <Sider
+    v-show="showClassSidebarRef"
+    ref="sideRef"
+    breakpoint="lg"
+    collapsible
+    :class="getSidebarClass"
+    :width="getMenuWidth"
+    :collapsed="isMobile ? false : getCollapsed"
+    :collapsedWidth="getCollapsedWidth"
+    :theme="getMenuTheme"
+    @collapse="onCollapseChange"
+    @breakpoint="onBreakpointChange"
+    v-bind="getTriggerAttr"
+  >
+    <!-- TODO doesn't work -->
+    <template #trigger v-if="getShowTrigger">
+      <LayoutTrigger />
+    </template>
+  </Sider>
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, ref, unref } from 'vue';
+  import { computed, CSSProperties, defineComponent, ref, unref } from 'vue';
   import { Layout } from 'ant-design-vue';
-  import { getMenuFixed, getSplit } from '/@/hooks/setting/menuSetting';
+  import {
+    getCollapsed,
+    getIsMixMode,
+    getMenuFixed,
+    getMenuHidden,
+    getMenuTheme,
+    getMenuWidth,
+    getRealWidth,
+    getSplit,
+  } from '/@/hooks/setting/menuSetting';
   import { useProviderContext } from '/@/components/Application/Provider/useAppContext';
-  import { MenuModeEnum } from '/@/enums/menuEnums';
+  import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnums';
+  import { createDragLine, sidebarEvent, useTrigger } from './utils';
+  import LayoutTrigger from '../trigger/index.vue';
+
   export default defineComponent({
     name: 'MaxSidebar',
-    components: { Sider: Layout.Sider },
+    components: { Sider: Layout.Sider, LayoutTrigger },
     setup() {
-      const drageBarRef = ref<ElRef>(null),
-        sideRef = ref<ElRef>(null),
+      const dragBarRef = ref<ElRef>(null),
+        sidebarRef = ref<ElRef>(null),
         { isMobile, getPrefixCls } = useProviderContext(),
-        getMode = computed(() => (unref(getSplit) ? MenuModeEnum.INLINE : null));
+        prefixCls = getPrefixCls('layout-sidebar'),
+        { getTriggerAttr, getShowTrigger } = useTrigger(isMobile),
+        { getCollapsedWidth, onBreakpointChange, onCollapseChange } = sidebarEvent(),
+        getMode = computed(() => (unref(getSplit) ? MenuModeEnum.INLINE : null)),
+        getSplitType = computed(() =>
+          unref(getSplit) ? MenuSplitTypeEnum.LEFT : MenuSplitTypeEnum.NONE
+        ),
+        showClassSidebarRef = computed(() => (unref(getSplit) ? !unref(getMenuHidden) : true)),
+        getSidebarClass = computed(() => [
+          prefixCls,
+          {
+            [`${prefixCls}--fixed`]: unref(getMenuFixed),
+            [`${prefixCls}--mix`]: unref(getIsMixMode) && !unref(isMobile),
+          },
+        ]),
+        getHiddenDomStyle = computed(
+          (): CSSProperties => {
+            const width = `${unref(getRealWidth)}px`;
+            return {
+              width,
+              overflow: `hidden`,
+              flex: `0 0 ${width}`,
+              maxWidth: width,
+              minWidth: width,
+              transition: 'all 0.2s',
+            };
+          }
+        );
+      createDragLine(sidebarRef, dragBarRef);
       return {
-        sideRef,
+        sidebarRef,
+        dragBarRef,
         getMenuFixed,
         isMobile,
-        prefixCls: getPrefixCls('layout-sidebar'),
+        getHiddenDomStyle,
+        getSidebarClass,
+        getTriggerAttr,
+        getCollapsedWidth,
+        showClassSidebarRef,
+        getMenuWidth,
+        getCollapsed,
+        getMenuTheme,
+        onBreakpointChange,
         getMode,
+        getSplitType,
+        onCollapseChange,
+        getShowTrigger,
       };
     },
   });
 </script>
 
-<style lang="ts"></style>
+<style lang="less">
+  @prefix-cls: ~'@{namespace}-layout-sidebar';
+  .@{prefix-cls} {
+    z-index: @layout-sider-fixed-z-index;
+    &--fixed {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+    }
+    &--mix {
+      top: @header-height;
+      height: calc(100% - @header-height);
+    }
+    &.ant-layout-sider-dark {
+      background-color: @sider-dark-bg-color;
+      .ant-layout-sider-trigger {
+        color: darken(@white, 25%);
+        background-color: @trigger-dark-bg-color;
+
+        &:hover {
+          color: @white;
+          background: @trigger-dark-hover-bg-color;
+        }
+      }
+    }
+    &:not(.ant-layout-sider-dark) {
+      .ant-layout-sider-trigger {
+        color: @text-color-base;
+        border-top: 1px solid @border-color-light;
+      }
+    }
+    .ant-layout-sider-zero-width-trigger {
+      top: 40%;
+      z-index: 10;
+    }
+    & .ant-layout-sider-trigger {
+      height: 36px;
+      line-height: 36px;
+    }
+  }
+</style>

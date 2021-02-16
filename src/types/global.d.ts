@@ -22,3 +22,5 @@ declare type ComponentRef<T extends HTMLElement = HTMLDivElement> = ComponentElR
 declare type ElRef<T extends HTMLElement = HTMLDivElement> = Nullable<T>;
 
 declare type TimeoutHandle = ReturnType<typeof setTimeout>;
+
+declare type TargetContext = '_self' | '_blank';

@@ -1,11 +1,12 @@
 import { computed, unref } from 'vue';
 import { ContentEnum } from '/@/enums/configEnum';
+import router from '/@/router';
 import configStore from '/@/store/modules/config';
 import type { ProjectConfig } from '/@/types/config';
 
 type RootSetting = Omit<
   ProjectConfig,
-  'locale' | 'headerSetting' | 'menuSetting' | 'multiTabsSettting'
+  'locale' | 'headerSetting' | 'menuSetting' | 'multiTabsSetting'
 >;
 export const getRootSetting = computed((): RootSetting => configStore.getProjectConfig);
 
@@ -34,6 +35,13 @@ export const getShowBreadCrumb = computed(() => getRootSetting.value.showBreadCr
 export const getShowbreadCrumbIcon = computed(() => getRootSetting.value.showBreadCrumbIcon);
 
 export const getFullContent = computed(() => getRootSetting.value.fullContent);
+
+export const getRealFullContent = computed(() => {
+  const route = unref(router.currentRoute);
+  const query = route.query;
+  if (query && Reflect.has(query, '__FULL__')) return true;
+  return getRootSetting.value.fullContent;
+});
 
 export const getColorWeak = computed(() => getRootSetting.value.colorWeak);
 
