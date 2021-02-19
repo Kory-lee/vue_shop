@@ -18,6 +18,7 @@
     <template #trigger v-if="getShowTrigger">
       <LayoutTrigger />
     </template>
+    <LayoutMenu :theme="getMenuTheme" :menuMode="getMode" :splitType="getSplitType" />
   </Sider>
 </template>
 
@@ -38,10 +39,11 @@
   import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnums';
   import { createDragLine, sidebarEvent, useTrigger } from './utils';
   import LayoutTrigger from '../trigger/index.vue';
+  import LayoutMenu from '../menu/index.vue';
 
   export default defineComponent({
     name: 'MaxSidebar',
-    components: { Sider: Layout.Sider, LayoutTrigger },
+    components: { Sider: Layout.Sider, LayoutTrigger, LayoutMenu },
     setup() {
       const dragBarRef = ref<ElRef>(null),
         sidebarRef = ref<ElRef>(null),

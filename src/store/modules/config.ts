@@ -40,7 +40,6 @@ class Config extends VuexModule {
   @Mutation
   commitProjectConfigState(config: DeepPartial<ProjectConfig>): void {
     this.projectConfigState = deepMerge(this.projectConfigState || {}, config);
-    
   }
 
   @Action

@@ -1,7 +1,7 @@
 import { computed, unref } from 'vue';
 import { ContentEnum } from '/@/enums/configEnum';
 import router from '/@/router';
-import configStore from '/@/store/modules/config';
+import { configStore } from '/@/store';
 import type { ProjectConfig } from '/@/types/config';
 
 type RootSetting = Omit<

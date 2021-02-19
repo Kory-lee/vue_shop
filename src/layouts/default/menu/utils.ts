@@ -4,11 +4,12 @@ import { useProviderContext } from '/@/components/Application/Provider/useAppCon
 import { MenuSplitTypeEnum } from '/@/enums/menuEnums';
 import { useThrottle } from '/@/hooks/core/useThrottle';
 import { getIsHorizontal, getSplit } from '/@/hooks/setting/menuSetting';
+import { getCurrentParentPath } from '/@/router/menus';
 import { Menu } from '/@/router/types';
 
 // import
 export function useSplitMenu(splitType: Ref<MenuSplitTypeEnum>) {
-  const menuRef = ref<Menu[]>([]),
+  const menusRef = ref<Menu[]>([]),
     { currentRoute } = useRouter(),
     { isMobile } = useProviderContext(),
     // [throttleHandleSplitLeftMenu] = useThrottle(handleSp),
@@ -25,11 +26,15 @@ export function useSplitMenu(splitType: Ref<MenuSplitTypeEnum>) {
       if (unref(splitNotLeft) || unref(isMobile)) return;
       const { meta } = unref(currentRoute),
         currentActiveMenu = meta.currentActiveMenu;
-      // let parentPath = await getCurrentParentPath(path);
+      // TODO
+      let parentPath = await getCurrentParentPath(path);
+      if (!parentPath) parentPath = await getCurrentParentPath(currentActiveMenu);
     }
   );
 
   async function handleSplitLeftMenu(parentPath: string) {
+    // TODO
     // if(unref(getSpl))
   }
+  return { menusRef };
 }

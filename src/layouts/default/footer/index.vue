@@ -22,9 +22,6 @@
         getShowLayoutFooter = computed(
           () => unref(getShowFooter) && !unref(currentRoute).meta?.hiddenFooter
         );
-      console.log('getShowFooter', getShowFooter);
-      console.log(currentRoute);
-
       return { prefixCls: getPrefixCls('layout-footer'), getShowLayoutFooter };
     },
   });

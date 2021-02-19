@@ -23,14 +23,13 @@ export interface RouteMeta {
 
   // Whether the route has been dynamically added
   hideBreadcrumb?: boolean;
+  // Use internally to mark single-level menus
+  single?: boolean;
 
-  // disabled redirect
-  disabledRedirect?: boolean;
+  currentActiveMenu?: string;
+  hidTab?: boolean;
+  hideMenu?: boolean;
 
-  // close loading
-  afterCloseLoading?: boolean;
-  // Is it in the tab
-  inTab?: boolean;
   // Carrying parameters
   carryParam?: boolean;
 }
@@ -56,11 +55,13 @@ export interface Menu {
   path: string;
   disabled?: boolean;
   children?: Menu[];
+
   orderNo?: number;
   roles?: RoleEnum[];
 
   meta?: Partial<RouteMeta>;
   tag?: MenuTag;
+  hideMenu?: boolean;
 }
 
 export interface MenuModule {

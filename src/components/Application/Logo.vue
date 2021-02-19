@@ -4,7 +4,7 @@
     :class="[theme, prefixCls, { 'collapsed-show-title': getCollapsedShowTitle }]"
     @click="handleGoHome"
   >
-    <img src="/@/assets/img/logo.png" alt="" />
+    <img :src="LogoImg" alt="" />
     <div class="ml-2 ellipsis" :class="`${prefixCls}__title`" v-show="showTitle"></div>
   </div>
 </template>
@@ -15,6 +15,7 @@
   import { PageEnum } from '/@/enums/pageEnum';
   import { getCollapsedShowTitle } from '/@/hooks/setting/menuSetting';
   import { useGo } from '/@/hooks/web/usePage';
+  import LogoImg from '/@/assets/img/logo.png';
   // import {getCollapsedShowTitle}
   export default defineComponent({
     name: 'Logo',
@@ -27,7 +28,7 @@
       const handleGoHome = () => go(PageEnum.BASE_HOME);
       const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('app-logo');
-      return { prefixCls, handleGoHome, getCollapsedShowTitle };
+      return { prefixCls, handleGoHome, getCollapsedShowTitle, LogoImg };
     },
   });
 </script>

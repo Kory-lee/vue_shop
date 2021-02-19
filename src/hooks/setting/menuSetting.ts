@@ -21,7 +21,7 @@ export const getMenuTheme = computed(() => unref(getMenuSetting).theme);
 export const getSplit = computed(() => unref(getMenuSetting).split);
 export const getMenuBgColor = computed(() => unref(getMenuSetting).bgColor);
 export const getCanDrag = computed(() => unref(getMenuSetting).canDrag),
-  getAccording = computed(() => unref(getMenuSetting).accordion),
+  getAccordion = computed(() => unref(getMenuSetting).accordion),
   getMixSideFixed = computed(() => unref(getMenuSetting).mixSideFixed);
 export const getCloseMixSidebarOnchange = computed(
   () => unref(getMenuSetting).closeMixSidebarOnChange
@@ -79,5 +79,4 @@ export function setMenuSetting(menuSetting: Partial<MenuSetting>): void {
 
 export function toggleCollapsed() {
   setMenuSetting({ collapsed: !unref(getCollapsed) });
-  console.log(getIsMixMode, getCollapsed);
 }

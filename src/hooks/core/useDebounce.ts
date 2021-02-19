@@ -1,4 +1,4 @@
-import { useThrottle } from './useThrottle';
+import { throttle } from './useThrottle';
 
 export interface DebounceAndThrottleOptions {
   immediate?: boolean;
@@ -19,5 +19,5 @@ export function useDebounce<T extends unknown[]>(
   wait: number,
   options: DebounceAndThrottleOptions = {}
 ): DebounceAndThrottleProcedureResult<T> {
-  return useThrottle(handle, wait, Object.assign(options, { debounce: true }));
+  return throttle(handle, wait, Object.assign(options, { debounce: true }));
 }

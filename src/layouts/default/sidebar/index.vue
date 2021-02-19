@@ -1,5 +1,13 @@
 <template>
-  <Drawer v-if="isMobile" placement="left" :class="prefixCls" :visible="!getCollapsed">
+  <Drawer
+    v-if="isMobile"
+    placement="left"
+    :class="prefixCls"
+    :visible="!getCollapsed"
+    @close="handleClose"
+    :getContainer="null"
+    :width="getMenuWidth"
+  >
     <MaxSidebar />
   </Drawer>
   <MixSidebar v-else-if="getIsMixSidebar" />
@@ -7,7 +15,12 @@
 </template>
 
 <script lang="ts">
-  import { getCollapsed } from '/@/hooks/setting/menuSetting';
+  import {
+    getCollapsed,
+    getIsMixMode,
+    getMenuWidth,
+    setMenuSetting,
+  } from '/@/hooks/setting/menuSetting';
   import { Drawer } from 'ant-design-vue';
   import MixSidebar from './MixSidebar.vue';
   import MaxSidebar from './MaxSidebar.vue';
@@ -23,14 +36,31 @@
     },
     setup() {
       const { isMobile, getPrefixCls } = useProviderContext();
+      function handleClose() {
+        setMenuSetting({ collapsed: true });
+      }
       return {
         isMobile,
         prefixCls: getPrefixCls('layout-sider-wrapper'),
         getIsMixSidebar,
         getCollapsed,
+        handleClose,
+        getMenuWidth,
+        getIsMixMode,
       };
     },
   });
 </script>
 
-<style></style>
+<style lang="less">
+  @prefix-cls: ~'@{namespace}-layout-sider-wrapper';
+  .@{prefix-cls} {
+    .ant-drawer-body {
+      height: 100vh;
+      padding: 0;
+    }
+    .ant-drawer-header-no-title {
+      display: none;
+    }
+  }
+</style>

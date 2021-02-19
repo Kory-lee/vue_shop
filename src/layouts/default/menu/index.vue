@@ -1,19 +1,33 @@
 <script lang="tsx">
-  import { computed, CSSProperties, defineComponent, PropType, unref } from 'vue';
+  import {
+    computed,
+    CSSProperties,
+    defineComponent,
+    Fragment,
+    h,
+    PropType,
+    toRef,
+    unref,
+  } from 'vue';
+  import { useSplitMenu } from './utils';
+  import { Logo } from '/@/components/Application';
   import { useProviderContext } from '/@/components/Application/Provider/useAppContext';
+  import { BasicMenu } from '/@/components/Menu';
   import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnums';
   import {
+    getAccordion,
     getCollapsed,
+    getCollapsedShowTitle,
     getIsHorizontal,
     getIsSidebarType,
     getMenuMode,
     getMenuTheme,
+    getMenuType,
   } from '/@/hooks/setting/menuSetting';
   import { getShowLogo } from '/@/hooks/setting/RootSetting';
   import { useGo } from '/@/hooks/web/usePage';
   import { openWindow } from '/@/utils/common';
   import { isUrl } from '/@/utils/is';
-  import { Logo } from '/@/components/Application/index';
 
   export default defineComponent({
     name: 'LayoutMenu',
@@ -33,6 +47,7 @@
       const go = useGo(),
         { isMobile, getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('layout-menu'),
+        { menusRef } = useSplitMenu(toRef(props, 'splitType')),
         getRealMenuMode = computed(() =>
           unref(isMobile) ? MenuModeEnum.INLINE : props.menuMode || unref(getMenuMode)
         ),
@@ -67,20 +82,119 @@
 
       function renderHeader() {
         if (!unref(isMobile) && !unref(isMobile)) return null;
-        return (
-          <Logo
-            showTitle={!unref(getCollapsed)}
-            class={unref(getLogoClass)}
-            theme={unref(getRealMenuTheme)}
-          />
-        );
+        return h(Logo, {
+          showTitle: !unref(getCollapsed),
+          class: unref(getLogoClass),
+          theme: unref(getRealMenuTheme),
+        });
       }
 
-      function renderMenu() {}
+      function renderMenu() {
+        // const menus = unref(menusRef);
+        const menus = [
+          {
+            path: '/home/welcome',
+            name: 'routes.dashboard.welcome',
+            icon: 'bx:bx-home',
+          },
+          {
+            name: 'routes.dashboard.dashboard',
+            path: '/dashboard',
+            icon: 'bx:bx-home',
+          },
+          {
+            name: 'routes.demo.permission.permission',
+            path: '/permission',
+            icon: 'carbon:user-role',
+          },
+          {
+            name: 'routes.demo.feat.feat',
+            path: '/feat',
+            icon: 'ic:outline-featured-play-list',
+          },
+          {
+            name: 'routes.demo.page.page',
+            path: '/page-demo',
+            icon: 'mdi:page-next-outline',
+          },
+          {
+            name: 'routes.demo.comp.comp',
+            path: '/comp',
+            icon: 'ic:outline-settings-input-component',
+          },
+          {
+            name: 'routes.demo.charts.charts',
+            path: '/charts',
+            icon: 'vaadin:spline-area-chart',
+          },
+          {
+            name: 'routes.demo.iframe.frame',
+            path: '/frame',
+            icon: 'mdi:page-next-outline',
+          },
+        ];
+        // console.log(menus);
+        // if (!menus || !menus.length) return null;
+        if (!!props.isHorizontal) return h('div', 'hello');
+        else
+          return h(BasicMenu, {
+            beforeClickFn: beforeMenuClickFn,
+            isHorizontal: props.isHorizontal,
+            type: unref(getMenuType),
+            collapsedShowTitle: unref(getCollapsedShowTitle),
+            mode: unref(getRealMenuMode),
+            theme: unref(getRealMenuTheme),
+            items: menus,
+            accordion: unref(getAccordion),
+            onMenuClick: handleMenuClick,
+          });
+        // return !props.isHorizontal ? (
+        //   <div />
+        // ) : (
+        //   <BasicMenu
+        //     beforeClickFn={beforeMenuClickFn}
+        //     isHorizontal={props.isHorizontal}
+        //     type={unref(getMenuType)}
+        //     collapsedShowTitle={unref(getCollapsedShowTitle)}
+        //     // showLogo={unref(getIsShowLogo)}
+        //     mode={unref(getRealMenuMode)}
+        //     theme={unref(getRealMenuTheme)}
+        //     items={menus}
+        //     accordion={unref(getAccording)}
+        //     onMenuClick={handleMenuClick}
+        //   />
+        // );
+      }
+      // {unref(getUseScroll) ? (
+      //   <span style={unref(getWrapperStyle)}>{() => renderMenu()}</span>
+      // ) : (
+      //   renderMenu()
+      // )}
+      return () => h(Fragment, [renderHeader(), renderMenu()]);
     },
   });
 </script>
 
 <style lang="less">
   @prefix-cls: ~'@{namespace}-layout-menu';
+  @logo-prefix-cls: ~'@{namespace}-app-logo';
+  .@{prefix-cls} {
+    &-logo {
+      height: @header-height;
+      padding: 10px 4px 10px 10px;
+
+      img {
+        width: @logo-width;
+        height: @logo-width;
+      }
+
+      &--mobile {
+        .@{logo-prefix-cls} {
+          &__titile {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
 </style>

@@ -1,7 +1,7 @@
 import { computed, unref } from 'vue';
-import ConfigStore from '/@/store/modules/config';
+import { configStore } from '/@/store';
 import { MultiTabsSetting } from '/@/types/config';
-export const getMultipleTabSetting = computed(() => ConfigStore.getProjectConfig.multiTabsSetting);
+export const getMultipleTabSetting = computed(() => configStore.getProjectConfig.multiTabsSetting);
 
 export const getShowMultipleTab = computed(() => unref(getMultipleTabSetting).show);
 
@@ -12,5 +12,5 @@ export const getShowRefresh = computed(() => unref(getMultipleTabSetting).showRe
 export const getShowFold = computed(() => unref(getMultipleTabSetting).showFold);
 
 export function setMultipleTabSetting(multiTabsSetting: Partial<MultiTabsSetting>) {
-  ConfigStore.commitProjectConfigState({multiTabsSetting})
+  configStore.commitProjectConfigState({ multiTabsSetting });
 }
