@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "orta.vscode-jest",
+    "bradlc.vscode-tailwindcss",
+    "heybourn.headwind",
+    "antfu.iconify"
+  ]
+}
