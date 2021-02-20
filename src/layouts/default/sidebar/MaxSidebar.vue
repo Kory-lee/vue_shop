@@ -1,5 +1,5 @@
 <template>
-  <div v-if="getMenuFixed && !isMobile" :style="getHiddenDomStyle" v-show="showClassSidebarRef" />
+  <div v-if="!isMobile && getMenuFixed" :style="getHiddenDomStyle" v-show="showClassSidebarRef" />
   <Sider
     v-show="showClassSidebarRef"
     ref="sideRef"
@@ -23,8 +23,13 @@
 </template>
 
 <script lang="ts">
-  import { computed, CSSProperties, defineComponent, ref, unref } from 'vue';
   import { Layout } from 'ant-design-vue';
+  import { computed, CSSProperties, defineComponent, ref, unref } from 'vue';
+  import LayoutMenu from '../menu/index.vue';
+  import LayoutTrigger from '../trigger/index.vue';
+  import { createDragLine, sidebarEvent, useTrigger } from './utils';
+  import { useProviderContext } from '/@/components/Application/Provider/useAppContext';
+  import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnums';
   import {
     getCollapsed,
     getIsMixMode,
@@ -35,12 +40,6 @@
     getRealWidth,
     getSplit,
   } from '/@/hooks/setting/menuSetting';
-  import { useProviderContext } from '/@/components/Application/Provider/useAppContext';
-  import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnums';
-  import { createDragLine, sidebarEvent, useTrigger } from './utils';
-  import LayoutTrigger from '../trigger/index.vue';
-  import LayoutMenu from '../menu/index.vue';
-
   export default defineComponent({
     name: 'MaxSidebar',
     components: { Sider: Layout.Sider, LayoutTrigger, LayoutMenu },
@@ -65,18 +64,19 @@
         ]),
         getHiddenDomStyle = computed(
           (): CSSProperties => {
-            const width = `${unref(getRealWidth)}px`;
+            const width = `${unref(isMobile) ? 0 : unref(getRealWidth)}px`;
             return {
               width,
               overflow: `hidden`,
               flex: `0 0 ${width}`,
               maxWidth: width,
               minWidth: width,
-              transition: 'all 0.2s',
+              transition: 'all 0.1s',
             };
           }
         );
       createDragLine(sidebarRef, dragBarRef);
+
       return {
         sidebarRef,
         dragBarRef,

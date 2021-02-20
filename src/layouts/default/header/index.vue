@@ -64,7 +64,6 @@
           const width = unref(getMenuWidth) < 180 ? 180 : unref(getMenuWidth);
           return { width: `${width}px` };
         });
-      console.log(isMobile);
 
       return {
         isMobile,

@@ -1,18 +1,10 @@
 <script lang="tsx">
-  import {
-    computed,
-    CSSProperties,
-    defineComponent,
-    Fragment,
-    h,
-    PropType,
-    toRef,
-    unref,
-  } from 'vue';
+  import { computed, CSSProperties, defineComponent, h, PropType, toRef, unref } from 'vue';
   import { useSplitMenu } from './utils';
   import { Logo } from '/@/components/Application';
   import { useProviderContext } from '/@/components/Application/Provider/useAppContext';
   import { BasicMenu } from '/@/components/Menu';
+  import { SimpleMenu } from '/@/components/SimpleMenu';
   import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnums';
   import {
     getAccordion,
@@ -134,43 +126,43 @@
           },
         ];
         // console.log(menus);
-        // if (!menus || !menus.length) return null;
-        if (!!props.isHorizontal) return h('div', 'hello');
-        else
-          return h(BasicMenu, {
-            beforeClickFn: beforeMenuClickFn,
-            isHorizontal: props.isHorizontal,
-            type: unref(getMenuType),
-            collapsedShowTitle: unref(getCollapsedShowTitle),
-            mode: unref(getRealMenuMode),
-            theme: unref(getRealMenuTheme),
-            items: menus,
-            accordion: unref(getAccordion),
-            onMenuClick: handleMenuClick,
-          });
-        // return !props.isHorizontal ? (
-        //   <div />
-        // ) : (
-        //   <BasicMenu
-        //     beforeClickFn={beforeMenuClickFn}
-        //     isHorizontal={props.isHorizontal}
-        //     type={unref(getMenuType)}
-        //     collapsedShowTitle={unref(getCollapsedShowTitle)}
-        //     // showLogo={unref(getIsShowLogo)}
-        //     mode={unref(getRealMenuMode)}
-        //     theme={unref(getRealMenuTheme)}
-        //     items={menus}
-        //     accordion={unref(getAccording)}
-        //     onMenuClick={handleMenuClick}
-        //   />
-        // );
+        if (!menus || !menus.length) return null;
+        return !props.isHorizontal ? (
+          <SimpleMenu
+            beforeClickFn={beforeMenuClickFn}
+            items={menus}
+            theme={unref(getRealMenuTheme)}
+            accordion={unref(getAccordion)}
+            collapse={unref(getCollapsed)}
+            collapsedShowTitle={unref(getCollapsedShowTitle)}
+            onMenuClick={handleMenuClick}
+          />
+        ) : (
+          <BasicMenu
+            beforeClickFn={beforeMenuClickFn}
+            isHorizontal={props.isHorizontal}
+            type={unref(getMenuType)}
+            collapsedShowTitle={unref(getCollapsedShowTitle)}
+            // showLogo={unref(getIsShowLogo)}
+            mode={unref(getRealMenuMode)}
+            theme={unref(getRealMenuTheme)}
+            items={menus}
+            accordion={unref(getAccordion)}
+            onMenuClick={handleMenuClick}
+          />
+        );
       }
-      // {unref(getUseScroll) ? (
-      //   <span style={unref(getWrapperStyle)}>{() => renderMenu()}</span>
-      // ) : (
-      //   renderMenu()
-      // )}
-      return () => h(Fragment, [renderHeader(), renderMenu()]);
+
+      return () => (
+        <>
+          {renderHeader()}
+          {unref(getUseScroll) ? (
+            <span style={unref(getWrapperStyle)}>{renderMenu()}</span>
+          ) : (
+            renderMenu()
+          )}
+        </>
+      );
     },
   });
 </script>
