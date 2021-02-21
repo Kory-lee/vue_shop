@@ -7,7 +7,7 @@ import { MenuSetting } from '/@/types/config';
 
 export const getMenuSetting = computed(() => configStore.getProjectConfig.menuSetting);
 
-export const getCollapsed = computed(() => getMenuSetting.value.collapsed);
+export const getCollapsed = computed(() => unref(getMenuSetting).collapsed);
 
 export const getMenuType = computed(() => unref(getMenuSetting).type);
 

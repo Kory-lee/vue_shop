@@ -4,6 +4,7 @@ import { setupLocale } from '/@/hooks/web/useLocale';
 import messages from '/@/locales/getMessage';
 import projectSetting from '/@/settings/projectSetting';
 const { lang, fallback, availableLocales } = projectSetting?.locale;
+
 const localData: I18nOptions = {
   legacy: false,
   locale: lang,
@@ -19,7 +20,7 @@ const localData: I18nOptions = {
 const i18n = createI18n(localData) as I18n;
 
 const { install } = i18n;
-i18n.install = (app: App<Element>, ...args: any) => {
+i18n.install = (app: App<Element>, ...args: unknown[]) => {
   setupLocale();
   install(app, ...args);
 };

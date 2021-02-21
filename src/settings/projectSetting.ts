@@ -47,7 +47,7 @@ const setting: ProjectConfig = {
     showSearch: true,
   },
   menuSetting: {
-    bgColor: '#273352',
+    bgColor: '#001529',
     fixed: true,
     collapsed: false,
     collapsedShowTitle: false,

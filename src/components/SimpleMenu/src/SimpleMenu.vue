@@ -2,22 +2,38 @@
   <Menu
     :activeName="activeName"
     :openNames="getOpenKeys"
+    @select="handleSelect"
+    v-bind="$props"
     :class="prefixCls"
     :activeSubMenuNames="activeSubMenuNames"
-  ></Menu>
+  >
+    <template v-for="item in items" :key="item.path">
+      <SimpleSubMenu
+        :item="item"
+        :parent="true"
+        :collapse="collapse"
+        :collapsedShowTitle="collapsedShowTitle"
+      />
+    </template>
+  </Menu>
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, PropType, reactive, ref, toRefs, watch } from 'vue';
-  import { useRouter } from 'vue-router';
+  import { computed, defineComponent, PropType, reactive, ref, toRefs, unref, watch } from 'vue';
+  import { RouteLocationNormalizedLoaded, useRouter } from 'vue-router';
   import { useProviderContext } from '../../Application';
   import Menu from './components/Menu.vue';
+  import SimpleSubMenu from './SimpleSubMenu.vue';
   import { SimpleMenuState } from './types';
   import useOpenKeys from './useOpenKeys';
-  import { Menu as MenuType } from '/@/router/types';
+  import { createSimpleRootMenuContext } from './useSimpleMenuContext';
+  import { MenuType } from '/@/router/types';
+  import { isFunction } from '/@/utils/is';
+  import Mitt from '/@/utils/mitt';
+
   export default defineComponent({
     name: 'SimpleMenu',
-    components: { Menu },
+    components: { Menu, SimpleSubMenu },
     inheritAttrs: false,
     props: {
       items: { type: Array as PropType<MenuType[]>, default: () => [] },
@@ -29,10 +45,12 @@
       beforeClickFn: { type: Function as PropType<(key: string) => Promise<boolean>> },
     },
     emits: ['menuClick'],
-    setup(props, { emit }) {
+    setup(props, { emit, attrs }) {
       const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('simple-menu'),
+        rootMenuEmitter = new Mitt(),
         currentActiveName = ref(''),
+        activeName = ref(''),
         isClickGo = ref(false),
         menuState = reactive<SimpleMenuState>({
           activeName: '',
@@ -48,9 +66,12 @@
           mixSidebar,
           collapse
         );
-      // TODO
-      const getBindValues = computed(() => ({ ...attrs, ...props }));
-      console.log(getBindValues);
+
+      createSimpleRootMenuContext({
+        rootMenuEmitter,
+        activeName,
+        isCollapse: computed(() => props.collapse),
+      });
 
       watch(
         () => props.collapse,
@@ -60,9 +81,32 @@
         },
         { immediate: true }
       );
-      return { prefixCls, getOpenKeys, ...toRefs(menuState) };
+      async function handleMenuChange(route?: RouteLocationNormalizedLoaded) {
+        if (unref(isClickGo)) {
+          isClickGo.value = false;
+          return;
+        }
+        const path = (route || unref(currentRoute)).path;
+        menuState.activeName = path;
+        setOpenKeys(path);
+      }
+      async function handleSelect(key: string) {
+        const { beforeClickFn } = props;
+        if (beforeClickFn && isFunction(beforeClickFn)) {
+          const flag = await beforeClickFn(key);
+          if (!flag) return;
+        }
+        emit('menuClick', key);
+
+        isClickGo.value = true;
+        setOpenKeys(key);
+        menuState.activeName = key;
+      }
+      return { prefixCls, getOpenKeys, handleSelect, ...toRefs(menuState) };
     },
   });
 </script>
 
-<style></style>
+<style lang="less" scoped>
+  @import './index';
+</style>

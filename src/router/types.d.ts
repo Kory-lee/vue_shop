@@ -40,7 +40,7 @@ export interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'meta'> {
   component?: any;
   components?: any;
   children?: AppRouteRecordRaw[];
-  props?: any;
+  props?: Recordable;
   fullPath?: string;
 }
 export interface MenuTag {
@@ -49,12 +49,12 @@ export interface MenuTag {
   dot?: boolean;
 }
 
-export interface Menu {
+export interface MenuType {
   name: string;
   icon?: string;
   path: string;
   disabled?: boolean;
-  children?: Menu[];
+  children?: MenuType[];
 
   orderNo?: number;
   roles?: RoleEnum[];
@@ -66,14 +66,15 @@ export interface Menu {
 
 export interface MenuModule {
   orderNo?: number;
-  menu: Menu;
+  menu: MenuType;
 }
 
-interface RouteModule {
-  layout: AppRouteRecordRaw;
-  routes: AppRouteRecordRaw[];
-  children?: AppRouteRecordRaw[];
-  component?: any;
-}
+// interface RouteModule {
+//   layout: AppRouteRecordRaw;
+//   routes: AppRouteRecordRaw[];
+//   children?: AppRouteRecordRaw[];
+//   component?: any;
+// }
 
-export type AppRouteModule = RouteModule | AppRouteRecordRaw;
+// export type AppRouteModule = RouteModule | AppRouteRecordRaw;
+export type AppRouteModule = AppRouteRecordRaw;

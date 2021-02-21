@@ -17,10 +17,9 @@
     watch,
     watchEffect,
   } from 'vue';
+  import { useSimpleRootMenuContext } from '../useSimpleMenuContext';
   import { SubMenuProvider } from './types';
-  import { createSimpleRootMenuContext } from './useSimpleMenuContext';
   import { useProviderContext } from '/@/components/Application';
-  import Mitt from '/@/utils/mitt';
 
   export default defineComponent({
     name: 'Menu',
@@ -37,32 +36,26 @@
     },
     emits: ['select', 'open-change'],
     setup(props, { emit }) {
-      const rootMenuEmitter = new Mitt(),
-        instance = getCurrentInstance(),
-        currentActiveName = ref<string | number>(''),
+      const instance = getCurrentInstance(),
+        { rootMenuEmitter, activeName: currentActiveName } = useSimpleRootMenuContext(),
         openedNames = ref<string[]>([]),
         { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('menu'),
         isRemoveAllPopup = ref(false);
 
-      createSimpleRootMenuContext({
-        rootMenuEmitter,
-        activeName: currentActiveName,
-      });
       const getClass = computed(() => [
         prefixCls,
         `${prefixCls}-${props.theme}`,
-        `${prefixCls}-vertival`,
+        `${prefixCls}-vertical`,
         {
           [`${prefixCls}-collapse`]: props.collapse,
         },
       ]);
       watchEffect(() => (openedNames.value = props.openNames));
       watchEffect(() => {
-        if (props.activeName) {
-          currentActiveName.value = props.activeName;
-        }
+        if (props.activeName) currentActiveName.value = props.activeName;
       });
+
       watch(
         () => props.openNames,
         () => nextTick(() => updateOpened())
@@ -71,15 +64,18 @@
       function updateOpened() {
         rootMenuEmitter.emit('on-update-opened', openedNames);
       }
+
       function addSubMenu(name: string) {
         if (openedNames.value.includes(name)) return;
         openedNames.value.push(name);
         updateOpened();
       }
+
       function removeSubMenu(name: string) {
         openedNames.value = openedNames.value.filter((item) => item !== name);
         updateOpened();
       }
+
       function removeAll() {
         openedNames.value = [];
         updateOpened();
@@ -89,6 +85,7 @@
         openedNames.value = openedNames.value.slice(0, index + 1);
         updateOpened();
       }
+
       provide<SubMenuProvider>(`subMenu:${instance?.uid}`, {
         addSubMenu,
         removeSubMenu,
@@ -114,4 +111,6 @@
   });
 </script>
 
-<style></style>
+<style lang="less">
+  @import './menu';
+</style>

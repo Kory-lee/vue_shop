@@ -23,7 +23,7 @@ export const PAGE_NOT_FOUND_ROUTE: AppRouteRecordRaw = {
   ],
 };
 
-export const REDIRECT_NAME = 'redirect';
+export const REDIRECT_NAME = 'Redirect';
 
 const redirect_meta = { title: REDIRECT_NAME, hideBreadcrumb: true };
 export const REDIRECT_ROUTE: AppRouteRecordRaw = {

@@ -1,18 +1,23 @@
 <template>
-  <li :class="getClass">
-    <Tooltip placement="right">
+  <li :class="getClass" @click.stop="handleClickItem" :style="getCollapse ? {} : getItemStyle">
+    <Tooltip placement="right" v-if="showTooptip">
       <template #title>
         <slot name="title" />
       </template>
+      <div :class="`${prefixCls}-tooltip`"> <slot /> </div>
     </Tooltip>
+    <template v-else>
+      <slot />
+      <slot name="title" />
+    </template>
   </li>
 </template>
 
 <script lang="ts">
   import { Tooltip } from 'ant-design-vue';
   import { computed, defineComponent, getCurrentInstance, PropType, ref, unref, watch } from 'vue';
-  import useMenuItem from './useMenuItem';
-  import { useSimpleRootMenuContext } from './useSimpleMenuContext';
+  import useMenuItem from './useMenu';
+  import { useSimpleRootMenuContext } from '../useSimpleMenuContext';
   import { useProviderContext } from '/@/components/Application';
 
   export default defineComponent({
@@ -27,7 +32,7 @@
         active = ref(false),
         { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('menu'),
-        { rootMenuEmitter, activeName } = useSimpleRootMenuContext(),
+        { rootMenuEmitter, activeName, isCollapse } = useSimpleRootMenuContext(),
         { getItemStyle, getParentList, getParentMenu, getParentRootMenu } = useMenuItem(instance),
         getClass = computed(() => [
           `${prefixCls}-item`,
@@ -39,10 +44,13 @@
         ]),
         getCollapse = computed(() => unref(getParentRootMenu)?.props.collapse),
         showTooptip = computed(
-          () => unref(getParentMenu)?.type.name === 'Menu' && unref(getCollapse) && slots.title
+          () => unref(getParentMenu)?.type.name === 'Menu' && unref(isCollapse) && slots.title
         );
+
       function handleClickItem() {
         if (props.disabled) return;
+        rootMenuEmitter.emit('on-menu-item-select', props.name);
+        if (unref(getCollapse)) return;
         const { uidList } = getParentList();
         rootMenuEmitter.emit('on-update-opened', {
           opened: false,
@@ -51,8 +59,23 @@
         });
       }
 
-      watch(activeName, (name: string) => {});
-      return { getClass };
+      watch(
+        activeName,
+        (name: string) => {
+          if (name === props.name) {
+            const { list, uidList } = getParentList();
+            active.value = true;
+            list.forEach((item) => {
+              if (item.proxy) (item.proxy as any).active = true;
+            });
+            rootMenuEmitter.emit('on-update-active-name:submenu', uidList);
+          } else {
+            active.value = false;
+          }
+        },
+        { immediate: true }
+      );
+      return { getClass, prefixCls, getItemStyle, getCollapse, handleClickItem, showTooptip };
     },
   });
 </script>
