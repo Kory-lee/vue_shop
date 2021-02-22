@@ -26,7 +26,6 @@ export function useCache(isPage: boolean) {
       name.value = matched[len - 2].name as string;
     }
   });
-  // const { getOpenKeepAlive } = useRootSetting();
   const getCaches = computed((): string[] => {
     if (!unref(getOpenKeepAlive)) return [];
 
@@ -34,6 +33,7 @@ export function useCache(isPage: boolean) {
     if (isPage) return cached.get(PAGE_LAYOUT_KEY) || [];
     const cacheSet = new Set<string>();
     cacheSet.add(unref(name));
+
     const list = cached.get(name.value);
     if (!list) return Array.from(cacheSet);
 

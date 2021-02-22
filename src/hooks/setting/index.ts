@@ -1,5 +1,6 @@
-import { GlobalConfig, GlobalEnvConfig } from '/@/types/config';
+import { GlobalConfig, GlobalEnvConfig, ProjectConfig } from '/@/types/config';
 import { getGlobalEnvConfig, isDevMode } from '/@/utils/env';
+import getProjectSetting from '/@/settings/projectSetting';
 
 export const ENV = isDevMode() ? getGlobalEnvConfig() : ((window as unknown) as GlobalEnvConfig);
 
@@ -19,4 +20,8 @@ export const useGlobalSetting = (): Readonly<GlobalConfig> => {
     urlPrefix: VITE_GLOBAL_API_URL_PREFIX,
     uploadUrl: VITE_GLOBAL_UPLOAD_URL,
   };
+};
+
+export const useProjectSetting = (): ProjectConfig => {
+  return getProjectSetting;
 };
