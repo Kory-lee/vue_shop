@@ -1,6 +1,7 @@
 import { unref } from 'vue';
 import { RouteLocationRaw, useRouter } from 'vue-router';
 import { PageEnum } from '../../enums/pageEnum';
+// import router from '/@/router';
 import { isString } from '/@/utils/is';
 export type RouteLocationRawEx = Omit<RouteLocationRaw, 'path'> & { path: PageEnum };
 function handleError(e: Error) {

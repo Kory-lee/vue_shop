@@ -20,8 +20,8 @@
   import LayoutHeader from './header/index.vue';
   import LayoutMultipleHeader from './header/MultipleHeader.vue';
   import LayoutSidebar from './sidebar/index.vue';
-  import { useProviderContext } from '/@/components/Application/Provider/useAppContext';
-  import { getShowFullHeaderRef } from '/@/hooks/setting/headerSetting';
+  import { useProviderContext } from '../../components/Application/src/Provider/useAppContext';
+  import { getShowFullHeaderRef } from '../../hooks/setting/HeaderSetting';
   import { getIsMixSidebar, getShowSidebar } from '/@/hooks/setting/menuSetting';
   import createAsyncComponent from '/@/utils/factory/createAsyncComponent';
   export default defineComponent({

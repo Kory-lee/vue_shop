@@ -1,56 +1,57 @@
+<template>
+  <DropDown :trigger="trigger" v-bind="$attrs">
+    <span>
+      <slot></slot>
+    </span>
+    <template #overlay>
+      <Menu :selectedKeys="selectedKeys">
+        <template v-for="item in getMenuList" :key="`${item.event}`">
+          <MenuItem
+            v-bind="getAttr(`${item.event}`)"
+            @click="handleClickMenu(item)"
+            :disabled="item.disabled"
+          >
+            <Icon :icon="item.icon" v-if="item.icon" />
+            <span class="ml-1">{{ item.text }}</span>
+          </MenuItem>
+          <MenuDivider v-if="item.divider" :key="`d-${item.event}`"> </MenuDivider>
+        </template>
+      </Menu>
+    </template>
+  </DropDown>
+</template>
 <script lang="ts">
-import { Dropdown, Menu } from 'ant-design-vue';
-import { defineComponent, h } from 'vue';
-import type { PropType } from 'vue';
-import type { DropMenu, Trigger } from './types';
+  import { Dropdown, Menu } from 'ant-design-vue';
 
-//TODO Icon component
-const Icon = h('i');
-export default defineComponent({
-  name: 'Dropdown',
-  props: {
-    trigger: { type: Array as PropType<string[]>, default: () => ['contextmenu'] },
-    dropMenuList: { type: Array as PropType<DropMenu[]>, default: () => [] },
-    selectedKeys: { type: Array as PropType<string[]>, default: () => [] },
-  },
-  emits: ['menuEvent'],
-  setup(props, { emit, slots, attrs }) {
-    const handleClickMenu = ({ key }: any) => {
-      const menu = props.dropMenuList.find((item) => `${item.event}` === `${key}`);
-      emit('menuEvent', menu);
-    };
-    const overlay = () =>
-      h(
-        Menu,
-        { onClick: handleClickMenu, selectedKeys: props.selectedKeys },
-        {
-          default: () => {
-            props.dropMenuList.map((item) => {
-              const { disabled, icon, event, text, divider } = item;
-              return [
-                h(Menu.Item, { key: `${event}`, disabled }, [
-                  icon && h(Icon, { icon }),
-                  h('span', { class: 'ml-1' }, { default: () => text }),
-                ]),
-                divider && h(Menu.Divider, { key: `d-${event}` }),
-              ];
-            });
-          },
-        }
-      );
-    return () =>
-      h(
-        Dropdown,
-        { trigger: <Trigger[]>props.trigger, ...attrs },
-        {
-          default: () => {
-            return h('span', slots?.default?.());
-          },
-          overlay,
-        }
-      );
-  },
-});
+  import Icon from '../Icon';
+  import { computed, defineComponent } from 'vue';
+  import type { PropType } from 'vue';
+  import type { DropMenu } from './types';
+
+  export default defineComponent({
+    name: 'Dropdown',
+    props: {
+      trigger: { type: Array as PropType<string[]>, default: () => ['contextmenu'] },
+      dropMenuList: { type: Array as PropType<DropMenu[]>, default: () => [] },
+      selectedKeys: { type: Array as PropType<string[]>, default: () => [] },
+    },
+    components: { Dropdown, Menu, MenuItem: Menu.Item, MenuDivider: Menu.Divider, Icon },
+    emits: ['menuEvent'],
+    setup(props, { emit }) {
+      const getMenuList = computed(() => props.dropMenuList);
+      const handleClickMenu = (item: DropMenu) => {
+        const { event } = item;
+        const menu = props.dropMenuList.find((item) => `${item.event}` === `${event}`);
+        emit('menuEvent', menu);
+        item.onClick?.();
+      };
+      return {
+        handleClickMenu,
+        getMenuList,
+        getAttr: (key: string) => ({ key }),
+      };
+    },
+  });
 </script>
 
 <style></style>

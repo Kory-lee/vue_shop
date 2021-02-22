@@ -1,6 +1,7 @@
 import { App } from 'vue';
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import { REDIRECT_NAME } from './constant';
+import { createGuard } from './guard';
 import { asyncRoutes, basicRoutes } from './routes';
 
 const router = createRouter({
@@ -17,10 +18,11 @@ export function resetRouter() {
       router.hasRoute(name) && router.removeRoute(name);
   });
 }
-// router.install = ()=>{}
+
 export default {
   ...router,
   install(app: App<Element>) {
     router.install(app);
+    createGuard(router);
   },
 };

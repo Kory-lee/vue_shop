@@ -28,7 +28,7 @@
   import LayoutMenu from '../menu/index.vue';
   import LayoutTrigger from '../trigger/index.vue';
   import { createDragLine, sidebarEvent, useTrigger } from './utils';
-  import { useProviderContext } from '/@/components/Application/Provider/useAppContext';
+  import { useProviderContext } from '../../../components/Application/src/Provider/useAppContext';
   import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnums';
   import {
     getCollapsed,
@@ -40,6 +40,7 @@
     getRealWidth,
     getSplit,
   } from '/@/hooks/setting/menuSetting';
+
   export default defineComponent({
     name: 'MaxSidebar',
     components: { Sider: Layout.Sider, LayoutTrigger, LayoutMenu },

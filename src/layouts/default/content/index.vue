@@ -15,7 +15,7 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { useProviderContext } from '/@/components/Application/Provider/useAppContext';
+  import { useProviderContext } from '../../../components/Application/src/Provider/useAppContext';
   import { Loading } from '/@/components/Loading';
   import { getLayoutContentMode, getPageLoading } from '/@/hooks/setting/RootSetting';
   import { getOpenPageLoading } from '/@/hooks/setting/TransitionSetting';

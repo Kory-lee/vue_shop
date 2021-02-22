@@ -18,7 +18,7 @@
   import { Menu } from 'ant-design-vue';
   import { basicProps } from './props';
   import { MenuState } from './types';
-  import { useProviderContext } from '../../Application/Provider/useAppContext';
+  import { useProviderContext } from '../../Application/src/Provider/useAppContext';
   import { useRouter } from 'vue-router';
   import { MenuModeEnum, MenuTypeEnum } from '/@/enums/menuEnums';
   import {

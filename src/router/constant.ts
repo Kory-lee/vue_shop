@@ -4,9 +4,7 @@ const EXCEPTION_COMPONENT = () => import('/@/views/sys/exception/index.vue');
 
 export const LAYOUT = () => import('/@/layouts/default/index.vue');
 
-export const getParentLayout = (name: string) => {
-  return () => new Promise((resolve) => resolve({ name }));
-};
+export const getParentLayout = (name: string) => () => new Promise((resolve) => resolve({ name }));
 
 export const PAGE_NOT_FOUND_ROUTE: AppRouteRecordRaw = {
   path: '/:path(.*)*',

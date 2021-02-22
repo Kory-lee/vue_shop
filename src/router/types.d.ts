@@ -1,5 +1,13 @@
+import { defineComponent } from 'vue';
 import type { RouteRecordRaw } from 'vue-router';
+
 import { RoleEnum } from '/@/enums/roleEnum';
+
+export type Component<T extends any = any> =
+  | ReturnType<typeof defineComponent>
+  | (() => Promise<typeof import('*.vue')>)
+  | (() => Promise<T>);
+
 export interface RouteMeta {
   // title
   title: string;

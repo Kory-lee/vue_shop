@@ -114,7 +114,7 @@ export interface GlobalEnvConfig {
   VITE_GLOBAL_UPLOAD_URL?: string;
 }
 
-interface GLOBALWRAP {
+interface GlobalWrap {
   globalSetting: Readonly<GlobalConfig>;
 }
 

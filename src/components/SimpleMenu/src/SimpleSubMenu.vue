@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-  import { computed, PropType } from 'vue';
+  import { computed, PropType, watch } from 'vue';
   import { useProviderContext } from '../../Application';
   import { MenuType } from '/@/router/types';
   import MenuItem from './components/MenuItem.vue';
@@ -52,7 +52,6 @@
       function menuHasChildren(menuTreeItem: MenuType): boolean {
         return Reflect.has(menuTreeItem, 'children') && !!menuTreeItem.children?.length;
       }
-
       return {
         prefixCls,
         menuHasChildren,
@@ -66,5 +65,3 @@
     },
   };
 </script>
-
-<style></style>

@@ -26,12 +26,12 @@
   import LayoutTrigger from '../trigger/index.vue';
   import LayoutBreadcrumb from './components/Breadcrumb.vue';
   import { Logo } from '/@/components/Application';
-  import { useProviderContext } from '/@/components/Application/Provider/useAppContext';
+  import { useProviderContext } from '../../../components/Application/src/Provider/useAppContext';
   import {
     getHeaderTheme,
     getShowContent,
     getShowHeaderLogo,
-  } from '/@/hooks/setting/headerSetting';
+  } from '../../../hooks/setting/HeaderSetting';
   import { getShowLocale } from '/@/hooks/setting/LocaleSetting';
   import {
     getIsMixMode,

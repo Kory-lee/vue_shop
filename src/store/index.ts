@@ -1,12 +1,19 @@
 import { createStore } from 'vuex';
 import { config } from 'vuex-module-decorators';
 import { isDevMode } from '../utils/env';
-import configStore from './modules/config';
-import tabStore from './modules/tab';
 config.rawError = true;
 const isDev = isDevMode();
-const store = createStore({
-  strict: isDev,
-});
+const store = createStore({ strict: isDev });
 export default store;
-export { configStore, tabStore };
+
+// export { default as permissionStore } from './modules/permission';
+// export { default as configStore } from './modules/config';
+// export { default as tabStore } from './modules/tab';
+// export { default as userStore } from './modules/user';
+// const modules = import.meta.globEager('./modules/**');
+// const StoreObj: { [key: string]: Object } = {};
+// Object.keys(modules).forEach((mod) => {
+//   console.log(mod);
+//   const key = (mod.match(/\.\/modules\/(\S*)\.ts/) as RegExpMatchArray)[1];
+//   StoreObj[key + 'Store'] = modules[mod];
+// });

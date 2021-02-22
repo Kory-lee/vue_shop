@@ -9,7 +9,7 @@
   import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue';
   import type { PropType } from 'vue';
   import { defineComponent } from 'vue';
-  import { useProviderContext } from '/@/components/Application/Provider/useAppContext';
+  import { useProviderContext } from '../../../components/Application/src/Provider/useAppContext';
   import { getCollapsed, toggleCollapsed } from '/@/hooks/setting/menuSetting';
   export default defineComponent({
     name: 'HeaderTrigger',

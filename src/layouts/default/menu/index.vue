@@ -2,7 +2,7 @@
   import { computed, CSSProperties, defineComponent, h, PropType, toRef, unref } from 'vue';
   import { useSplitMenu } from './utils';
   import { Logo } from '/@/components/Application';
-  import { useProviderContext } from '/@/components/Application/Provider/useAppContext';
+  import { useProviderContext } from '../../../components/Application/src/Provider/useAppContext';
   import { BasicMenu } from '/@/components/Menu';
   import { SimpleMenu } from '/@/components/SimpleMenu';
   import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnums';
@@ -73,12 +73,14 @@
       }
 
       function renderHeader() {
-        if (!unref(isMobile) && !unref(isMobile)) return null;
-        return h(Logo, {
-          showTitle: !unref(getCollapsed),
-          class: unref(getLogoClass),
-          theme: unref(getRealMenuTheme),
-        });
+        if (!unref(getIsShowLogo) && !unref(isMobile)) return null;
+        return (
+          <Logo
+            showTitle={!unref(getCollapsed)}
+            class={unref(getLogoClass)}
+            theme={unref(getRealMenuTheme)}
+          />
+        );
       }
 
       function renderMenu() {

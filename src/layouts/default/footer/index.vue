@@ -10,7 +10,7 @@
   import { Layout } from 'ant-design-vue';
   import { computed, defineComponent, unref } from 'vue';
   import { useRouter } from 'vue-router';
-  import { useProviderContext } from '/@/components/Application/Provider/useAppContext';
+  import { useProviderContext } from '../../../components/Application/src/Provider/useAppContext';
   import { getShowFooter } from '/@/hooks/setting/RootSetting';
 
   export default defineComponent({

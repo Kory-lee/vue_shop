@@ -10,14 +10,14 @@
   import { computed, CSSProperties, defineComponent, unref } from 'vue';
   import { headerHeightRef } from '../content/contentViewHeight';
   import LayoutHeader from './index.vue';
-  import { useProviderContext } from '/@/components/Application/Provider/useAppContext';
+  import { useProviderContext } from '../../../components/Application/src/Provider/useAppContext';
   import {
     getFixed,
     getHeaderTheme,
     getShowFullHeaderRef,
     getShowHeader,
     getShowInsetHeaderRef,
-  } from '/@/hooks/setting/headerSetting';
+  } from '../../../hooks/setting/HeaderSetting';
   import { getCalcContentWidth, getSplit } from '/@/hooks/setting/menuSetting';
   import { getShowMultipleTab } from '/@/hooks/setting/MultipleTabSetting';
   import { getFullContent } from '/@/hooks/web/useFullContent';

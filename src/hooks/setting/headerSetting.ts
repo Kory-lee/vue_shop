@@ -1,5 +1,4 @@
 import { computed, unref } from 'vue';
-
 import {
   getIsMixSidebar,
   getIsSidebarType,
@@ -10,12 +9,11 @@ import {
 } from './menuSetting';
 import { getRealFullContent, getShowBreadCrumb, getShowLogo } from './RootSetting';
 import { MenuModeEnum } from '/@/enums/menuEnums';
-import configStore from '/@/store/modules/config';
+import { configStore } from '/@/store/modules';
 import { HeaderSetting } from '/@/types/config';
 export const getShowMixHeaderRef = computed<boolean>(
   () => !unref(getIsSidebarType) && unref(getShowHeader)
 );
-
 export const getShowFullHeaderRef = computed(
   () =>
     !unref(getRealFullContent) &&

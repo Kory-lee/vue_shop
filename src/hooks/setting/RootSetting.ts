@@ -1,9 +1,8 @@
 import { computed, unref } from 'vue';
 import { ContentEnum } from '/@/enums/configEnum';
 import router from '/@/router';
-import { configStore } from '/@/store';
+import { configStore } from '/@/store/modules';
 import type { ProjectConfig } from '/@/types/config';
-
 type RootSetting = Omit<
   ProjectConfig,
   'locale' | 'headerSetting' | 'menuSetting' | 'multiTabsSetting'

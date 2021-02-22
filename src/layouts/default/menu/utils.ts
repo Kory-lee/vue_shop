@@ -1,15 +1,15 @@
 import { computed, ref, Ref, unref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { useProviderContext } from '/@/components/Application/Provider/useAppContext';
+import { useProviderContext } from '../../../components/Application/src/Provider/useAppContext';
 import { MenuSplitTypeEnum } from '/@/enums/menuEnums';
 import { useThrottle } from '/@/hooks/core/useThrottle';
 import { getIsHorizontal, getSplit } from '/@/hooks/setting/menuSetting';
 import { getCurrentParentPath } from '/@/router/menus';
-import { Menu } from '/@/router/types';
+import { MenuType } from '/@/router/types';
 
 // import
 export function useSplitMenu(splitType: Ref<MenuSplitTypeEnum>) {
-  const menusRef = ref<Menu[]>([]),
+  const menusRef = ref<MenuType[]>([]),
     { currentRoute } = useRouter(),
     { isMobile } = useProviderContext(),
     // [throttleHandleSplitLeftMenu] = useThrottle(handleSp),
@@ -27,8 +27,8 @@ export function useSplitMenu(splitType: Ref<MenuSplitTypeEnum>) {
       const { meta } = unref(currentRoute),
         currentActiveMenu = meta.currentActiveMenu;
       // TODO
-      let parentPath = await getCurrentParentPath(path);
-      if (!parentPath) parentPath = await getCurrentParentPath(currentActiveMenu);
+      // let parentPath = await getCurrentParentPath(path);
+      // if (!parentPath) parentPath = await getCurrentParentPath(currentActiveMenu);
     }
   );
 

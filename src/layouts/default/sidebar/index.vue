@@ -25,7 +25,7 @@
   import MixSidebar from './MixSidebar.vue';
   import MaxSidebar from './MaxSidebar.vue';
   import { defineComponent } from 'vue';
-  import { useProviderContext } from '/@/components/Application/Provider/useAppContext';
+  import { useProviderContext } from '../../../components/Application/src/Provider/useAppContext';
   import { getIsMixSidebar } from '/@/hooks/setting/menuSetting';
   export default defineComponent({
     name: 'LayoutSidebar',

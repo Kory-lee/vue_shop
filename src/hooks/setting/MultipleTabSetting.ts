@@ -1,8 +1,7 @@
 import { computed, unref } from 'vue';
-import { configStore } from '/@/store';
+import { configStore } from '/@/store/modules';
 import { MultiTabsSetting } from '/@/types/config';
 export const getMultipleTabSetting = computed(() => configStore.getProjectConfig.multiTabsSetting);
-
 export const getShowMultipleTab = computed(() => unref(getMultipleTabSetting).show);
 
 export const getShowQuick = computed(() => unref(getMultipleTabSetting).showQuick);

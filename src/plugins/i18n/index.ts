@@ -19,12 +19,20 @@ const localData: I18nOptions = {
 
 const i18n = createI18n(localData) as I18n;
 
-const { install } = i18n;
-i18n.install = (app: App<Element>, ...args: unknown[]) => {
-  setupLocale();
-  install(app, ...args);
-};
-
 export const t = (key: string) => key;
 
-export default i18n;
+// export function useI18n(): {} {
+//   const { t, ...methods } = i18n.global;
+//   return {
+//     ...methods,
+//     t,
+//   };
+// }
+
+export default {
+  ...i18n,
+  install(app: App<Element>, ...args: unknown[]) {
+    i18n.install(app, ...args);
+    setupLocale();
+  },
+};

@@ -1,4 +1,5 @@
 export interface DropMenu {
+  onClick?: Fn;
   to?: string;
   icon?: string;
   event: string | number;
@@ -6,5 +7,3 @@ export interface DropMenu {
   disabled?: boolean;
   divider?: boolean;
 }
-
-export type Trigger = 'click' | 'hover' | 'contextMenu';

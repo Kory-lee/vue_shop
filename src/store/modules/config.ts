@@ -6,6 +6,7 @@ import store from '/@/store';
 import { ProjectConfig } from '/@/types/config';
 import { deepMerge } from '/@/utils/common';
 import { getLocal } from '/@/utils/helper/persistent';
+import { hotModuleUnregisterModule } from '/@/utils/helper/vuexHelper';
 
 export interface LockInfo {
   pwd: string | undefined;
@@ -14,6 +15,7 @@ export interface LockInfo {
 let timeId: TimeoutHandle;
 const NAME = 'config';
 
+hotModuleUnregisterModule(NAME);
 @Module({ dynamic: true, namespaced: true, store, name: NAME })
 class Config extends VuexModule {
   private pageLoadingState = false;

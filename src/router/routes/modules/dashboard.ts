@@ -1,7 +1,8 @@
+import { AppRouteModule } from '../../types';
 import { t } from '/@/plugins/i18n';
 import { LAYOUT } from '/@/router/constant';
 
-const dashboard = {
+const dashboard: AppRouteModule = {
   path: '/dashboard',
   name: 'Dashboard',
   component: LAYOUT,
