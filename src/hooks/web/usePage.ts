@@ -1,13 +1,12 @@
 import { unref } from 'vue';
 import { RouteLocationRaw, useRouter } from 'vue-router';
-import { PageEnum } from '../../enums/pageEnum';
+import { PageEnum } from '/@/enums/pageEnum';
 // import router from '/@/router';
 import { isString } from '/@/utils/is';
+
 export type RouteLocationRawEx = Omit<RouteLocationRaw, 'path'> & { path: PageEnum };
 function handleError(e: Error) {
   console.error(e);
-  // 为了大于打开时候设置的100延时防止闪动
-  setTimeout(() => {}, 101);
 }
 export function useGo() {
   const { push, replace } = useRouter();
@@ -24,5 +23,9 @@ export function useGo() {
 export const useRefresh = () => {
   const { push, currentRoute } = useRouter();
   const { query, params } = currentRoute.value;
-  return () => push({ path: '/redirect' + unref(currentRoute).fullPath, query, params });
+  return new Promise((resolve) =>
+    push({ path: '/redirect' + unref(currentRoute).fullPath, query, params }).then(() =>
+      resolve(true)
+    )
+  );
 };

@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { ref, unref } from 'vue';
-import { Composer, I18n } from 'vue-i18n';
+import type { Composer, I18n } from 'vue-i18n';
 import { getLang, getLocale, setLocale } from '/@/hooks/setting/LocaleSetting';
 import { LocaleType } from '/@/locales/types';
 import i18n from '/@/plugins/i18n';

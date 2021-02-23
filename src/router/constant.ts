@@ -1,3 +1,4 @@
+import { t } from '../plugins/i18n';
 import { AppRouteRecordRaw } from './types';
 
 const EXCEPTION_COMPONENT = () => import('/@/views/sys/exception/index.vue');
@@ -34,6 +35,21 @@ export const REDIRECT_ROUTE: AppRouteRecordRaw = {
       name: REDIRECT_NAME,
       component: () => import('/@/views/sys/redirect'),
       meta: redirect_meta,
+    },
+  ],
+};
+
+export const ERROR_LOG_ROUTE: AppRouteRecordRaw = {
+  path: '/error-log',
+  name: 'errorLog',
+  component: LAYOUT,
+  meta: { title: 'errorLog', hideBreadcrumb: true },
+  children: [
+    {
+      path: 'list',
+      name: 'errorLogList',
+      component: () => {},
+      meta: { title: t('routes.basic.errorLogList'), hideBreadcrumb: true },
     },
   ],
 };

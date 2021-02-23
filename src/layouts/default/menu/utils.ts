@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router';
 import { useProviderContext } from '../../../components/Application/src/Provider/useAppContext';
 import { MenuSplitTypeEnum } from '/@/enums/menuEnums';
 import { useThrottle } from '/@/hooks/core/useThrottle';
-import { getIsHorizontal, getSplit } from '/@/hooks/setting/menuSetting';
+import { getIsHorizontal, getSplit } from '../../../hooks/setting/MenuSetting';
 import { getCurrentParentPath } from '/@/router/menus';
 import { MenuType } from '/@/router/types';
 

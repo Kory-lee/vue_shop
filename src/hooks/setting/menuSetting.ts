@@ -1,5 +1,5 @@
 import { computed, unref } from 'vue';
-import { getFullContent as fullContent } from '../web/useFullContent';
+import { getRealFullContent } from './RootSetting';
 import { SIDE_BAR_MINI_WIDTH, SIDE_BAR_SHOW_TIT_MINI_WIDTH } from '/@/enums/configEnum';
 import { MenuModeEnum, MenuTypeEnum, TriggerEnum } from '/@/enums/menuEnums';
 import configStore from '/@/store/modules/config';
@@ -70,7 +70,9 @@ export const getCalcContentWidth = computed(() => {
 export const getShowSidebar = computed(
   () =>
     unref(getSplit) ||
-    (unref(getShowMenu) && unref(getMenuMode) !== MenuModeEnum.HORIZONTAL && !unref(fullContent))
+    (unref(getShowMenu) &&
+      unref(getMenuMode) !== MenuModeEnum.HORIZONTAL &&
+      !unref(getRealFullContent))
 );
 
 export function setMenuSetting(menuSetting: Partial<MenuSetting>): void {

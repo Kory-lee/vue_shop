@@ -39,7 +39,7 @@
     getMenuWidth,
     getShowHeaderTrigger,
     getSplit,
-  } from '/@/hooks/setting/menuSetting';
+  } from '../../../hooks/setting/MenuSetting';
   import { getShowBreadCrumb } from '/@/hooks/setting/RootSetting';
   export default defineComponent({
     name: 'LayoutHeader',

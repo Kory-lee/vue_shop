@@ -39,7 +39,7 @@
     getMenuWidth,
     getRealWidth,
     getSplit,
-  } from '/@/hooks/setting/menuSetting';
+  } from '../../../hooks/setting/MenuSetting';
 
   export default defineComponent({
     name: 'MaxSidebar',

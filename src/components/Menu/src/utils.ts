@@ -2,7 +2,7 @@ import { compile, computed, Ref, toRaw, unref } from 'vue';
 import { MenuState } from './types';
 import { MenuModeEnum } from '/@/enums/menuEnums';
 import { useTimeoutFn } from '/@/hooks/core/useTimeout';
-import { getCollapsed, getIsMixMode, getIsMixSidebar } from '/@/hooks/setting/menuSetting';
+import { getCollapsed, getIsMixMode, getIsMixSidebar } from '../../../hooks/setting/MenuSetting';
 import { Menu } from '/@/router/types';
 import { es6Unique } from '/@/utils/common';
 import { getAllParentPath } from '/@/utils/helper/menuHelper';

@@ -15,7 +15,7 @@ export const getOpenKeepAlive = computed(() => unref(getRootSetting).openKeepAli
 
 export const getCanEmbedIFramePage = computed(() => getRootSetting.value.canEmbedIFramePage);
 
-export const getPermissionMode = computed(() => getRootSetting.value.permissionMode);
+export const getPermissionMode = computed(() => unref(getRootSetting).permissionMode);
 
 export const getShowLogo = computed(() => getRootSetting.value.showLogo);
 
@@ -39,7 +39,7 @@ export const getRealFullContent = computed(() => {
   const route = unref(router.currentRoute);
   const query = route.query;
   if (query && Reflect.has(query, '__FULL__')) return true;
-  return getRootSetting.value.fullContent;
+  return unref(getFullContent);
 });
 
 export const getColorWeak = computed(() => getRootSetting.value.colorWeak);
@@ -72,6 +72,7 @@ export function useRootSetting() {
     getShowBreadCrumb,
     getShowbreadCrumbIcon,
     getFullContent,
+    getRealFullContent,
     getColorWeak,
     getGrayMode,
     getLockTime,

@@ -1,5 +1,5 @@
 <template>
-  <router-view>
+  <RouterView>
     <template #default="{ Component, route }">
       <transition
         :name="
@@ -13,7 +13,6 @@
         "
         mode="out-in"
         appear
-        :duration="{ enter: 500, leave: 800 }"
       >
         <keep-alive v-if="openCache" :include="getCaches">
           <component :is="Component" v-bind="getKey(Component, route)" />
@@ -21,7 +20,7 @@
         <component v-else :is="Component" v-bind="getKey(Component, route)" />
       </transition>
     </template>
-  </router-view>
+  </RouterView>
 </template>
 
 <script lang="ts">

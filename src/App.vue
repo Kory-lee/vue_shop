@@ -7,13 +7,17 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { Provider } from '/@/components/Application';
-  import { antConfigLocaleRef as antConfigLocale } from '/@/hooks/web/useLocale';
+  import { antConfigLocaleRef as antConfigLocale, useLocale } from '/@/hooks/web/useLocale';
   import { initConfigStore } from '/@/plugins/init';
   export default defineComponent({
     name: 'App',
     components: { Provider },
     setup() {
+      useLocale();
+
       initConfigStore();
+      console.log(0);
+
       return { antConfigLocale };
     },
   });

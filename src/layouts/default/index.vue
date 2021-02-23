@@ -22,7 +22,7 @@
   import LayoutSidebar from './sidebar/index.vue';
   import { useProviderContext } from '../../components/Application/src/Provider/useAppContext';
   import { getShowFullHeaderRef } from '../../hooks/setting/HeaderSetting';
-  import { getIsMixSidebar, getShowSidebar } from '/@/hooks/setting/menuSetting';
+  import { getIsMixSidebar, getShowSidebar } from '../../hooks/setting/MenuSetting';
   import createAsyncComponent from '/@/utils/factory/createAsyncComponent';
   export default defineComponent({
     components: {

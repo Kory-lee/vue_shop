@@ -15,7 +15,7 @@
     getMenuMode,
     getMenuTheme,
     getMenuType,
-  } from '/@/hooks/setting/menuSetting';
+  } from '../../../hooks/setting/MenuSetting';
   import { getShowLogo } from '/@/hooks/setting/RootSetting';
   import { useGo } from '/@/hooks/web/usePage';
   import { openWindow } from '/@/utils/common';

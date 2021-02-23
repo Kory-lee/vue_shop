@@ -1,13 +1,13 @@
 import { computed, Ref, toRaw, unref } from 'vue';
 import { SimpleMenuState } from './types';
 import { useTimeoutFn } from '/@/hooks/core/useTimeout';
-import { Menu } from '/@/router/types';
+import { MenuType } from '/@/router/types';
 import { es6Unique } from '/@/utils/common';
 import { getAllParentPath } from '/@/utils/helper/menuHelper';
 
 export default function useOpenKeys(
   menuState: SimpleMenuState,
-  menus: Ref<Menu[]>,
+  menus: Ref<MenuType[]>,
   accordion: Ref<boolean>,
   mixSidebar: Ref<boolean>,
   collapse: Ref<boolean>

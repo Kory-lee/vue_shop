@@ -18,9 +18,9 @@
     getShowHeader,
     getShowInsetHeaderRef,
   } from '../../../hooks/setting/HeaderSetting';
-  import { getCalcContentWidth, getSplit } from '/@/hooks/setting/menuSetting';
+  import { getCalcContentWidth, getSplit } from '../../../hooks/setting/MenuSetting';
   import { getShowMultipleTab } from '/@/hooks/setting/MultipleTabSetting';
-  import { getFullContent } from '/@/hooks/web/useFullContent';
+import { getRealFullContent } from '/@/hooks/setting/RootSetting';
   const HEADER_HEIGHT = 48,
     TABS_HEIGHT = 32;
   export default defineComponent({
@@ -29,7 +29,7 @@
     setup() {
       const { isMobile, getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('layout-multiple-header'),
-        getShowTabs = computed(() => unref(getShowMultipleTab) && !unref(getFullContent)),
+        getShowTabs = computed(() => unref(getShowMultipleTab) && !unref(getRealFullContent)),
         getIsShowPlaceholderDom = computed(() => unref(getFixed) || unref(getShowFullHeaderRef)),
         getWrapStyle = computed(
           (): CSSProperties => {
@@ -47,10 +47,10 @@
             if (
               (unref(getShowFullHeaderRef) || !unref(getSplit)) &&
               unref(getShowHeader) &&
-              !unref(getFullContent)
+              !unref(getRealFullContent)
             )
               height += HEADER_HEIGHT;
-            if (unref(getShowMultipleTab) && !unref(getFullContent)) height += TABS_HEIGHT;
+            if (unref(getShowMultipleTab) && !unref(getRealFullContent)) height += TABS_HEIGHT;
             headerHeightRef.value = height;
             return { height: `${height}px` };
           }

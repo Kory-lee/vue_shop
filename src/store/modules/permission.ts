@@ -1,7 +1,15 @@
+import { toRaw, unref } from 'vue';
 import { Action, getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators';
+import { configStore, userStore } from '.';
+import { PermissionModeEnum } from '/@/enums/configEnum';
+import { getPermissionMode, getRootSetting } from '/@/hooks/setting/RootSetting';
+import { createMessage } from '/@/hooks/web/useMessage';
 import i18n from '/@/plugins/i18n';
+import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE } from '/@/router/constant';
+import { asyncRoutes } from '/@/router/routes';
 import { AppRouteRecordRaw, MenuType } from '/@/router/types';
 import store from '/@/store';
+import { filter } from '/@/utils/helper/treeHelper';
 import { hotModuleUnregisterModule } from '/@/utils/helper/vuexHelper';
 const NAME = 'permission';
 
@@ -58,8 +66,30 @@ class Permission extends VuexModule {
   @Action
   async buildRoutesAction(id?: number | string): Promise<AppRouteRecordRaw[]> {
     let routes: AppRouteRecordRaw[] = [];
-    const { t } = i18n.global;
-    // roleList
+    const { t } = i18n.global,
+      roleList = toRaw(userStore.getRoleListState);
+
+    const { permissionMode } = configStore.getProjectConfig;
+    console.log('root', unref(getPermissionMode), permissionMode, PermissionModeEnum.ROLE);
+
+    if (unref(getPermissionMode) === PermissionModeEnum.ROLE) {
+      routes = filter(asyncRoutes, (route) => {
+        const {
+          meta: { roles },
+        } = route;
+        if (!roles) return true;
+        return roleList.some((role) => roles.includes(role));
+      });
+    } else if (unref(getPermissionMode) === PermissionModeEnum.BACK) {
+      createMessage.loading({ content: t('sys.app.menuLoading'), duration: 1 });
+
+      const paramId = id || userStore.getUserInfoState.userId;
+      if (!paramId) throw new Error('paramId is undefined');
+      let routeList = [];
+      routes = [PAGE_NOT_FOUND_ROUTE, ...routeList];
+    }
+    routes.push(ERROR_LOG_ROUTE);
+
     return routes;
   }
 }

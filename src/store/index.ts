@@ -1,15 +1,17 @@
+import { App } from 'vue';
 import { createStore } from 'vuex';
 import { config } from 'vuex-module-decorators';
 import { isDevMode } from '../utils/env';
 config.rawError = true;
 const isDev = isDevMode();
 const store = createStore({ strict: isDev });
+
+export const installStore = (app: App<Element>) => {
+  store.install(app);
+};
+
 export default store;
 
-// export { default as permissionStore } from './modules/permission';
-// export { default as configStore } from './modules/config';
-// export { default as tabStore } from './modules/tab';
-// export { default as userStore } from './modules/user';
 // const modules = import.meta.globEager('./modules/**');
 // const StoreObj: { [key: string]: Object } = {};
 // Object.keys(modules).forEach((mod) => {

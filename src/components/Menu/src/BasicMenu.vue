@@ -26,7 +26,7 @@
     getIsHorizontal,
     getSplit,
     getTopMenuAlign,
-  } from '/@/hooks/setting/menuSetting';
+  } from '../../../hooks/setting/MenuSetting';
   import { useOpenKeys } from './utils';
   import BasicSubMenuItem from './components/BasicSubMenuItem.vue';
 

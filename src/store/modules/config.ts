@@ -5,7 +5,7 @@ import { resetRouter } from '/@/router';
 import store from '/@/store';
 import { ProjectConfig } from '/@/types/config';
 import { deepMerge } from '/@/utils/common';
-import { getLocal } from '/@/utils/helper/persistent';
+import { getLocal, setLocal } from '/@/utils/helper/persistent';
 import { hotModuleUnregisterModule } from '/@/utils/helper/vuexHelper';
 
 export interface LockInfo {
@@ -42,6 +42,7 @@ class Config extends VuexModule {
   @Mutation
   commitProjectConfigState(config: DeepPartial<ProjectConfig>): void {
     this.projectConfigState = deepMerge(this.projectConfigState || {}, config);
+    setLocal(PROJ_CFG_KEY, this.projectConfigState);
   }
 
   @Action
