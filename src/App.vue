@@ -16,7 +16,6 @@
       useLocale();
 
       initConfigStore();
-      console.log(0);
 
       return { antConfigLocale };
     },
