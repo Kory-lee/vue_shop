@@ -1,42 +1,52 @@
 <template>
-  <DropDown :trigger="trigger" v-bind="$attrs">
+  <a-dropdown :trigger="trigger" v-bind="$attrs">
     <span>
-      <slot></slot>
+      <slot />
     </span>
     <template #overlay>
-      <Menu :selectedKeys="selectedKeys">
+      <a-menu :selectedKeys="selectedKeys">
         <template v-for="item in getMenuList" :key="`${item.event}`">
-          <MenuItem
+          <a-menu-item
             v-bind="getAttr(`${item.event}`)"
             @click="handleClickMenu(item)"
             :disabled="item.disabled"
           >
             <Icon :icon="item.icon" v-if="item.icon" />
             <span class="ml-1">{{ item.text }}</span>
-          </MenuItem>
-          <MenuDivider v-if="item.divider" :key="`d-${item.event}`"> </MenuDivider>
+          </a-menu-item>
+          <a-menu-divider v-if="item.divider" :key="`d-${item.event}`" />
         </template>
-      </Menu>
+      </a-menu>
     </template>
-  </DropDown>
+  </a-dropdown>
 </template>
 <script lang="ts">
   import { Dropdown, Menu } from 'ant-design-vue';
-
-  import Icon from '../Icon';
-  import { computed, defineComponent } from 'vue';
   import type { PropType } from 'vue';
+  import { computed, defineComponent } from 'vue';
   import type { DropMenu } from './types';
+  import Icon from '/@/components/Icon';
 
   export default defineComponent({
     name: 'Dropdown',
     props: {
-      trigger: { type: Array as PropType<string[]>, default: () => ['contextmenu'] },
+      trigger: {
+        type: [Array] as PropType<('click' | 'contextmenu' | 'hover')[]>,
+        default: () => ['contextmenu'],
+      },
       dropMenuList: { type: Array as PropType<DropMenu[]>, default: () => [] },
       selectedKeys: { type: Array as PropType<string[]>, default: () => [] },
+      // ...Dropdown.props,
     },
-    components: { Dropdown, Menu, MenuItem: Menu.Item, MenuDivider: Menu.Divider, Icon },
+    components: {
+      [Dropdown.name]: Dropdown,
+      [Menu.name]: Menu,
+      [Menu.Item.name]: Menu.Item,
+      [Menu.Divider.name]: Menu.Divider,
+      Icon,
+    },
     emits: ['menuEvent'],
+    inheritAttrs: false,
     setup(props, { emit }) {
       const getMenuList = computed(() => props.dropMenuList);
       const handleClickMenu = (item: DropMenu) => {

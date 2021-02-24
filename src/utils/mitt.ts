@@ -4,6 +4,7 @@ export default class Mitt {
     // A Map of event names to registered handler functions.
     this.cache = new Map(all);
   }
+
   once(type: string | Symbol, handler: Fn) {
     const decor = (...args: any[]) => {
       handler && handler.apply(this, args);
@@ -12,6 +13,7 @@ export default class Mitt {
     this.once(type, decor);
     return this;
   }
+
   on(type: string | Symbol, handler: Fn) {
     const handlers = this.cache?.get(type),
       added = handlers && handlers.push(handler);

@@ -23,5 +23,6 @@ export const useGlobalSetting = (): Readonly<GlobalConfig> => {
 };
 
 export const useProjectSetting = (): ProjectConfig => {
+  // TODO computed
   return getProjectSetting;
 };

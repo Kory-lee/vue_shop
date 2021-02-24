@@ -1,4 +1,4 @@
-import { resultSuccess } from '../../utils';
+import { resultSuccess } from '../../_utils';
 import { MockMethod } from 'vite-plugin-mock';
 
 // single

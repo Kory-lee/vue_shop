@@ -1,7 +1,10 @@
 import { computed } from 'vue';
+import { localeList } from '/@/locales/constant';
 import projectSetting from '/@/settings/projectSetting';
 import configStore from '/@/store/modules/config';
 import { LocaleSetting } from '/@/types/config';
+
+export const getLocaleList = localeList;
 
 export const getLocale = computed(
   () => configStore.getProjectConfig.locale || projectSetting.locale

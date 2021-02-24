@@ -1,6 +1,6 @@
 import { generate } from '@ant-design/colors';
 
-export const primaryColor = '#0960bbd';
+export const primaryColor = '#0960bd';
 
 export const themeMode = 'light';
 
@@ -62,7 +62,6 @@ export function generateModifyVars() {
   const palettes = generateAntColors(primaryColor, themeMode),
     primary = palettes[5],
     primaryColorObj: Record<string, string> = {};
-
   for (let index = 0; index < 10; index++) {
     primaryColorObj[`primary-${index + 1}`] = palettes[index];
   }

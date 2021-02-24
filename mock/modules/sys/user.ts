@@ -1,5 +1,5 @@
 import { MockMethod } from 'vite-plugin-mock';
-import { resultError, resultSuccess } from '../../utils';
+import { resultError, resultSuccess } from '../../_utils';
 
 function createFakeUserList() {
   return [

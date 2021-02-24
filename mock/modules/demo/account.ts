@@ -1,5 +1,5 @@
 import { MockMethod } from 'vite-plugin-mock';
-import { resultSuccess } from '../../utils';
+import { resultSuccess } from '../../_utils';
 
 const userInfo = {
   name: 'Vben',

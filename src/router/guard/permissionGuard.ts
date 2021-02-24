@@ -1,4 +1,4 @@
-import { Router } from 'vue-router';
+import { Router, RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '../constant';
 import { RouteMeta } from '../types';
 import { PageEnum } from '/@/enums/pageEnum';
@@ -30,14 +30,15 @@ export default function createPermissionGuard(router: Router) {
         replace: true,
       };
 
-      // if (to.path) {
-      //   redirectDate.query = {
-      //     ...redirectDate.query,
-      //     redirect: to.path,
-      //   };
-      // }
-      // next(redirectDate);
-      // return;
+      if (to.path) {
+        redirectDate.query = {
+          ...redirectDate.query,
+          redirect: to.path,
+        };
+      }
+      next(redirectDate);
+      console.log(redirectDate);
+      return;
     }
     if (permissionStore.getIsDynamicAddedRouteState) {
       next();
@@ -45,8 +46,8 @@ export default function createPermissionGuard(router: Router) {
     }
     const routes = await permissionStore.buildRoutesAction();
 
+    routes.forEach((route) => router.addRoute((route as unknown) as RouteRecordRaw));
     console.log('routes', routes);
-    // routes.forEach()
     const redirectPath = (from.query.redirect || to.path) as string,
       redirect = decodeURIComponent(redirectPath),
       nextData = to.path === redirect ? { ...to, replace: true } : { path: redirect };

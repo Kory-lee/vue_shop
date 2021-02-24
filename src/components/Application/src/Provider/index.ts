@@ -25,6 +25,6 @@ export default defineComponent({
       return scope ? `${prefixCls}-${scope}` : prefixCls;
     };
     createProviderContext({ getPrefixCls, isMobile: readonly(isMobileRef) });
-    return () => h(ConfigProvider, { ...attrs }, { default: () => slots.default?.() });
+    return () => h(ConfigProvider, { ...attrs, ...props }, { default: () => slots.default?.() });
   },
 });

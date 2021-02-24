@@ -21,18 +21,10 @@ const i18n = createI18n(localData) as I18n;
 
 export const t = (key: string) => key;
 
-// export function useI18n(): {} {
-//   const { t, ...methods } = i18n.global;
-//   return {
-//     ...methods,
-//     t,
-//   };
-// }
+const { install } = i18n;
 
-export default {
-  ...i18n,
-  install(app: App<Element>, ...args: unknown[]) {
-    i18n.install(app, ...args);
-    setupLocale();
-  },
+i18n.install = (app: App<Element>, ...args: unknown[]) => {
+  install(app, ...args);
+  setupLocale();
 };
+export default i18n;

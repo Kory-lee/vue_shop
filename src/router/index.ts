@@ -18,10 +18,10 @@ export function resetRouter() {
       router.hasRoute(name) && router.removeRoute(name);
   });
 }
-export const installRouter = (app: App<Element>) => {
-  router.install(app);
+const { install } = router;
+
+router.install = (app: App<Element>) => {
+  install(app);
   createGuard(router);
 };
-export const routerIsReady = router.isReady;
-
 export default router;

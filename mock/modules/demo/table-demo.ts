@@ -1,5 +1,5 @@
 import { MockMethod } from 'vite-plugin-mock';
-import { resultPageSuccess } from '../../utils';
+import { resultPageSuccess } from '../../_utils';
 
 const demoList = (() => {
   const result: any[] = [];
