@@ -14,7 +14,7 @@
         <div class="hidden xl:flex xl:flex-col xl:w-6/12 min-h-full mr-4 pl-4">
           <Logo class="-enter-x" />
           <div class="my-auto">
-            <img :src="LoginBox" :alt="title" class="w-1/2 -mt-16 -enter-x" />
+            <img :src="LoginBg" :alt="title" class="w-1/2 -mt-16 -enter-x" />
             <div class="mt-10 font-medium text-white -enter-x">
               <span class="mt-4 text-3xl inline-block">{{ t('sys.login.signInTitle') }}</span>
             </div>
@@ -37,7 +37,7 @@
   import { Checkbox } from 'ant-design-vue';
   import { computed, defineComponent } from 'vue';
   import { useI18n } from 'vue-i18n';
-  import LoginBox from '/@/assets/svg/login-box-bg.svg';
+  import LoginBg from '/@/assets/svg/login-box-bg.svg';
   import { Logo, useProviderContext } from '/@/components/Application';
   import { useGlobalSetting, useProjectSetting } from '/@/hooks/setting';
   import { LocalePicker } from '/@/components/Application';
@@ -52,8 +52,9 @@
         { t } = useI18n(),
         { title } = useGlobalSetting(),
         { locale } = useProjectSetting();
+      console.log(LocalePicker);
 
-      return { prefixCls, t, title, showLocale: computed(() => locale.show), LoginBox };
+      return { prefixCls, t, title, showLocale: computed(() => locale.show), LoginBg };
     },
   });
 </script>
