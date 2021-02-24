@@ -11,9 +11,17 @@
   "cSpell.words": [
     "VITE",
     "Vuex",
+    "echarts",
+    "iconify",
     "mockjs",
+    "nprogress",
+    "qrcode",
     "sider",
-    "vuedx"
+    "typecheck",
+    "vditor",
+    "vitejs",
+    "vuedx",
+    "windicss"
   ],
   "vetur.experimental.templateInterpolationService": true,
   "vetur.format.options.tabSize": 2,
