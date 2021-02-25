@@ -54,5 +54,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       },
     },
     plugins: createVitePlugins(viteEnv, isBuild),
+    optimizeDeps: {
+      include: ['@iconify/iconify'],
+    },
   };
 };
