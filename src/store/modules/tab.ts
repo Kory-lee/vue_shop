@@ -1,17 +1,24 @@
 import { unref } from 'vue';
-import { RouteLocationNormalized, useRouter } from 'vue-router';
+import { RouteLocationNormalized } from 'vue-router';
 import { getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators';
 import { PageEnum } from '../../enums/pageEnum';
 import { useGo } from '/@/hooks/web/usePage';
 import router from '/@/router';
 import store from '/@/store';
 import { getRoute } from '/@/utils/helper/routeHelper';
+import { hotModuleUnregisterModule } from '/@/utils/helper/vuexHelper';
 const NAME = 'tab';
 export const PAGE_LAYOUT_KEY = '__PAGE__LAYOUT__';
+hotModuleUnregisterModule(NAME);
+function isGoToPage() {
+  const go = useGo();
+  go(unref(router.currentRoute).path, true);
+}
 
 @Module({ namespaced: true, name: NAME, dynamic: true, store })
 class Tab extends VuexModule {
   cachedMapState = new Map<string, string[]>();
+
   tabsState: RouteLocationNormalized[] = [];
   lastDragEndIndexState = 0;
 
@@ -19,8 +26,7 @@ class Tab extends VuexModule {
     return this.tabsState;
   }
   get getCurrentTab() {
-    const router = useRouter();
-    const route = router.currentRoute.value;
+    const route = unref(router.currentRoute);
     return this.tabsState.find((item) => item.path === route.path)!;
   }
   get getCachedMapState() {
@@ -40,6 +46,7 @@ class Tab extends VuexModule {
     const go = useGo();
     const len = this.tabsState.length;
     const { path } = unref(router.currentRoute);
+
     let toPath: PageEnum | string = PageEnum.BASE_HOME;
     if (len > 0) {
       const page = this.tabsState[len - 1];
@@ -65,7 +72,9 @@ class Tab extends VuexModule {
       const item = getRoute(tab),
         needCache = !item.meta?.ignoreKeepAlive;
       if (!needCache) return;
+
       if (item.meta?.affix) {
+        const name = item.name as string;
       }
     });
   }

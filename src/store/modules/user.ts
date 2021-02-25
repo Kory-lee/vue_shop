@@ -1,11 +1,12 @@
-import { getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators';
-import { GetUserInfoByUserIdModel } from '/@/api/sys/model/userModel';
+import { Action, getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators';
+import { GetUserInfoByUserIdModel, LoginParams } from '/@/api/sys/model/userModel';
 import { CacheTypeEnum, ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '/@/enums/cacheEnum';
 import { RoleEnum } from '/@/enums/roleEnums';
 import { useProjectSetting } from '/@/hooks/setting';
 import store from '/@/store';
-import { getLocal, getSession } from '/@/utils/helper/persistent';
+import { getLocal, getSession, setLocal, setSession } from '/@/utils/helper/persistent';
 import { hotModuleUnregisterModule } from '/@/utils/helper/vuexHelper';
+import { ErrorMessageMode } from '/@/utils/http/type';
 
 export type UserInfo = Omit<GetUserInfoByUserIdModel, 'roles'>;
 const name = 'user';
@@ -17,7 +18,11 @@ function getCache<T>(key: string) {
   const fn = permissionCacheType === CacheTypeEnum.LOCAL ? getLocal : getSession;
   return fn(key) as T;
 }
-
+function setCache(USER_INFO_KEY: string, info: any) {
+  if (!info) return;
+  setLocal(USER_INFO_KEY, info, true);
+  setSession(USER_INFO_KEY, info, true);
+}
 @Module({ namespaced: true, name, store })
 class User extends VuexModule {
   private userInfoState: UserInfo | null = null;
@@ -44,7 +49,29 @@ class User extends VuexModule {
   @Mutation
   commitUserInfoState(info: UserInfo) {
     this.userInfoState = info;
-    // setCache
+    setCache(USER_INFO_KEY, info);
+  }
+
+  @Mutation
+  commitRoleListState(roleList: RoleEnum[]) {
+    this.roleListState = roleList;
+    setCache(ROLES_KEY, roleList);
+  }
+
+  @Mutation
+  commitTokenState(info: string) {
+    this.tokenState = info;
+    setCache(TOKEN_KEY, info);
+  }
+
+  @Action
+  async login(
+    params: LoginParams & { goHome?: boolean; mode?: ErrorMessageMode }
+  ): Promise<GetUserInfoByUserIdModel | null> {
+    try {
+      const { goHome = true, mode, ...loginParams } = params;
+      // const data = await loginApi
+    } catch (e) {}
   }
 }
 

@@ -53,6 +53,8 @@ export function setSession(key: string, value: any, immediate = false) {
   // TODO
   cache.session[BASE_SESSION_CACHE_KEY] =
     { ...session, ...cache.session[BASE_SESSION_CACHE_KEY] } || {};
+  cache.session[BASE_SESSION_CACHE_KEY][key] = value;
+  if (immediate) ss.set(BASE_SESSION_CACHE_KEY, cache.session);
 }
 export function getSession<T>(key: string): T | null {
   try {
