@@ -20,11 +20,11 @@ export default defineConfig({
 });
 
 function createEnterPlugin(maxOutput = 10) {
-  const createCss = (index: number, d = 'x') => {
+  const createCss = (index: number, d: 'x' | 'y' = 'x') => {
     const upd = d.toUpperCase();
     return {
       [`*> .enter-${d}:nth-child(${index})`]: { transform: `translate${upd}(50px)` },
-      [`*> .-enter${d}:nth-child(${index})`]: { transform: `translate${upd}(-50px)` },
+      [`*> .-enter-${d}:nth-child(${index})`]: { transform: `translate${upd}(-50px)` },
       [`* > .enter-${d}:nth-child(${index}),* > .-enter-${d}:nth-child(${index})`]: {
         'z-index': `${10 - index}`,
         opacity: '0',
