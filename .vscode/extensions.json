@@ -1,8 +1,10 @@
 {
   "recommendations": [
     "orta.vscode-jest",
-    "bradlc.vscode-tailwindcss",
-    "heybourn.headwind",
-    "antfu.iconify"
+    "antfu.iconify",
+    "octref.vetur",
+    "msjsdiag.debugger-for-chrome",
+    "esbenp.prettier-vscode",
+    "mikestead.dotenv"
   ]
 }
