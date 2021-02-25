@@ -1,8 +1,6 @@
 <template>
   <a-dropdown :trigger="trigger" v-bind="$attrs">
-    <span>
-      <slot />
-    </span>
+    <span> <slot /> </span>
     <template #overlay>
       <a-menu :selectedKeys="selectedKeys">
         <template v-for="item in getMenuList" :key="`${item.event}`">
