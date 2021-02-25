@@ -8,7 +8,7 @@
     :overlayClassName="`${prefixCls}-overlay`"
   >
     <span :class="prefixCls">
-      <Icon icon="ion:language" />
+      <Icon icon="ion:language" :size="size" />
       <span v-if="showText" :class="`${prefixCls}__text`">{{ getLangText }}</span>
     </span>
   </Dropdown>
@@ -26,7 +26,7 @@
   export default defineComponent({
     name: 'LocalePicker',
     components: { Dropdown, Icon },
-    props: { showText: { type: Boolean, default: true }, reload: Boolean },
+    props: { showText: { type: Boolean, default: true }, reload: Boolean, size: [String, Number] },
     setup(props) {
       const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('locale-picker'),

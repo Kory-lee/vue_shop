@@ -1,7 +1,8 @@
 <template>
   <div :class="prefixCls" class="relative w-full h-full px-4">
     <LocalePicker
-      class="absolute top-4 right-4 enter-x text-white xl:text-gray-600"
+      class="absolute top-4 right-4 text-white xl:text-gray-600 text-lg enter-x"
+      size="20"
       :showText="false"
     />
 
@@ -26,7 +27,9 @@
         <div class="h-full xl:h-auto flex py-5 xl:py-0 xl:my-0 w-full xl:w-6/12">
           <div
             class="my-auto mx-auto xl:ml-20 bg-white xl:bg-transparent px-5 py-8 sm:px-8 xl:p-0 rounded-md shadow-md xl:shadow-none w-full sm:w-3/4 lg:w-2/4 xl:w-auto enter-x relative"
-          ></div>
+          >
+            <LoginForm />
+          </div>
         </div>
       </div>
     </div>
@@ -41,10 +44,10 @@
   import { Logo, useProviderContext } from '/@/components/Application';
   import { useGlobalSetting, useProjectSetting } from '/@/hooks/setting';
   import { LocalePicker } from '/@/components/Application';
-
+  import LoginForm from './components/loginForm.vue';
   export default defineComponent({
     name: 'Login',
-    components: { ACheckbox: Checkbox, Logo, LocalePicker },
+    components: { ACheckbox: Checkbox, Logo, LocalePicker, LoginForm },
     setup() {
       useGlobalSetting;
       const { getPrefixCls } = useProviderContext(),
@@ -52,7 +55,6 @@
         { t } = useI18n(),
         { title } = useGlobalSetting(),
         { locale } = useProjectSetting();
-      console.log(LocalePicker);
 
       return { prefixCls, t, title, showLocale: computed(() => locale.show), LoginBg };
     },
@@ -108,33 +110,39 @@
         img {
           width: 48px;
         }
+      }
+    }
+    &-sign-in-way {
+      .anticon {
+        font-size: 22px;
+        color: #888;
+        cursor: pointer;
 
-        &-sign-in-way {
-          .anticon {
-            font-size: 22px;
-            color: #888;
-            cursor: pointer;
-
-            &:hover {
-              color: @primary-color;
-            }
-          }
-        }
-        input:not([type='checkbox']) {
-          min-width: 360px;
-          @media (max-width: @screen-sm) {
-            min-width: 240px;
-          }
-        }
-        .@{countdown-prefix-cls} input {
-          min-width: unset;
-        }
-
-        .ant-divider-inner-text {
-          font-size: 12px;
-          color: @text-color-secondary;
+        &:hover {
+          color: @primary-color;
         }
       }
+    }
+    .ant-input:not([type='password']),
+    .ant-input-password {
+      min-width: 360px;
+      @media (max-width: @screen-lg) {
+        min-width: 300px;
+      }
+      @media (max-width: @screen-md) {
+        min-width: 280px;
+      }
+      @media (max-width: @screen-sm) {
+        min-width: 240px;
+      }
+    }
+    .@{countdown-prefix-cls} input {
+      min-width: unset;
+    }
+
+    .ant-divider-inner-text {
+      font-size: 12px;
+      color: @text-color-secondary;
     }
   }
 </style>
