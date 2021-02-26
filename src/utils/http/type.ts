@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from 'axios';
-import { AxiosTransform } from './axiosTransform';
+import AxiosTransform from './AxiosTransform';
 export type ErrorMessageMode = 'none' | 'modal' | 'message' | undefined;
 export interface RequestOptions {
   // 请求参数拼接到url
@@ -20,7 +20,7 @@ export interface RequestOptions {
 
 export interface CreateAxiosOptions extends AxiosRequestConfig {
   prefixUrl?: string;
-  transform?: AxiosTransform;
+  transform?: AxiosTransform<Result>;
   requestOptions?: RequestOptions;
 }
 

@@ -2,9 +2,9 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { RequestOptions } from './type';
 
 /**
- *@description 数据处理类,可以根据项目自行配置
+ *@description 数据处理接口,可以根据项目自行配置
  */
-export abstract class AxiosTransform {
+export default interface AxiosTransform<T> {
   /**
    * @description 请求之前处理配置
    */
@@ -13,7 +13,7 @@ export abstract class AxiosTransform {
   /**
    * @description 请求成功处理
    */
-  transformRequestData?: (res: AxiosResponse, options: RequestOptions) => any;
+  transformRequestData?: (res: AxiosResponse<T>, options: RequestOptions) => any;
 
   /**
    * @description 请求失败处理
@@ -38,5 +38,5 @@ export abstract class AxiosTransform {
   /**
    * @description 请求之后的拦截器错误处理
    */
-  responseInterceptorsCatch?: (error: Error) => void;
+  responseInterceptorsCatch?: (error: Error & { code: string | number; response: any }) => void;
 }

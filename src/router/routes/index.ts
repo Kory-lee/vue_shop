@@ -1,4 +1,4 @@
-import { PageEnum } from '../../enums/pageEnum';
+import { PageEnum } from '/@/enums/pageEnum';
 import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '../constant';
 import { t } from '/@/plugins/i18n';
 import type { AppRouteModule, AppRouteRecordRaw } from '/@/router/types';

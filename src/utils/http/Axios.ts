@@ -1,8 +1,11 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { cloneDeep } from 'lodash';
 import { isFunction } from '../is';
 import AxiosCanceler from './AxiosCancel';
-import { CreateAxiosOptions, UploadFileParams } from './type';
+import { CreateAxiosOptions, RequestOptions, Result, UploadFileParams } from './type';
 import { ContentTypeEnum } from '/@/enums/httpEnum';
+import qs from 'qs';
+import { errorResult } from './constant';
 
 export class VAxios {
   private axiosInstance: AxiosInstance;
@@ -16,9 +19,11 @@ export class VAxios {
   private getTransform() {
     return this.options.transform;
   }
+
   getAxios(): AxiosInstance {
     return this.axiosInstance;
   }
+
   configAxios(config: CreateAxiosOptions) {
     if (!this.axiosInstance) return;
     this.axiosInstance = axios.create(config);
@@ -69,6 +74,11 @@ export class VAxios {
       isFunction(responseInterceptorsCatch) &&
       this.axiosInstance.interceptors.response.use(undefined, responseInterceptorsCatch);
   }
+  /**
+   *  @description file upload
+   * @param config
+   * @param params
+   */
   uploadFile<T = any>(config: AxiosRequestConfig, params: UploadFileParams) {
     const formData = new window.FormData();
     if (params.data) {
@@ -94,4 +104,40 @@ export class VAxios {
     });
   }
   // TODO support Form data
+  supportFormData(config: AxiosRequestConfig) {
+    const headers = this.options?.headers,
+      contentType = headers?.['Content-Type'] || headers?.['content-type'];
+    return { ...config, data: qs.stringify(config.data) };
+  }
+
+  request<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+    let conf = cloneDeep(config);
+    const transform = this.getTransform(),
+      { requestOptions } = this.options,
+      opt: RequestOptions = Object.assign({}, requestOptions, options),
+      { beforeRequestHook, requestCatch, transformRequestData } = transform || {};
+    if (beforeRequestHook && isFunction(beforeRequestHook)) {
+      conf = beforeRequestHook(conf, opt);
+    }
+    conf = this.supportFormData(conf);
+    return new Promise((resolve, reject) => {
+      this.axiosInstance
+        .request<any, AxiosResponse<Result>>(conf)
+        .then((res) => {
+          if (transformRequestData && isFunction(transformRequestData)) {
+            const ret = transformRequestData(res, opt);
+            ret !== errorResult ? resolve(ret) : reject(new Error('request error!'));
+            return;
+          }
+          resolve((res as unknown) as Promise<T>);
+        })
+        .catch((e: Error) => {
+          if (requestCatch && isFunction(requestCatch)) {
+            reject(requestCatch(e));
+            return;
+          }
+          reject(e);
+        });
+    });
+  }
 }

@@ -8,7 +8,7 @@ const {
   VITE_GLOBAL_APP_TITLE,
   VITE_GLOBAL_API_URL,
   VITE_GLOBAL_APP_SHORT_NAME,
-  VITE_GLOBAL_API_URL_PREFIX,
+  VITE_GLOBAL_API_PREFIX_URL,
   VITE_GLOBAL_UPLOAD_URL,
 } = ENV;
 
@@ -17,7 +17,7 @@ export const useGlobalSetting = (): Readonly<GlobalConfig> => {
     title: VITE_GLOBAL_APP_TITLE,
     apiUrl: VITE_GLOBAL_API_URL,
     shortName: VITE_GLOBAL_APP_SHORT_NAME,
-    urlPrefix: VITE_GLOBAL_API_URL_PREFIX,
+    prefixUrl: VITE_GLOBAL_API_PREFIX_URL,
     uploadUrl: VITE_GLOBAL_UPLOAD_URL,
   };
 };

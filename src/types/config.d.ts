@@ -104,14 +104,14 @@ export interface GlobalConfig {
   apiUrl: string;
   shortName: string;
   uploadUrl?: string;
-  urlPrefix?: string;
+  prefixUrl?: string;
 }
 
 export interface GlobalEnvConfig {
   // 网站标题
   VITE_GLOBAL_APP_TITLE: string;
   VITE_GLOBAL_API_URL: string;
-  VITE_GLOBAL_API_URL_PREFIX?: string;
+  VITE_GLOBAL_API_PREFIX_URL?: string;
   VITE_GLOBAL_APP_SHORT_NAME: string;
   VITE_GLOBAL_UPLOAD_URL?: string;
 }

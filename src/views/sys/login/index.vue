@@ -87,6 +87,7 @@
       position: absolute;
       top: 12px;
       height: 30px;
+
       &__title {
         font-size: 16px;
         color: #fff;

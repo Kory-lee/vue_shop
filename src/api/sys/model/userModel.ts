@@ -18,3 +18,9 @@ export interface GetUserInfoByUserIdModel {
   // 介绍
   desc?: string;
 }
+
+export interface LoginResultModel {
+  userId: string | number;
+  token: string;
+  role: RoleInfo;
+}
