@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "orta.vscode-jest",
+    "antfu.iconify",
+    "octref.vetur",
+    "msjsdiag.debugger-for-chrome",
+    "esbenp.prettier-vscode",
+    "mikestead.dotenv"
+  ]
+}

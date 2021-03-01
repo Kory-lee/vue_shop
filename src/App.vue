@@ -1,14 +1,27 @@
 <template>
-  <div id="app">
+  <Provider :locale="antConfigLocale">
     <router-view />
-  </div>
+  </Provider>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
+<script lang="ts">
+  import 'windi.css';
+  import { defineComponent } from 'vue';
+  import { Provider } from '/@/components/Application';
+  import { antConfigLocaleRef as antConfigLocale, useLocale } from '/@/hooks/web/useLocale';
+  import { initConfigStore } from '/@/plugins/init';
+  export default defineComponent({
+    name: 'App',
+    components: { Provider },
+    setup() {
+      useLocale();
+
+      initConfigStore();
+
+      return { antConfigLocale };
+    },
+  });
+</script>
+<style lang="less">
+  @import './styles/index.less';
 </style>
