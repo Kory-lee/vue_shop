@@ -8,7 +8,8 @@
     "clean:lib": "npx rimraf node_modules",
     "reinstall": "rimraf yarn.lock && rimraf package.lock.json && rimraf node_modules && yarn",
     "update": "yarn upgrade-interactive --latest",
-    "preview:dist": "vite preview"
+    "preview:dist": "vite preview",
+    "deploy": "git subtree push --prefix dist origin gh-pages"
   },
   "dependencies": {
     "@iconify/iconify": "^2.0.0-rc.6",
