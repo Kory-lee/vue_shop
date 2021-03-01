@@ -7,7 +7,8 @@
     "clean:cache": "rimraf node_modules/.cache/ && rimraf node_modules/.vite",
     "clean:lib": "npx rimraf node_modules",
     "reinstall": "rimraf yarn.lock && rimraf package.lock.json && rimraf node_modules && yarn",
-    "update": "yarn upgrade-interactive --latest"
+    "update": "yarn upgrade-interactive --latest",
+    "preview:dist": "vite preview"
   },
   "dependencies": {
     "@iconify/iconify": "^2.0.0-rc.6",
