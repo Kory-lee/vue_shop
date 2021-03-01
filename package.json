@@ -8,14 +8,7 @@
     "clean:lib": "npx rimraf node_modules",
     "reinstall": "rimraf yarn.lock && rimraf package.lock.json && rimraf node_modules && yarn",
     "update": "yarn upgrade-interactive --latest",
-<<<<<<< HEAD
-    "lint": "vue-cli-service lint",
-    "dev": "vue-cli-service serve",
-    "test": "vue-cli-service build --mode test",
-    "preview:dist": "vue-cli-service serve --port $PORT"
-=======
     "preview:dist": "vite preview"
->>>>>>> dev
   },
   "dependencies": {
     "@iconify/iconify": "^2.0.0-rc.6",
