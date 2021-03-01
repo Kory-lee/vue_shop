@@ -1,4 +1,11 @@
-import { PageEnum } from '/@/enums/pageEnum';
+// import { PageEnum } from '/@/enums/pageEnum';
+export enum PageEnum {
+  BASE_LOGIN = '/login',
+  BASE_HOME = '/dashboard',
+  ERROR_PAGE = '/exception',
+  ERROR_LOG_PAGE = '/exception/error-log',
+}
+
 import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '../constant';
 import { t } from '/@/plugins/i18n';
 import type { AppRouteModule, AppRouteRecordRaw } from '/@/router/types';
