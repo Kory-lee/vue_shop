@@ -1,0 +1,1 @@
+import{a as c,bX as e,bY as a,R as s,U as o,V as d}from"./index.1c466c1d.js";import"./vendor.099cff95.js";var t=c({name:"Welcome",components:{}});const n=d("data-v-99e1c6dc");e("data-v-99e1c6dc");const m={class:"welcome"};a();const r=n(((c,e,a,d,t,n)=>(s(),o("div",m," welcome "))));t.render=r,t.__scopeId="data-v-99e1c6dc";export default t;
