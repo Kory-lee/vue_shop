@@ -38,13 +38,13 @@
     </FormItem>
 
     <Row class="enter-x">
-      <Col :span="7">
+      <Col :xs="24" :md="7">
         <Button block>{{ t('sys.login.mobileSignInFormTitle') }}</Button>
       </Col>
-      <Col :span="8" :offset="1">
+      <Col :xs="24" :md="{ span: 8, offset: 1 }" class="xs:my-2 md:my-0">
         <Button block>{{ t('sys.login.qrSignInFormTitle') }}</Button>
       </Col>
-      <Col :span="7" :offset="1">
+      <Col :xs="24" :md="{ span: 7, offset: 1 }">
         <Button block>{{ t('sys.login.registerButton') }}</Button>
       </Col>
     </Row>
@@ -65,7 +65,7 @@
   import { useI18n } from 'vue-i18n';
   import { useProviderContext } from '/@/components/Application';
   import { Col, Row, Checkbox, Form, Input, Button, Divider } from 'ant-design-vue';
-  import { computed, defineComponent, reactive, ref, unref } from 'vue';
+  import { computed, defineComponent, reactive, ref, toRaw, unref } from 'vue';
   import { getLoginState, LoginStateEnum } from './useLogin';
 
   import {
@@ -76,6 +76,7 @@
     TwitterCircleFilled,
   } from '@ant-design/icons-vue';
   import { userStore } from '/@/store/modules';
+  import { notification } from '/@/hooks/web/useMessage';
   export default defineComponent({
     name: 'LoginForm',
     components: {
@@ -120,9 +121,19 @@
         if (!data) return;
         try {
           loading.value = true;
-          //TODO
-          // const useInfo = userStore.login();
-        } catch (e) {}
+          const userInfo = await userStore.login(
+            toRaw({ password: data.password, username: data.account })
+          );
+          if (userInfo) {
+            notification.success({
+              message: t('sys.login.loginSuccessTitle'),
+              description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realName}`,
+              duration: 3,
+            });
+          }
+        } finally {
+          loading.value = false;
+        }
       }
 
       return {

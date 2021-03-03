@@ -15,6 +15,8 @@ import i18n from '/@/plugins/i18n';
 import { userStore } from '/@/store/modules';
 
 const { prefixUrl, apiUrl } = useGlobalSetting();
+console.log(useGlobalSetting());
+
 const transform: AxiosTransform<Result> = {
   transformRequestData(res, options) {
     const { t } = i18n.global;
@@ -145,6 +147,8 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
           apiUrl,
           // 是否加入时间戳
           joinTime: true,
+          // 忽略重复请求
+          ignoreCancelToken: true,
         },
       } as CreateAxiosOptions,
       opt || {}

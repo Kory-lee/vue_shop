@@ -15,7 +15,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY, VITE_DROP_CONSOLE, VITE_LEGACY } = viteEnv,
     isBuild = command === 'build';
   return {
-    base: VITE_PUBLIC_PATH || '/',
+    base: VITE_PUBLIC_PATH,
     root,
     resolve: { alias: [{ find: /^\/@\//, replacement: pathResolve('src') + '/' }] },
     server: {

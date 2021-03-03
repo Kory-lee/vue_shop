@@ -109,7 +109,18 @@ export class VAxios {
       contentType = headers?.['Content-Type'] || headers?.['content-type'];
     return { ...config, data: qs.stringify(config.data) };
   }
-
+  get<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+    return this.request({ ...config, method: 'GET' }, options);
+  }
+  post<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+    return this.request({ ...config, method: 'POST' }, options);
+  }
+  put<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+    return this.request({ ...config, method: 'PUT' }, options);
+  }
+  delete<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+    return this.request({ ...config, method: 'DELETE' }, options);
+  }
   request<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
     let conf = cloneDeep(config);
     const transform = this.getTransform(),

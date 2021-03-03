@@ -1,8 +1,9 @@
 import type { GlobalEnvConfig } from '/@/types/config';
-// ImportMeta
+import getFileName from '../../build/getConfigFileName';
+
 export const getGlobalEnvConfig = (): GlobalEnvConfig => {
-  const env = import.meta.env;
-  return (env as unknown) as GlobalEnvConfig;
+  const ENV_NAME = getFileName(import.meta.env);
+  return ((isDevMode() ? import.meta.env : window[ENV_NAME]) as unknown) as GlobalEnvConfig;
 };
 export const devMode = 'development';
 
