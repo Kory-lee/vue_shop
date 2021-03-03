@@ -1,8 +1,15 @@
 import { Action, getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators';
-import { GetUserInfoByUserIdModel, LoginParams } from '/@/api/sys/model/userModel';
+import {
+  GetUserInfoByUserIdModel,
+  GetUserInfoByUserIdParams,
+  LoginParams,
+} from '/@/api/sys/model/userModel';
+import { getUserInfoById, loginApi } from '/@/api/sys/user';
 import { CacheTypeEnum, ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '/@/enums/cacheEnum';
+import { PageEnum } from '/@/enums/pageEnum';
 import { RoleEnum } from '/@/enums/roleEnums';
 import { useProjectSetting } from '/@/hooks/setting';
+import router from '/@/router';
 import store from '/@/store';
 import { getLocal, getSession, setLocal, setSession } from '/@/utils/helper/persistent';
 import { hotModuleUnregisterModule } from '/@/utils/helper/vuexHelper';
@@ -23,7 +30,7 @@ function setCache(USER_INFO_KEY: string, info: any) {
   setLocal(USER_INFO_KEY, info, true);
   setSession(USER_INFO_KEY, info, true);
 }
-@Module({ namespaced: true, name, store })
+@Module({ namespaced: true, name, dynamic: true, store })
 class User extends VuexModule {
   private userInfoState: UserInfo | null = null;
   private tokenState = '';
@@ -69,9 +76,27 @@ class User extends VuexModule {
     params: LoginParams & { goHome?: boolean; mode?: ErrorMessageMode }
   ): Promise<GetUserInfoByUserIdModel | null> {
     try {
-      const { goHome = true, mode, ...loginParams } = params;
-      // const data = await loginApi
-    } catch (e) {}
+      const { goHome = true, mode, ...loginParams } = params,
+        data = await loginApi(loginParams, mode),
+        { token, userId } = data;
+      this.commitTokenState(token);
+
+      const userInfo = await this.getUserInfoAction({ userId });
+      goHome && (await router.replace(PageEnum.BASE_HOME));
+      return userInfo;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @Action
+  async getUserInfoAction({ userId }: GetUserInfoByUserIdParams) {
+    const userInfo = await getUserInfoById({ userId }),
+      { roles } = userInfo,
+      roleList = roles.map((item) => item.value) as RoleEnum[];
+    this.commitUserInfoState(userInfo);
+    this.commitRoleListState(roleList);
+    return userInfo;
   }
 }
 

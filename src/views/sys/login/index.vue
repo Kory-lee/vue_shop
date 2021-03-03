@@ -26,7 +26,7 @@
         </div>
         <div class="h-full xl:h-auto flex py-5 xl:py-0 xl:my-0 w-full xl:w-6/12">
           <div
-            class="my-auto mx-auto xl:ml-20 bg-white xl:bg-transparent px-5 py-8 sm:px-8 xl:p-0 rounded-md shadow-md xl:shadow-none w-full sm:w-3/4 lg:w-2/4 xl:w-auto enter-x relative"
+            class="my-auto mx-auto xl:ml-20 bg-white xl:bg-transparent px-5 py-8 sm:px-8 xl:p-0 rounded-md shadow-md xl:shadow-none w-full sm:w-3/4 lg:w-3/5 xl:w-auto enter-x relative"
           >
             <LoginForm />
           </div>
@@ -72,13 +72,13 @@
     }
     &::before {
       position: absolute;
+      content: '';
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       margin-left: -48%;
       background: url(/@/assets/svg/login-bg.svg) 100% 100% / auto 100% no-repeat;
-      content: '';
       @media (max-width: @screen-xl) {
         display: none;
       }
@@ -126,15 +126,15 @@
     }
     .ant-input:not([type='password']),
     .ant-input-password {
-      min-width: 360px;
+      min-width: 380px;
       @media (max-width: @screen-lg) {
-        min-width: 300px;
+        min-width: 330px;
       }
       @media (max-width: @screen-md) {
         min-width: 280px;
       }
       @media (max-width: @screen-sm) {
-        min-width: 240px;
+        min-width: 180px;
       }
     }
     .@{countdown-prefix-cls} input {
