@@ -7,13 +7,13 @@ import router from './router';
 import store from './store';
 import { isDevMode } from './utils/env';
 
-const app = createApp(App);
+(async () => {
+  const app = createApp(App);
 
-app.use(globalCom).use(i18n).use(router).use(store);
-
-router.isReady().then(() => app.mount('#app', true));
-
-if (isDevMode()) {
-  app.config.performance = true;
-  window.__APP__ = app;
-}
+  await Promise.all([router.isReady(), app.use(globalCom).use(router).use(store).use(i18n)]);
+  app.mount('#app', true);
+  if (isDevMode()) {
+    app.config.performance = true;
+    window.__APP__ = app;
+  }
+})();

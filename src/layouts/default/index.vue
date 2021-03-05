@@ -25,6 +25,7 @@
   import { getIsMixSidebar, getShowSidebar } from '../../hooks/setting/MenuSetting';
   import createAsyncComponent from '/@/utils/factory/createAsyncComponent';
   export default defineComponent({
+    name: 'KLayout',
     components: {
       LayoutFeature: createAsyncComponent(() => import('./feature/index.vue')),
       LayoutFooter: createAsyncComponent(() => import('./footer/index.vue')),

@@ -24,7 +24,7 @@ export const t = (key: string) => key;
 const { install } = i18n;
 
 i18n.install = (app: App<Element>, ...args: unknown[]) => {
-  install(app, ...args);
+  install.call(i18n, app, ...args);
   setupLocale();
 };
 export default i18n;

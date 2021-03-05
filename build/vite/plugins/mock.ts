@@ -4,11 +4,11 @@
  */
 import { viteMockServe } from 'vite-plugin-mock';
 
-export function configMockPlugin(isBuild: boolean) {
+export default function (isBuild: boolean) {
   return viteMockServe({
     ignore: /^\_/,
     mockPath: 'mock',
-    showTime: true,
+    // showTime: true,
     localEnabled: !isBuild,
     prodEnabled: isBuild,
     injectCode: `

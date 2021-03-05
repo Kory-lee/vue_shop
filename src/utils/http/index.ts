@@ -3,11 +3,10 @@ import { deepMerge } from '../common';
 import { isString } from '../is';
 import { warn } from '../log';
 import { VAxios } from './Axios';
-import AxiosTransform from './AxiosTransform';
 import checkStatus from './checkStatus';
 import { errorResult } from './constant';
 import { createNow, formatRequestDate, setObjToUrlParams } from './helper';
-import type { CreateAxiosOptions, Result } from './type';
+import type { CreateAxiosOptions, Result, AxiosTransform } from './type';
 import { ContentTypeEnum, RequestEnum, ResultEnum } from '/@/enums/httpEnum';
 import { useGlobalSetting } from '/@/hooks/setting';
 import { createMessage, createModal } from '/@/hooks/web/useMessage';
@@ -18,7 +17,7 @@ const { prefixUrl, apiUrl } = useGlobalSetting();
 console.log(useGlobalSetting());
 
 const transform: AxiosTransform<Result> = {
-  transformRequestData(res, options) {
+  transformRequestHook(res, options) {
     const { t } = i18n.global;
     // 不进行任何处理,直接返回
     // 用于界面代码可能需要直接获取code,data,message这些信息时开启
@@ -90,6 +89,7 @@ const transform: AxiosTransform<Result> = {
         config.params = undefined;
       }
     }
+
     return config;
   },
   requestInterceptors(config) {

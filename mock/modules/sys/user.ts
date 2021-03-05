@@ -10,12 +10,7 @@ function createFakeUserList() {
       desc: 'manager',
       password: '123456',
       token: 'fakeToken1',
-      roles: [
-        {
-          roleName: 'Super Admin',
-          value: 'super',
-        },
-      ],
+      roles: [{ roleName: 'Super Admin', value: 'super' }],
     },
     {
       userId: '2',
@@ -24,21 +19,16 @@ function createFakeUserList() {
       realName: 'test user',
       desc: 'tester',
       token: 'fakeToken2',
-      roles: [
-        {
-          roleName: 'Tester',
-          value: 'test',
-        },
-      ],
+      roles: [{ roleName: 'Tester', value: 'test' }],
     },
   ];
 }
 
 const fakeCodeList: any = {
   '1': ['1000', '3000', '5000'],
-
   '2': ['2000', '4000', '6000'],
 };
+
 export default [
   // mock user login
   {
@@ -50,9 +40,9 @@ export default [
       const checkUser = createFakeUserList().find(
         (item) => item.username === username && password === item.password
       );
-      if (!checkUser) {
-        return resultError('Incorrect account or password！');
-      }
+
+      if (!checkUser) return { body, ...resultError('Incorrect account or password！') };
+
       const { userId, username: _username, token, realName, desc, roles } = checkUser;
       return resultSuccess({
         roles,

@@ -31,7 +31,6 @@
     },
     props: itemProps,
     setup(props) {
-      console.log(props);
       const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('basic-menu-item'),
         getShowMenu = computed(() => !props.item.meta?.hideMenu);

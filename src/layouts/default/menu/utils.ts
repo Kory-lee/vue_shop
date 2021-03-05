@@ -1,13 +1,10 @@
 import { computed, ref, Ref, unref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProviderContext } from '../../../components/Application/src/Provider/useAppContext';
-import { MenuSplitTypeEnum } from '/@/enums/menuEnums';
-import { useThrottle } from '/@/hooks/core/useThrottle';
 import { getIsHorizontal, getSplit } from '../../../hooks/setting/MenuSetting';
-import { getCurrentParentPath } from '/@/router/menus';
+import { MenuSplitTypeEnum } from '/@/enums/menuEnums';
 import { MenuType } from '/@/router/types';
 
-// import
 export function useSplitMenu(splitType: Ref<MenuSplitTypeEnum>) {
   const menusRef = ref<MenuType[]>([]),
     { currentRoute } = useRouter(),

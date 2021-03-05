@@ -112,12 +112,17 @@
           };
           return titleObj[unref(getLoginState)];
         });
-      const formData = reactive({ account: 'kory', password: '123456' }),
+      const formData = reactive({
+          account: 'kory',
+          password: '123456',
+        }),
         getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN);
 
       async function handleLogin() {
         if (!unref(formRef)) return;
         const data = await unref(formRef).validate();
+        console.log(data);
+
         if (!data) return;
         try {
           loading.value = true;

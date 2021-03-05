@@ -3,7 +3,7 @@ import { cloneDeep } from 'lodash';
 import { isFunction } from '../is';
 import AxiosCanceler from './AxiosCancel';
 import { CreateAxiosOptions, RequestOptions, Result, UploadFileParams } from './type';
-import { ContentTypeEnum } from '/@/enums/httpEnum';
+import { ContentTypeEnum, RequestEnum } from '/@/enums/httpEnum';
 import qs from 'qs';
 import { errorResult } from './constant';
 
@@ -107,6 +107,12 @@ export class VAxios {
   supportFormData(config: AxiosRequestConfig) {
     const headers = this.options?.headers,
       contentType = headers?.['Content-Type'] || headers?.['content-type'];
+    if (
+      contentType !== ContentTypeEnum.FORM_URLENCODED ||
+      !Reflect.has(config, 'data') ||
+      config.method?.toUpperCase() === RequestEnum.GET
+    )
+      return config;
     return { ...config, data: qs.stringify(config.data) };
   }
   get<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
@@ -121,30 +127,32 @@ export class VAxios {
   delete<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
     return this.request({ ...config, method: 'DELETE' }, options);
   }
+
   request<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
     let conf = cloneDeep(config);
     const transform = this.getTransform(),
       { requestOptions } = this.options,
       opt: RequestOptions = Object.assign({}, requestOptions, options),
-      { beforeRequestHook, requestCatch, transformRequestData } = transform || {};
-    if (beforeRequestHook && isFunction(beforeRequestHook)) {
-      conf = beforeRequestHook(conf, opt);
-    }
+      { beforeRequestHook, requestCatchHook, transformRequestHook } = transform || {};
+
+    if (beforeRequestHook && isFunction(beforeRequestHook)) conf = beforeRequestHook(conf, opt);
+
     conf = this.supportFormData(conf);
+
     return new Promise((resolve, reject) => {
       this.axiosInstance
         .request<any, AxiosResponse<Result>>(conf)
         .then((res) => {
-          if (transformRequestData && isFunction(transformRequestData)) {
-            const ret = transformRequestData(res, opt);
+          if (transformRequestHook && isFunction(transformRequestHook)) {
+            const ret = transformRequestHook(res, opt);
             ret !== errorResult ? resolve(ret) : reject(new Error('request error!'));
             return;
           }
           resolve((res as unknown) as Promise<T>);
         })
         .catch((e: Error) => {
-          if (requestCatch && isFunction(requestCatch)) {
-            reject(requestCatch(e));
+          if (requestCatchHook && isFunction(requestCatchHook)) {
+            reject(requestCatchHook(e));
             return;
           }
           reject(e);

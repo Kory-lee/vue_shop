@@ -70,7 +70,6 @@ class Permission extends VuexModule {
       roleList = toRaw(userStore.getRoleListState);
 
     const { permissionMode } = configStore.getProjectConfig;
-    console.log('root', unref(getPermissionMode), permissionMode, PermissionModeEnum.ROLE);
 
     if (unref(getPermissionMode) === PermissionModeEnum.ROLE) {
       routes = filter(asyncRoutes, (route) => {

@@ -1,11 +1,6 @@
 <script lang="tsx">
-  import { computed, CSSProperties, defineComponent, h, PropType, toRef, unref } from 'vue';
-  import { useSplitMenu } from './utils';
-  import { Logo } from '/@/components/Application';
-  import { useProviderContext } from '../../../components/Application/src/Provider/useAppContext';
-  import { BasicMenu } from '/@/components/Menu';
-  import { SimpleMenu } from '/@/components/SimpleMenu';
-  import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnums';
+  import { computed, CSSProperties, defineComponent, PropType, toRef, unref } from 'vue';
+  import { useProviderContext } from '/@/components/Application';
   import {
     getAccordion,
     getCollapsed,
@@ -16,6 +11,11 @@
     getMenuTheme,
     getMenuType,
   } from '../../../hooks/setting/MenuSetting';
+  import { useSplitMenu } from './utils';
+  import { Logo } from '/@/components/Application';
+  import { BasicMenu } from '/@/components/Menu';
+  import { SimpleMenu } from '/@/components/SimpleMenu';
+  import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnums';
   import { getShowLogo } from '/@/hooks/setting/RootSetting';
   import { useGo } from '/@/hooks/web/usePage';
   import { openWindow } from '/@/utils/common';
@@ -39,7 +39,7 @@
       const go = useGo(),
         { isMobile, getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('layout-menu'),
-        { menusRef } = useSplitMenu(toRef(props, 'splitType')),
+        // { menusRef } = useSplitMenu(toRef(props, 'splitType')),
         getRealMenuMode = computed(() =>
           unref(isMobile) ? MenuModeEnum.INLINE : props.menuMode || unref(getMenuMode)
         ),

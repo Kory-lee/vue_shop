@@ -5,7 +5,7 @@ import { ViteEnv } from 'utils';
 import type { Plugin } from 'vite';
 import PurgeIcons from 'vite-plugin-purge-icons';
 import configHtmlPlugin from './html';
-import { configMockPlugin } from './mock';
+import configMockPlugin from './mock';
 import configPwaConfig from './pwa';
 import configStyleImportPlugin from './styleImport';
 import configWindiCssPlugin from './windicss';

@@ -1,10 +1,10 @@
 import { PropType } from 'vue';
 import { ThemeEnum } from '/@/enums/configEnum';
 import { MenuModeEnum, MenuTypeEnum } from '/@/enums/menuEnums';
-import { Menu } from '/@/router/types';
+import { MenuType } from '/@/router/types';
 
 export const basicProps = {
-  items: { type: Array as PropType<Menu[]>, default: () => [] },
+  items: { type: Array as PropType<MenuType[]>, default: () => [] },
   collapsedShowTitle: Boolean,
   // 最好是4的倍数
   inlineIndex: { type: Number, default: 20 },
@@ -19,7 +19,7 @@ export const basicProps = {
 };
 
 export const itemProps = {
-  item: { type: Object as PropType<Menu>, default: () => ({}) },
+  item: { type: Object as PropType<MenuType>, default: () => ({}) },
   level: Number,
   theme: { type: String as PropType<'dark' | 'light'> },
   showTitle: Boolean,
@@ -27,7 +27,7 @@ export const itemProps = {
 };
 
 export const contentProps = {
-  item: { type: Object as PropType<Menu>, default: null },
+  item: { type: Object as PropType<MenuType>, default: null },
   showTitle: { type: Boolean, default: true },
   level: { type: Number, default: 0 },
   isHorizontal: { type: Boolean, default: true },

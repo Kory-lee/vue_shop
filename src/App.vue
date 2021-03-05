@@ -5,8 +5,8 @@
 </template>
 
 <script lang="ts">
-  import 'windi.css';
   import { defineComponent } from 'vue';
+  import 'windi.css';
   import { Provider } from '/@/components/Application';
   import { antConfigLocaleRef as antConfigLocale, useLocale } from '/@/hooks/web/useLocale';
   import { initConfigStore } from '/@/plugins/init';

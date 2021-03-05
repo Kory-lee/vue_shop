@@ -9,6 +9,7 @@ export default class AxiosCanceler {
    * @description 声明一个Map用于储存每个请求的标识和取消函数
    */
   private pendingMap: Map<string, Canceler> = new Map();
+
   /**
    * @description 添加请求
    */
