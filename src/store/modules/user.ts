@@ -11,7 +11,7 @@ import { RoleEnum } from '/@/enums/roleEnums';
 import { useProjectSetting } from '/@/hooks/setting';
 import router from '/@/router';
 import store from '/@/store';
-import { getLocal, getSession, setLocal, setSession } from '/@/utils/helper/persistent';
+import { getLocal, getSession, setLocal, setSession } from '../../utils/cache/persistent';
 import { hotModuleUnregisterModule } from '/@/utils/helper/vuexHelper';
 import { ErrorMessageMode } from '/@/utils/http/type';
 

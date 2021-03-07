@@ -7,13 +7,13 @@ const dashboard: AppRouteModule = {
   name: 'Dashboard',
   component: LAYOUT,
   redirect: '/dashboard/workbench',
-  meta: { icon: 'bx:bx-home', title: t('routes.dashboard.dashboard') },
+  meta: { icon: 'ion:grid-outline', title: t('routes.dashboard.dashboard') },
   children: [
     {
       path: 'workbench',
       name: 'Workbench',
       component: () => import('/@/views/dashboard/workbench/index.vue'),
-      meta: { title: t('routes.dashboard.workbench'), affix: true },
+      meta: { title: t('routes.dashboard.workbench') },
     },
     {
       path: 'analysis',

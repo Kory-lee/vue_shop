@@ -121,8 +121,6 @@
       async function handleLogin() {
         if (!unref(formRef)) return;
         const data = await unref(formRef).validate();
-        console.log(data);
-
         if (!data) return;
         try {
           loading.value = true;

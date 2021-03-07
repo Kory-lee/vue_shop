@@ -1,12 +1,10 @@
-import { isUndefined } from 'lodash';
 import { deepMerge } from '../common';
 import { isString } from '../is';
-import { warn } from '../log';
 import { VAxios } from './Axios';
 import checkStatus from './checkStatus';
 import { errorResult } from './constant';
 import { createNow, formatRequestDate, setObjToUrlParams } from './helper';
-import type { CreateAxiosOptions, Result, AxiosTransform } from './type';
+import type { AxiosTransform, CreateAxiosOptions, Result } from './type';
 import { ContentTypeEnum, RequestEnum, ResultEnum } from '/@/enums/httpEnum';
 import { useGlobalSetting } from '/@/hooks/setting';
 import { createMessage, createModal } from '/@/hooks/web/useMessage';
@@ -60,12 +58,8 @@ const transform: AxiosTransform<Result> = {
   },
   beforeRequestHook(config, options) {
     const { apiUrl, joinPrefix, joinParamsToUrl, formatData, joinTime = true } = options;
-    if (isUndefined(config.url)) config.url = '';
 
-    if (joinPrefix) {
-      if (!prefixUrl) warn('No prefixUrl is ​​set');
-      else config.url = `${prefixUrl}${config.url}`;
-    }
+    if (joinPrefix) config.url = `${prefixUrl}${config.url}`;
 
     if (apiUrl && isString(apiUrl)) config.url = `${apiUrl}${config.url}`;
 

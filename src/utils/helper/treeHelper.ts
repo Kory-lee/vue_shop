@@ -27,6 +27,20 @@ export function filter<T = any>(
   return listFilter(tree);
 }
 
+export function forEach<T = any>(
+  tree: T[],
+  func: (n: T) => any,
+  config: Partial<TreeHelperConfig> = {}
+) {
+  config = getConfig(config);
+  const list = [...tree],
+    { children } = config;
+  for (let i = 0; i < list.length; i++) {
+    func(list[i]);
+    children && list[i][children] && list.splice(i + 1, 0, ...list[i][children]);
+  }
+}
+
 export function findPath<T = any>(
   tree: any,
   func: Fn,

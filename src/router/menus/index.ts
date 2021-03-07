@@ -1,7 +1,10 @@
-import { unref } from 'vue';
-import { Menu, MenuModule } from '../types';
+import { RouteRecordNormalized } from 'vue-router';
+import router from '..';
+import { MenuModule, MenuType } from '../types';
 import { PermissionModeEnum } from '/@/enums/configEnum';
-import { getPermissionMode } from '/@/hooks/setting/RootSetting';
+import { configStore, permissionStore } from '/@/store/modules';
+import { getAllParentPath, transformMenuModule } from '/@/utils/helper/menuHelper';
+import { filter } from '/@/utils/helper/treeHelper';
 
 const modules = import.meta.globEager('./modules/**/*.ts');
 const menuModules: MenuModule[] = [];
@@ -10,17 +13,69 @@ Object.keys(modules).forEach((key) => {
     modList = Array.isArray(mod) ? [...mod] : [mod];
   menuModules.push(...modList);
 });
-const isBackMode = () => unref(getPermissionMode) === PermissionModeEnum.BACK;
 
-const staticMenus: Menu[] = [];
+const reg = /(((https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
+
+const isBackMode = () => configStore.getProjectConfig.permissionMode === PermissionModeEnum.BACK;
+
+const staticMenus: MenuType[] = [];
 (() => {
   menuModules.sort((a, b) => (a.orderNo || 0) - (b.orderNo || 0));
   for (const menu of menuModules) {
-    console.log(menu);
-    // staticMenus.push(trans);
+    staticMenus.push(transformMenuModule(menu));
   }
+  console.log(staticMenus);
 })();
+/**
+ * @description 前端角色控制菜单 直接读取菜单文件
+ */
+async function getAsyncMenus() {
+  return !isBackMode() ? staticMenus : permissionStore.getBackMenuListState;
+}
+/**
+ * @description 获取树级菜单
+ */
+export const getMenus = async (): Promise<MenuType[]> => {
+  const menus = await getAsyncMenus(),
+    routes = router.getRoutes();
+  return !isBackMode() ? filter(menus, basicFilter(routes)) : menus;
+};
 
+/**
+ @description 获取当前路径的顶级路径
+ * */
 export async function getCurrentParentPath(currentPath: string) {
-  // const menus = await get;
+  const menus = await getAsyncMenus(),
+    allParentPath = await getAllParentPath(menus, currentPath);
+  return allParentPath?.[0];
+}
+/**
+ * @description 获取一级菜单,删除children
+ */
+export async function getShallowMenus(): Promise<MenuType[]> {
+  const menus = await getAsyncMenus(),
+    routes = router.getRoutes(),
+    shallowMenuList = menus.map((item) => ({ ...item, children: undefined }));
+  return !isBackMode() ? shallowMenuList.filter(basicFilter(routes)) : shallowMenuList;
+}
+
+function basicFilter(routes: RouteRecordNormalized[]) {
+  return (menu: MenuType) => {
+    const matchRoute = routes.find((route) => {
+      const match = route.path.match(reg)?.[0];
+      if (match && match === menu.path) return true;
+
+      if (route.meta?.carryParam) return;
+
+      const isSame = route.path === menu.path;
+      if (!isSame) return false;
+
+      if (route.meta?.ignoreAuth) return true;
+      return isSame;
+    });
+    if (!matchRoute) return false;
+    menu.icon = (menu.icon || matchRoute.meta.icon) as string;
+    menu.meta = matchRoute.meta;
+    return true;
+  };
 }

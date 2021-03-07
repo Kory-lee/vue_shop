@@ -1,13 +1,54 @@
-import { createStorage } from '../cache';
+import { createStorage } from '.';
 import { warn } from '../log';
-import { BASE_LOCAL_CACHE_KEY, BASE_SESSION_CACHE_KEY } from '/@/enums/cacheEnum';
+import Memory from './Memory';
+import {
+  APP_LOCAL_CACHE_KEY,
+  APP_SESSION_CACHE_KEY,
+  BASE_LOCAL_CACHE_KEY,
+  BASE_SESSION_CACHE_KEY,
+  LOCK_INFO_KEY,
+  PROJ_CFG_KEY,
+  ROLES_KEY,
+  TOKEN_KEY,
+  USER_INFO_KEY,
+} from '/@/enums/cacheEnum';
+import { DEFAULT_CACHE_TIME } from '/@/settings/encryptionSetting';
+import { LockInfo } from '/@/store/modules/config';
+import { UserInfo } from '/@/store/modules/user';
+import { ProjectConfig } from '/@/types/config';
 
 interface CacheStore {
   local: Record<string, any>;
   session: Record<string, any>;
 }
+
+interface BasicCache {
+  [TOKEN_KEY]: string | number | null | undefined;
+  [USER_INFO_KEY]: UserInfo;
+  [ROLES_KEY]: string[];
+  [LOCK_INFO_KEY]: LockInfo;
+  [PROJ_CFG_KEY]: ProjectConfig;
+}
+
+type LocalCache = BasicCache;
+type SessionCache = BasicCache;
+export type BasicKeys = keyof BasicCache;
+type LocalKeys = keyof LocalCache;
+type SessionKeys = keyof SessionCache;
+
 const ls = createStorage(localStorage);
 const ss = createStorage();
+
+const localMemory = new Memory(DEFAULT_CACHE_TIME),
+  sessionMemory = new Memory(DEFAULT_CACHE_TIME);
+
+function initPersistentMemory() {
+  const localCache = ls.get(APP_LOCAL_CACHE_KEY),
+    sessionCache = ss.get(APP_SESSION_CACHE_KEY);
+  localCache && localMemory.restCache(localCache);
+  sessionCache && sessionMemory.restCache(sessionCache);
+}
+
 /**
  * @description: Persistent cache
  */
@@ -15,12 +56,6 @@ const cache: CacheStore = {
   local: {},
   session: {},
 };
-
-function initCache() {
-  cache.local = ls.get(BASE_LOCAL_CACHE_KEY) || {};
-  cache.session = ss.get(BASE_SESSION_CACHE_KEY) || {};
-}
-initCache();
 
 export function setLocal(key: string, value: any, immediate: boolean = false) {
   const local = ls.get(BASE_LOCAL_CACHE_KEY)?.[BASE_LOCAL_CACHE_KEY] || [];
@@ -68,3 +103,11 @@ export function clearSession(immediate = false) {
   cache.session = {};
   immediate && ss.remove(BASE_SESSION_CACHE_KEY);
 }
+
+export default class Persistent {
+  static getLocal<T>(key: LocalKeys) {
+    return localMemory.get(key)?.value as Nullable<T>;
+  }
+}
+
+initPersistentMemory();

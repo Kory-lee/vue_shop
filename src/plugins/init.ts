@@ -1,7 +1,7 @@
 import { PROJ_CFG_KEY } from '../enums/cacheEnum';
 import { ProjectConfig } from '../types/config';
 import { deepMerge } from '../utils/common';
-import { getLocal } from '../utils/helper/persistent';
+import { getLocal } from '../utils/cache/persistent';
 import { updateHeaderBgColor, updateSidebarBgColor } from './theme';
 import projectSetting from '/@/settings/projectSetting';
 import configStore from '/@/store/modules/config';

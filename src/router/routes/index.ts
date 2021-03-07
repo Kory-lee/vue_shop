@@ -20,14 +20,6 @@ export const RootRoute: AppRouteRecordRaw = {
   name: 'Root',
   redirect: PageEnum.BASE_HOME,
   meta: { title: 'Root' },
-  children: [
-    {
-      name: 'Dashboard',
-      path: 'dashboard',
-      meta: { title: '控制台' },
-      component: () => import('/@/views/dashboard/workbench/index.vue'),
-    },
-  ],
 };
 
 export const LoginRoute: AppRouteRecordRaw = {

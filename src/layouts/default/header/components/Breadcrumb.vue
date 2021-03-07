@@ -14,8 +14,8 @@
   import { defineComponent, PropType, Ref, ref, toRaw, unref, watchEffect } from 'vue';
   import { useI18n } from 'vue-i18n';
   import { RouteLocationMatched, useRouter } from 'vue-router';
-  import { useProviderContext } from '../../../../components/Application/src/Provider/useAppContext';
-  import { PageEnum } from '../../../../enums/pageEnum';
+  import { useProviderContext } from '/@/components/Application';
+  import { PageEnum } from '/@/enums/pageEnum';
   import { getShowbreadCrumbIcon } from '/@/hooks/setting/RootSetting';
   import { useGo } from '/@/hooks/web/usePage';
   import { REDIRECT_NAME } from '/@/router/constant';

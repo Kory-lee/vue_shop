@@ -52,7 +52,7 @@
         background-color: rgba(254, 97, 178, 0.1);
 
         &-img {
-          background: url(../../../../assets/img/dashboard/workbench/datashow1.png) no-repeat;
+          background: url(/@/assets/img/dashboard/workbench/datashow1.png) no-repeat;
         }
         div {
           color: #fe61b2;
@@ -63,7 +63,7 @@
         background-color: rgba(254, 163, 64, 0.1);
 
         &-img {
-          background: url(../../../../assets/img/dashboard/workbench/datashow2.png) no-repeat;
+          background: url(/@/assets/img/dashboard/workbench/datashow2.png) no-repeat;
         }
         div {
           color: #fea340;
@@ -74,7 +74,7 @@
         background-color: rgba(172, 70, 255, 0.1);
 
         &-img {
-          background: url(../../../../assets/img/dashboard/workbench/datashow3.png) no-repeat;
+          background: url(/@/assets/img/dashboard/workbench/datashow3.png) no-repeat;
         }
         div {
           color: #9e55ff;
@@ -85,7 +85,7 @@
         background-color: rgba(0, 196, 186, 0.1);
 
         &-img {
-          background: url(../../../../assets/img/dashboard/workbench/datashow4.png) no-repeat;
+          background: url(/@/assets/img/dashboard/workbench/datashow4.png) no-repeat;
         }
         div {
           color: #00c4ba;

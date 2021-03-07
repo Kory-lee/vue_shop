@@ -45,8 +45,8 @@ export interface RouteMeta {
 export interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'meta'> {
   name: string;
   meta: RouteMeta;
-  component?: any;
-  components?: any;
+  component?: Component | string;
+  components?: Component;
   children?: AppRouteRecordRaw[];
   props?: Recordable;
   fullPath?: string;
@@ -76,13 +76,6 @@ export interface MenuModule {
   orderNo?: number;
   menu: MenuType;
 }
-
-// interface RouteModule {
-//   layout: AppRouteRecordRaw;
-//   routes: AppRouteRecordRaw[];
-//   children?: AppRouteRecordRaw[];
-//   component?: any;
-// }
 
 // export type AppRouteModule = RouteModule | AppRouteRecordRaw;
 export type AppRouteModule = AppRouteRecordRaw;

@@ -1,6 +1,10 @@
 <script lang="tsx">
   import { computed, CSSProperties, defineComponent, PropType, toRef, unref } from 'vue';
-  import { useProviderContext } from '/@/components/Application';
+  import useSplitMenu from './useSplitMenu';
+  import { Logo, useProviderContext } from '/@/components/Application';
+  import { BasicMenu } from '/@/components/Menu';
+  import { SimpleMenu } from '/@/components/SimpleMenu';
+  import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnums';
   import {
     getAccordion,
     getCollapsed,
@@ -10,12 +14,7 @@
     getMenuMode,
     getMenuTheme,
     getMenuType,
-  } from '../../../hooks/setting/MenuSetting';
-  import { useSplitMenu } from './utils';
-  import { Logo } from '/@/components/Application';
-  import { BasicMenu } from '/@/components/Menu';
-  import { SimpleMenu } from '/@/components/SimpleMenu';
-  import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnums';
+  } from '/@/hooks/setting/MenuSetting';
   import { getShowLogo } from '/@/hooks/setting/RootSetting';
   import { useGo } from '/@/hooks/web/usePage';
   import { openWindow } from '/@/utils/common';
@@ -39,7 +38,7 @@
       const go = useGo(),
         { isMobile, getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('layout-menu'),
-        // { menusRef } = useSplitMenu(toRef(props, 'splitType')),
+        { menusRef } = useSplitMenu(toRef(props, 'splitType')),
         getRealMenuMode = computed(() =>
           unref(isMobile) ? MenuModeEnum.INLINE : props.menuMode || unref(getMenuMode)
         ),
@@ -84,50 +83,7 @@
       }
 
       function renderMenu() {
-        // const menus = unref(menusRef);
-        const menus = [
-          {
-            path: '/home/welcome',
-            name: 'routes.dashboard.welcome',
-            icon: 'bx:bx-home',
-          },
-          {
-            name: 'routes.dashboard.dashboard',
-            path: '/dashboard',
-            icon: 'bx:bx-home',
-          },
-          {
-            name: 'routes.demo.permission.permission',
-            path: '/permission',
-            icon: 'carbon:user-role',
-          },
-          {
-            name: 'routes.demo.feat.feat',
-            path: '/feat',
-            icon: 'ic:outline-featured-play-list',
-          },
-          {
-            name: 'routes.demo.page.page',
-            path: '/page-demo',
-            icon: 'mdi:page-next-outline',
-          },
-          {
-            name: 'routes.demo.comp.comp',
-            path: '/comp',
-            icon: 'ic:outline-settings-input-component',
-          },
-          {
-            name: 'routes.demo.charts.charts',
-            path: '/charts',
-            icon: 'vaadin:spline-area-chart',
-          },
-          {
-            name: 'routes.demo.iframe.frame',
-            path: '/frame',
-            icon: 'mdi:page-next-outline',
-          },
-        ];
-        // console.log(menus);
+        const menus = unref(menusRef);
         if (!menus || !menus.length) return null;
         return !props.isHorizontal ? (
           <SimpleMenu

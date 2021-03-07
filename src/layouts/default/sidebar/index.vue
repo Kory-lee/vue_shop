@@ -20,13 +20,14 @@
     getIsMixMode,
     getMenuWidth,
     setMenuSetting,
-  } from '../../../hooks/setting/MenuSetting';
+  } from '/@/hooks/setting/MenuSetting';
   import { Drawer } from 'ant-design-vue';
   import MixSidebar from './MixSidebar.vue';
   import MaxSidebar from './MaxSidebar.vue';
   import { defineComponent } from 'vue';
-  import { useProviderContext } from '../../../components/Application/src/Provider/useAppContext';
-  import { getIsMixSidebar } from '../../../hooks/setting/MenuSetting';
+  import { useProviderContext } from '/@/components/Application/src/Provider/useAppContext';
+  import { getIsMixSidebar } from '/@/hooks/setting/MenuSetting';
+
   export default defineComponent({
     name: 'LayoutSidebar',
     components: {
