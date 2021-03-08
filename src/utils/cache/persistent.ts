@@ -1,4 +1,5 @@
-import { createStorage } from '.';
+import { toRaw } from '@vue/reactivity';
+import { createLocalStorage, createSessionStorage } from '.';
 import { warn } from '../log';
 import Memory from './Memory';
 import {
@@ -21,7 +22,6 @@ interface CacheStore {
   local: Record<string, any>;
   session: Record<string, any>;
 }
-
 interface BasicCache {
   [TOKEN_KEY]: string | number | null | undefined;
   [USER_INFO_KEY]: UserInfo;
@@ -36,17 +36,49 @@ export type BasicKeys = keyof BasicCache;
 type LocalKeys = keyof LocalCache;
 type SessionKeys = keyof SessionCache;
 
-const ls = createStorage(localStorage);
-const ss = createStorage();
+const ls = createLocalStorage(),
+  ss = createSessionStorage();
 
 const localMemory = new Memory(DEFAULT_CACHE_TIME),
   sessionMemory = new Memory(DEFAULT_CACHE_TIME);
 
-function initPersistentMemory() {
-  const localCache = ls.get(APP_LOCAL_CACHE_KEY),
-    sessionCache = ss.get(APP_SESSION_CACHE_KEY);
-  localCache && localMemory.restCache(localCache);
-  sessionCache && sessionMemory.restCache(sessionCache);
+export class Persistent {
+  // private ls = createLocalStorage();
+  // private ss = createSessionStorage();
+
+  constructor() {}
+  static getLocal<T>(key: LocalKeys) {
+    return localMemory.get(key)?.value as Nullable<T>;
+  }
+  static setLocal(key: LocalKeys, val: LocalCache[LocalKeys], immediate = false) {
+    localMemory.set(key, toRaw(val));
+    immediate && ls.set(APP_LOCAL_CACHE_KEY, localMemory.getCache);
+  }
+  static removeLocal(key: LocalKeys) {
+    localMemory.remove(key);
+  }
+
+  static clearLocal() {
+    localMemory.clear();
+  }
+
+  static getSession<T>(key: SessionKeys) {
+    return sessionMemory.get(key)?.value as Nullable<T>;
+  }
+  static setSession(key: SessionKeys, value: SessionCache[SessionKeys], immediate = false) {
+    sessionMemory.set(key, toRaw(value));
+    immediate && ss.set(APP_SESSION_CACHE_KEY, sessionMemory.getCache);
+  }
+  static removeSession(key: SessionKeys) {
+    sessionMemory.remove(key);
+  }
+  static clearSession() {
+    sessionMemory.clear();
+  }
+  static clearAll() {
+    sessionMemory.clear();
+    localMemory.clear();
+  }
 }
 
 /**
@@ -104,10 +136,28 @@ export function clearSession(immediate = false) {
   immediate && ss.remove(BASE_SESSION_CACHE_KEY);
 }
 
-export default class Persistent {
-  static getLocal<T>(key: LocalKeys) {
-    return localMemory.get(key)?.value as Nullable<T>;
+function initPersistentMemory() {
+  const localCache = ls.get(APP_LOCAL_CACHE_KEY),
+    sessionCache = ss.get(APP_SESSION_CACHE_KEY);
+  localCache && localMemory.restCache(localCache);
+  sessionCache && sessionMemory.restCache(sessionCache);
+}
+function storageChange(e: any) {
+  const { key, newValue, oldValue } = e;
+  if (!key) {
+    Persistent.clearAll();
+    return;
+  }
+
+  if (!!newValue && !!oldValue) {
+    if (APP_LOCAL_CACHE_KEY === key) Persistent.clearLocal();
+    else if (APP_SESSION_CACHE_KEY === key) Persistent.clearSession();
   }
 }
+window.addEventListener('beforeunload', function () {
+  ls.set(APP_LOCAL_CACHE_KEY, localMemory.getCache);
+  ss.set(APP_SESSION_CACHE_KEY, sessionMemory.getCache);
+});
+window.addEventListener('storage', storageChange);
 
 initPersistentMemory();

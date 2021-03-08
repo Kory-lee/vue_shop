@@ -5,6 +5,7 @@ import { getLocal } from '../utils/cache/persistent';
 import { updateHeaderBgColor, updateSidebarBgColor } from './theme';
 import projectSetting from '/@/settings/projectSetting';
 import configStore from '/@/store/modules/config';
+
 export function initConfigStore() {
   let config: ProjectConfig = getLocal(PROJ_CFG_KEY) as ProjectConfig;
   config = deepMerge(projectSetting, config || {});

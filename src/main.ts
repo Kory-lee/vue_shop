@@ -9,8 +9,8 @@ import { isDevMode } from './utils/env';
 
 (async () => {
   const app = createApp(App);
-
-  await Promise.all([router.isReady(), app.use(globalCom).use(router).use(store).use(i18n)]);
+  app.use(globalCom).use(router).use(store);
+  await Promise.all([app.use(i18n), router.isReady()]);
   app.mount('#app', true);
   if (isDevMode()) {
     app.config.performance = true;

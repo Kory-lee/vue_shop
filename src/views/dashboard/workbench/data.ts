@@ -30,7 +30,7 @@ export const newList = (() => {
       memo: '工作任务',
       cnteId: `c${id}`,
       cnteStatus: 'opened',
-      dnteRepo: id,
+      cnteRepo: id,
     });
   }
   return ret;
