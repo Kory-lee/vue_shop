@@ -1,6 +1,7 @@
 import { unref } from 'vue';
-import { RouteLocationRaw, useRouter } from 'vue-router';
+import { RouteLocationRaw } from 'vue-router';
 import { PageEnum } from '/@/enums/pageEnum';
+import router from '/@/router';
 import { isString } from '/@/utils/is';
 
 export type RouteLocationRawEx = Omit<RouteLocationRaw, 'path'> & { path: PageEnum };
@@ -8,8 +9,11 @@ function handleError(e: Error) {
   console.error(e);
 }
 export function useGo() {
-  const { push, replace } = useRouter();
-  return (opt: PageEnum | RouteLocationRawEx | string = PageEnum.BASE_HOME, isReplace = false) => {
+  return function (
+    opt: PageEnum | RouteLocationRawEx | string = PageEnum.BASE_HOME,
+    isReplace = false
+  ) {
+    const { push, replace } = router;
     if (!opt) return;
     if (isString(opt)) isReplace ? replace(opt).catch(handleError) : push(opt).catch(handleError);
     else {
@@ -19,12 +23,11 @@ export function useGo() {
   };
 }
 
-export const useRefresh = () => {
-  const { push, currentRoute } = useRouter();
-  const { query, params } = currentRoute.value;
-  return new Promise((resolve) =>
+export const useRefresh = () =>
+  new Promise((resolve) => {
+    const { push, currentRoute } = router;
+    const { query, params } = currentRoute.value;
     push({ path: '/redirect' + unref(currentRoute).fullPath, query, params }).then(() =>
       resolve(true)
-    )
-  );
-};
+    );
+  });

@@ -1,11 +1,12 @@
 <template>
+  <!-- v-bind="$props" -->
   <Menu
     :activeName="activeName"
     :openNames="getOpenKeys"
     @select="handleSelect"
-    v-bind="$props"
     :class="prefixCls"
     :activeSubMenuNames="activeSubMenuNames"
+    v-bind="$props"
   >
     <template v-for="item in items" :key="item.path">
       <SimpleSubMenu
@@ -102,7 +103,7 @@
         setOpenKeys(key);
         menuState.activeName = key;
       }
-      return { prefixCls, getOpenKeys, handleSelect, ...toRefs(menuState) };
+      return { prefixCls, getOpenKeys, handleSelect, ...toRefs(menuState), handleMenuChange };
     },
   });
 </script>

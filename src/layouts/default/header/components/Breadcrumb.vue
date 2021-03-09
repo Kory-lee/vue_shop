@@ -2,7 +2,11 @@
   <div :class="[prefixCls, `${prefixCls}--${theme}`]">
     <a-breadcrumb :routes="routes">
       <template #itemRender="{ route, routes, paths }">
-        <span>{{ t(route.meta.title) }}</span>
+        <Icon :icon="route.meta.icon" v-if="getShowBreadCrumbIcon && route.meta.icon" />
+        <span v-if="!hasRedirect(routes, route)"> {{ t(route.meta.title) }}</span>
+        <router-link v-else to="" @click="handleClick(route, paths, $event)">{{
+          t(route.meta.title)
+        }}</router-link>
       </template>
     </a-breadcrumb>
   </div>
@@ -15,8 +19,9 @@
   import { useI18n } from 'vue-i18n';
   import { RouteLocationMatched, useRouter } from 'vue-router';
   import { useProviderContext } from '/@/components/Application';
+  import Icon from '/@/components/Icon';
   import { PageEnum } from '/@/enums/pageEnum';
-  import { getShowbreadCrumbIcon } from '/@/hooks/setting/RootSetting';
+  import { getShowBreadCrumbIcon } from '/@/hooks/setting/RootSetting';
   import { useGo } from '/@/hooks/web/usePage';
   import { REDIRECT_NAME } from '/@/router/constant';
   import { filter } from '/@/utils/helper/treeHelper';
@@ -40,7 +45,7 @@
   export default defineComponent({
     name: 'LayoutBreadcrumb',
     props: { theme: String as PropType<'light' | 'dark'> },
-    components: { 'a-breadcrumb': Breadcrumb },
+    components: { 'a-breadcrumb': Breadcrumb, Icon },
     setup() {
       const { getPrefixCls } = useProviderContext();
 
@@ -88,7 +93,6 @@
       }
 
       function hasRedirect(routes: RouteLocationMatched[], route: RouteLocationMatched) {
-        if (route?.meta?.isLink) return true;
         if (routes.indexOf(route) === routes.length - 1) return false;
         return true;
       }
@@ -96,7 +100,7 @@
         prefixCls: getPrefixCls('layout-breadcrumb'),
         routes: (routes as unknown) as Ref<Route[]>,
         t,
-        getShowbreadCrumbIcon,
+        getShowBreadCrumbIcon,
         handleClick,
         hasRedirect,
       };
@@ -104,7 +108,7 @@
   });
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @prefix-cls: ~'@{namespace}-layout-breadcrumb';
   .@{prefix-cls} {
     display: flex;

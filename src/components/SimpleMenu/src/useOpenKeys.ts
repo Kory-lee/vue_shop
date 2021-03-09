@@ -1,8 +1,8 @@
+import { uniq } from 'lodash';
 import { computed, Ref, toRaw, unref } from 'vue';
 import { SimpleMenuState } from './types';
 import { useTimeoutFn } from '/@/hooks/core/useTimeout';
 import { MenuType } from '/@/router/types';
-import { es6Unique } from '/@/utils/common';
 import { getAllParentPath } from '/@/utils/helper/menuHelper';
 
 export default function useOpenKeys(
@@ -23,7 +23,7 @@ export default function useOpenKeys(
           return;
         }
         const keys = getAllParentPath(menuList, path);
-        if (!unref(accordion)) menuState.openNames = es6Unique([...menuState.openNames, ...keys]);
+        if (!unref(accordion)) menuState.openNames = uniq([...menuState.openNames, ...keys]);
         else menuState.openNames = keys;
         menuState.activeSubMenuNames = menuState.openNames;
       },

@@ -31,13 +31,13 @@ export const getShowFooter = computed(() => unref(getRootSetting).showFooter);
 
 export const getShowBreadCrumb = computed(() => getRootSetting.value.showBreadCrumb);
 
-export const getShowbreadCrumbIcon = computed(() => getRootSetting.value.showBreadCrumbIcon);
+export const getShowBreadCrumbIcon = computed(() => getRootSetting.value.showBreadCrumbIcon);
 
 export const getFullContent = computed(() => getRootSetting.value.fullContent);
 
 export const getRealFullContent = computed(() => {
-  const route = unref(router.currentRoute);
-  const query = route.query;
+  const route = unref(router.currentRoute),
+    query = route.query;
   if (query && Reflect.has(query, '__FULL__')) return true;
   return unref(getFullContent);
 });

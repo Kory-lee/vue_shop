@@ -2,7 +2,7 @@ import { Ref } from 'vue';
 import { createContext, useContext } from '/@/hooks/core/useContext';
 import styleSetting from '/@/settings/styleSetting';
 export interface ProviderContextProps {
-  getPrefixCls: Fn;
+  getPrefixCls: Fn<string>;
   isMobile: Ref<boolean>;
 }
 const key = Symbol();

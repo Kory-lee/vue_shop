@@ -1,7 +1,7 @@
 export default {
   charts: 'Charts',
   map: 'Map',
-  Line: 'Line',
+  line: 'Line',
   pie: 'Pie',
   apexChart: 'ApexChart',
 };

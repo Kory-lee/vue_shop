@@ -4,8 +4,13 @@
     :defaultSelectedKeys="defaultSelectedKeys"
     :mode="mode"
     :openKeys="getOpenKeys"
+    :inlineIndent="inlineIndex"
     :theme="theme"
     :class="getMenuClass"
+    @openChange="handleOpenChange"
+    @click="handleMenuClick"
+    :subMenuOpenDelay="0.2"
+    v-bind="getInlineColapseOptions"
   >
     <template v-for="item in items" :key="item.path">
       <BasicSubMenuItem :item="item" :theme="theme" :isHorizontal="isHorizontal" />
@@ -17,7 +22,7 @@
   import { computed, defineComponent, reactive, ref, toRefs, unref } from 'vue';
   import { Menu } from 'ant-design-vue';
   import { basicProps } from './props';
-  import { MenuState } from './types';
+  import type { MenuState } from './types';
   import { useProviderContext } from '../../Application/src/Provider/useAppContext';
   import { useRouter } from 'vue-router';
   import { MenuModeEnum, MenuTypeEnum } from '/@/enums/menuEnums';
@@ -26,9 +31,10 @@
     getIsHorizontal,
     getSplit,
     getTopMenuAlign,
-  } from '../../../hooks/setting/MenuSetting';
-  import { useOpenKeys } from './utils';
+  } from '/@/hooks/setting/MenuSetting';
+  import useOpenKeys from './useOpenKeys';
   import BasicSubMenuItem from './components/BasicSubMenuItem.vue';
+  import { isFunction } from '/@/utils/is';
 
   export default defineComponent({
     name: 'BasicMenu',
@@ -49,7 +55,12 @@
         prefixCls = getPrefixCls('basic-menu'),
         { items, mode, accordion } = toRefs(props),
         { currentRoute } = useRouter(),
-        { setOpenKeys, getOpenKeys } = useOpenKeys(menuState, items, mode, accordion),
+        { setOpenKeys, getOpenKeys, handleOpenChange } = useOpenKeys(
+          menuState,
+          items,
+          mode,
+          accordion
+        ),
         getIsTopMenu = computed(
           () =>
             (props.type === MenuTypeEnum.TOP_MENU && props.mode === MenuModeEnum.HORIZONTAL) ||
@@ -73,12 +84,27 @@
             inlineCollapseOptions.inlineCollapsed = props.mixSidebar ? false : unref(getCollapsed);
           return inlineCollapseOptions;
         });
+
+      async function handleMenuClick({ key }: { key: string; keyPath: string[] }) {
+        const { beforeClickFn } = props;
+        if (beforeClickFn && isFunction(beforeClickFn)) {
+          const flag = await beforeClickFn(key);
+          if (!flag) return;
+        }
+        emit('menuClick', key);
+        isClickGo.value = true;
+        menuState.selectedKeys = [key];
+      }
+
       return {
         prefixCls,
         getIsHorizontal,
         getMenuClass,
         getOpenKeys,
+        getInlineColapseOptions,
         ...toRefs(menuState),
+        handleMenuClick,
+        handleOpenChange,
       };
     },
   });

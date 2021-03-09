@@ -1,15 +1,15 @@
-import { compile, computed, Ref, toRaw, unref } from 'vue';
+import { computed, Ref, toRaw, unref } from 'vue';
+import { getCollapsed, getIsMixSidebar } from '/@/hooks/setting/MenuSetting';
 import { MenuState } from './types';
 import { MenuModeEnum } from '/@/enums/menuEnums';
 import { useTimeoutFn } from '/@/hooks/core/useTimeout';
-import { getCollapsed, getIsMixMode, getIsMixSidebar } from '../../../hooks/setting/MenuSetting';
-import { Menu } from '/@/router/types';
-import { es6Unique } from '/@/utils/common';
+import { MenuType } from '/@/router/types';
 import { getAllParentPath } from '/@/utils/helper/menuHelper';
+import { uniq } from 'lodash-es';
 
-export function useOpenKeys(
+export default function useOpenKeys(
   menuState: MenuState,
-  menus: Ref<Menu[]>,
+  menus: Ref<MenuType[]>,
   mode: Ref<MenuModeEnum>,
   accordion: Ref<boolean>
 ) {
@@ -24,10 +24,7 @@ export function useOpenKeys(
           return;
         }
         if (!unref(accordion))
-          menuState.openKeys = es6Unique([
-            ...menuState.openKeys,
-            ...getAllParentPath(menuList, path),
-          ]);
+          menuState.openKeys = uniq([...menuState.openKeys, ...getAllParentPath(menuList, path)]);
         else menuState.openKeys = getAllParentPath(menuList, path);
       },
       16,
@@ -50,7 +47,7 @@ export function useOpenKeys(
     else {
       const rootSubMenuKeys: string[] = [];
       for (const { children, path } of unref(menus)) {
-        if (children && children?.length) rootSubMenuKeys.push(path);
+        if (children?.length) rootSubMenuKeys.push(path);
       }
       if (!unref(getCollapsed)) {
         const latestOpenKey = openKeys.find((key) => menuState.openKeys.indexOf(key) === -1);
