@@ -1,6 +1,7 @@
 import { ThemeEnum } from '/@/enums/configEnum';
 import configStore from '/@/store/modules/config';
 import { colorIsDark, darken, isHexColor, lighten } from '/@/utils/color';
+
 const HEADER_BG_COLOR_VAR = '--header-bg-color';
 const HEADER_BG_HOVER_COLOR_VAR = '--header-bg-hover-color';
 const HEADER_MENU_ACTIVE_BG_COLOR_VAR = '--header-active-menu-bg-color';

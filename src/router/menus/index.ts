@@ -18,14 +18,16 @@ const reg = /(((https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?
 
 const isBackMode = () => configStore.getProjectConfig.permissionMode === PermissionModeEnum.BACK;
 
-const staticMenus: MenuType[] = [];
-(() => {
+const staticMenus = (() => {
+  const menus: MenuType[] = [];
   menuModules.sort((a, b) => (a.orderNo || 0) - (b.orderNo || 0));
   for (const menu of menuModules) {
-    staticMenus.push(transformMenuModule(menu));
+    menus.push(transformMenuModule(menu));
   }
-  console.log(staticMenus);
+  console.log(menus);
+  return menus;
 })();
+
 /**
  * @description 前端角色控制菜单 直接读取菜单文件
  */
