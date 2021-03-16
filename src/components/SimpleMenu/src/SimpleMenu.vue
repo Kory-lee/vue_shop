@@ -1,5 +1,4 @@
 <template>
-  <!-- v-bind="$props" -->
   <Menu
     :activeName="activeName"
     :openNames="getOpenKeys"
@@ -28,6 +27,8 @@
   import { SimpleMenuState } from './types';
   import useOpenKeys from './useOpenKeys';
   import { createSimpleRootMenuContext } from './useSimpleMenuContext';
+  import { listenerLastChangeTab } from '/@/logics/mitt/tabChange';
+  import { REDIRECT_NAME } from '/@/router/constant';
   import { MenuType } from '/@/router/types';
   import { isFunction } from '/@/utils/is';
   import Mitt from '/@/utils/mitt';
@@ -46,12 +47,13 @@
       beforeClickFn: { type: Function as PropType<(key: string) => Promise<boolean>> },
     },
     emits: ['menuClick'],
-    setup(props, { emit, attrs }) {
+    setup(props, { emit }) {
+      console.log(props);
+
       const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('simple-menu'),
         rootMenuEmitter = new Mitt(),
         currentActiveName = ref(''),
-        activeName = ref(''),
         isClickGo = ref(false),
         menuState = reactive<SimpleMenuState>({
           activeName: '',
@@ -70,7 +72,7 @@
 
       createSimpleRootMenuContext({
         rootMenuEmitter,
-        activeName,
+        activeName: currentActiveName,
         isCollapse: computed(() => props.collapse),
       });
 
@@ -82,6 +84,19 @@
         },
         { immediate: true }
       );
+
+      listenerLastChangeTab((route) => {
+        console.log(route);
+        if (route.name === REDIRECT_NAME) return;
+        currentActiveName.value = route.meta?.currentActiveName as string;
+        handleMenuChange(route);
+
+        if (unref(currentActiveName)) {
+          menuState.activeName = unref(currentActiveName);
+          setOpenKeys(unref(currentActiveName));
+        }
+      });
+
       async function handleMenuChange(route?: RouteLocationNormalizedLoaded) {
         if (unref(isClickGo)) {
           isClickGo.value = false;
@@ -98,12 +113,12 @@
           if (!flag) return;
         }
         emit('menuClick', key);
-
         isClickGo.value = true;
         setOpenKeys(key);
         menuState.activeName = key;
       }
-      return { prefixCls, getOpenKeys, handleSelect, ...toRefs(menuState), handleMenuChange };
+
+      return { prefixCls, getOpenKeys, handleSelect, ...toRefs(menuState) };
     },
   });
 </script>

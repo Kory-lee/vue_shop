@@ -11,7 +11,7 @@ export enum TriggerEnum {
   HEADER = 'HEADER',
 }
 
-export type mode = 'verTical' | 'vertical-right' | 'horizontal' | 'inline';
+export type mode = 'vertical' | 'vertical-right' | 'horizontal' | 'inline';
 
 export enum MenuSplitTypeEnum {
   NONE,

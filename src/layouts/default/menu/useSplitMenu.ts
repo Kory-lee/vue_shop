@@ -41,9 +41,13 @@ export default function useSplitMenu(splitType: Ref<MenuSplitTypeEnum>) {
     },
     { immediate: true }
   );
+  watch([() => getSplit.value], () => {
+    if (unref(splitNotLeft)) return;
+    genMenus();
+  });
   async function handleSplitLeftMenu(parentPath: string) {
-    // TODO
-    // if(unref(getSpl))
+    if (unref(getSplitLeft) || unref(isMobile)) return;
+    // TODO split menu
   }
   async function genMenus() {
     if (unref(normalType || unref(isMobile))) {

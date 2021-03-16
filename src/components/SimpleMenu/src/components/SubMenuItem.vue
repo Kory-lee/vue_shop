@@ -1,6 +1,18 @@
 <template>
   <li :class="getClass">
-    <template v-if="!getCollapse"> </template>
+    <template v-if="!getCollapse">
+      <div :class="`${prefixCls}-subMenu-title`" @click.stop="handleClick" :style="getItemStyle">
+        <slot name="title" />
+        <Icon
+          icon="eva:arrow-ios-downward-outline"
+          :size="14"
+          :class="`${prefixCls}-submenu-title-icon`"
+        />
+      </div>
+      <ul :class="prefixCls" v-show="opened">
+        <slot />
+      </ul>
+    </template>
   </li>
 </template>
 <script lang="ts">
@@ -11,12 +23,14 @@
     getCurrentInstance,
     inject,
     reactive,
+    toRefs,
     unref,
   } from 'vue';
   import { useSimpleRootMenuContext } from '../useSimpleMenuContext';
   import { SubMenuProvider } from './types';
   import useMenuItem from './useMenu';
   import { useProviderContext } from '/@/components/Application';
+  import Icon from '/@/components/Icon';
   import Mitt from '/@/utils/mitt';
 
   const DELAY = 200;
@@ -28,6 +42,7 @@
       disabled: Boolean,
       collapsedShowTitle: Boolean,
     },
+    components: { Icon },
     setup(props) {
       const instance = getCurrentInstance(),
         subMenuEmitter = new Mitt(),
@@ -45,7 +60,7 @@
             [`${prefixCls}-item-active`]: state.active,
             [`${prefixCls}-opened`]: state.opened,
             [`${prefixCls}-submenu-disabled`]: props.disabled,
-            // [`${prefixCls}-submenu-has-parent-submenu`]: unref(getParentSubMenu),
+            [`${prefixCls}-submenu-has-parent-submenu`]: unref(getParentSubMenu),
             [`${prefixCls}-child-item-active`]: state.active,
           },
         ]);
@@ -121,7 +136,7 @@
       }
 
       function handleMouseleave() {}
-      return { getClass, handleClick };
+      return { getClass, handleClick, getCollapse, prefixCls, getItemStyle, ...toRefs(state) };
     },
   });
 </script>

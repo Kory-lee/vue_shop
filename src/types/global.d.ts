@@ -1,5 +1,8 @@
 declare interface Fn<T = any, R = T> {
-  (...arg: T[]): R;
+  (...args: T[]): R;
+}
+declare interface PromiseFn<T = any, R = T> {
+  (...args: T[]): Promise<R>;
 }
 
 declare type DeepPartial<T> = {
@@ -7,6 +10,7 @@ declare type DeepPartial<T> = {
 };
 
 declare type Nullable<T> = T | null;
+declare type NonNullable<T> = T extends null | undefined ? never : T;
 
 declare type Indexable<T extends any = any> = {
   [key: string]: T;
