@@ -1,6 +1,7 @@
 import { uniq } from 'lodash';
 import { computed, Ref, toRaw, unref } from 'vue';
 import { SimpleMenuState } from './types';
+import { useSimpleRootMenuContext } from './useSimpleMenuContext';
 import { useTimeoutFn } from '/@/hooks/core/useTimeout';
 import { MenuType } from '/@/router/types';
 import { getAllParentPath } from '/@/utils/helper/menuHelper';
@@ -13,7 +14,11 @@ export default function useOpenKeys(
   collapse: Ref<boolean>
 ) {
   async function setOpenKeys(path: string) {
-    const native = !mixSidebar.value;
+    const native = !mixSidebar.value,
+      { rootMenuEmitter } = useSimpleRootMenuContext();
+    function updateOpened() {
+      rootMenuEmitter.emit('on-update-opened', getOpenKeys);
+    }
     useTimeoutFn(
       () => {
         const menuList = toRaw(menus.value);
@@ -31,6 +36,10 @@ export default function useOpenKeys(
       native
     );
   }
-  const getOpenKeys = computed(() => (unref(collapse) ? [] : menuState.openNames));
+  const getOpenKeys = computed({
+    get: () => (unref(collapse) ? [] : menuState.openNames),
+    set: (val) => val
+  });
+
   return { setOpenKeys, getOpenKeys };
 }

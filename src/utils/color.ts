@@ -34,7 +34,7 @@ export const hexToRGB = function (hex: string) {
       for (let i = 1; i < 4; i += 1) sColorNew += sHex.slice(i, i + 1).concat(sHex.slice(i, i + 1));
       sHex = sColorNew;
     }
-    const sColorChange = [];
+    const sColorChange:number[] = [];
     for (let i = 1; i < 7; i += 2) sColorChange.push(parseInt('0x' + sHex.slice(i, i + 2)));
     return 'RGB(' + sColorChange.join(',') + ')';
   }
