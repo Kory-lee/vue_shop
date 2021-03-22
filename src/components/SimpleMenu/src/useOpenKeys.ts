@@ -14,11 +14,7 @@ export default function useOpenKeys(
   collapse: Ref<boolean>
 ) {
   async function setOpenKeys(path: string) {
-    const native = !mixSidebar.value,
-      { rootMenuEmitter } = useSimpleRootMenuContext();
-    function updateOpened() {
-      rootMenuEmitter.emit('on-update-opened', getOpenKeys);
-    }
+    const native = !mixSidebar.value;
     useTimeoutFn(
       () => {
         const menuList = toRaw(menus.value);
@@ -36,10 +32,7 @@ export default function useOpenKeys(
       native
     );
   }
-  const getOpenKeys = computed({
-    get: () => (unref(collapse) ? [] : menuState.openNames),
-    set: (val) => val
-  });
+  const getOpenKeys = computed(() => (unref(collapse) ? [] : menuState.openNames));
 
   return { setOpenKeys, getOpenKeys };
 }

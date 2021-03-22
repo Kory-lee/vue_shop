@@ -5,7 +5,6 @@ import Mitt from '/@/utils/mitt';
 export interface SimpleRootMenuContextProps {
   rootMenuEmitter: Mitt;
   activeName: Ref<string | number>;
-  isCollapse: DeepReadonly<ComputedRef<boolean>>;
 }
 
 const key: InjectionKey<SimpleRootMenuContextProps> = Symbol();

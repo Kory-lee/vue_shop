@@ -1,4 +1,3 @@
-import { pushScopeId } from '@vue/runtime-core';
 import { cloneDeep } from 'lodash';
 import { isUrl } from '../is';
 import { findPath, forEach } from './treeHelper';
@@ -11,8 +10,13 @@ export function getAllParentPath(treeData: any[], path: string) {
 
 function joinParentPath(list: any, node: any) {
   let allPaths = getAllParentPath(list, node.path);
+    // https://next.router.vuejs.org/guide/essentials/nested-routes.html
+    // Note that nested paths that start with / will be treated as a root path.
+    // This allows you to leverage the component nesting without having to use a nested URL.
+    // TODO
   allPaths = allPaths.slice(0, allPaths.length - 1);
 }
+
 /**
  * @description 解析菜单模块
  * @param menuModule

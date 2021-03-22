@@ -23,6 +23,6 @@
     "paths": { "/@/*": ["src/*"] }
   },
   "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }],
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "mock/**/*.ts", "src/components/SimpleMenu/src/components/SimpleMenuItem.vue"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "mock/**/*.ts"],
   "exclude": ["node_modules", "dist", "**/*.js"]
 }

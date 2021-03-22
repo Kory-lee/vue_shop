@@ -5,7 +5,10 @@
     @select="handleSelect"
     :class="prefixCls"
     :activeSubMenuNames="activeSubMenuNames"
-    v-bind="$props"
+    v-bind="$attrs"
+    :collapse="collapse"
+    :theme="theme"
+    :accordion="accordion"
   >
     <template v-for="item in items" :key="item.path">
       <SimpleSubMenu
@@ -48,8 +51,6 @@
     },
     emits: ['menuClick'],
     setup(props, { emit }) {
-      console.log(props);
-
       const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('simple-menu'),
         rootMenuEmitter = new Mitt(),
@@ -73,7 +74,6 @@
       createSimpleRootMenuContext({
         rootMenuEmitter,
         activeName: currentActiveName,
-        isCollapse: computed(() => props.collapse),
       });
 
       watch(

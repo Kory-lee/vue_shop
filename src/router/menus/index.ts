@@ -1,3 +1,4 @@
+import { pathToRegexp } from 'path-to-regexp';
 import { RouteRecordNormalized } from 'vue-router';
 import router from '..';
 import { MenuModule, MenuType } from '../types';
@@ -5,6 +6,7 @@ import { PermissionModeEnum } from '/@/enums/configEnum';
 import { configStore, permissionStore } from '/@/store/modules';
 import { getAllParentPath, transformMenuModule } from '/@/utils/helper/menuHelper';
 import { filter } from '/@/utils/helper/treeHelper';
+import { isUrl } from '/@/utils/is';
 
 const modules = import.meta.globEager('./modules/**/*.ts');
 const menuModules: MenuModule[] = [];
@@ -14,19 +16,16 @@ Object.keys(modules).forEach((key) => {
   menuModules.push(...modList);
 });
 
-const reg = /(((https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
-
-const isBackMode = () => configStore.getProjectConfig.permissionMode === PermissionModeEnum.BACK;
-
 const staticMenus = (() => {
   const menus: MenuType[] = [];
   menuModules.sort((a, b) => (a.orderNo || 0) - (b.orderNo || 0));
   for (const menu of menuModules) {
     menus.push(transformMenuModule(menu));
   }
-  console.log(menus);
   return menus;
 })();
+
+const isBackMode = () => configStore.getProjectConfig.permissionMode === PermissionModeEnum.BACK;
 
 /**
  * @description 前端角色控制菜单 直接读取菜单文件
@@ -64,10 +63,8 @@ export async function getShallowMenus(): Promise<MenuType[]> {
 function basicFilter(routes: RouteRecordNormalized[]) {
   return (menu: MenuType) => {
     const matchRoute = routes.find((route) => {
-      const match = route.path.match(reg)?.[0];
-      if (match && match === menu.path) return true;
-
-      if (route.meta?.carryParam) return;
+      if (isUrl(menu.path)) return true;
+      if (route.meta?.carryParam) return pathToRegexp(route.path).test(menu.path);
 
       const isSame = route.path === menu.path;
       if (!isSame) return false;

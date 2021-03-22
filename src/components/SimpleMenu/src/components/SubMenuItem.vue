@@ -16,6 +16,7 @@
   </li>
 </template>
 <script lang="ts">
+  import { Popover } from 'ant-design-vue';
   import {
     computed,
     CSSProperties,
@@ -42,7 +43,7 @@
       disabled: Boolean,
       collapsedShowTitle: Boolean,
     },
-    components: { Icon },
+    components: { Icon, Popover },
     setup(props) {
       const instance = getCurrentInstance(),
         subMenuEmitter = new Mitt(),

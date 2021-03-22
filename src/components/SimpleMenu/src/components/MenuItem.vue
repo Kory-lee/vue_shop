@@ -32,7 +32,7 @@
         active = ref(false),
         { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('menu'),
-        { rootMenuEmitter, activeName, isCollapse } = useSimpleRootMenuContext(),
+        { rootMenuEmitter, activeName } = useSimpleRootMenuContext(),
         { getItemStyle, getParentList, getParentMenu, getParentRootMenu } = useMenuItem(instance),
         getClass = computed(() => [
           `${prefixCls}-item`,
@@ -44,7 +44,7 @@
         ]),
         getCollapse = computed(() => unref(getParentRootMenu)?.props.collapse),
         showTooptip = computed(
-          () => unref(getParentMenu)?.type.name === 'Menu' && unref(isCollapse) && slots.title
+          () => unref(getParentMenu)?.type.name === 'Menu' && unref(getCollapse) && slots.title
         );
 
       function handleClickItem() {

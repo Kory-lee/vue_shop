@@ -84,7 +84,8 @@
 
       function renderMenu() {
         const menus = unref(menusRef);
-        if (!menus || !menus.length) return null;
+        console.log(menus);
+        if (!menus?.length) return null;
         return !props.isHorizontal ? (
           <SimpleMenu
             beforeClickFn={beforeMenuClickFn}

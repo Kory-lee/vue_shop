@@ -17,9 +17,10 @@
     watch,
     watchEffect,
   } from 'vue';
-  import { useSimpleRootMenuContext } from '../useSimpleMenuContext';
+  import { createSimpleRootMenuContext } from '../useSimpleMenuContext';
   import { SubMenuProvider } from './types';
   import { useProviderContext } from '/@/components/Application';
+  import Mitt from '/@/utils/mitt';
 
   export default defineComponent({
     name: 'Menu',
@@ -37,12 +38,14 @@
     emits: ['select', 'open-change'],
     setup(props, { emit }) {
       const instance = getCurrentInstance(),
-        { rootMenuEmitter, activeName: currentActiveName } = useSimpleRootMenuContext(),
+        rootMenuEmitter = new Mitt(),
+        currentActiveName = ref<string | number>(''),
         openedNames = ref<string[]>([]),
         { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('menu'),
         isRemoveAllPopup = ref(false);
 
+      createSimpleRootMenuContext({ rootMenuEmitter, activeName: currentActiveName });
       const getClass = computed(() => [
         prefixCls,
         `${prefixCls}-${props.theme}`,
@@ -102,7 +105,7 @@
         updateOpened();
         rootMenuEmitter.on('on-menu-item-select', (name: string) => {
           currentActiveName.value = name;
-          nextTick(() => props.collapse);
+          nextTick(() => props.collapse && removeAll());
           emit('select', name);
         });
       });
