@@ -43,7 +43,7 @@ export const getMenus = async (): Promise<MenuType[]> => {
 };
 
 /**
- @description 获取当前路径的顶级路径
+ * @description 获取当前路径的顶级路径
  * */
 export async function getCurrentParentPath(currentPath: string) {
   const menus = await getAsyncMenus(),
