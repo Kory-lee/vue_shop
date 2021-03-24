@@ -1,3 +1,5 @@
+import { isArray } from '../is';
+
 interface TreeHelperConfig {
   id: string;
   children: string;
@@ -27,19 +29,19 @@ export function listToTree<T = any>(list: any[], config: Partial<TreeHelperConfi
   return result;
 }
 
-export function treeToList<T = any>(tree: any, config: Partial<TreeHelperConfig> = {}): T {
+export function treeToList<T = any>(tree: any, config: Partial<TreeHelperConfig> = {}): T[] {
   const { children } = getConfig(config),
-    result: any = [...tree];
+    result: any[] = [...tree];
   for (let i = 0; i < result.length; i++) {
     if (!result[i][children]) continue;
-    (result as any[]).splice(i + 1, 0, ...result[i][children]);
+    result.splice(i + 1, 0, ...result[i][children]);
   }
   return result;
 }
 
 export function findNode<T = any>(
   tree: any,
-  func: Fn,
+  func: (n: T) => boolean,
   config: Partial<TreeHelperConfig> = {}
 ): T | null {
   const { children } = getConfig(config),
@@ -53,7 +55,7 @@ export function findNode<T = any>(
 
 export function findNodeAll<T = any>(
   tree: any,
-  func: Fn,
+  func: (n: T) => boolean,
   config: Partial<TreeHelperConfig> = {}
 ): T[] {
   const { children } = getConfig(config),
@@ -97,7 +99,7 @@ export function forEach<T = any>(
 
 export function findPath<T = any>(
   tree: any,
-  func: Fn,
+  func: (n: T) => boolean,
   config: Partial<TreeHelperConfig> = {}
 ): T | T[] | null {
   const { children } = getConfig(config),
@@ -119,7 +121,11 @@ export function findPath<T = any>(
   return null;
 }
 
-export function findPathAll(tree: any, func: Fn, config: Partial<TreeHelperConfig> = {}) {
+export function findPathAll<T = any>(
+  tree: any,
+  func: (n: T) => boolean,
+  config: Partial<TreeHelperConfig> = {}
+): T[] {
   const { children } = getConfig(config),
     path: any[] = [],
     list = [...tree],
@@ -141,7 +147,26 @@ export function findPathAll(tree: any, func: Fn, config: Partial<TreeHelperConfi
   return result;
 }
 
-/**@description: Extract tree specified structure */
-// export function treeMap<T = any>(treeData) {}
+/**
+ * @description: Extract tree specified structure
+ */
+export function treeMap<T = any>(treeData: T[], opt: { children?: string; conversion: Fn }): T[] {
+  return treeData.map((item) => treeMapEach(item, opt));
+}
 
-// export function treeMaoEach(data: any) {}
+/**
+ * @description: Extract tree specified structure
+ */
+export function treeMapEach(
+  data: any,
+  { children = 'children', conversion }: { children?: string; conversion: Fn }
+) {
+  const haveChildren = isArray(data[children]) && data[children].length > 0,
+    conversionData = conversion(data) || {};
+  if (haveChildren)
+    return {
+      ...conversionData,
+      [children]: data[children].map((i: number) => treeMapEach(i, { children, conversion })),
+    };
+  else return { ...conversionData };
+}
