@@ -15,7 +15,7 @@
       </span>
     </template>
   </MenuItem>
-  <SubMenu
+  <SubMenuItem
     :name="item.path"
     v-if="menuHasChildren(item) && getShowMenu"
     :class="[getLevelClass, theme]"
@@ -34,21 +34,22 @@
     <template v-for="childrenItem in item.children || []" :key="childrenItem.path">
       <SimpleSubMenu v-bind="$props" :item="childrenItem" :parent="false" />
     </template>
-  </SubMenu>
+  </SubMenuItem>
 </template>
 
 <script lang="ts">
-  import { computed, PropType } from 'vue';
+  import type { MenuType } from '/@/router/types';
+
+  import { computed, defineComponent, PropType } from 'vue';
   import { useI18n } from 'vue-i18n';
   import { useProviderContext } from '../../Application';
   import Icon from '../../Icon';
   import MenuItem from './components/MenuItem.vue';
-  import SubMenu from './components/SubMenuItem.vue';
-  import { MenuType } from '/@/router/types';
+  import SubMenuItem from './components/SubMenuItem.vue';
 
-  export default {
+  export default defineComponent({
     name: 'SimpleSubMenu',
-    components: { MenuItem, Icon, SubMenu },
+    components: { MenuItem, Icon, SubMenuItem },
     props: {
       item: { type: Object as PropType<MenuType>, default: () => ({}) },
       parent: Boolean,
@@ -71,8 +72,13 @@
         }));
 
       function menuHasChildren(menuTreeItem: MenuType): boolean {
-        return Reflect.has(menuTreeItem, 'children') && !!menuTreeItem.children?.length;
+        return (
+          !menuTreeItem.meta?.hideChildrenInMenu &&
+          Reflect.has(menuTreeItem, 'children') &&
+          !!menuTreeItem.children?.length
+        );
       }
+
       return {
         prefixCls,
         menuHasChildren,
@@ -84,5 +90,5 @@
         getIsCollapseParent,
       };
     },
-  };
+  });
 </script>

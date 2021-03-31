@@ -15,9 +15,9 @@
         appear
       >
         <keep-alive v-if="openCache" :include="getCaches">
-          <component :is="Component" v-bind="getKey(Component, route)" />
+          <component :is="Component" :key="route.fullPath" />
         </keep-alive>
-        <component v-else :is="Component" v-bind="getKey(Component, route)" />
+        <component v-else :is="Component" :key="route.fullPath" />
       </transition>
     </template>
   </RouterView>

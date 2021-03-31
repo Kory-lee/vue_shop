@@ -1,5 +1,5 @@
 <template>
-  <div ref="chartRef" :style="{ height, width }"></div>
+  <div ref="chartRef" :style="{ height, width }"> hello </div>
 </template>
 
 <script lang="ts">
@@ -11,9 +11,10 @@
       height: { type: String, default: 'calc(100vh - 78px)' },
     },
     setup() {
-      const chartRef = <HTMLDivElement | null>ref(null);
+      const chartRef = ref<HTMLDivElement | null>(null);
 
-      onMounted(() => {});
+      // onMounted(() => {});
+      return { chartRef };
     },
   });
 </script>

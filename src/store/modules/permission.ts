@@ -1,10 +1,13 @@
 import { toRaw } from 'vue';
 import { Action, getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators';
 import { configStore, userStore } from '.';
+import { getMenuListById } from '/@/api/sys/menu';
+import { getPermCodeByUserId } from '/@/api/sys/user';
 import { PermissionModeEnum } from '/@/enums/configEnum';
 import { createMessage } from '/@/hooks/web/useMessage';
 import i18n from '/@/plugins/i18n';
 import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE } from '/@/router/constant';
+import { flatMultiLevelRoutes } from '/@/router/helper/routeHelper';
 import { asyncRoutes } from '/@/router/routes';
 import { AppRouteRecordRaw, MenuType } from '/@/router/types';
 import store from '/@/store';
@@ -64,6 +67,12 @@ class Permission extends VuexModule {
     this.lastBuildMenuTimeState = 0;
   }
   @Action
+  async changePermissionCode(userId: string) {
+    const codeList = await getPermCodeByUserId({ userId });
+    this.commitPermCodeListState(codeList);
+  }
+
+  @Action
   async buildRoutesAction(id?: number | string): Promise<AppRouteRecordRaw[]> {
     let routes: AppRouteRecordRaw[] = [];
     const { t } = i18n.global,
@@ -72,19 +81,33 @@ class Permission extends VuexModule {
     const { permissionMode = PermissionModeEnum.ROLE } = configStore.getProjectConfig;
 
     if (permissionMode === PermissionModeEnum.ROLE) {
-      routes = filter(asyncRoutes, (route) => {
+      const routeFilter = (route: AppRouteRecordRaw) => {
         const {
           meta: { roles },
         } = route;
         if (!roles) return true;
         return roleList.some((role) => roles.includes(role));
-      });
+      };
+      routes = filter(asyncRoutes, routeFilter);
+      routes = routes.filter(routeFilter);
+
+      routes = flatMultiLevelRoutes(routes);
     } else if (permissionMode === PermissionModeEnum.BACK) {
       createMessage.loading({ content: t('sys.app.menuLoading'), duration: 1 });
 
       const paramId = id || userStore.getUserInfoState.userId;
+
+      // !Simulate to obtain permission codes from the background
+      // this function may only need to be executed once, and the actual project can be put at the right time by itself
+      try {
+        this.changePermissionCode('1');
+      } catch (e) {}
+
       if (!paramId) throw new Error('paramId is undefined');
-      let routeList = [];
+
+      let routeList = (await getMenuListById({ id: paramId })) as AppRouteRecordRaw[];
+      //TODO  routeList = transformO
+
       routes = [PAGE_NOT_FOUND_ROUTE, ...routeList];
     }
     routes.push(ERROR_LOG_ROUTE);

@@ -103,6 +103,7 @@
 
 <style lang="less">
   @prefix-cls: ~'@{namespace}-layout-sidebar';
+
   .@{prefix-cls} {
     z-index: @layout-sider-fixed-z-index;
     &--fixed {
@@ -117,6 +118,7 @@
     }
     &.ant-layout-sider-dark {
       background-color: @sider-dark-bg-color;
+
       .ant-layout-sider-trigger {
         color: darken(@white, 25%);
         background-color: @trigger-dark-bg-color;

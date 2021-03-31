@@ -1,11 +1,20 @@
 import { t } from '../plugins/i18n';
 import { AppRouteRecordRaw } from './types';
 
-const EXCEPTION_COMPONENT = () => import('/@/views/sys/exception/index.vue');
+export const REDIRECT_NAME = 'Redirect';
+
+export const PARENT_LAYOUT_NAME = 'ParentLayout';
+
+export const EXCEPTION_COMPONENT = () => import('/@/views/sys/exception/index.vue');
 
 export const LAYOUT = () => import('/@/layouts/default/index.vue');
 
-export const getParentLayout = (name: string) => () => new Promise((resolve) => resolve({ name }));
+export const getParentLayout = (_name?: string) => {
+  return () =>
+    new Promise((resolve) => {
+      resolve({ name: PARENT_LAYOUT_NAME });
+    });
+};
 
 export const PAGE_NOT_FOUND_ROUTE: AppRouteRecordRaw = {
   path: '/:path(.*)*',
@@ -21,8 +30,6 @@ export const PAGE_NOT_FOUND_ROUTE: AppRouteRecordRaw = {
     },
   ],
 };
-
-export const REDIRECT_NAME = 'Redirect';
 
 const redirect_meta = { title: REDIRECT_NAME, hideBreadcrumb: true };
 export const REDIRECT_ROUTE: AppRouteRecordRaw = {

@@ -1,14 +1,14 @@
 <template>
   <Menu
+    v-bind="$attrs"
     :activeName="activeName"
     :openNames="getOpenKeys"
-    @select="handleSelect"
     :class="prefixCls"
     :activeSubMenuNames="activeSubMenuNames"
-    v-bind="$attrs"
     :collapse="collapse"
     :theme="theme"
     :accordion="accordion"
+    @select="handleSelect"
   >
     <template v-for="item in items" :key="item.path">
       <SimpleSubMenu
@@ -22,19 +22,18 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, PropType, reactive, ref, toRefs, unref, watch } from 'vue';
+  import type { MenuType } from '/@/router/types';
+  import type { SimpleMenuState } from './types';
+
+  import { defineComponent, PropType, reactive, ref, toRefs, unref, watch } from 'vue';
   import { RouteLocationNormalizedLoaded, useRouter } from 'vue-router';
   import { useProviderContext } from '../../Application';
   import Menu from './components/Menu.vue';
   import SimpleSubMenu from './SimpleSubMenu.vue';
-  import { SimpleMenuState } from './types';
   import useOpenKeys from './useOpenKeys';
-  import { createSimpleRootMenuContext } from './useSimpleMenuContext';
   import { listenerLastChangeTab } from '/@/logics/mitt/tabChange';
   import { REDIRECT_NAME } from '/@/router/constant';
-  import { MenuType } from '/@/router/types';
   import { isFunction } from '/@/utils/is';
-  import Mitt from '/@/utils/mitt';
 
   export default defineComponent({
     name: 'SimpleMenu',
@@ -49,11 +48,10 @@
       collapsedShowTitle: Boolean,
       beforeClickFn: { type: Function as PropType<(key: string) => Promise<boolean>> },
     },
-    emits: ['menuClick'],
+    emits: ['menu-click'],
     setup(props, { emit }) {
       const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('simple-menu'),
-        rootMenuEmitter = new Mitt(),
         currentActiveName = ref(''),
         isClickGo = ref(false),
         menuState = reactive<SimpleMenuState>({
@@ -70,11 +68,6 @@
           mixSidebar,
           collapse
         );
-
-      createSimpleRootMenuContext({
-        rootMenuEmitter,
-        activeName: currentActiveName,
-      });
 
       watch(
         () => props.collapse,
@@ -112,7 +105,7 @@
           const flag = await beforeClickFn(key);
           if (!flag) return;
         }
-        emit('menuClick', key);
+        emit('menu-click', key);
         isClickGo.value = true;
         setOpenKeys(key);
         menuState.activeName = key;

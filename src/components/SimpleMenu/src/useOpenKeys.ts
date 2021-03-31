@@ -1,7 +1,6 @@
 import { uniq } from 'lodash';
 import { computed, Ref, toRaw, unref } from 'vue';
 import { SimpleMenuState } from './types';
-import { useSimpleRootMenuContext } from './useSimpleMenuContext';
 import { useTimeoutFn } from '/@/hooks/core/useTimeout';
 import { MenuType } from '/@/router/types';
 import { getAllParentPath } from '/@/utils/helper/menuHelper';

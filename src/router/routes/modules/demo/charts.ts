@@ -1,8 +1,8 @@
 import { t } from '/@/plugins/i18n';
-import { LAYOUT } from '/@/router/constant';
+import { getParentLayout, LAYOUT } from '/@/router/constant';
 import { AppRouteModule } from '/@/router/types';
 
-export default {
+const charts: AppRouteModule = {
   path: '/charts',
   name: 'Charts',
   component: LAYOUT,
@@ -13,22 +13,24 @@ export default {
       path: 'apexChart',
       name: 'ApexChart',
       meta: { title: t('routes.demo.charts.apexChart') },
-      component: () => {},
+      component: () => import('/@/views/demo/charts/apex/index.vue'),
     },
     {
       path: 'echarts',
       name: 'Echarts',
-      component: () => {},
+      component: getParentLayout('Echarts'),
       meta: { title: 'Echarts' },
       redirect: '/charts/echarts/map',
       children: [
         {
           path: 'map',
           name: 'Map',
-          component: () => {},
+          component: () => import('/@/views/demo/charts/echarts/Map.vue'),
           meta: { title: t('routes.demo.charts.map') },
         },
       ],
     },
   ],
-} as AppRouteModule;
+};
+
+export default charts;

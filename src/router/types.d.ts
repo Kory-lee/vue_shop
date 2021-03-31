@@ -31,15 +31,19 @@ export interface RouteMeta {
 
   // Whether the route has been dynamically added
   hideBreadcrumb?: boolean;
+  // Hide submenu
+  hideChildrenInMenu?: boolean;
+
+  // Carrying parameters
+  carryParam?: boolean;
   // Use internally to mark single-level menus
   single?: boolean;
 
   currentActiveMenu?: string;
+
   hidTab?: boolean;
   hideMenu?: boolean;
-
-  // Carrying parameters
-  carryParam?: boolean;
+  isLink?: boolean;
 }
 
 export interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'meta'> {

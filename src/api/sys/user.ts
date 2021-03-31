@@ -20,3 +20,10 @@ export function loginApi(params: LoginParams, errorMessageMode: ErrorMessageMode
 export function getUserInfoById(params: GetUserInfoByUserIdParams) {
   return http.get<GetUserInfoByUserIdModel>({ url: Api.GetUserInfoById, params });
 }
+
+export function getPermCodeByUserId(params: GetUserInfoByUserIdParams) {
+  return http.get<string[]>({
+    url: Api.GetPermCodeByUserId,
+    params,
+  });
+}

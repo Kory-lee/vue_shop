@@ -1,7 +1,7 @@
-import { MenuModule } from '../../types';
+import { MenuModule } from '../../../types';
 import { t } from '/@/plugins/i18n';
 
-export default {
+const menu: MenuModule = {
   orderNo: 500,
   menu: {
     name: t('routes.demo.charts.charts'),
@@ -19,4 +19,6 @@ export default {
       },
     ],
   },
-} as MenuModule;
+};
+
+export default menu;

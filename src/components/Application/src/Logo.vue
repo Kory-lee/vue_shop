@@ -18,7 +18,7 @@
   import { defineComponent, PropType } from 'vue';
   import { useProviderContext } from './Provider/useAppContext';
   import LogoImg from '/@/assets/img/logo.png';
-  import { PageEnum } from '/@/enums/pageEnum';
+  import { PageEnum } from '/@/enums/PageEnum';
   import { useGlobalSetting } from '/@/hooks/setting';
   import { getCollapsedShowTitle } from '/@/hooks/setting/MenuSetting';
   import { useGo } from '/@/hooks/web/usePage';

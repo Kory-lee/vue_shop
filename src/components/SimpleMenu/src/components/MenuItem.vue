@@ -6,6 +6,7 @@
       </template>
       <div :class="`${prefixCls}-tooltip`"> <slot /> </div>
     </Tooltip>
+
     <template v-else>
       <slot />
       <slot name="title" />
@@ -42,15 +43,17 @@
             [`${prefixCls}-item-disabled`]: !!props.disabled,
           },
         ]),
-        getCollapse = computed(() => unref(getParentRootMenu)?.props.collapse),
+        getCollapse = computed(() => unref(getParentRootMenu)?.props.collapse as boolean),
         showTooptip = computed(
-          () => unref(getParentMenu)?.type.name === 'Menu' && unref(getCollapse) && slots.title
+          () => unref(getParentMenu)?.type.name === 'Menu' && unref(getCollapse) && !!slots.title
         );
 
       function handleClickItem() {
         if (props.disabled) return;
+
         rootMenuEmitter.emit('on-menu-item-select', props.name);
         if (unref(getCollapse)) return;
+
         const { uidList } = getParentList();
         rootMenuEmitter.emit('on-update-opened', {
           opened: false,
