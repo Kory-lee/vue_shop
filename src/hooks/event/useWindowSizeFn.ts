@@ -6,7 +6,7 @@ interface WindowSizeOptions {
   immediate?: boolean;
   listenerOptions?: AddEventListenerOptions | boolean;
 }
-export function useWindowSizeFn<T>(fn: Fn<T>, wait = 150, options?: WindowSizeOptions) {
+export default function useWindowSizeFn<T>(fn: Fn<T>, wait = 150, options?: WindowSizeOptions) {
   let handler = () => {
     fn();
   };

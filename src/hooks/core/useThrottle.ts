@@ -1,9 +1,18 @@
-import type {
-  DebounceAndThrottleOptions,
-  DebounceAndThrottleProcedure,
-  DebounceAndThrottleProcedureResult,
-} from './useDebounce';
 import { isFunction } from '/@/utils/is';
+
+export interface DebounceAndThrottleOptions {
+  immediate?: boolean;
+  debounce?: boolean;
+  once?: boolean;
+}
+export type CancelFn = () => void;
+
+export type DebounceAndThrottleProcedure<T extends unknown[]> = (...args: T) => unknown;
+
+export type DebounceAndThrottleProcedureResult<T extends unknown[]> = [
+  DebounceAndThrottleProcedure<T>,
+  CancelFn
+];
 
 export function throttle<T extends unknown[]>(
   handle: DebounceAndThrottleProcedure<T>,
@@ -26,16 +35,14 @@ export function throttle<T extends unknown[]>(
     cancelled = true;
   }
 
-  function cancelExec(): void {
-    once && cancel();
-  }
   function fn(this: unknown, ...args: T) {
     if (cancelled) return;
     const exec = () => {
       !debounce && clearTimer();
       handle.apply(this, args);
-      cancelExec();
+      once && cancel();
     };
+
     if (immediate) {
       immediate = false;
       if (!timeoutId) {

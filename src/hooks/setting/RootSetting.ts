@@ -38,7 +38,7 @@ export const getFullContent = computed(() => getRootSetting.value.fullContent);
 export const getRealFullContent = computed(() => {
   const route = unref(router.currentRoute),
     query = route.query;
-  if (query && Reflect.has(query, '__FULL__')) return true;
+  if (query && Reflect.has(query, '__full__')) return true;
   return unref(getFullContent);
 });
 
@@ -70,7 +70,7 @@ export function useRootSetting() {
     getUseErrorHandle,
     getShowFooter,
     getShowBreadCrumb,
-    getShowbreadCrumbIcon,
+    getShowBreadCrumbIcon,
     getFullContent,
     getRealFullContent,
     getColorWeak,

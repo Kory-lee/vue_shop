@@ -1,7 +1,7 @@
 import { ConfigProvider } from 'ant-design-vue';
 import { defineComponent, h, PropType, readonly, ref } from 'vue';
 import { createProviderContext } from './useAppContext';
-import { createBreakpointListen } from '/@/hooks/event/breakPoint';
+import useBreakpointListen from '/@/hooks/event/useBreakPoint';
 import styleSetting from '/@/settings/styleSetting';
 
 export default defineComponent({
@@ -15,7 +15,7 @@ export default defineComponent({
   },
   setup(props, { attrs, slots }) {
     const isMobileRef = ref(false);
-    createBreakpointListen(({ width, sizeEnum, screenMap }) => {
+    useBreakpointListen(({ width, sizeEnum, screenMap }) => {
       const lgWidth = screenMap.get(sizeEnum.LG);
       if (lgWidth) isMobileRef.value = width.value - 1 < lgWidth;
     });

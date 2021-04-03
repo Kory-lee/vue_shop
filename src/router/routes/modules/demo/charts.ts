@@ -28,6 +28,12 @@ const charts: AppRouteModule = {
           component: () => import('/@/views/demo/charts/echarts/Map.vue'),
           meta: { title: t('routes.demo.charts.map') },
         },
+        {
+          path: 'line',
+          name: 'Line',
+          component: () => import('/@/views/demo/charts/echarts/Line.vue'),
+          meta: { title: t('routes.demo.charts.line') },
+        },
       ],
     },
   ],

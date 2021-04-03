@@ -1,6 +1,7 @@
 import { ref, Ref, unref, watch } from 'vue';
 import { useDebounce } from '../core/useDebounce';
 import { useThrottle } from '../core/useThrottle';
+
 export type RemoveEventFn = () => void;
 export interface UseEventParams {
   el?: Element | Ref<Element | undefined> | Window;
@@ -12,7 +13,7 @@ export interface UseEventParams {
   wait?: number;
 }
 
-export function eventListener({
+export default function useEventListener({
   el = window,
   name,
   listener,

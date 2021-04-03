@@ -7,6 +7,7 @@
     info: InfoCircleFilled,
     error: CloseCircleFilled,
   };
+
   export type iconsType = keyof typeof getIcons;
   export default defineComponent({
     name: 'ModalIcon',

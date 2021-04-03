@@ -1,11 +1,12 @@
 import { ref, watch } from 'vue';
-import { tryOnUnmounted } from '/@/utils/helper/vueHelper';
+import { tryOnUnmounted } from '@vueuse/core';
 import { isFunction } from '/@/utils/is';
 
 // 用customRef 会不会更好！
 export function useTimeoutFn(handle: Fn<any>, wait: number, native = false) {
   if (!isFunction(handle)) throw new Error('handle is not function');
-  const { readyRef, stop, start } = timeoutRef(wait);
+
+  const { readyRef, stop, start } = useTimeoutRef(wait);
   if (native) handle();
   else
     watch(
@@ -18,20 +19,19 @@ export function useTimeoutFn(handle: Fn<any>, wait: number, native = false) {
   return { readyRef, stop, start };
 }
 
-export function timeoutRef(wait: number) {
+export function useTimeoutRef(wait: number) {
   const readyRef = ref(false);
+
   let timer: TimeoutHandle;
   function stop(): void {
-    readyRef.value = true;
+    readyRef.value = false;
     timer && window.clearTimeout(timer);
   }
   function start() {
     stop();
-    timer = setTimeout(() => {
-      readyRef.value = true;
-    }, wait);
+    timer = setTimeout(() => (readyRef.value = true), wait);
   }
   start();
   tryOnUnmounted(stop);
-  return { stop, readyRef, start };
+  return { readyRef, stop, start };
 }
