@@ -11,8 +11,12 @@ export function genMessage(langs: Record<string, Record<string, any>>, prefix = 
       lang = keyList.shift(),
       objKey = keyList.join('.');
     if (lang) {
-      set(obj, lang, obj[lang] || {});
-      set(obj[lang], objKey, mod);
+      if (objKey) {
+        set(obj, lang, obj[lang] || {});
+        set(obj[lang], objKey, mod);
+      } else {
+        set(obj, lang, mod || {});
+      }
     }
   });
   return obj;

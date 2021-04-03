@@ -1,5 +1,5 @@
 import { computed, unref } from 'vue';
-import { getRealFullContent } from './RootSetting';
+import { getRealFullContent } from './useRootSetting';
 import { SIDE_BAR_MINI_WIDTH, SIDE_BAR_SHOW_TIT_MINI_WIDTH } from '/@/enums/configEnum';
 import { MenuModeEnum, MenuTypeEnum, TriggerEnum } from '/@/enums/menuEnums';
 import configStore from '/@/store/modules/config';

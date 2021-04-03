@@ -1,6 +1,6 @@
 import { unref } from 'vue';
 import { Router } from 'vue-router';
-import { getOpenPageLoading } from '/@/hooks/setting/TransitionSetting';
+import { getOpenPageLoading } from '/@/hooks/setting/useTransitionSetting';
 import { configStore, userStore } from '/@/store/modules';
 
 export default function createPageLoadingGuard(router: Router) {

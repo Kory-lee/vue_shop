@@ -55,14 +55,27 @@ export interface TransitionSetting {
   openNProgress: boolean;
 }
 export interface LocaleSetting {
-  show: boolean;
-  lang: LocaleType;
+  showPicker: boolean;
+  // Current language
+  locale: LocaleType;
+  // default language
   fallback: LocaleType;
+  // available Locales
   availableLocales: LocaleType[];
 }
 
+export interface TransitionSetting {
+  //  Whether to open the page switching animation
+  enable: boolean;
+  // Route basic switching animation
+  basicTransition: RouterTransitionEnum;
+  // Whether to open page switching loading
+  openPageLoading: boolean;
+  // Whether to open the top progress bar
+  openNProgress: boolean;
+}
+
 export interface ProjectConfig {
-  locale: LocaleSetting;
   permissionCacheType: CacheTypeEnum;
   // 是否显示配置按钮
   showSettingButton: boolean;
@@ -114,12 +127,4 @@ export interface GlobalEnvConfig {
   VITE_GLOBAL_API_PREFIX_URL?: string;
   VITE_GLOBAL_APP_SHORT_NAME: string;
   VITE_GLOBAL_UPLOAD_URL?: string;
-}
-
-interface GlobalWrap {
-  globalSetting: Readonly<GlobalConfig>;
-}
-
-interface ProjectSettingWrap {
-  projectSetting: Readonly<ProjectConfig>;
 }

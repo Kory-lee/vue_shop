@@ -20,7 +20,7 @@
   import BasicMenuItem from './BasicMenuItem.vue';
   import MenuItemContent from './MenuItemContent.vue';
   import { useProviderContext } from '/@/components/Application';
-  import type { Menu as MenuType } from '/@/router/types';
+  import type { MenuType } from '/@/router/types';
 
   export default defineComponent({
     name: 'BasicSubMenuItem',

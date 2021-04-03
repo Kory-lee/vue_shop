@@ -10,17 +10,17 @@
   import { computed, CSSProperties, defineComponent, unref } from 'vue';
   import { headerHeightRef } from '../content/contentViewHeight';
   import LayoutHeader from './index.vue';
-  import { useProviderContext } from '../../../components/Application/src/Provider/useAppContext';
+  import { useProviderContext } from '/@/components/Application';
   import {
     getFixed,
     getHeaderTheme,
     getShowFullHeaderRef,
     getShowHeader,
     getShowInsetHeaderRef,
-  } from '../../../hooks/setting/HeaderSetting';
-  import { getCalcContentWidth, getSplit } from '../../../hooks/setting/MenuSetting';
-  import { getShowMultipleTab } from '/@/hooks/setting/MultipleTabSetting';
-import { getRealFullContent } from '/@/hooks/setting/RootSetting';
+  } from '/@/hooks/setting/useHeaderSetting';
+  import { getCalcContentWidth, getSplit } from '/@/hooks/setting/useMenuSetting';
+  import { getShowMultipleTab } from '/@/hooks/setting/useMultipleTabSetting';
+import { getRealFullContent } from '/@/hooks/setting/useRootSetting';
   const HEADER_HEIGHT = 48,
     TABS_HEIGHT = 32;
   export default defineComponent({

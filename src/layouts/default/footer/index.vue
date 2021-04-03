@@ -11,7 +11,7 @@
   import { computed, defineComponent, unref } from 'vue';
   import { useRouter } from 'vue-router';
   import { useProviderContext } from '../../../components/Application/src/Provider/useAppContext';
-  import { getShowFooter } from '/@/hooks/setting/RootSetting';
+  import { getShowFooter } from '../../../hooks/setting/useRootSetting';
 
   export default defineComponent({
     name: 'LayoutFooter',

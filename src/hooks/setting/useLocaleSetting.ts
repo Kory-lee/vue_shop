@@ -1,5 +1,5 @@
 import { computed } from 'vue';
-import { localeList } from '/@/locales/constant';
+import { localeList } from '/@/settings/localeSetting';
 import projectSetting from '/@/settings/projectSetting';
 import configStore from '/@/store/modules/config';
 import { LocaleSetting } from '/@/types/config';

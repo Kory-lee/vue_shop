@@ -1,5 +1,5 @@
 import { MenuModule } from '../../types';
-import { t } from '/@/plugins/i18n';
+import { t } from '/@/hooks/web/useI18n';
 
 export default {
   orderNo: 10,

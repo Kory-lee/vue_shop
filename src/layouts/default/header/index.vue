@@ -2,7 +2,7 @@
   <Header :class="headerCls">
     <div :class="`${prefixCls}-left`">
       <Logo
-        v-if="getShowHeaderLogo"
+        v-if="getShowHeaderLogo || isMobile"
         :class="`${prefixCls}-logo`"
         :theme="getHeaderTheme"
         :style="logoWidth"
@@ -16,7 +16,10 @@
     </div>
 
     <div :class="`${prefixCls}-menu`"></div>
-    <div :class="`${prefixCls}-action`"></div>
+
+    <div :class="`${prefixCls}-action`">
+      <!-- <LocalePicker v-if="getShowLocalPicker" /> -->
+    </div>
   </Header>
 </template>
 
@@ -25,25 +28,26 @@
   import { computed, defineComponent, unref } from 'vue';
   import LayoutTrigger from '../trigger/index.vue';
   import LayoutBreadcrumb from './components/Breadcrumb.vue';
-  import { Logo } from '/@/components/Application';
+  import { Logo, LocalePicker } from '/@/components/Application';
   import { useProviderContext } from '/@/components/Application';
   import {
     getHeaderTheme,
     getShowContent,
     getShowHeaderLogo,
-  } from '/@/hooks/setting/HeaderSetting';
-  import { getShowLocale } from '/@/hooks/setting/LocaleSetting';
+  } from '/@/hooks/setting/useHeaderSetting';
+  import { getShowLocale } from '/@/hooks/setting/useLocaleSetting';
   import {
     getIsMixMode,
     getIsMixSidebar,
     getMenuWidth,
     getShowHeaderTrigger,
     getSplit,
-  } from '../../../hooks/setting/MenuSetting';
-  import { getShowBreadCrumb } from '/@/hooks/setting/RootSetting';
+  } from '/@/hooks/setting/useMenuSetting';
+  import { getShowBreadCrumb } from '/@/hooks/setting/useRootSetting';
+
   export default defineComponent({
     name: 'LayoutHeader',
-    components: { Header: Layout.Header, Logo, LayoutTrigger, LayoutBreadcrumb },
+    components: { Header: Layout.Header, Logo, LayoutTrigger, LayoutBreadcrumb, LocalePicker },
     props: { fixed: Boolean },
     setup(props) {
       const { isMobile, getPrefixCls } = useProviderContext(),
@@ -83,6 +87,6 @@
   });
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @import './index';
 </style>

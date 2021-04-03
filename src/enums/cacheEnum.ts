@@ -1,5 +1,7 @@
 export const TOKEN_KEY = 'TOKEN';
 
+export const LOCALE_KEY = 'LOCALE__';
+
 export const USER_INFO_KEY = 'USER__INFO__';
 
 export const ROLES_KEY = 'ROLES__KEYS__';

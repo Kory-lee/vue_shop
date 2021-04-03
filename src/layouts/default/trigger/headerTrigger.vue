@@ -10,7 +10,7 @@
   import type { PropType } from 'vue';
   import { defineComponent } from 'vue';
   import { useProviderContext } from '/@/components/Application';
-  import { getCollapsed, toggleCollapsed } from '/@/hooks/setting/MenuSetting';
+  import { getCollapsed, toggleCollapsed } from '/@/hooks/setting/useMenuSetting';
   export default defineComponent({
     name: 'HeaderTrigger',
     components: { MenuUnfoldOutlined, MenuFoldOutlined },
@@ -23,5 +23,3 @@
     },
   });
 </script>
-
-<style></style>

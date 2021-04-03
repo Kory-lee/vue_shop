@@ -17,8 +17,8 @@
   import { defineComponent } from 'vue';
   import { useProviderContext } from '/@/components/Application';
   import { Loading } from '/@/components/Loading';
-  import { getLayoutContentMode, getPageLoading } from '/@/hooks/setting/RootSetting';
-  import { getOpenPageLoading } from '/@/hooks/setting/TransitionSetting';
+  import { getLayoutContentMode, getPageLoading } from '../../../hooks/setting/useRootSetting';
+  import { getOpenPageLoading } from '/@/hooks/setting/useTransitionSetting';
   import PageLayout from '/@/layouts/page/index.vue';
 
   export default defineComponent({

@@ -1,4 +1,4 @@
-import { t } from '/@/plugins/i18n';
+import { t } from '/@/hooks/web/useI18n';
 import type { MenuModule } from '/@/router/types';
 
 export default {

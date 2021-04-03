@@ -20,7 +20,7 @@
   import LogoImg from '/@/assets/img/logo.png';
   import { PageEnum } from '/@/enums/PageEnum';
   import { useGlobalSetting } from '/@/hooks/setting';
-  import { getCollapsedShowTitle } from '/@/hooks/setting/MenuSetting';
+  import { getCollapsedShowTitle } from '/@/hooks/setting/useMenuSetting';
   import { useGo } from '/@/hooks/web/usePage';
   export default defineComponent({
     name: 'Logo',

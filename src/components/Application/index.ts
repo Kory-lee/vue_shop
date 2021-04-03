@@ -1,14 +1,6 @@
-export { default as Logo } from './src/Logo.vue';
-export { default as Provider } from './src/Provider';
-export { createProviderContext, customizePrefixCls, useProviderContext };
-export type { ProviderContextProps };
+import LocalePicker from './src/LocalePicker.vue';
+import Logo from './src/Logo.vue';
+import Provider from './src/Provider';
 
-import {
-  createProviderContext,
-  customizePrefixCls,
-  ProviderContextProps,
-  useProviderContext,
-} from './src/Provider/useAppContext';
-import createAsyncComponent from '/@/utils/factory/createAsyncComponent';
-
-export const LocalePicker = createAsyncComponent(() => import('./src/LocalePicker.vue'));
+export { useProviderContext, customizePrefixCls } from './src/Provider/useAppContext';
+export { Logo, Provider, LocalePicker };

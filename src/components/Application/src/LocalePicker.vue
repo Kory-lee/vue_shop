@@ -19,7 +19,7 @@
   import Icon from '../../Icon';
   import { useProviderContext } from './Provider/useAppContext';
   import Dropdown, { DropMenu } from '/@/components/Dropdown';
-  import { getLang, getLocaleList } from '/@/hooks/setting/LocaleSetting';
+  import { getLang, getLocaleList } from '/@/hooks/setting/useLocaleSetting';
   import { changeLocale } from '/@/hooks/web/useLocale';
   import { LocaleType } from '/@/locales/types';
 

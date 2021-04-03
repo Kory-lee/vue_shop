@@ -1,5 +1,5 @@
 import { AppRouteModule } from '../../types';
-import { t } from '/@/plugins/i18n';
+import { t } from '/@/hooks/web/useI18n';
 import { LAYOUT } from '/@/router/constant';
 
 const dashboard: AppRouteModule = {

@@ -5,7 +5,7 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { getCollapsed } from '../../../hooks/setting/MenuSetting';
+  import { getCollapsed } from '/@/hooks/setting/useMenuSetting';
   import { DoubleRightOutlined, DoubleLeftOutlined } from '@ant-design/icons-vue';
   export default defineComponent({
     name: 'SidebarTrigger',

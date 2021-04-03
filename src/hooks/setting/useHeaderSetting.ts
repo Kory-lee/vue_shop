@@ -6,8 +6,8 @@ import {
   getMenuMode,
   getShowHeaderTrigger,
   getSplit,
-} from './MenuSetting';
-import { getRealFullContent, getShowBreadCrumb, getShowLogo } from './RootSetting';
+} from './useMenuSetting';
+import { getRealFullContent, getShowBreadCrumb, getShowLogo } from './useRootSetting';
 import { MenuModeEnum } from '/@/enums/menuEnums';
 import { configStore } from '/@/store/modules';
 import { HeaderSetting } from '/@/types/config';

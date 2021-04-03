@@ -1,7 +1,7 @@
 import { computed, ref, Ref, unref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProviderContext } from '/@/components/Application';
-import { getIsHorizontal, getSplit } from '/@/hooks/setting/MenuSetting';
+import { getIsHorizontal, getSplit } from '../../../hooks/setting/useMenuSetting';
 import { MenuSplitTypeEnum } from '/@/enums/menuEnums';
 import { useThrottle } from '/@/hooks/core/useThrottle';
 import { getCurrentParentPath, getMenus, getShallowMenus } from '/@/router/menus';

@@ -7,7 +7,7 @@ import {
   getSplit,
   getTrigger,
   setMenuSetting,
-} from '../../../hooks/setting/MenuSetting';
+} from '../../../hooks/setting/useMenuSetting';
 export function sidebarEvent() {
   const initRef = ref(false),
     brokenRef = ref(false),

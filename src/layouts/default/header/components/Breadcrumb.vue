@@ -21,7 +21,7 @@
   import { useProviderContext } from '/@/components/Application';
   import Icon from '/@/components/Icon';
   import { PageEnum } from '/@/enums/pageEnum';
-  import { getShowBreadCrumbIcon } from '/@/hooks/setting/RootSetting';
+  import { getShowBreadCrumbIcon } from '/@/hooks/setting/useRootSetting';
   import { useGo } from '/@/hooks/web/usePage';
   import { REDIRECT_NAME } from '/@/router/constant';
   import { filter } from '/@/utils/helper/treeHelper';
@@ -110,6 +110,7 @@
 
 <style lang="less" scoped>
   @prefix-cls: ~'@{namespace}-layout-breadcrumb';
+
   .@{prefix-cls} {
     display: flex;
     padding: 0 8px;

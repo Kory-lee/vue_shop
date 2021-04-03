@@ -20,5 +20,3 @@
     setup() {},
   });
 </script>
-
-<style></style>

@@ -5,7 +5,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { BackTop } from 'ant-design-vue';
-import { getUseOpenBackTop } from '/@/hooks/setting/RootSetting';
+import { getUseOpenBackTop } from '../../../hooks/setting/useRootSetting';
 export default defineComponent({
   name: 'LayoutFeatures',
   components: { BackTop },

@@ -1,9 +1,9 @@
 import moment from 'moment';
 import { ref, unref } from 'vue';
 import type { Composer, I18n } from 'vue-i18n';
-import { getLang, getLocale, setLocale } from '/@/hooks/setting/LocaleSetting';
+import { getLang, getLocale, setLocale } from '../setting/useLocaleSetting';
 import { LocaleType } from '/@/locales/types';
-import i18n from '/@/plugins/i18n';
+import {i18n} from '/@/plugins/i18n';
 moment.locale('zh-cn');
 
 export const antConfigLocaleRef = ref<any>(null);

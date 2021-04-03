@@ -7,16 +7,15 @@ import { createNow, formatRequestDate, setObjToUrlParams } from './helper';
 import type { AxiosTransform, CreateAxiosOptions, Result } from './type';
 import { ContentTypeEnum, RequestEnum, ResultEnum } from '/@/enums/httpEnum';
 import { useGlobalSetting } from '/@/hooks/setting';
+import { useI18n } from '/@/hooks/web/useI18n';
 import { createMessage, createModal } from '/@/hooks/web/useMessage';
-import i18n from '/@/plugins/i18n';
 import { userStore } from '/@/store/modules';
 
 const { prefixUrl, apiUrl } = useGlobalSetting();
-console.log(useGlobalSetting());
 
 const transform: AxiosTransform<Result> = {
   transformRequestHook(res, options) {
-    const { t } = i18n.global;
+    const { t } = useI18n();
     // 不进行任何处理,直接返回
     // 用于界面代码可能需要直接获取code,data,message这些信息时开启
     if (!options.isTransformRequestResult) return res.data;
@@ -93,7 +92,7 @@ const transform: AxiosTransform<Result> = {
   },
 
   responseInterceptorsCatch(e) {
-    const { t } = i18n.global;
+    const { t } = useI18n();
     // errorS
     const { response, code, message } = e || {},
       msg: string = response?.data?.error?.message ?? '',

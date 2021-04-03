@@ -1,7 +1,7 @@
 import { PageEnum } from '/@/enums/pageEnum';
 import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '../constant';
-import { t } from '/@/plugins/i18n';
 import type { AppRouteModule, AppRouteRecordRaw } from '/@/router/types';
+import { t } from '/@/hooks/web/useI18n';
 
 const modules = import.meta.globEager('./modules/**/*.ts');
 const routeModuleList: AppRouteModule[] = [];

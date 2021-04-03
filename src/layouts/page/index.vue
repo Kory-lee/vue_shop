@@ -26,9 +26,9 @@
 <script lang="ts">
   import { computed, defineComponent, unref } from 'vue';
   import { getTransitionName } from './transition';
-  import { getShowMultipleTab } from '/@/hooks/setting/MultipleTabSetting';
-  import { getCanEmbedIFramePage, getOpenKeepAlive } from '/@/hooks/setting/RootSetting';
-  import { getBasicTransition, getEnableTransition } from '/@/hooks/setting/TransitionSetting';
+  import { getShowMultipleTab } from '../../hooks/setting/useMultipleTabSetting';
+  import { getCanEmbedIFramePage, getOpenKeepAlive } from '../../hooks/setting/useRootSetting';
+  import { getBasicTransition, getEnableTransition } from '/@/hooks/setting/useTransitionSetting';
 
   export default defineComponent({
     name: 'PageLayout',

@@ -2,9 +2,9 @@ import { Modal, notification as Notify, message } from 'ant-design-vue';
 import type { ModalFunc, ModalFuncProps } from 'ant-design-vue/lib/modal/Modal';
 import type { ArgsProps, ConfigProps } from 'ant-design-vue/lib/notification';
 import OptionList from 'ant-design-vue/lib/vc-select/OptionList';
+import { useI18n } from '../useI18n';
 import type { iconsType } from './icon.vue';
 import ModalIcon from './icon.vue';
-import i18n from '/@/plugins/i18n';
 
 export interface NotifyApi {
   info(config: ArgsProps): void;
@@ -39,7 +39,7 @@ function renderContent({ content }: Pick<ModalOptionEx, 'content'>) {
 }
 
 function getBaseOptions() {
-  const { t } = i18n.global;
+  const { t } = useI18n();
   return { okText: t('common.okText'), centered: true };
 }
 

@@ -1,5 +1,5 @@
 import { computed, Ref, toRaw, unref } from 'vue';
-import { getCollapsed, getIsMixSidebar } from '/@/hooks/setting/MenuSetting';
+import { getCollapsed, getIsMixSidebar } from '/@/hooks/setting/useMenuSetting';
 import { MenuState } from './types';
 import { MenuModeEnum } from '/@/enums/menuEnums';
 import { useTimeoutFn } from '/@/hooks/core/useTimeout';
