@@ -5,8 +5,9 @@ import useEventListener from '../event/useEventListener';
 import useBreakPoint from '../event/useBreakPoint';
 import echarts from '/@/plugins/echarts';
 import { useTimeoutFn } from '../core/useTimeout';
-import { nextTick } from '@vue/runtime-core';
+import { nextTick, watch } from '@vue/runtime-core';
 import { tryOnUnmounted } from '@vueuse/core';
+import { getCollapsed } from '../setting/useMenuSetting';
 
 export default function useEcharts(
   elRef: Ref<HTMLDivElement>,
@@ -51,6 +52,8 @@ export default function useEcharts(
   function resize() {
     chartInstance?.resize();
   }
+  watch(getCollapsed, () => resizeFn());
+
   tryOnUnmounted(() => {
     if (!chartInstance) return;
     removeResizeFn();
