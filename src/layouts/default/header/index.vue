@@ -35,7 +35,6 @@
     getShowContent,
     getShowHeaderLogo,
   } from '/@/hooks/setting/useHeaderSetting';
-  import { getShowLocale } from '/@/hooks/setting/useLocaleSetting';
   import {
     getIsMixMode,
     getIsMixSidebar,
@@ -72,7 +71,6 @@
       return {
         isMobile,
         prefixCls,
-        getShowLocale,
         headerCls,
         logoWidth,
         getShowHeaderLogo,

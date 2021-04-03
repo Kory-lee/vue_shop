@@ -7,7 +7,7 @@ import { createNow, formatRequestDate, setObjToUrlParams } from './helper';
 import type { AxiosTransform, CreateAxiosOptions, Result } from './type';
 import { ContentTypeEnum, RequestEnum, ResultEnum } from '/@/enums/httpEnum';
 import { useGlobalSetting } from '/@/hooks/setting';
-import { useI18n } from '/@/hooks/web/useI18n';
+import { useI18n } from '../../locales/useI18n';
 import { createMessage, createModal } from '/@/hooks/web/useMessage';
 import { userStore } from '/@/store/modules';
 

@@ -1,34 +1,10 @@
-import { computed } from 'vue';
-import { localeList } from '/@/settings/localeSetting';
-import projectSetting from '/@/settings/projectSetting';
-import configStore from '/@/store/modules/config';
-import { LocaleSetting } from '/@/types/config';
+import { computed, unref } from 'vue-demi';
+import { i18n } from '/@/plugins/i18n';
+import { localeStore } from '/@/store/modules/locale';
 
-export const getLocaleList = localeList;
+export const getLocale = computed(() => localeStore.getLocale);
+export const getShowLocalePicker = computed(() => localeStore.getShowPicker);
 
-export const getLocale = computed(
-  () => configStore.getProjectConfig.locale || projectSetting.locale
-);
-export const getLang = computed(() => getLocale.value.lang);
-
-export const getAvailableLocales = computed(() => getLocale.value.availableLocales);
-
-export const getFallbackLocale = computed(() => getLocale.value.fallback);
-
-export const getShowLocale = computed(() => getLocale.value.show);
-
-export function setLocale(locale: Partial<LocaleSetting>) {
-  configStore.commitProjectConfigState({ locale });
-}
-
-export function useLocaleSetting() {
-  return {
-    setLocale,
-
-    getLocale,
-    getLang,
-    getAvailableLocales,
-    getFallbackLocale,
-    getShowLocale,
-  };
-}
+export const getAntdLocale = computed(() => {
+  return i18n.global.getLocaleMessage(unref(getLocale))?.antdLocale;
+});

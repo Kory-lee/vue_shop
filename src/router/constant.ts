@@ -1,4 +1,4 @@
-import { t } from '../hooks/web/useI18n';
+import { t } from '../locales/useI18n';
 import { AppRouteRecordRaw } from './types';
 
 export const REDIRECT_NAME = 'Redirect';

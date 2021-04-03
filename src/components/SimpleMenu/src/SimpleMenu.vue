@@ -48,7 +48,7 @@
       collapsedShowTitle: Boolean,
       beforeClickFn: { type: Function as PropType<(key: string) => Promise<boolean>> },
     },
-    emits: ['menu-click'],
+    emits: ['menuClick'],
     setup(props, { emit }) {
       const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('simple-menu'),
@@ -105,7 +105,7 @@
           const flag = await beforeClickFn(key);
           if (!flag) return;
         }
-        emit('menu-click', key);
+        emit('menuClick', key);
         isClickGo.value = true;
         setOpenKeys(key);
         menuState.activeName = key;

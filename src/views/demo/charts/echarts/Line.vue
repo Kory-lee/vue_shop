@@ -1,8 +1,4 @@
-<template>
-  <div ref="chartRef" :style="{ height, width }"></div>
-</template>
-
-<script lang="ts">
+<script lang="tsx">
   import { defineComponent, onMounted, Ref, ref } from '@vue/runtime-core';
   import useEcharts from '/@/hooks/web/useEcharts';
   import { getLineData } from '../data';
@@ -11,7 +7,7 @@
       width: { type: String, default: '100%' },
       height: { type: String, default: '100%' },
     },
-    setup() {
+    setup(props) {
       const chartRef = ref<HTMLDivElement | null>(null),
         { setOptions, echarts } = useEcharts(chartRef as Ref<HTMLDivElement>),
         { barData, lineData, category } = getLineData;
@@ -95,9 +91,7 @@
           ],
         });
       });
-      return { chartRef };
+      return () => <div ref={chartRef} style={props} />;
     },
   });
 </script>
-
-<style></style>

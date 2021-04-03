@@ -2,14 +2,14 @@
   <Dropdown
     placement="bottomCenter"
     :trigger="['click']"
-    :dropMenuList="getLocaleList"
+    :dropMenuList="localeList"
     :selectedKeys="selectedKeys"
     @menuEvent="handleMenuEvent"
     :overlayClassName="`${prefixCls}-overlay`"
   >
-    <span :class="prefixCls">
+    <span class="curose-pointer flex items-center">
       <Icon icon="ion:language" :size="size" />
-      <span v-if="showText" :class="`${prefixCls}__text`">{{ getLangText }}</span>
+      <span v-if="showText" class="ml-1">{{ getLangText }}</span>
     </span>
   </Dropdown>
 </template>
@@ -19,14 +19,19 @@
   import Icon from '../../Icon';
   import { useProviderContext } from './Provider/useAppContext';
   import Dropdown, { DropMenu } from '/@/components/Dropdown';
-  import { getLang, getLocaleList } from '/@/hooks/setting/useLocaleSetting';
-  import { changeLocale } from '/@/hooks/web/useLocale';
+  import { getLocale } from '/@/hooks/setting/useLocaleSetting';
   import { LocaleType } from '/@/locales/types';
+  import { changeLocale } from '/@/locales/useI18n';
+  import { localeList } from '/@/settings/localeSetting';
 
   export default defineComponent({
     name: 'LocalePicker',
     components: { Dropdown, Icon },
-    props: { showText: { type: Boolean, default: true }, reload: Boolean, size: [String, Number] },
+    props: {
+      showText: { type: Boolean, default: true },
+      reload: Boolean,
+      size: [String, Number],
+    },
     setup(props) {
       const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('locale-picker'),
@@ -35,25 +40,25 @@
       const getLangText = computed(() => {
         const key = unref(selectedKeys)[0];
         if (!key) return '';
-        return unref(getLocaleList).find((item) => item.event === key)?.text;
+        return localeList.find((item) => item.event === key)?.text;
       });
 
       watchEffect(() => {
-        selectedKeys.value = [unref(getLang)];
+        selectedKeys.value = [unref(getLocale)];
       });
 
-      function toggleLocale(lang: LocaleType | string) {
-        changeLocale(lang as LocaleType);
+      async function toggleLocale(lang: LocaleType | string) {
+        await changeLocale(lang as LocaleType);
         selectedKeys.value = [lang as string];
         props.reload && location.reload();
       }
 
       function handleMenuEvent(menu: DropMenu) {
-        if (unref(getLang) === menu.event) return;
+        if (unref(getLocale) === menu.event) return;
         toggleLocale(menu.event as string);
       }
 
-      return { prefixCls, getLocaleList, getLangText, handleMenuEvent, selectedKeys };
+      return { localeList, prefixCls, getLangText, handleMenuEvent, selectedKeys };
     },
   });
 </script>
@@ -64,16 +69,6 @@
   :global(.@{prefix-cls}-overlay) {
     .ant-dropdown-menu-item {
       min-width: 160px;
-    }
-  }
-
-  .@{prefix-cls} {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-
-    &__text {
-      margin-left: 6px;
     }
   }
 </style>

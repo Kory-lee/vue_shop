@@ -83,8 +83,8 @@ const setting: ProjectConfig = {
   lockTime: 0,
   showBreadCrumb: true,
   showBreadCrumbIcon: false,
-  //TODO
-  useErrorHandle: isProdMode(),
+
+  useErrorHandle: false,
   useOpenBackTop: true,
   canEmbedIFramePage: true,
   closeMessageOnSwitch: true,

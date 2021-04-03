@@ -1,6 +1,6 @@
 import { LAYOUT } from '../../constant';
 import type { AppRouteModule } from '/@/router/types';
-import { t } from '/@/hooks/web/useI18n';
+import { t } from '../../../locales/useI18n';
 export default {
   path: '/home',
   name: 'Home',
