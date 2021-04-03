@@ -1,7 +1,6 @@
 import legacy from '@vitejs/plugin-legacy';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import { ViteEnv } from 'utils';
 import type { Plugin } from 'vite';
 import PurgeIcons from 'vite-plugin-purge-icons';
 import configHtmlPlugin from './html';

@@ -1,4 +1,3 @@
-import { ViteEnv } from 'utils';
 import { Plugin } from 'vite';
 import html from 'vite-plugin-html';
 import pkg from '../../../package.json';
