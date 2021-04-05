@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isMobile && getMenuFixed" :style="getHiddenDomStyle" v-show="showClassSidebarRef" />
+  <div v-if="!isMobile && getMenuFixed" v-show="showClassSidebarRef" :style="getHiddenDomStyle" />
   <Sider
     v-show="showClassSidebarRef"
     ref="sideRef"
@@ -63,9 +63,10 @@
             [`${prefixCls}--mix`]: unref(getIsMixMode) && !unref(isMobile),
           },
         ]),
+        // BUG
         getHiddenDomStyle = computed(
           (): CSSProperties => {
-            const width = `${unref(isMobile) ? 0 : unref(getRealWidth)}px`;
+            const width = `${unref(getRealWidth)}px`;
             return {
               width,
               overflow: `hidden`,

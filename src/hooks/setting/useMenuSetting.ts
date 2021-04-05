@@ -69,7 +69,7 @@ export const getRealWidth = computed(() => {
   if (unref(getIsMixSidebar))
     return unref(getCollapsed) && !unref(getMixSideFixed)
       ? unref(getMinWidthNumber)
-      : unref(getMenuSetting);
+      : unref(getMenuWidth);
   return unref(getCollapsed) ? unref(getMinWidthNumber) : unref(getMenuWidth);
 });
 
