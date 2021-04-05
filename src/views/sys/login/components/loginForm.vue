@@ -41,7 +41,7 @@
       <Col :xs="24" :md="7">
         <Button block>{{ t('sys.login.mobileSignInFormTitle') }}</Button>
       </Col>
-      <Col :xs="24" :md="{ span: 8, offset: 1 }" class="xs:my-2 md:my-0">
+      <Col :xs="24" :md="{ span: 8, offset: 1 }" class="-md:my-2">
         <Button block>{{ t('sys.login.qrSignInFormTitle') }}</Button>
       </Col>
       <Col :xs="24" :md="{ span: 7, offset: 1 }">
