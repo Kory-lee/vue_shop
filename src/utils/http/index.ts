@@ -64,8 +64,8 @@ const transform: AxiosTransform<Result> = {
 
     const params = config.params || {};
     if (config.method?.toUpperCase() === RequestEnum.GET) {
-      // 给get请求加上时间戳参数,避免从黄聪中拿数据
-      if (!isString(params)) config.params = Object.assign(params, createNow(joinTime, true));
+      // 给get请求加上时间戳参数,避免从缓存中拿数据
+      if (!isString(params)) config.params = Object.assign(params, createNow(joinTime, false));
       else {
         // 兼容restful风格
         config.url = config.url + params + `${createNow(joinTime, true)}`;
@@ -76,13 +76,12 @@ const transform: AxiosTransform<Result> = {
         formatData && formatRequestDate(params);
         config.data = params;
         config.params = undefined;
-        if (joinParamsToUrl) config.url = setObjToUrlParams(config.url, config.data);
+        if (joinParamsToUrl) config.url = setObjToUrlParams(config.url as string, config.data);
       } else {
         config.url = config.url + params;
         config.params = undefined;
       }
     }
-
     return config;
   },
   requestInterceptors(config) {

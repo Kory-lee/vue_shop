@@ -32,7 +32,7 @@ const fakeCodeList: any = {
 export default [
   // mock user login
   {
-    url: '/api/login',
+    url: '/basic-api/login',
     timeout: 200,
     method: 'post',
     response: ({ body }) => {
@@ -55,7 +55,7 @@ export default [
     },
   },
   {
-    url: '/api/getUserInfoById',
+    url: '/basic-api/getUserInfoById',
     method: 'get',
     response: ({ query }) => {
       const { userId } = query;
@@ -67,7 +67,7 @@ export default [
     },
   },
   {
-    url: '/api/getPermCodeByUserId',
+    url: '/basic-api/getPermCodeByUserId',
     timeout: 200,
     method: 'get',
     response: ({ query }) => {

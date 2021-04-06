@@ -20,8 +20,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
   const root = process.cwd(),
     env = loadEnv(mode, root),
     viteEnv = wrapperEnv(env),
-    { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY, VITE_DROP_CONSOLE } = viteEnv,
-    isBuild = command === 'build';
+    { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY, VITE_DROP_CONSOLE } = viteEnv;
+  const isBuild = command === 'build';
 
   return {
     base: VITE_PUBLIC_PATH,
@@ -30,7 +30,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     server: {
       port: VITE_PORT,
       proxy: createProxy(VITE_PROXY),
-      hmr: { overlay: true },
     },
     build: {
       target: 'es2015',

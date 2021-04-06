@@ -8,10 +8,12 @@ import chalk from 'chalk';
 import pkg from '../../package.json';
 import getConfigFileName from '../getConfigFileName';
 
-function createConfig({ configName, config, configFileName = GLOBAL_CONFIG_FILE_NAME }) {
+function createConfig(
+  { configName, config, configFileName = GLOBAL_CONFIG_FILE_NAME } = { configName: '', config: {} }
+) {
   try {
     const windowConf = `window.${configName}`;
-    const configStr = `${windowConf}=${JSON.stringify(config)}
+    const configStr = `${windowConf}=${JSON.stringify(config)};
       Object.freeze(${windowConf});
       Object.defineProperty(window, "${configName}", {
         configurable: false,
