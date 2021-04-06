@@ -21,7 +21,9 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   VITE_USE_MOCK && vitePlugins.push(configMockPlugin(isBuild));
 
   vitePlugins.push(PurgeIcons());
-  vitePlugins.push(configStyleImportPlugin());
+
+  vitePlugins.push(configStyleImportPlugin(isBuild));
+
   if (isBuild) {
     VITE_USE_IMAGEMIN;
 
