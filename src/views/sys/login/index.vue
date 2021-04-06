@@ -3,11 +3,11 @@
     <LocalePicker
       class="absolute top-4 right-4 text-white xl:text-gray-600 text-lg enter-x"
       size="20"
-      :showText="false"
+      :show-text="false"
     />
 
     <span class="-enter-x xl:hidden">
-      <Logo :alwaysShowTitle="true" />
+      <Logo :always-show-title="true" />
     </span>
 
     <div class="container relative h-full py-2 mx-auto sm:px-10">
@@ -37,26 +37,31 @@
 </template>
 
 <script lang="ts">
-  import { Checkbox } from 'ant-design-vue';
   import { computed, defineComponent } from 'vue';
   import { useI18n } from 'vue-i18n';
   import LoginBg from '/@/assets/svg/login-box-bg.svg';
   import { Logo, useProviderContext } from '/@/components/Application';
-  import { useGlobalSetting, useProjectSetting } from '/@/hooks/setting';
+  import { useGlobalSetting } from '/@/hooks/setting';
   import { LocalePicker } from '/@/components/Application';
   import LoginForm from './components/loginForm.vue';
+  import { localeStore } from '/@/store/modules/locale';
   export default defineComponent({
     name: 'Login',
-    components: { ACheckbox: Checkbox, Logo, LocalePicker, LoginForm },
+    components: { Logo, LocalePicker, LoginForm },
     setup() {
       useGlobalSetting;
       const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('login'),
         { t } = useI18n(),
-        { title } = useGlobalSetting(),
-        { locale } = useProjectSetting();
+        globalSetting = useGlobalSetting();
 
-      return { prefixCls, t, title, showLocale: computed(() => locale.show), LoginBg };
+      return {
+        prefixCls,
+        t,
+        title: computed(() => globalSetting?.title ?? ''),
+        showLocale: localeStore.getShowPicker,
+        LoginBg,
+      };
     },
   });
 </script>
