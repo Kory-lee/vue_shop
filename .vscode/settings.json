@@ -41,5 +41,6 @@
       "semi": false,
       "singleQuote": true
     }
-  }
+  },
+  "liveServer.settings.port": 5501
 }
