@@ -1,7 +1,6 @@
-import { Modal, notification as Notify, message } from 'ant-design-vue';
+import { Modal, notification, message } from 'ant-design-vue';
 import type { ModalFunc, ModalFuncProps } from 'ant-design-vue/lib/modal/Modal';
 import type { ArgsProps, ConfigProps } from 'ant-design-vue/lib/notification';
-import OptionList from 'ant-design-vue/lib/vc-select/OptionList';
 import { useI18n } from '../../../locales/useI18n';
 import type { iconsType } from './icon.vue';
 import ModalIcon from './icon.vue';
@@ -64,11 +63,11 @@ export function createModal(opt: ModalOptionsPartial) {
   return (Modal[`${opt.iconType}`] as ModalFunc)(createModalOptions(opt));
 }
 
-Notify.config({
+notification.config({
   placement: 'topRight',
   duration: 3,
 });
 
-export const notification: NotifyApi = Notify;
-
 export { message as createMessage };
+
+export { notification };

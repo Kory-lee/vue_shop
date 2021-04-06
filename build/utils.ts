@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
+
 export function wrapperEnv(envConfig: any): ViteEnv {
   const ret: any = [];
   for (const envName of Object.keys(envConfig)) {
@@ -13,4 +17,25 @@ export function wrapperEnv(envConfig: any): ViteEnv {
     process.env[envName] = realName;
   }
   return ret;
+}
+
+// get the environment variable starting with the specified prefix
+export function getEnvConfig(match = 'VITE_GLOBAL', configFiles = ['.env', '.env.production']) {
+  let envConfig = {};
+  configFiles.forEach((item) => {
+    try {
+      const env = dotenv.parse(fs.readFileSync(path.resolve(process.cwd(), item)));
+      envConfig = { ...envConfig, ...env };
+    } catch {}
+  });
+  Object.keys(envConfig).forEach((key) => {
+    const reg = new RegExp(`^(${match})`);
+    if (!reg.test(key)) Reflect.deleteProperty(envConfig, key);
+  });
+
+  return envConfig;
+}
+
+export function getRootPath(...dir: string[]) {
+  return path.resolve(process.cwd(), ...dir);
 }

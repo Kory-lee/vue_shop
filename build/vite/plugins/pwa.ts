@@ -1,4 +1,3 @@
-import { ViteEnv } from 'utils';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default function configPwaConfig(env: ViteEnv) {

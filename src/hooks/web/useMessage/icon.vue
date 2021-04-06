@@ -20,7 +20,7 @@
   });
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .modal-icon-warning {
     color: @warning-color !important;
   }

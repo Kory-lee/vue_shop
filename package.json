@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && esno ./build/script/index.ts",
     "clean:cache": "rimraf node_modules/.cache/ && rimraf node_modules/.vite",
     "clean:lib": "npx rimraf node_modules",
     "lint:eslint": "eslint \"{src,mock}/**/*.{vue,ts,tsx}\" --fix",
@@ -45,6 +45,7 @@
     "@iconify/json": "^1.1.325",
     "@purge-icons/generated": "^0.7.0",
     "@types/crypto-js": "^4.0.1",
+    "@types/fs-extra": "^9.0.10",
     "@types/http-proxy": "^1.17.5",
     "@types/lodash-es": "^4.17.4",
     "@types/mockjs": "^1.0.3",
@@ -70,6 +71,8 @@
     "eslint-define-config": "^1.0.7",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^7.8.0",
+    "esno": "^0.5.0",
+    "fs-extra": "^9.1.0",
     "less": "^4.1.1",
     "postcss": "^8.2.9",
     "prettier": "^2.2.1",
@@ -93,6 +96,10 @@
     "vue-eslint-parser": "^7.6.0"
   },
   "resolutions": {
-    "bin-wrapper": "npm:bin-wrapper-china"
+    "bin-wrapper": "npm:bin-wrapper-china",
+    "rollup": "^2.44.0"
+  },
+  "engines": {
+    "node": "^12 || >=14"
   }
 }
