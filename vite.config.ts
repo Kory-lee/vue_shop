@@ -66,7 +66,13 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     },
     plugins: createVitePlugins(viteEnv, isBuild),
     optimizeDeps: {
-      include: ['@iconify/iconify', 'moment/dist/locale/zh-cn', 'moment/dist/locale/eu'],
+      include: [
+        '@iconify/iconify',
+        'moment/dist/locale/zh-cn',
+        'moment/dist/locale/eu',
+        'ant-design-vue/es/locale/zh_CN',
+        'ant-design-vue/es/locale/en_US',
+      ],
     },
   };
 };
