@@ -1,7 +1,7 @@
 <template>
   <li :class="getClass">
     <template v-if="!getCollapse">
-      <div :class="`${prefixCls}-submenu-title`" @click.stop="handleClick" :style="getItemStyle">
+      <div :class="`${prefixCls}-submenu-title`" :style="getItemStyle" @click.stop="handleClick">
         <slot name="title" />
         <Icon
           icon="eva:arrow-ios-downward-outline"
@@ -9,7 +9,7 @@
           :class="`${prefixCls}-submenu-title-icon`"
         />
       </div>
-      <ul :class="prefixCls" v-show="opened">
+      <ul v-show="opened" :class="prefixCls">
         <slot />
       </ul>
     </template>
@@ -39,7 +39,7 @@
         />
       </div>
       <template #content>
-        <div v-bind="getEvents(true)" v-show="opened">
+        <div v-show="opened" v-bind="getEvents(true)">
           <ul :class="[prefixCls, `${prefixCls}-${getTheme}`, `${prefixCls}-popup`]">
             <slot />
           </ul>
@@ -74,12 +74,12 @@
 
   export default defineComponent({
     name: 'SubMenu',
+    components: { Icon, Popover },
     props: {
       name: { type: [String, Number], required: true },
       disabled: Boolean,
       collapsedShowTitle: Boolean,
     },
-    components: { Icon, Popover },
     setup(props) {
       const { rootMenuEmitter } = useSimpleRootMenuContext(),
         instance = getCurrentInstance(),

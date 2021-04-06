@@ -7,30 +7,23 @@ import {
   getSplit,
   getTrigger,
   setMenuSetting,
-} from '../../../hooks/setting/useMenuSetting';
-export function sidebarEvent() {
-  const initRef = ref(false),
-    brokenRef = ref(false),
-    collapseRef = ref(true),
-    getCollapsedWidth = computed(() => (unref(brokenRef) ? 0 : unref(getMinWidthNumber)));
+} from '/@/hooks/setting/useMenuSetting';
 
-  function onCollapseChange(val: boolean) {
-    if (unref(initRef)) {
-      collapseRef.value = val;
-      setMenuSetting({ collapsed: val });
-    } else !unref(getCollapsed) && setMenuSetting({ collapsed: val });
-    initRef.value = true;
-  }
+export function useSidebarEvent() {
+  const brokenRef = ref(false),
+    getCollapsedWidth = computed(() => (unref(brokenRef) ? 0 : unref(getMinWidthNumber)));
 
   function onBreakpointChange(broken: boolean) {
     brokenRef.value = broken;
   }
-  return { getCollapsedWidth, onCollapseChange, onBreakpointChange };
+
+  return { getCollapsedWidth, onBreakpointChange };
 }
 
 export function useTrigger(isMobile: Ref<boolean>) {
   const getShowTrigger = computed(() => {
       const trigger = unref(getTrigger);
+
       return (
         trigger !== TriggerEnum.NONE &&
         !unref(isMobile) &&
@@ -54,13 +47,14 @@ export function createDragLine(sidebarRef: Ref<any>, dragBarRef: Ref<any>, mix =
   function getEl(elRef: Ref<ElRef | ComponentRef>): any {
     const el = unref(elRef);
     if (!el) return null;
+
     if (Reflect.has(el, '$el')) return (el as ComponentElRef)?.$el;
     return el;
   }
 
   function handleMouseMove(el: HTMLElement, wrap: HTMLElement, clientX: number) {
     document.onmousemove = function (innerE) {
-      let iT = (el as any).left + innerE.clientX - clientX;
+      let iT: number = (el as any).left + (innerE.clientX - clientX);
       innerE = innerE || window.event;
       const maxT = 800,
         minT = unref(getMinWidthNumber);
@@ -71,7 +65,7 @@ export function createDragLine(sidebarRef: Ref<any>, dragBarRef: Ref<any>, mix =
       return false;
     };
   }
-
+  // drag and drop in the menu area-release the mouse
   function removeMouseup(el: any) {
     const wrap = getEl(sidebarRef);
     document.onmouseup = function () {
@@ -79,6 +73,7 @@ export function createDragLine(sidebarRef: Ref<any>, dragBarRef: Ref<any>, mix =
       document.onmouseup = null;
       wrap.style.transition = 'width 0.2s';
       const width = parseInt(wrap.style.width);
+
       if (!mix) {
         const minWith = unref(getMinWidthNumber);
         if (!unref(getCollapsed))
@@ -87,8 +82,7 @@ export function createDragLine(sidebarRef: Ref<any>, dragBarRef: Ref<any>, mix =
             : setMenuSetting({ collapsed: true });
         else width > minWith && setMenuSetting({ collapsed: false, menuWidth: width });
       } else setMenuSetting({ menuWidth: width });
-      // TODO Non-standard see https://developer.mozilla.org/en-US/docs/Web/API/Document/releaseCapture
-      // only <= iE 5
+      // Non-standard see https://developer.mozilla.org/en-US/docs/Web/API/Document/releaseCapture
       el.releaseCapture?.();
     };
   }

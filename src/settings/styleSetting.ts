@@ -1,3 +1,3 @@
-export default{
-  prefixCls:'kory'
-}
+export default {
+  prefixCls: 'kory',
+};

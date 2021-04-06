@@ -1,6 +1,6 @@
 import { useI18n } from '../../locales/useI18n';
 import { createMessage } from '/@/hooks/web/useMessage';
-const error = createMessage.error!;
+const error = createMessage.error;
 type errType = 400 | 401 | 403 | 404 | 405 | 408 | 500 | 501 | 502 | 503 | 504 | 505;
 
 export default function checkStatus(status: errType, msg: string): void {

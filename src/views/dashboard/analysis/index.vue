@@ -11,8 +11,8 @@
   import { defineComponent } from '@vue/runtime-core';
   import { Row, Col } from 'ant-design-vue';
   export default defineComponent({
-    components: { Row, Col },
     name: 'Analysis',
+    components: { Row, Col },
     setup() {
       console.log('ana');
     },

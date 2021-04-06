@@ -6,10 +6,11 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import 'windi.css';
   import { getAntdLocale } from './hooks/setting/useLocaleSetting';
   import { Provider } from '/@/components/Application';
   import { initConfigStore } from '/@/logics/init';
+
+  import '@virtual/windi.css';
 
   export default defineComponent({
     name: 'App',

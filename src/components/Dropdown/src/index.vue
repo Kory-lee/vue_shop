@@ -2,14 +2,14 @@
   <a-dropdown :trigger="trigger" v-bind="$attrs">
     <span> <slot /> </span>
     <template #overlay>
-      <a-menu :selectedKeys="selectedKeys">
+      <a-menu :selected-keys="selectedKeys">
         <template v-for="item in getMenuList" :key="`${item.event}`">
           <a-menu-item
             v-bind="getAttr(`${item.event}`)"
-            @click="handleClickMenu(item)"
             :disabled="item.disabled"
+            @click="handleClickMenu(item)"
           >
-            <Icon :icon="item.icon" v-if="item.icon" />
+            <Icon v-if="item.icon" :icon="item.icon" />
             <span class="ml-1">{{ item.text }}</span>
           </a-menu-item>
           <a-menu-divider v-if="item.divider" :key="`d-${item.event}`" />

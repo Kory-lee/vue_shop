@@ -7,22 +7,23 @@ import configHtmlPlugin from './html';
 import configMockPlugin from './mock';
 import configPwaConfig from './pwa';
 import configStyleImportPlugin from './styleImport';
-import configWindiCssPlugin from './windicss';
+import configWindiCSSPlugin from './windicss';
 
 export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   const { VITE_USE_MOCK, VITE_LEGACY, VITE_USE_IMAGEMIN } = viteEnv,
     vitePlugins: (Plugin | Plugin[])[] = [vue(), vueJsx()];
 
   VITE_LEGACY && isBuild && vitePlugins.push(legacy());
+
   vitePlugins.push(configHtmlPlugin(viteEnv, isBuild));
 
-  vitePlugins.push(configWindiCssPlugin());
+  vitePlugins.push(configWindiCSSPlugin());
 
   VITE_USE_MOCK && vitePlugins.push(configMockPlugin(isBuild));
 
   vitePlugins.push(PurgeIcons());
 
-  vitePlugins.push(configStyleImportPlugin(isBuild));
+  vitePlugins.push(configStyleImportPlugin());
 
   if (isBuild) {
     VITE_USE_IMAGEMIN;

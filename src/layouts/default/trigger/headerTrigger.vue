@@ -14,7 +14,12 @@
   export default defineComponent({
     name: 'HeaderTrigger',
     components: { MenuUnfoldOutlined, MenuFoldOutlined },
-    props: { theme: { type: String as PropType<'light' | 'dark'> } },
+    props: {
+      theme: {
+        type: String as PropType<'light' | 'dark'>,
+        default: 'light',
+      },
+    },
     emits: ['click'],
     setup() {
       const { getPrefixCls } = useProviderContext();

@@ -43,5 +43,4 @@ declare global {
     VITE_LEGACY: boolean;
     VITE_USE_IMAGEMIN: boolean;
   }
-
 }

@@ -3,10 +3,10 @@
     v-if="isMobile"
     placement="left"
     :class="prefixCls"
-    :visible="!getCollapsed"
-    @close="handleClose"
-    :getContainer="null"
     :width="getMenuWidth"
+    :visible="!getCollapsed"
+    :get-container="null"
+    @close="handleClose"
   >
     <MaxSidebar />
   </Drawer>
@@ -53,7 +53,7 @@
   });
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   @prefix-cls: ~'@{namespace}-layout-sider-wrapper';
   .@{prefix-cls} {
     .ant-drawer-body {

@@ -2,10 +2,10 @@
   <Dropdown
     placement="bottomCenter"
     :trigger="['click']"
-    :dropMenuList="localeList"
-    :selectedKeys="selectedKeys"
+    :drop-menu-list="localeList"
+    :selected-keys="selectedKeys"
+    :overlay-class-name="`${prefixCls}-overlay`"
     @menuEvent="handleMenuEvent"
-    :overlayClassName="`${prefixCls}-overlay`"
   >
     <span class="curose-pointer flex items-center">
       <Icon icon="ion:language" :size="size" />

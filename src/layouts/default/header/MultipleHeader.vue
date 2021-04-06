@@ -1,5 +1,5 @@
 <template>
-  <div :style="getPlaceholderDomStyle" v-if="getIsShowPlaceholderDom"></div>
+  <div v-if="getIsShowPlaceholderDom" :style="getPlaceholderDomStyle"></div>
   <div :style="getWrapStyle" :class="getClass">
     <LayoutHeader v-if="getShowInsetHeaderRef" />
     <!-- MultipleT -->
@@ -20,7 +20,7 @@
   } from '/@/hooks/setting/useHeaderSetting';
   import { getCalcContentWidth, getSplit } from '/@/hooks/setting/useMenuSetting';
   import { getShowMultipleTab } from '/@/hooks/setting/useMultipleTabSetting';
-import { getRealFullContent } from '/@/hooks/setting/useRootSetting';
+  import { getRealFullContent } from '/@/hooks/setting/useRootSetting';
   const HEADER_HEIGHT = 48,
     TABS_HEIGHT = 32;
   export default defineComponent({

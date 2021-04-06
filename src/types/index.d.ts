@@ -5,7 +5,6 @@ declare interface PromiseFn<T = any, R = T> {
   (...args: T[]): Promise<R>;
 }
 
-
 declare interface ComponentElRef<T extends HTMLElement = HTMLDivElement> {
   $el: T;
 }

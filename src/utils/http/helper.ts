@@ -4,7 +4,7 @@ import { isObject, isString } from '../is';
 export function createNow<T extends boolean>(
   join: boolean,
   restful: T
-): T extends true ? string : object;
+): T extends true ? string : Record<string, unknown>;
 
 export function createNow(join: boolean, restful = false) {
   if (!join) return restful ? '' : {};

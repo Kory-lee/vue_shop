@@ -50,7 +50,7 @@ export default function useSplitMenu(splitType: Ref<MenuSplitTypeEnum>) {
     // TODO split menu
   }
   async function genMenus() {
-    if (unref(normalType || unref(isMobile))) {
+    if (unref(normalType.value || unref(isMobile))) {
       menusRef.value = await getMenus();
       return;
     }

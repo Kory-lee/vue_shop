@@ -1,10 +1,10 @@
 <template>
   <Menu
     v-bind="$attrs"
-    :activeName="activeName"
-    :openNames="getOpenKeys"
+    :active-name="activeName"
+    :open-names="getOpenKeys"
     :class="prefixCls"
-    :activeSubMenuNames="activeSubMenuNames"
+    :active-sub-menu-names="activeSubMenuNames"
     :collapse="collapse"
     :theme="theme"
     :accordion="accordion"
@@ -15,7 +15,7 @@
         :item="item"
         :parent="true"
         :collapse="collapse"
-        :collapsedShowTitle="collapsedShowTitle"
+        :collapsed-show-title="collapsedShowTitle"
       />
     </template>
   </Menu>

@@ -105,7 +105,7 @@ class Permission extends VuexModule {
 
       if (!paramId) throw new Error('paramId is undefined');
 
-      let routeList = (await getMenuListById({ id: paramId })) as AppRouteRecordRaw[];
+      const routeList = (await getMenuListById({ id: paramId })) as AppRouteRecordRaw[];
       //TODO  routeList = transformO
 
       routes = [PAGE_NOT_FOUND_ROUTE, ...routeList];

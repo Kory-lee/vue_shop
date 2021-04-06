@@ -1,7 +1,7 @@
 <template>
   <Layout :class="prefixCls">
     <LayoutFeature />
-    <LayoutHeader fixed v-if="getShowFullHeaderRef" />
+    <LayoutHeader v-if="getShowFullHeaderRef" fixed />
     <Layout :class="{ 'ant-layout-has-sider': getIsMixSidebar }">
       <LayoutSidebar v-if="getShowSidebar || isMobile" />
       <Layout :class="`${prefixCls}__main`">

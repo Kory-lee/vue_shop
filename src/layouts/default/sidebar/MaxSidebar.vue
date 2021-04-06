@@ -7,18 +7,17 @@
     collapsible
     :class="getSidebarClass"
     :width="getMenuWidth"
-    :collapsed="isMobile ? false : getCollapsed"
-    :collapsedWidth="getCollapsedWidth"
+    :collapsed="getCollapsed"
+    :collapsed-width="getCollapsedWidth"
     :theme="getMenuTheme"
-    @collapse="onCollapseChange"
-    @breakpoint="onBreakpointChange"
     v-bind="getTriggerAttr"
+    @breakpoint="onBreakpointChange"
   >
     <!-- TODO doesn't work -->
-    <template #trigger v-if="getShowTrigger">
+    <template v-if="getShowTrigger" #trigger>
       <LayoutTrigger />
     </template>
-    <LayoutMenu :theme="getMenuTheme" :menuMode="getMode" :splitType="getSplitType" />
+    <LayoutMenu :theme="getMenuTheme" :menu-mode="getMode" :split-type="getSplitType" />
   </Sider>
 </template>
 
@@ -27,7 +26,7 @@
   import { computed, CSSProperties, defineComponent, ref, unref } from 'vue';
   import LayoutMenu from '../menu/index.vue';
   import LayoutTrigger from '../trigger/index.vue';
-  import { createDragLine, sidebarEvent, useTrigger } from './utils';
+  import { createDragLine, useSidebarEvent, useTrigger } from './useLayoutSidebar';
   import { useProviderContext } from '/@/components/Application';
   import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnums';
   import {
@@ -46,12 +45,15 @@
     components: { Sider: Layout.Sider, LayoutTrigger, LayoutMenu },
     setup() {
       const dragBarRef = ref<ElRef>(null),
-        sidebarRef = ref<ElRef>(null),
-        { isMobile, getPrefixCls } = useProviderContext(),
-        prefixCls = getPrefixCls('layout-sidebar'),
-        { getTriggerAttr, getShowTrigger } = useTrigger(isMobile),
-        { getCollapsedWidth, onBreakpointChange, onCollapseChange } = sidebarEvent(),
-        getMode = computed(() => (unref(getSplit) ? MenuModeEnum.INLINE : null)),
+        sidebarRef = ref<ElRef>(null);
+
+      const { isMobile, getPrefixCls } = useProviderContext(),
+        prefixCls = getPrefixCls('layout-sidebar');
+
+      const { getTriggerAttr, getShowTrigger } = useTrigger(isMobile),
+        { getCollapsedWidth, onBreakpointChange } = useSidebarEvent();
+
+      const getMode = computed(() => (unref(getSplit) ? MenuModeEnum.INLINE : null)),
         getSplitType = computed(() =>
           unref(getSplit) ? MenuSplitTypeEnum.LEFT : MenuSplitTypeEnum.NONE
         ),
@@ -95,7 +97,6 @@
         onBreakpointChange,
         getMode,
         getSplitType,
-        onCollapseChange,
         getShowTrigger,
       };
     },
@@ -107,12 +108,14 @@
 
   .@{prefix-cls} {
     z-index: @layout-sider-fixed-z-index;
+
     &--fixed {
       position: fixed;
       top: 0;
       left: 0;
       height: 100%;
     }
+
     &--mix {
       top: @header-height;
       height: calc(100% - @header-height);

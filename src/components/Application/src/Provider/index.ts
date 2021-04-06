@@ -6,8 +6,8 @@ import styleSetting from '/@/settings/styleSetting';
 
 export default defineComponent({
   name: 'Provider',
-  inheritAttrs: false,
   components: { ConfigProvider },
+  inheritAttrs: false,
   props: {
     prefixCls: { type: String as PropType<string>, default: styleSetting.prefixCls },
     // locale: ConfigProvider.props.locale,

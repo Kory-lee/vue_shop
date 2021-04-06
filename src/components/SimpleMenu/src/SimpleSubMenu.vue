@@ -1,7 +1,7 @@
 <template>
   <MenuItem
-    :name="item.path"
     v-if="!menuHasChildren(item) && getShowMenu"
+    :name="item.path"
     v-bind="$props"
     :class="getLevelClass"
   >
@@ -16,10 +16,10 @@
     </template>
   </MenuItem>
   <SubMenuItem
-    :name="item.path"
     v-if="menuHasChildren(item) && getShowMenu"
+    :name="item.path"
     :class="[getLevelClass, theme]"
-    :collapsedShowTitle="collapsedShowTitle"
+    :collapsed-show-title="collapsedShowTitle"
   >
     <template #title>
       <Icon v-if="getIcon" :icon="getIcon" :size="16" />

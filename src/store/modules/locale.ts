@@ -39,4 +39,4 @@ class Locale extends VuexModule {
   }
 }
 
-export const localeStore =  getModule<Locale>(Locale);
+export const localeStore = getModule<Locale>(Locale);

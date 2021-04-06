@@ -2,15 +2,15 @@
   <h2 class="font-bold text-2xl xl:text-3xl enter-x text-center xl:text-left mb-6">
     {{ getFormTitle }}
   </h2>
-  <Form class="p-4 enter-x" :model="formData" ref="formRef" v-show="getShow">
+  <Form v-show="getShow" ref="formRef" class="p-4 enter-x" :model="formData">
     <FormItem name="account" class="enter-x">
-      <Input size="large" v-model:value="formData.account" :placeholder="t('sys.login.username')" />
+      <Input v-model:value="formData.account" size="large" :placeholder="t('sys.login.username')" />
     </FormItem>
     <FormItem name="password" class="enter-x">
       <InputPassword
-        size="large"
-        visibilityToggle
         v-model:value="formData.password"
+        size="large"
+        visibility-toggle
         :placeholder="t('sys.login.password')"
       />
     </FormItem>
@@ -32,7 +32,7 @@
     </Row>
 
     <FormItem class="enter-x">
-      <Button type="primary" size="large" block @click="handleLogin" :loading="loading">
+      <Button type="primary" size="large" block :loading="loading" @click="handleLogin">
         {{ t('sys.login.loginButton') }}
       </Button>
     </FormItem>

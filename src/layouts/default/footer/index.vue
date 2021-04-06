@@ -1,5 +1,5 @@
 <template>
-  <AFooter :class="prefixCls" v-if="getShowLayoutFooter">
+  <AFooter v-if="getShowLayoutFooter" :class="prefixCls">
     <div :class="`${prefixCls}__links`">
       <div>Copyright &copy;2020 Admin</div>
     </div>

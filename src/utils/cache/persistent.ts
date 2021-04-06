@@ -89,7 +89,7 @@ const cache: CacheStore = {
   session: {},
 };
 
-export function setLocal(key: string, value: any, immediate: boolean = false) {
+export function setLocal(key: string, value: any, immediate = false) {
   const local = ls.get(BASE_LOCAL_CACHE_KEY)?.[BASE_LOCAL_CACHE_KEY] || [];
   cache.local[BASE_LOCAL_CACHE_KEY] = { ...local, ...cache.local[BASE_LOCAL_CACHE_KEY] } || {};
   cache.local[BASE_LOCAL_CACHE_KEY][key] = value;

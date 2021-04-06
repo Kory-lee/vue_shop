@@ -2,7 +2,7 @@
   <div :class="[prefixCls, `${prefixCls}--${theme}`]">
     <a-breadcrumb :routes="routes">
       <template #itemRender="{ route, routes, paths }">
-        <Icon :icon="route.meta.icon" v-if="getShowBreadCrumbIcon && route.meta.icon" />
+        <Icon v-if="getShowBreadCrumbIcon && route.meta.icon" :icon="route.meta.icon" />
         <span v-if="!hasRedirect(routes, route)"> {{ t(route.meta.title) }}</span>
         <router-link v-else to="" @click="handleClick(route, paths, $event)">{{
           t(route.meta.title)

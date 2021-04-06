@@ -63,11 +63,10 @@
           ];
         }),
         logoWidth = computed(() => {
-          if (!unref(getIsMixMode)) return {};
+          if (!unref(getIsMixMode) || unref(isMobile)) return {};
           const width = unref(getMenuWidth) < 180 ? 180 : unref(getMenuWidth);
           return { width: `${width}px` };
         });
-
       return {
         isMobile,
         prefixCls,

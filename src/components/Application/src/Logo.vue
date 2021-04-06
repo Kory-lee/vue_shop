@@ -6,11 +6,12 @@
   >
     <img :src="LogoImg" alt="logo" />
     <div
-      class="ml-2 truncate md:opacity-100"
-      :class="[`${prefixCls}__title`, { 'xs:opacity-0': !alwaysShowTitle }]"
       v-show="showTitle"
-      >{{ title }}</div
+      class="ml-2 truncate md:opacity-100"
+      :class="[`${prefixCls}__title`, { '-sm:opacity-0': !alwaysShowTitle }]"
     >
+      {{ title }}
+    </div>
   </div>
 </template>
 
@@ -25,7 +26,7 @@
   export default defineComponent({
     name: 'Logo',
     props: {
-      theme: { type: String as PropType<'light' | 'dark'> },
+      theme: { type: String as PropType<'light' | 'dark'>, default: 'dark' },
       showTitle: { type: Boolean, default: true },
       alwaysShowTitle: { type: Boolean, default: false },
     },

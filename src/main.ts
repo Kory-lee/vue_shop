@@ -7,13 +7,17 @@ import router from './router';
 import store from './store';
 import { isDevMode } from './utils/env';
 
+// if (import.meta.env.DEV) import('ant-design-vue/dist/antd.less');
+
 (async () => {
   const app = createApp(App);
 
   app.use(globalCom).use(router).use(store);
+
   await setupI18n(app);
 
   await router.isReady();
+
   app.mount('#app', true);
   if (isDevMode()) {
     window.__APP__ = app;

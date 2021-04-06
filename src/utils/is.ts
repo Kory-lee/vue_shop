@@ -10,7 +10,7 @@ export const isUnDef = <T = unknown>(val?: T): val is T => !isDef(val);
 export const isString = (val: unknown): val is string => is(val, 'String');
 export const isObject = (val: unknown): val is Record<any, any> =>
   val !== null && is(val, 'Object');
-export const isFunction = (val: unknown): val is Function => typeof val === 'function';
+export const isFunction = (val: unknown): val is Fn => typeof val === 'function';
 export const isDate = (val: unknown): val is Date => is(val, 'Date');
 export const isNull = (val: unknown): val is null => val === null;
 export const isNullOrUnDef = (val: unknown): val is null | undefined =>
