@@ -1,7 +1,7 @@
 import { Router, RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '../constant';
 import { RouteMeta } from '../types';
-import { PageEnum } from '../../enums/pageEnum';
+import { PageEnum } from '/@/enums/pageEnum';
 import { permissionStore, userStore } from '/@/store/modules';
 
 const LOGIN_PATH = PageEnum.BASE_LOGIN;
