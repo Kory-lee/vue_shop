@@ -12,6 +12,12 @@ export interface ErrorLogInfo {
   url: string;
   time?: string;
 }
+export interface UserInfo {
+  userId: string | number;
+  username: string;
+  realName: string;
+  desc?: string;
+}
 
 export interface BeforeMiniState {
   menuCollapsed?: boolean;
