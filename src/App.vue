@@ -4,10 +4,12 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: 'App',
-};
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "App",
+});
 </script>
 <style lang="less">
-@import './styles/index.less';
+@import "./styles/index.less";
 </style>
