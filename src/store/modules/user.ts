@@ -7,7 +7,7 @@ import {
 import { getUserInfoById, loginApi } from '/@/api/sys/user';
 import { CacheTypeEnum, ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '/@/enums/cacheEnum';
 import { PageEnum } from '/@/enums/pageEnum';
-import { RoleEnum } from '/@/enums/roleEnums';
+import { RoleEnum } from '../../enums/roleEnum';
 import { useProjectSetting } from '/@/hooks/setting';
 import router from '/@/router';
 import store from '/@/store';

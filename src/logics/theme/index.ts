@@ -1,4 +1,4 @@
-import { ThemeEnum } from '/@/enums/configEnum';
+import { ThemeEnum } from '/@/enums/appEnum';
 import configStore from '/@/store/modules/config';
 import { colorIsDark, darken, isHexColor, lighten } from '/@/utils/color';
 

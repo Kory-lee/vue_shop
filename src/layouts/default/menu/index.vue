@@ -4,7 +4,7 @@
   import { Logo, useProviderContext } from '/@/components/Application';
   import { BasicMenu } from '/@/components/Menu';
   import { SimpleMenu } from '/@/components/SimpleMenu';
-  import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnums';
+  import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnum';
   import {
     getAccordion,
     getCollapsed,

@@ -8,7 +8,7 @@ import {
   getSplit,
 } from './useMenuSetting';
 import { getRealFullContent, getShowBreadCrumb, getShowLogo } from './useRootSetting';
-import { MenuModeEnum } from '/@/enums/menuEnums';
+import { MenuModeEnum } from '../../enums/menuEnum';
 import { configStore } from '/@/store/modules';
 import { HeaderSetting } from '/@/types/config';
 export const getShowMixHeaderRef = computed<boolean>(

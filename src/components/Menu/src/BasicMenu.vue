@@ -25,7 +25,7 @@
   import type { MenuState } from './types';
   import { useProviderContext } from '../../Application/src/Provider/useAppContext';
   import { useRouter } from 'vue-router';
-  import { MenuModeEnum, MenuTypeEnum } from '/@/enums/menuEnums';
+  import { MenuModeEnum, MenuTypeEnum } from '/@/enums/menuEnum';
   import {
     getCollapsed,
     getIsHorizontal,

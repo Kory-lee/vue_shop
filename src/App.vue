@@ -10,7 +10,7 @@
   import { Provider } from '/@/components/Application';
   import { initConfigStore } from '/@/logics/init';
 
-  import '@virtual/windi.css';
+  import 'windi.css';
 
   export default defineComponent({
     name: 'App',

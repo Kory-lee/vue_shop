@@ -72,6 +72,7 @@
   @countdown-prefix-cls: ~'@{namespace}-countdown-input';
 
   .@{prefix-cls} {
+    overflow: hidden;
     @media (max-width: @screen-xl) {
       background-image: linear-gradient(180deg, #1c3faa, #1c3faa);
     }

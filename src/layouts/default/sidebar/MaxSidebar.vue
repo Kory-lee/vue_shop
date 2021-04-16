@@ -28,7 +28,7 @@
   import LayoutTrigger from '../trigger/index.vue';
   import { createDragLine, useSidebarEvent, useTrigger } from './useLayoutSidebar';
   import { useProviderContext } from '/@/components/Application';
-  import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnums';
+  import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnum';
   import {
     getCollapsed,
     getIsMixMode,

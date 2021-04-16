@@ -3,7 +3,7 @@ import { Action, getModule, Module, Mutation, VuexModule } from 'vuex-module-dec
 import { configStore, userStore } from '.';
 import { getMenuListById } from '/@/api/sys/menu';
 import { getPermCodeByUserId } from '/@/api/sys/user';
-import { PermissionModeEnum } from '/@/enums/configEnum';
+import { PermissionModeEnum } from '../../enums/appEnum';
 import { useI18n } from '/@/locales/useI18n';
 import { createMessage } from '/@/hooks/web/useMessage';
 import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE } from '/@/router/constant';

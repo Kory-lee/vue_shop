@@ -1,14 +1,8 @@
 import { primaryColor, themeMode } from '../../build/config/themeConfig';
 import { CacheTypeEnum } from '/@/enums/cacheEnum';
-import {
-  ContentEnum,
-  PermissionModeEnum,
-  RouterTransitionEnum,
-  ThemeEnum,
-} from '../enums/configEnum';
-import { MenuModeEnum, MenuTypeEnum, MixSidebarTriggerEnum, TriggerEnum } from '../enums/menuEnums';
+import { ContentEnum, PermissionModeEnum, RouterTransitionEnum, ThemeEnum } from '../enums/appEnum';
+import { MenuModeEnum, MenuTypeEnum, MixSidebarTriggerEnum, TriggerEnum } from '../enums/menuEnum';
 import { ProjectConfig } from '../types/config';
-import { isProdMode } from '/@/utils/env';
 
 const setting: ProjectConfig = {
   showSettingButton: true,

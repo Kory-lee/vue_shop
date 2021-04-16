@@ -1,6 +1,6 @@
 import { PropType } from 'vue';
-import { ThemeEnum } from '/@/enums/configEnum';
-import { MenuModeEnum, MenuTypeEnum } from '/@/enums/menuEnums';
+import { ThemeEnum } from '../../../enums/appEnum';
+import { MenuModeEnum, MenuTypeEnum } from '/@/enums/menuEnum';
 import { MenuType } from '/@/router/types';
 
 export const basicProps = {

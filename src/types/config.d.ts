@@ -1,8 +1,9 @@
 import { ThemeMode } from 'build/config/themeConfig';
 import { CacheTypeEnum } from '../enums/cacheEnum';
-import { PermissionModeEnum, RouterTransitionEnum, ThemeModeEnum } from '../enums/configEnum';
-import { MenuModeEnum, MenuTypeEnum, MixSidebarTriggerEnum } from '../enums/menuEnums';
+import { PermissionModeEnum, RouterTransitionEnum, ThemeModeEnum } from '../enums/appEnum';
+import { MenuModeEnum, MenuTypeEnum, MixSidebarTriggerEnum } from '../enums/menuEnum';
 import type { LocaleType } from '../locales/types';
+
 export interface MenuSetting {
   bgColor: string;
   fixed: boolean;

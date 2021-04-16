@@ -7,7 +7,7 @@
 <script lang="ts">
   import { computed, defineComponent } from 'vue';
   import type { CSSProperties, PropType } from 'vue';
-  import { ThemeEnum } from '/@/enums/configEnum';
+  import { ThemeEnum } from '/@/enums/appEnum';
   import { SizeEnum } from '/@/enums/sizeEnum';
   import { Spin } from 'ant-design-vue';
   export default defineComponent({

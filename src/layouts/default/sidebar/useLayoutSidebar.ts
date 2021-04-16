@@ -1,5 +1,5 @@
 import { computed, nextTick, onMounted, ref, Ref, unref } from 'vue';
-import { TriggerEnum } from '/@/enums/menuEnums';
+import { TriggerEnum } from '../../../enums/menuEnum';
 import { useDebounce } from '/@/hooks/core/useDebounce';
 import {
   getCollapsed,
