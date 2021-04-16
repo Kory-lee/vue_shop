@@ -1,12 +1,11 @@
 import type { EChartsOption } from 'echarts';
-import { Ref, unref } from '@vue/reactivity';
-import { useDebounce } from '../core/useDebounce';
+import { ref, Ref, unref } from '@vue/reactivity';
 import useEventListener from '../event/useEventListener';
 import useBreakPoint from '../event/useBreakPoint';
 import echarts from '/@/plugins/echarts';
 import { useTimeoutFn } from '../core/useTimeout';
-import { nextTick, watch } from '@vue/runtime-core';
-import { tryOnUnmounted } from '@vueuse/core';
+import { computed, nextTick, watch } from '@vue/runtime-core';
+import { tryOnUnmounted, useDebounceFn } from '@vueuse/core';
 import { getCollapsed } from '../setting/useMenuSetting';
 
 export default function useEcharts(
@@ -17,14 +16,22 @@ export default function useEcharts(
     resizeFn: Fn = resize,
     removeResizeFn: Fn = () => {};
 
-  const [debounceResize] = useDebounce(resizeFn, 200);
-  resizeFn = debounceResize;
+  const cacheOptions = ref<EChartsOption>({});
 
-  function initCharts() {
+  resizeFn = useDebounceFn(resize, 200);
+
+  const getOptions = computed(
+    (): EChartsOption => {
+      // if(getDarkMode)
+      return { backgroundColor: 'transparent' };
+    }
+  );
+
+  function initCharts(t = theme) {
     const el = unref(elRef);
     if (!el) return;
 
-    chartInstance = echarts.init(el, theme);
+    chartInstance = echarts.init(el, t);
     const { removeEvent } = useEventListener({ el: window, name: 'resize', listener: resizeFn });
 
     removeResizeFn = removeEvent;
@@ -35,7 +42,11 @@ export default function useEcharts(
   }
 
   function setOptions(options: EChartsOption, clear = true) {
-    if (unref(elRef)?.offsetHeight === 0) useTimeoutFn(() => setOptions(options), 30);
+    cacheOptions.value = options;
+    if (unref(elRef)?.offsetHeight === 0) {
+      useTimeoutFn(() => setOptions(unref(getOptions)), 30);
+      return;
+    }
     nextTick(() =>
       useTimeoutFn(() => {
         if (!chartInstance) {
@@ -44,7 +55,7 @@ export default function useEcharts(
         }
         clear && chartInstance?.clear();
 
-        chartInstance?.setOption(options);
+        chartInstance?.setOption(unref(getOptions));
       }, 30)
     );
   }

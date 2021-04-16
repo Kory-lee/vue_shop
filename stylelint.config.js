@@ -5,4 +5,5 @@ module.exports = {
   rules: {
     'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['global'] }],
   },
+  ignoreFiles: ['**/*.js', '**/*.jsx', '**/*.tsx', '**/*.ts'],
 };

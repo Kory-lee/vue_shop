@@ -1,16 +1,28 @@
 import { Action, getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators';
 import tabStore from './tab';
-import { PROJ_CFG_KEY } from '/@/enums/cacheEnum';
+import { APP_DARK_MODE_KEY_, PROJ_CFG_KEY } from '/@/enums/cacheEnum';
 import { resetRouter } from '/@/router';
 import store from '/@/store';
 import { ProjectConfig } from '/@/types/config';
 import { deepMerge } from '/@/utils/common';
-import { getLocal, setLocal } from '../../utils/cache/persistent';
+import { getLocal, Persistent, setLocal } from '/@/utils/cache/persistent';
 import { hotModuleUnregisterModule } from '/@/utils/helper/vuexHelper';
+import { ThemeEnum } from '/@/enums/appEnum';
+import { BeforeMiniState } from '/@/types/store';
+import { defineStore } from 'pinia';
+import { darkMode } from '/@/settings/styleSetting';
 
 export interface LockInfo {
   pwd: string | undefined;
   isLock: boolean;
+}
+
+interface ConfigState {
+  darkMode?: ThemeEnum;
+  pageLoading: boolean;
+  projectConfig: ProjectConfig | null;
+  //  When the window shrinks, remember some states, and restore these states when the window is restored
+  beforeMiniInfo: BeforeMiniState;
 }
 let timeId: TimeoutHandle;
 const NAME = 'config';
@@ -66,3 +78,34 @@ class Config extends VuexModule {
 }
 
 export default getModule(Config);
+
+export const useAppStore = defineStore({
+  id: 'config',
+  state: (): ConfigState => ({
+    darkMode: undefined,
+    pageLoading: false,
+    projectConfig: Persistent.getLocal(PROJ_CFG_KEY),
+    beforeMiniInfo: {},
+  }),
+  getters: {
+    getPageLoading() {
+      return this.pageLoading;
+    },
+    getDarkMode() {
+      return this.darkMode || localStorage.getItem(APP_DARK_MODE_KEY_) || darkMode;
+    },
+    getBeforeMiniInfo() {
+      return this.beforeMiniInfo;
+    },
+    getProjectConfig() {
+      return this.projectConfig || ({} as ProjectConfig);
+    },
+    getHeaderSetting() {
+      return this.getProjectConfig.headerSetting;
+    },
+    getMenuSetting() {
+      return this.getProjectConfig.menuSetting;
+    },
+    getTransitionSetting() {},
+  },
+});
