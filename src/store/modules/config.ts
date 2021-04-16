@@ -79,7 +79,7 @@ class Config extends VuexModule {
 
 export default getModule(Config);
 
-export const useAppStore = defineStore({
+export const useConfigStore = defineStore({
   id: 'config',
   state: (): ConfigState => ({
     darkMode: undefined,
@@ -106,6 +106,45 @@ export const useAppStore = defineStore({
     getMenuSetting() {
       return this.getProjectConfig.menuSetting;
     },
-    getTransitionSetting() {},
+    getTransitionSetting() {
+      return this.getProjectConfig.transitionSetting;
+    },
+    getMultiTabsSetting() {
+      return this.getProjectConfig.multiTabsSetting;
+    },
+  },
+  actions: {
+    setPageLoading(loading: boolean): void {
+      this.pageLoading = loading;
+    },
+    setDarkMode(mode: ThemeEnum): void {
+      this.darkMode = mode;
+      localStorage.setItem(APP_DARK_MODE_KEY_, mode);
+    },
+    setBeforeMiniInfo(state: BeforeMiniState): void {
+      this.beforeMiniInfo = state;
+    },
+    setProjectConfig(config: DeepPartial<ProjectConfig>): void {
+      this.projectConfig = deepMerge(this.projectConfig || {}, config);
+      Persistent.setLocal(PROJ_CFG_KEY, this.projectConfig);
+    },
+    async resetAllState() {
+      resetRouter();
+      Persistent.clearAll();
+    },
+    async setPageLoadingAction(loading: boolean): Promise<void> {
+      if (loading) {
+        clearTimeout(timeId);
+        timeId = setTimeout(() => this.setPageLoading(loading), 50);
+        return;
+      }
+      this.setPageLoading(loading);
+      clearTimeout(timeId);
+    },
   },
 });
+
+//need to be used outside the setup
+// export function useConfigStoreWidthOut() {
+//   return useConfigStore(store);
+// }
