@@ -2,7 +2,7 @@ import { pathToRegexp } from 'path-to-regexp';
 import { RouteRecordNormalized } from 'vue-router';
 import router from '..';
 import { MenuModule, MenuType } from '../types';
-import { PermissionModeEnum } from '../../enums/appEnum';
+import { PermissionModeEnum } from '../../enums/configEnum';
 import { configStore, permissionStore } from '/@/store/modules';
 import { getAllParentPath, transformMenuModule } from '/@/utils/helper/menuHelper';
 import { filter } from '/@/utils/helper/treeHelper';

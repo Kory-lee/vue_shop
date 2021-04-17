@@ -6,16 +6,16 @@ export enum ContentEnum {
   FULL = 'full',
   FIXED = 'fixed',
 }
-export enum ThemeModeEnum {
-  LIGHT = 'light-mode',
-  DARK = 'dark-mode',
-  SEMI_DARK = 'semi-dark-mode',
-}
+
 export enum ThemeEnum {
   DARK = 'dark',
   LIGHT = 'light',
 }
-
+export enum SettingButtonPositionEnum {
+  AUTO = 'auto',
+  HEADER = 'header',
+  FIXED = 'fixed',
+}
 export enum PermissionModeEnum {
   ROLE = 'ROLE',
   BACK = 'BACK',

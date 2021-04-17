@@ -7,7 +7,7 @@ import { ProjectConfig } from '/@/types/config';
 import { deepMerge } from '/@/utils/common';
 import { getLocal, Persistent, setLocal } from '/@/utils/cache/persistent';
 import { hotModuleUnregisterModule } from '/@/utils/helper/vuexHelper';
-import { ThemeEnum } from '/@/enums/appEnum';
+import { ThemeEnum } from '/@/enums/configEnum';
 import { BeforeMiniState } from '/@/types/store';
 import { defineStore } from 'pinia';
 import { darkMode } from '/@/settings/styleSetting';

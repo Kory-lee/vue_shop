@@ -16,6 +16,7 @@ import { hotModuleUnregisterModule } from '/@/utils/helper/vuexHelper';
 import { ErrorMessageMode } from '/@/utils/http/type';
 import { defineStore } from 'pinia';
 import { UserInfo } from '/@/types/store';
+import { getAuthCache } from '/@/utils/auth';
 
 const name = 'user';
 
@@ -118,7 +119,10 @@ export const useUserStore = defineStore({
   }),
   getters: {
     getUserInfo(): UserInfo {
-      return this.userInfo || {};
+      return this.userInfo || getAuthCache(USER_INFO_KEY) || {};
+    },
+    getToken() {
+      return this.token || getAuthCache(TOKEN_KEY);
     },
   },
 });

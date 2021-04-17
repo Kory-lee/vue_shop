@@ -1,7 +1,12 @@
-import { ThemeMode } from 'build/config/themeConfig';
 import { CacheTypeEnum } from '../enums/cacheEnum';
-import { PermissionModeEnum, RouterTransitionEnum, ThemeModeEnum } from '../enums/appEnum';
-import { MenuModeEnum, MenuTypeEnum, MixSidebarTriggerEnum } from '../enums/menuEnum';
+import {
+  ContentEnum,
+  PermissionModeEnum,
+  RouterTransitionEnum,
+  SettingButtonPositionEnum,
+  ThemeEnum,
+} from '../enums/configEnum';
+import { MenuModeEnum, MenuTypeEnum, MixSidebarTriggerEnum, TriggerEnum } from '../enums/menuEnum';
 import type { LocaleType } from '../locales/types';
 
 export interface MenuSetting {
@@ -25,9 +30,9 @@ export interface MenuSetting {
   mixSideFixed: boolean;
 }
 export interface MultiTabsSetting {
-  // 是否显示
+  cache: boolean;
   show: boolean;
-  showQuick: boolean; //开启快速操作
+  showQuick: boolean;
   canDrag: boolean;
   showRefresh: true;
   showFold: boolean;
@@ -44,17 +49,7 @@ export interface HeaderSetting {
   showNotice: boolean; //显示消息中心按钮
   showSearch: boolean;
 }
-export interface TransitionSetting {
-  // whether to open the page switching animation
-  enable: boolean;
-  // route basic switching animation
-  basicTransition: RouterTransitionEnum;
-  //whether  to open page switching loading
-  openPageLoading: boolean;
 
-  // whether to open the top progress bar
-  openNProgress: boolean;
-}
 export interface LocaleSetting {
   showPicker: boolean;
   // Current language
@@ -80,17 +75,25 @@ export interface ProjectConfig {
   permissionCacheType: CacheTypeEnum;
   // 是否显示配置按钮
   showSettingButton: boolean;
+  //whether to show theme switch button
+  showDarkModeToggle: boolean;
+
+  settingButtonPosition: SettingButtonPositionEnum;
   // 权限模式
   permissionMode: PermissionModeEnum;
-  grayMode: boolean; // 网站灰色模式
-  colorWeak: boolean; //是否开启色弱模式
+  // 网站灰色模式
+  grayMode: boolean;
+  //是否开启色弱模式
+  colorWeak: boolean;
   themeColor: string;
-  themeMode: ThemeMode;
-
-  fullContent: boolean; // 全屏显示主界面,不显示菜单及顶部
-  contentMode: ContentMode; //区域宽度
-  showLogo: boolean; // 是否显示logo
+  // 全屏显示主界面,不显示菜单及顶部
+  fullContent: boolean;
+  //区域宽度
+  contentMode: ContentEnum;
+  // 是否显示logo
+  showLogo: boolean;
   showFooter: boolean;
+
   headerSetting: HeaderSetting;
   // 菜单类型
   menuSetting: MenuSetting;
@@ -104,11 +107,16 @@ export interface ProjectConfig {
 
   lockTime: number; // 锁屏时间
   showBreadCrumb: boolean; // 显示面包屑
-  showBreadCrumbIcon: boolean; //显示面包屑图标
-  useErrorHandle: boolean; // 使用error-handler-plugin
-  useOpenBackTop: boolean; // 是否开启回到顶部
-  canEmbedIFramePage: boolean; // 是否可以嵌入iframe页面
-  closeMessageOnSwitch: boolean; // 切换页面的时候是否删除未关闭的message及notify
+  //显示面包屑图标
+  showBreadCrumbIcon: boolean;
+  // 使用error-handler-plugin
+  useErrorHandle: boolean;
+  // 是否开启回到顶部
+  useOpenBackTop: boolean;
+  // 是否可以嵌入iframe页面
+  canEmbedIFramePage: boolean;
+  // 切换页面的时候是否删除未关闭的message及notify
+  closeMessageOnSwitch: boolean;
   // 切换页面的时候是否取消已经发送但是未相应的http请求
   removeAllHttpPending: boolean;
 }
@@ -124,8 +132,10 @@ export interface GlobalConfig {
 export interface GlobalEnvConfig {
   // 网站标题
   VITE_GLOBAL_APP_TITLE: string;
+  //service interface url
   VITE_GLOBAL_API_URL: string;
   VITE_GLOBAL_API_PREFIX_URL?: string;
   VITE_GLOBAL_APP_SHORT_NAME: string;
+  // Upload url
   VITE_GLOBAL_UPLOAD_URL?: string;
 }

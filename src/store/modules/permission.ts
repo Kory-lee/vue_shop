@@ -3,7 +3,7 @@ import { Action, getModule, Module, Mutation, VuexModule } from 'vuex-module-dec
 import { configStore, userStore } from '.';
 import { getMenuListById } from '/@/api/sys/menu';
 import { getPermCodeByUserId } from '/@/api/sys/user';
-import { PermissionModeEnum } from '../../enums/appEnum';
+import { PermissionModeEnum } from '/@/enums/configEnum';
 import { useI18n } from '/@/locales/useI18n';
 import { createMessage } from '/@/hooks/web/useMessage';
 import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE } from '/@/router/constant';
@@ -100,7 +100,7 @@ class Permission extends VuexModule {
       // !Simulate to obtain permission codes from the background
       // this function may only need to be executed once, and the actual project can be put at the right time by itself
       try {
-        this.changePermissionCode('1');
+        await this.changePermissionCode('1');
       } catch (e) {}
 
       if (!paramId) throw new Error('paramId is undefined');

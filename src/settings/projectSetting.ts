@@ -1,18 +1,28 @@
-import { primaryColor, themeMode } from '../../build/config/themeConfig';
+import { primaryColor } from '../../build/config/themeConfig';
 import { CacheTypeEnum } from '/@/enums/cacheEnum';
-import { ContentEnum, PermissionModeEnum, RouterTransitionEnum, ThemeEnum } from '../enums/appEnum';
+import {
+  ContentEnum,
+  PermissionModeEnum,
+  RouterTransitionEnum,
+  SettingButtonPositionEnum,
+  ThemeEnum,
+} from '../enums/configEnum';
 import { MenuModeEnum, MenuTypeEnum, MixSidebarTriggerEnum, TriggerEnum } from '../enums/menuEnum';
 import { ProjectConfig } from '../types/config';
+import { SIDE_BAR_BG_COLOR_LIST } from '/@/settings/styleSetting';
 
 const setting: ProjectConfig = {
   showSettingButton: true,
 
+  showDarkModeToggle: true,
+
+  settingButtonPosition: SettingButtonPositionEnum.AUTO,
+
   permissionMode: PermissionModeEnum.ROLE,
+  //Permission-related cache is stored in sessionStorage or localStorage
   permissionCacheType: CacheTypeEnum.LOCAL,
 
-  // color
   themeColor: primaryColor,
-  themeMode: themeMode,
 
   grayMode: true,
 
@@ -23,12 +33,7 @@ const setting: ProjectConfig = {
 
   showLogo: true,
   showFooter: false,
-  locale: {
-    show: true,
-    lang: 'zh_CN',
-    fallback: 'zh_CN',
-    availableLocales: ['zh_CN', 'en'],
-  },
+
   headerSetting: {
     bgColor: '#ffffff',
     fixed: true,
@@ -41,10 +46,12 @@ const setting: ProjectConfig = {
     showSearch: true,
   },
   menuSetting: {
-    bgColor: '#001529',
+    bgColor: SIDE_BAR_BG_COLOR_LIST[0],
     fixed: true,
     collapsed: false,
     collapsedShowTitle: false,
+    // whether it can be dragged
+    //Only limited to the opening of the left menu, the mouse has a drag bar on the right side of the menu
     canDrag: true,
     show: true,
     hidden: false,
@@ -61,6 +68,7 @@ const setting: ProjectConfig = {
     mixSideFixed: false,
   },
   multiTabsSetting: {
+    cache: false,
     show: true,
     canDrag: true,
     showQuick: true,
@@ -81,6 +89,8 @@ const setting: ProjectConfig = {
   useErrorHandle: false,
   useOpenBackTop: true,
   canEmbedIFramePage: true,
+
+  //whether to delete unclosed messages and notify when switching the interface
   closeMessageOnSwitch: true,
 
   // whether to cancel the http request that has been sent but not responded when switching the interface

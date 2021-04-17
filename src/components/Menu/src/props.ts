@@ -1,5 +1,5 @@
 import { PropType } from 'vue';
-import { ThemeEnum } from '../../../enums/appEnum';
+import { ThemeEnum } from '../../../enums/configEnum';
 import { MenuModeEnum, MenuTypeEnum } from '/@/enums/menuEnum';
 import { MenuType } from '/@/router/types';
 

@@ -1,5 +1,5 @@
 import { computed, unref } from 'vue';
-import { ContentEnum } from '../../enums/appEnum';
+import { ContentEnum } from '../../enums/configEnum';
 import router from '/@/router';
 import { configStore } from '/@/store/modules';
 import type { ProjectConfig } from '/@/types/config';
