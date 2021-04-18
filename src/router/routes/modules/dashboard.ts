@@ -1,5 +1,5 @@
 import { AppRouteModule } from '../../types';
-import { t } from '../../../locales/useI18n';
+import { t } from '/@/i18n/useI18n';
 import { LAYOUT } from '/@/router/constant';
 
 const dashboard: AppRouteModule = {

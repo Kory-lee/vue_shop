@@ -1,9 +1,9 @@
-import { PageEnum } from '/@/enums/pageEnum';
-import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '../constant';
-import type { AppRouteModule, AppRouteRecordRaw } from '/@/router/types';
-import { t } from '../../locales/useI18n';
+import { PageEnum } from "/@/enums/pageEnum";
+import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from "../constant";
+import type { AppRouteModule, AppRouteRecordRaw } from "/@/router/types";
+import { t } from "/@/i18n/useI18n";
 
-const modules = import.meta.globEager('./modules/**/*.ts');
+const modules = import.meta.globEager("./modules/**/*.ts");
 const routeModuleList: AppRouteModule[] = [];
 
 // 浅复制
@@ -16,17 +16,17 @@ Object.keys(modules).forEach((key) => {
 export const asyncRoutes = [PAGE_NOT_FOUND_ROUTE, ...routeModuleList];
 
 export const RootRoute: AppRouteRecordRaw = {
-  path: '/',
-  name: 'Root',
+  path: "/",
+  name: "Root",
   redirect: PageEnum.BASE_HOME,
-  meta: { title: 'Root' },
+  meta: { title: "Root" }
 };
 
 export const LoginRoute: AppRouteRecordRaw = {
-  path: '/login',
-  name: 'Login',
-  component: () => import('/@/views/sys/login/index.vue'),
-  meta: { title: t('routes.basic.login') },
+  path: "/login",
+  name: "Login",
+  component: () => import("/@/views/sys/login/index.vue"),
+  meta: { title: t("routes.basic.login") }
 };
 
 // 基础路由 不用权限

@@ -1,9 +1,42 @@
 import { cloneDeep } from 'lodash';
 import { createRouter, createWebHashHistory, Router, RouteRecordNormalized } from 'vue-router';
 import type { AppRouteModule, AppRouteRecordRaw } from '../types';
+import { LAYOUT } from '/@/router/constant';
+
+export type LayoutMapKey = 'LAYOUT';
+const LayoutMap = new Map<LayoutMapKey, () => Promise<typeof import('*.vue')>>();
+
+let dynamicViewsModes: Record<string, () => Promise<Recordable>>;
+function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
+  dynamicViewsModes = dynamicViewsModes || import.meta.glob('../../views/**/*.{vue,tsx}');
+  if (!routes) return;
+}
+
+export function transformObjToRoute<T>(routeList: AppRouteModule[]): T[] {
+  LayoutMap.set('LAYOUT', LAYOUT);
+  routeList.forEach((route) => {
+    if (route.component) {
+      if ((route.component as string).toUpperCase() === 'LAYOUT') {
+        // route.component = LayoutMap.get(route.component);
+        route.component = LayoutMap.get((route.component as string).toUpperCase() as LayoutMapKey);
+      } else {
+        route.children = [cloneDeep(route)];
+        route.component = LAYOUT;
+        route.name = `${route.name}Parent`;
+        route.path = '';
+        const meta = route.meta || {};
+        meta.single = true;
+        meta.affix = false;
+        route.meta = meta;
+      }
+    }
+    route.children && asyncImportRoute(route.children);
+  });
+  return (routeList as unknown) as T[];
+}
 
 export function flatMultiLevelRoutes(routeModules: AppRouteModule[]) {
-  const modules = cloneDeep(routeModules);
+  const modules: AppRouteModule[] = cloneDeep(routeModules);
   for (const module of modules) {
     if (!isMultipleRoute(module)) continue;
 
@@ -26,6 +59,7 @@ function promoteRouteLevel(routeModule: AppRouteModule) {
 
   routeModule.children = routeModule.children?.filter((item) => !item.children?.length);
 }
+
 // Add all sub-routes to the secondary route
 function addToChildren(
   routes: RouteRecordNormalized[],

@@ -3,6 +3,7 @@ import { ErrorLogInfo } from '/@/types/store';
 import { formatToDateTime } from '/@/utils/data';
 import projectSetting from '/@/settings/projectSetting';
 import { ErrorTypeEnum } from '/@/enums/exceptionEnum';
+import store from '/@/store';
 
 export interface ErrorLogState {
   errorLogInfoList: Nullable<ErrorLogInfo[]>;
@@ -58,6 +59,6 @@ export const useErrorLogStore = defineStore({
   },
 });
 // Need to be used outside the setup
-// export function useErrorLogStoreWithOut() {
-//   return useErrorLogStore(store);
-// }
+export function useErrorLogStoreWithOut() {
+  return useErrorLogStore(store);
+}

@@ -1,25 +1,61 @@
 import { PROJ_CFG_KEY } from '../enums/cacheEnum';
 import { ProjectConfig } from '../types/config';
 import { deepMerge } from '../utils/common';
-import { getLocal } from '../utils/cache/persistent';
-import { updateHeaderBgColor, updateSidebarBgColor } from './theme';
 import projectSetting from '/@/settings/projectSetting';
-import configStore from '/@/store/modules/config';
+import { useConfigStore } from '/@/store/modules/config';
+import { Persistent } from '/@/utils/cache/persistent';
+import { ThemeEnum } from '/@/enums/configEnum';
+import { updateDarkTheme } from '/@/logics/theme/dark';
+import { getCommonStoragePrefix, getStorageShortName } from '/@/utils/env';
+import { updateGrayMode } from '/@/logics/theme/updateGrayMode';
+import { updateHeaderBgColor, updateSidebarBgColor } from '/@/logics/theme/updateBackground';
+import { useLocaleStore } from '/@/store/modules/locale';
 
 export function initConfigStore() {
-  let config: ProjectConfig = getLocal(PROJ_CFG_KEY) as ProjectConfig;
+  const localeStore = useLocaleStore(),
+    configStore = useConfigStore();
+
+  let config: ProjectConfig = Persistent.getLocal(PROJ_CFG_KEY) as ProjectConfig;
   config = deepMerge(projectSetting, config || {});
+  const darkMode = configStore.getDarkMode;
+  const {
+    colorWeak,
+    grayMode,
+    themeColor,
+    headerSetting: { bgColor: headerBgColor } = {},
+    menuSetting: { bgColor } = {},
+  } = config;
   try {
-    const {
-      colorWeak,
-      grayMode,
-      headerSetting: { bgColor: headerBgColor },
-      menuSetting: { bgColor },
-    } = config;
-    headerBgColor && updateHeaderBgColor(headerBgColor);
-    bgColor && updateSidebarBgColor(bgColor);
+    // if(themeColor && themeColor !== primaryColor) changeT
+    grayMode && updateGrayMode(grayMode);
+    // colorWeak && updateColorW
   } catch (e) {
     console.log(e);
   }
-  configStore.commitProjectConfigState(config);
+  configStore.setProjectConfig(config);
+
+  updateDarkTheme(darkMode);
+  if (darkMode === ThemeEnum.DARK) {
+    updateHeaderBgColor();
+    updateSidebarBgColor();
+  } else {
+    headerBgColor && updateHeaderBgColor(headerBgColor);
+    bgColor && updateSidebarBgColor(bgColor);
+  }
+  localeStore.initLocale();
+
+  setTimeout(() => clearObsoleteStorage(), 16);
+}
+
+// as the version continues to iterate, there will be more and more cache keys stored in localeStorage
+// this method is used to deleted useless keys
+export function clearObsoleteStorage() {
+  const commonPrefix = getCommonStoragePrefix(),
+    shortPrefix = getStorageShortName();
+
+  [localStorage, sessionStorage].forEach((item: Storage) => {
+    Object.keys(item).forEach((key) => {
+      if (key && key.startsWith(commonPrefix) && !key.startsWith(shortPrefix)) item.removeItem(key);
+    });
+  });
 }

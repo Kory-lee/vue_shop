@@ -1,9 +1,13 @@
-import { computed, unref } from 'vue';
+import { computed, ref, unref } from 'vue';
 import { getRealFullContent } from './useRootSetting';
-import { SIDE_BAR_MINI_WIDTH, SIDE_BAR_SHOW_TIT_MINI_WIDTH } from '../../enums/configEnum';
-import { MenuModeEnum, MenuTypeEnum, TriggerEnum } from '../../enums/menuEnum';
-import configStore from '/@/store/modules/config';
+import { SIDE_BAR_MINI_WIDTH, SIDE_BAR_SHOW_TIT_MINI_WIDTH } from '/@/enums/configEnum';
+import { MenuModeEnum, MenuTypeEnum, TriggerEnum } from '/@/enums/menuEnum';
 import { MenuSetting } from '/@/types/config';
+import { useConfigStore } from '/@/store/modules/config';
+
+const configStore = useConfigStore();
+
+const mixSideHasChildren = ref(false);
 
 export const getMenuSetting = computed(() => configStore.getProjectConfig.menuSetting);
 
@@ -78,7 +82,10 @@ export const getCalcContentWidth = computed(() => {
     unref(getIsTopMenu) || !unref(getShowMenu) || (unref(getSplit) && unref(getMenuHidden))
       ? 0
       : unref(getIsMixSidebar)
-      ? SIDE_BAR_SHOW_TIT_MINI_WIDTH
+      ? unref(getCollapsed)
+        ? SIDE_BAR_MINI_WIDTH
+        : SIDE_BAR_SHOW_TIT_MINI_WIDTH +
+          (unref(getMixSideFixed) && unref(mixSideHasChildren) ? unref(getRealWidth) : 0)
       : unref(getRealWidth);
   return `calc(100% - ${width}px)`;
 });
@@ -92,7 +99,7 @@ export const getShowSidebar = computed(
 );
 
 export function setMenuSetting(menuSetting: Partial<MenuSetting>): void {
-  configStore.commitProjectConfigState({ menuSetting });
+  configStore.setProjectConfig({ menuSetting });
 }
 
 export function toggleCollapsed() {

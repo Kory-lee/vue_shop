@@ -24,7 +24,7 @@ export const getGlobalEnvConfig = (): GlobalEnvConfig => {
     VITE_GLOBAL_UPLOAD_URL,
   } = ENV;
 
-  if (!/[a-zA-Z\_]*/.test(VITE_GLOBAL_APP_SHORT_NAME)) {
+  if (!/[a-zA-Z_]*/.test(VITE_GLOBAL_APP_SHORT_NAME)) {
     warn(
       `VITE_GLOB_APP_SHORT_NAME Variables can only be characters/underscores, please modify in the environment variables and re-running.`
     );

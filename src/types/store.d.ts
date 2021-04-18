@@ -3,7 +3,6 @@ import { ErrorTypeEnum } from '/@/enums/exceptionEnum';
 
 export interface ErrorLogInfo {
   type: ErrorTypeEnum;
-
   file: string;
   name?: string;
   message: string;

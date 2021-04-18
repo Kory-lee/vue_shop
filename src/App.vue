@@ -6,9 +6,9 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { getAntdLocale } from './hooks/setting/useLocaleSetting';
   import { Provider } from '/@/components/Application';
   import { initConfigStore } from '/@/logics/init';
+  import { useLocale } from '/@/hooks/web/useLocale';
 
   import 'windi.css';
 
@@ -17,6 +17,7 @@
     components: { Provider },
     setup() {
       initConfigStore();
+      const { getAntdLocale } = useLocale();
 
       return { getAntdLocale };
     },

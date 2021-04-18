@@ -44,16 +44,16 @@
   import { useGlobalSetting } from '/@/hooks/setting';
   import { LocalePicker } from '/@/components/Application';
   import LoginForm from './components/loginForm.vue';
-  import { localeStore } from '/@/store/modules/locale';
+  import useLocaleStore from '/@/store/modules/locale';
   export default defineComponent({
     name: 'Login',
     components: { Logo, LocalePicker, LoginForm },
     setup() {
-      useGlobalSetting;
       const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('login'),
         { t } = useI18n(),
-        globalSetting = useGlobalSetting();
+        globalSetting = useGlobalSetting(),
+        localeStore = useLocaleStore();
 
       return {
         prefixCls,
@@ -70,6 +70,7 @@
   @prefix-cls: ~'@{namespace}-login';
   @logo-prefix-cls: ~'@{namespace}-app-logo';
   @countdown-prefix-cls: ~'@{namespace}-countdown-input';
+  @dark-bg: #293146;
 
   .@{prefix-cls} {
     overflow: hidden;

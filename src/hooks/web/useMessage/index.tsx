@@ -1,7 +1,7 @@
 import { Modal, notification, message } from 'ant-design-vue';
 import type { ModalFunc, ModalFuncProps } from 'ant-design-vue/lib/modal/Modal';
 import type { ArgsProps, ConfigProps } from 'ant-design-vue/lib/notification';
-import { useI18n } from '../../../locales/useI18n';
+import { useI18n } from '/@/i18n/useI18n';
 import type { iconsType } from './icon.vue';
 import ModalIcon from './icon.vue';
 

@@ -11,7 +11,7 @@ type Fn = (...arg: any) => any;
 export interface GenerateColorParams {
   mixLighten: Fn;
   mixDarken: Fn;
-  tinyColor: any;
+  tinycolor: any;
   color?: string;
 }
 
@@ -32,32 +32,33 @@ export function generateColors({
   color = primaryColor,
   mixLighten,
   mixDarken,
-  tinyColor,
+  tinycolor,
 }: GenerateColorParams) {
   const arr = new Array(19).fill(0),
-    lightens = arr.map((t, i) => mixLighten(color, i / 5)),
-    darkens = arr.map((t, i) => mixDarken(color, i / 5)),
-    alphaColors = arr.map((t, i) =>
-      tinyColor(color)
+    lightens = arr.map((_t, i) => mixLighten(color, i / 5)),
+    darkens = arr.map((_t, i) => mixDarken(color, i / 5)),
+    alphaColors = arr.map((_t, i) =>
+      tinycolor(color)
         .setAlpha(i / 20)
         .toRgbString()
     ),
-    tinyColorLightens = arr
-      .map((t, i) =>
-        tinyColor(color)
+    tinycolorLightens = arr
+      .map((_t, i) =>
+        tinycolor(color)
           .setAlpha(i * 5)
           .toHexString()
       )
       .filter((item) => item !== '#ffffff'),
-    tinyColorDarkens = arr
-      .map((t, i) =>
-        tinyColor(color)
+    tinycolorDarkens = arr
+      .map((_t, i) =>
+        tinycolor(color)
           .setAlpha(i * 5)
           .toHexString()
       )
       .filter((item) => item !== '#000000');
-  return [...lightens, ...darkens, ...alphaColors, ...tinyColorDarkens, ...tinyColorLightens];
+  return [...lightens, ...darkens, ...alphaColors, ...tinycolorDarkens, ...tinycolorLightens];
 }
+
 export function generateModifyVars() {
   const palettes = generateAntColors(primaryColor, themeMode),
     primary = palettes[5],

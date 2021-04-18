@@ -1,12 +1,15 @@
 import { computed, unref } from 'vue';
-import { ContentEnum } from '../../enums/configEnum';
+import { ContentEnum } from '/@/enums/configEnum';
 import router from '/@/router';
-import { configStore } from '/@/store/modules';
 import type { ProjectConfig } from '/@/types/config';
+import { useConfigStore } from '/@/store/modules/config';
+
 type RootSetting = Omit<
   ProjectConfig,
   'locale' | 'headerSetting' | 'menuSetting' | 'multiTabsSetting'
 >;
+const configStore = useConfigStore();
+
 export const getRootSetting = computed((): RootSetting => configStore.getProjectConfig);
 
 export const getPageLoading = computed(() => configStore.getPageLoading);
@@ -53,7 +56,7 @@ export const getLayoutContentMode = computed(() =>
 );
 
 export function setRootSetting(setting: Partial<RootSetting>) {
-  configStore.commitProjectConfigState(setting);
+  configStore.setProjectConfig(setting);
 }
 
 export function useRootSetting() {

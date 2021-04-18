@@ -7,7 +7,7 @@
     :overlay-class-name="`${prefixCls}-overlay`"
     @menuEvent="handleMenuEvent"
   >
-    <span class="curose-pointer flex items-center">
+    <span class="cursor-pointer flex items-center">
       <Icon icon="ion:language" :size="size" />
       <span v-if="showText" class="ml-1">{{ getLangText }}</span>
     </span>
@@ -16,13 +16,12 @@
 
 <script lang="ts">
   import { computed, defineComponent, ref, unref, watchEffect } from 'vue';
-  import Icon from '../../Icon';
+  import Icon from '/@/components/Icon';
   import { useProviderContext } from './Provider/useAppContext';
   import Dropdown, { DropMenu } from '/@/components/Dropdown';
-  import { getLocale } from '/@/hooks/setting/useLocaleSetting';
-  import { LocaleType } from '/@/locales/types';
-  import { changeLocale } from '/@/locales/useI18n';
+  import { LocaleType } from '/@/i18n/types';
   import { localeList } from '/@/settings/localeSetting';
+  import { useLocale } from '/@/hooks/web/useLocale';
 
   export default defineComponent({
     name: 'LocalePicker',
@@ -35,6 +34,7 @@
     setup(props) {
       const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('locale-picker'),
+        { changeLocale, getLocale } = useLocale(),
         selectedKeys = ref<string[]>([]);
 
       const getLangText = computed(() => {

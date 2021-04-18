@@ -1,5 +1,5 @@
 import { MenuModule } from '../../../types';
-import { t } from '../../../../locales/useI18n';
+import { t } from '../../../../i18n/useI18n';
 
 const menu: MenuModule = {
   orderNo: 500,

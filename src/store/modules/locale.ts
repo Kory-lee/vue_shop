@@ -1,53 +1,19 @@
-import { Action, getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators';
 import { LOCALE_KEY } from '/@/enums/cacheEnum';
-import { LocaleType } from '/@/locales/types';
+import { LocaleType } from '/@/i18n/types';
 import { localeSetting } from '/@/settings/localeSetting';
 import store from '/@/store';
 import { LocaleSetting } from '/@/types/config';
 import { createLocalStorage } from '/@/utils/cache';
-import { hotModuleUnregisterModule } from '/@/utils/helper/vuexHelper';
 import { defineStore } from 'pinia';
 
-const ls = createLocalStorage(),
-  lsSetting = (ls.get(LOCALE_KEY) || localeSetting) as LocaleSetting;
-
-const NAME = 'app-locale';
-hotModuleUnregisterModule(NAME);
-@Module({ name: NAME, store, dynamic: true, namespaced: true })
-class Locale extends VuexModule {
-  private info: LocaleSetting = lsSetting;
-
-  get getShowPicker(): boolean {
-    return !!this.info?.showPicker;
-  }
-
-  get getLocale(): LocaleType {
-    return this.info?.locale;
-  }
-
-  @Mutation
-  setLocaleInfo(info: Partial<LocaleSetting>): void {
-    this.info = { ...this.info, ...info };
-    ls.get(LOCALE_KEY, this.info);
-  }
-
-  @Action
-  initLocale(): void {
-    this.setLocaleInfo({
-      ...localeSetting,
-      ...this.info,
-    });
-  }
-}
-
-export const localeStore = getModule<Locale>(Locale);
-// const ls = createLocalStorage();
+const ls = createLocalStorage();
 
 const lsLocaleSetting = (ls.get(LOCALE_KEY) || localeSetting) as LocaleSetting;
 
 interface LocaleState {
   localeInfo: LocaleSetting;
 }
+
 export const useLocaleStore = defineStore({
   id: 'locale',
   state: (): LocaleState => ({ localeInfo: lsLocaleSetting }),
@@ -81,6 +47,8 @@ export const useLocaleStore = defineStore({
 });
 
 // Need to be used outside the setup
-// export function useLocaleStoreWithout() {
-//   return useLocaleStore(store);
-// }
+export function useLocaleStoreWithout() {
+  return useLocaleStore(store);
+}
+
+export default useLocaleStore;

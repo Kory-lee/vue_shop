@@ -1,17 +1,12 @@
-import { createStore } from 'vuex';
-import { config } from 'vuex-module-decorators';
-import { isDevMode } from '../utils/env';
+import { createPinia } from 'pinia';
+import type { App } from 'vue';
 
-config.rawError = true;
+const store = createPinia();
 
-const store = createStore({ strict: isDevMode() });
+export function setupStore(app: App<Element>) {
+  app.use(store);
+}
+
+export { store };
 
 export default store;
-
-// const modules = import.meta.globEager('./modules/**');
-// const StoreObj: { [key: string]: Object } = {};
-// Object.keys(modules).forEach((mod) => {
-//   console.log(mod);
-//   const key = (mod.match(/\.\/modules\/(\S*)\.ts/) as RegExpMatchArray)[1];
-//   StoreObj[key + 'Store'] = modules[mod];
-// });

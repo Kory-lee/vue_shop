@@ -7,9 +7,9 @@ import { createNow, formatRequestDate, setObjToUrlParams } from './helper';
 import type { AxiosTransform, CreateAxiosOptions, Result } from './type';
 import { ContentTypeEnum, RequestEnum, ResultEnum } from '/@/enums/httpEnum';
 import { useGlobalSetting } from '/@/hooks/setting';
-import { useI18n } from '../../locales/useI18n';
+import { useI18n } from '/@/i18n/useI18n';
 import { createMessage, createModal } from '/@/hooks/web/useMessage';
-import { userStore } from '/@/store/modules';
+import { getToken } from '/@/utils/auth';
 
 const { prefixUrl, apiUrl } = useGlobalSetting();
 
@@ -85,7 +85,7 @@ const transform: AxiosTransform<Result> = {
     return config;
   },
   requestInterceptors(config) {
-    const token = userStore.getTokenState;
+    const token = getToken();
     if (token) config.headers.Authorization = token;
     return config;
   },
