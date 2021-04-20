@@ -4,6 +4,8 @@ export default {
   prefixCls: 'kory',
 };
 
+export const prefixCls = 'kory';
+
 export const darkMode = ThemeEnum.LIGHT;
 
 export const SIDE_BAR_BG_COLOR_LIST: string[] = [
