@@ -2,8 +2,8 @@ import { Modal, notification, message } from 'ant-design-vue';
 import type { ModalFunc, ModalFuncProps } from 'ant-design-vue/lib/modal/Modal';
 import type { ArgsProps, ConfigProps } from 'ant-design-vue/lib/notification';
 import { useI18n } from '/@/i18n/useI18n';
-import type { iconsType } from './icon.vue';
-import ModalIcon from './icon.vue';
+import ModalIcon from './ModalIcon/index.vue';
+import { IconsType } from './ModalIcon/icons';
 
 export interface NotifyApi {
   info(config: ArgsProps): void;
@@ -19,19 +19,19 @@ export interface NotifyApi {
 export declare type NotificationPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
 
 export interface ModalOptionEx extends Omit<ModalFuncProps, 'iconType'> {
-  iconType: iconsType | 'confirm';
+  iconType: IconsType | 'confirm';
 }
 export type ModalOptionsPartial = Partial<ModalOptionEx> &
   Pick<ModalOptionEx, 'content'> &
   Pick<ModalOptionEx, 'iconType'>;
 
-interface ConfirmOptions {
-  info: ModalFunc;
-  success: ModalFunc;
-  error: ModalFunc;
-  warn: ModalFunc;
-  warning: ModalFunc;
-}
+// interface ConfirmOptions {
+//   info: ModalFunc;
+//   success: ModalFunc;
+//   error: ModalFunc;
+//   warn: ModalFunc;
+//   warning: ModalFunc;
+// }
 
 function renderContent({ content }: Pick<ModalOptionEx, 'content'>) {
   return <div innerHTML={content && `<div>${content as string}<div/>`} />;
