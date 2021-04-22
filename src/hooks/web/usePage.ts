@@ -1,33 +1,56 @@
 import { unref } from 'vue';
-import { RouteLocationRaw } from 'vue-router';
+import { RouteLocationRaw, Router, useRouter } from 'vue-router';
 import { PageEnum } from '/@/enums/pageEnum';
-import router from '/@/router';
 import { isString } from '/@/utils/is';
+import { warn } from '/@/utils/log';
 
 export type RouteLocationRawEx = Omit<RouteLocationRaw, 'path'> & { path: PageEnum };
 function handleError(e: Error) {
   console.error(e);
 }
-export function useGo() {
-  return function (
+export function useGo(router?: Router) {
+  if (!router) router = useRouter();
+
+  const { push, replace } = router;
+  return async function (
     opt: PageEnum | RouteLocationRawEx | string = PageEnum.BASE_HOME,
     isReplace = false
   ) {
-    const { push, replace } = router;
     if (!opt) return;
-    if (isString(opt)) isReplace ? replace(opt).catch(handleError) : push(opt).catch(handleError);
-    else {
-      const o = opt as RouteLocationRaw;
-      isReplace ? replace(o).catch(handleError) : push(o).catch(handleError);
+
+    try {
+      const pushOrReplace = isReplace ? replace : push;
+
+      if (isString(opt)) await pushOrReplace(opt);
+      else {
+        const o = opt as RouteLocationRaw;
+        await pushOrReplace(o);
+      }
+    } catch (e) {
+      handleError(e);
     }
   };
 }
 
-export const useRefresh = () =>
-  new Promise((resolve) => {
-    const { push, currentRoute } = router;
-    const { query, params } = currentRoute.value;
-    push({ path: '/redirect' + unref(currentRoute).fullPath, query, params }).then(() =>
-      resolve(true)
-    );
-  });
+export const useRefresh = (router?: Router) => {
+  if (!router) router = useRouter();
+
+  const { push, currentRoute } = router;
+  const { query, params } = currentRoute.value;
+  async function refresh() {
+    // function refresh() {
+    //   return new Promise((resolve) => {
+    //     push({ path: '/redirect' + unref(currentRoute).fullPath, query, params }).then(() =>
+    //       resolve(true)
+    //     );
+    //   });
+    // }
+    try {
+      await push({ path: '/redirect' + unref(currentRoute).fullPath, query, params });
+      return true;
+    } catch (e) {
+      warn(e);
+    }
+  }
+  return refresh;
+};

@@ -125,6 +125,7 @@
         if (!unref(formRef)) return;
         const data = await unref(formRef).validate();
         if (!data) return;
+
         try {
           loading.value = true;
           const userInfo = await userStore.login(

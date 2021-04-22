@@ -1,6 +1,20 @@
 export default {
   okText: 'OK',
-  login: 'login',
-  home: 'Home',
-  errorLogList: 'Error Log',
+  closeText: 'Close',
+  cancelText: 'Cancel',
+  loadingText: 'Loading...',
+  saveText: 'Save',
+  delText: 'Delete',
+  resetText: 'Reset',
+  searchText: 'Search',
+  queryText: 'Search',
+
+  inputText: 'Please enter',
+  chooseText: 'Please choose',
+
+  refresh: 'Refresh',
+  back: 'Back',
+
+  light: 'Light',
+  dark: 'Dark',
 };

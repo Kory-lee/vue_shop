@@ -1,5 +1,5 @@
-import { MenuModule } from '../../../types';
-import { t } from '../../../../i18n/useI18n';
+import { t } from '/@/i18n/useI18n';
+import { MenuModule } from '/@/router/types';
 
 const menu: MenuModule = {
   orderNo: 500,

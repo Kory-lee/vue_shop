@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { computed, defineComponent, h } from 'vue';
+  import { computed, defineComponent, h, PropType } from 'vue';
   import { Result, Button } from 'ant-design-vue';
   import { ExceptionEnum } from '/@/enums/exceptionEnum';
   import { useI18n } from 'vue-i18n';
@@ -10,20 +10,20 @@
   import { PageEnum } from '/@/enums/pageEnum';
   interface MapValue {
     title: string;
-    status?: string;
     subTitle: string;
+    status?: string;
     btnText?: string;
     icon?: string;
-    handler?: (...args: any[]) => any;
+    handler?: Fn;
   }
 
   export default defineComponent({
     name: 'ErrorPage',
     props: {
-      status: { type: Number, default: ExceptionEnum.PAGE_NOT_FOUND },
-      title: { type: String },
-      subTitle: { type: String },
-      full: { type: Boolean, default: false },
+      status: { type: Number as PropType<number>, default: ExceptionEnum.PAGE_NOT_FOUND },
+      title: { type: String as PropType<string>, default: '' },
+      subTitle: { type: String, default: '' },
+      full: { type: Boolean as PropType<boolean>, default: false },
     },
     setup(props) {
       const statusMapRef = new Map<string | number, MapValue>();
@@ -41,6 +41,7 @@
 
       const backLoginI18n = t('sys.exception.backLogin'),
         backHomeI18n = t('sys.exception.backHome');
+
       statusMapRef
         .set(ExceptionEnum.PAGE_NOT_ACCESS, {
           title: '403',
@@ -73,7 +74,7 @@
         .set(ExceptionEnum.NET_WORK_ERROR, {
           title: t('sys.exception.networkErrorTitle'),
           subTitle: t('sys.exception.networkErrorSubTitle'),
-          btnText: t('sys.exception.refresh'),
+          btnText: t('common.refresh'),
           icon: netWorkImg,
           handler: () => refresh(),
         });

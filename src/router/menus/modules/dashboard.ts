@@ -1,6 +1,7 @@
 import { MenuModule } from '../../types';
-import { t } from '../../../locales/useI18n';
+import { useI18n } from '/@/i18n/useI18n';
 
+const { t } = useI18n();
 export default {
   orderNo: 10,
   menu: {
