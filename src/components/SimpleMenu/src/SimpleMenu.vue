@@ -43,10 +43,11 @@
       items: { type: Array as PropType<MenuType[]>, default: () => [] },
       collapse: Boolean,
       mixSidebar: Boolean,
-      theme: { type: String as PropType<'light' | 'dark'> },
+      theme: { type: String as PropType<'light' | 'dark'>, default: '' },
       accordion: { type: Boolean, default: true },
       collapsedShowTitle: Boolean,
       beforeClickFn: { type: Function as PropType<(key: string) => Promise<boolean>> },
+      isSplitMenu: Boolean,
     },
     emits: ['menuClick'],
     setup(props, { emit }) {
@@ -78,9 +79,18 @@
         { immediate: true }
       );
 
+      watch(
+        () => props.items,
+        () => {
+          if (!props.isSplitMenu) return;
+          setOpenKeys(currentRoute.value.path);
+        },
+        { flush: 'post' }
+      );
+
       listenerLastChangeTab((route) => {
-        console.log(route);
         if (route.name === REDIRECT_NAME) return;
+
         currentActiveName.value = route.meta?.currentActiveName as string;
         handleMenuChange(route);
 
@@ -106,6 +116,7 @@
           if (!flag) return;
         }
         emit('menuClick', key);
+
         isClickGo.value = true;
         setOpenKeys(key);
         menuState.activeName = key;

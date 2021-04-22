@@ -14,6 +14,7 @@
     getMenuMode,
     getMenuTheme,
     getMenuType,
+    getSplit,
   } from '/@/hooks/setting/useMenuSetting';
   import { getShowLogo } from '../../../hooks/setting/useRootSetting';
   import { useGo } from '/@/hooks/web/usePage';
@@ -23,7 +24,7 @@
   export default defineComponent({
     name: 'LayoutMenu',
     props: {
-      theme: { type: String as PropType<'light' | 'dark'> },
+      theme: { type: String as PropType<'light' | 'dark'>,default: 'light' },
       splitType: {
         type: Number as PropType<MenuSplitTypeEnum>,
         default: MenuSplitTypeEnum.NONE,
@@ -73,6 +74,7 @@
 
       function renderHeader() {
         if (!unref(getIsShowLogo) && !unref(isMobile)) return null;
+
         return (
           <Logo
             showTitle={!unref(getCollapsed)}
@@ -82,32 +84,32 @@
         );
       }
 
-      function renderMenu() {
+      const getComponentProps = computed(() => {
         const menus = unref(menusRef);
-        console.log(menus);
+        return {
+          menus,
+          beforeClickFn: beforeMenuClickFn,
+          items: menus,
+          theme: unref(getRealMenuTheme),
+          accordion: unref(getAccordion),
+          collapse: unref(getCollapsed),
+          getCollapsedShowTitle: unref(getCollapsedShowTitle),
+          onMenuClick: handleMenuClick,
+        };
+      });
+
+      function renderMenu() {
+        const { menus, ...menuProps } = unref(getComponentProps);
         if (!menus?.length) return null;
         return !props.isHorizontal ? (
-          <SimpleMenu
-            beforeClickFn={beforeMenuClickFn}
-            items={menus}
-            theme={unref(getRealMenuTheme)}
-            accordion={unref(getAccordion)}
-            collapse={unref(getCollapsed)}
-            collapsedShowTitle={unref(getCollapsedShowTitle)}
-            onMenuClick={handleMenuClick}
-          />
+          <SimpleMenu {...menuProps} isSplitMenu={unref(getSplit)} />
         ) : (
           <BasicMenu
-            beforeClickFn={beforeMenuClickFn}
+            {...menuProps}
             isHorizontal={props.isHorizontal}
             type={unref(getMenuType)}
-            collapsedShowTitle={unref(getCollapsedShowTitle)}
             // showLogo={unref(getIsShowLogo)}
             mode={unref(getRealMenuMode)}
-            theme={unref(getRealMenuTheme)}
-            items={menus}
-            accordion={unref(getAccordion)}
-            onMenuClick={handleMenuClick}
           />
         );
       }

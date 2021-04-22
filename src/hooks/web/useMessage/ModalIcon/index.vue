@@ -1,11 +1,11 @@
 <script lang="tsx">
   import { defineComponent, PropType } from 'vue';
-  import { icons, iconsType } from '/@/hooks/web/useMessage/ModalIcon/icons';
+  import { icons, IconsType } from '/@/hooks/web/useMessage/ModalIcon/icons';
 
   export default defineComponent({
     name: 'ModalIcon',
     // components: { InfoCircleFilled, CheckCircleFilled },
-    props: { type: { type: String as PropType<iconsType>, default: 'info' } },
+    props: { type: { type: String as PropType<IconsType>, default: 'info' } },
     setup(props) {
       const MIcon = icons[props.type];
       return () => <MIcon class={`modal-icon-${props.type}`} />;
