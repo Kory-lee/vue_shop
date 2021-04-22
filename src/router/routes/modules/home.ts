@@ -5,13 +5,13 @@ export default {
   path: '/home',
   name: 'Home',
   component: LAYOUT,
-  meta: { title: t('common.home'), icon: 'ion:home-outline' },
+  meta: { title: t('layout.header.home'), icon: 'ion:home-outline' },
   children: [
     {
       path: 'welcome',
       name: 'Welcome',
       component: () => import('/@/views/dashboard/welcome/index.vue'),
-      meta: { title: t('common.home'), affix: true, icon: 'ion:home-outline' },
+      meta: { title: t('layout.header.home'), affix: true, icon: 'ion:home-outline' },
     },
   ],
 } as AppRouteModule;

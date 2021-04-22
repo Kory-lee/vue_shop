@@ -7,13 +7,13 @@ export default {
   name: 'Home',
   component: LAYOUT,
   redirect: '/home/welcome',
-  meta: { icon: 'bx:bx-home', title: t('common.home') },
+  meta: { icon: 'bx:bx-home', title: t('layout.header.home') },
   children: [
     {
       path: 'welcome',
       name: 'Welcome',
       component: () => import('/@/views/dashboard/welcome/index.vue'),
-      meta: { title: t('common.home'), affix: true, icon: 'bx:bx-home' },
+      meta: { title: t('layout.header.home'), affix: true, icon: 'bx:bx-home' },
     },
   ],
 } as AppRouteModule;

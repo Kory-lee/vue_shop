@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@iconify/iconify": "^2.0.0-rc.6",
-    "@vueuse/core": "^4.8.2",
+    "@vueuse/core": "^4.9.0",
     "ant-design-vue": "^2.1.2",
     "axios": "^0.21.1",
     "crypto-js": "^4.0.0",
@@ -36,13 +36,12 @@
     "vue-echarts": "^6.0.0-rc.4",
     "vue-i18n": "^9.1.5",
     "vue-router": "^4.0.4",
-    "vuex": "^4.0.0",
     "xlsx": "^0.16.9"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.1",
     "@commitlint/config-conventional": "^12.1.1",
-    "@iconify/json": "^1.1.329",
+    "@iconify/json": "^1.1.332",
     "@purge-icons/generated": "^0.7.0",
     "@types/crypto-js": "^4.0.1",
     "@types/fs-extra": "^9.0.11",
@@ -78,7 +77,7 @@
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
     "rimraf": "^3.0.2",
-    "rollup-plugin-visualizer": "^5.3.6",
+    "rollup-plugin-visualizer": "^5.4.1",
     "stylelint": "^13.12.0",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^21.0.0",
@@ -95,9 +94,9 @@
     "vite-plugin-style-import": "^0.9.2",
     "vite-plugin-svg-icons": "^0.4.1",
     "vite-plugin-theme": "^0.7.1",
-    "vite-plugin-windicss": "^0.14.6",
+    "vite-plugin-windicss": "0.14.6",
     "vue-eslint-parser": "^7.6.0",
-    "vue-tsc": "^0.0.24"
+    "vue-tsc": "^0.0.25"
   },
   "resolutions": {
     "bin-wrapper": "npm:bin-wrapper-china",
