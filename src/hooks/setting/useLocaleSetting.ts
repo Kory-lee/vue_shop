@@ -1,7 +1,8 @@
 import { computed, unref } from 'vue-demi';
-import { i18n } from '/@/plugins/i18n';
-import { localeStore } from '/@/store/modules/locale';
+import i18n from '/@/i18n';
+import { useLocaleStoreWithout } from '/@/store/modules/locale';
 
+const localeStore = useLocaleStoreWithout();
 export const getLocale = computed(() => localeStore.getLocale);
 export const getShowLocalePicker = computed(() => localeStore.getShowPicker);
 

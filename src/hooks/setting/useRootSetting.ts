@@ -2,13 +2,13 @@ import { computed, unref } from 'vue';
 import { ContentEnum } from '/@/enums/configEnum';
 import router from '/@/router';
 import type { ProjectConfig } from '/@/types/config';
-import { useConfigStore } from '/@/store/modules/config';
+import { useConfigStoreWidthOut } from '/@/store/modules/config';
 
 type RootSetting = Omit<
   ProjectConfig,
   'locale' | 'headerSetting' | 'menuSetting' | 'multiTabsSetting'
 >;
-const configStore = useConfigStore();
+const configStore = useConfigStoreWidthOut();
 
 export const getRootSetting = computed((): RootSetting => configStore.getProjectConfig);
 

@@ -1,13 +1,14 @@
 import { defineConfig } from 'vite-plugin-windicss';
 import colors from 'windicss/colors';
 import lineClamp from 'windicss/plugin/line-clamp';
+import { primaryColor } from './build/config/themeConfig';
 
 export default defineConfig({
   darkMode: 'class',
   plugins: [lineClamp, createEnterPlugin()],
   theme: {
     extend: {
-      colors,
+      colors: { ...colors, primary: primaryColor },
       screens: {
         sm: '576px',
         md: '768px',
@@ -29,7 +30,7 @@ function createEnterPlugin(maxOutput = 10) {
         'z-index': `${10 - index}`,
         opacity: '0',
         /** name duration timing-function fill-mode delay*/
-        animation: `enter-${d}-animation 0.4s ease-in-out forwards ${(index * 1) / 10}s`,
+        animation: `enter-${d}-animation 0.4s ease-in-out forwards ${index / 10}s`,
         // 'animation-fill-mode': 'forwards',
         // 'animation-delay': `${(index * 1) / 10}s`,
       },

@@ -5,12 +5,12 @@ import { setupI18n } from './i18n';
 import globalCom from './plugins/registerComponents';
 import router from './router';
 import { setupStore } from './store';
-import { isDevMode } from './utils/env';
 
 // if (import.meta.env.DEV) import('ant-design-vue/dist/antd.less');
 
 (async () => {
   const app = createApp(App);
+
   setupStore(app);
 
   app.use(globalCom).use(router);
@@ -20,7 +20,7 @@ import { isDevMode } from './utils/env';
   await router.isReady();
 
   app.mount('#app', true);
-  if (isDevMode()) {
+  if (import.meta.env.DEV) {
     window.__APP__ = app;
   }
 })();

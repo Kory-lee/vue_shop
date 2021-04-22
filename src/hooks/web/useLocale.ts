@@ -1,8 +1,8 @@
 import { computed, unref } from 'vue-demi';
 import { i18n } from '/@/i18n';
 import { useLocaleStoreWithout } from '/@/store/modules/locale';
-import { LocaleType } from '/@/i18n/types';
 import moment from 'moment';
+import { LocaleType } from '/@/types/config';
 
 interface LangModule {
   message: Recordable;
@@ -45,7 +45,9 @@ export function useLocale() {
       setI18nLanguage(locale);
       return locale;
     }
-    const langModule = ((await import(`./lang/${locale}.ts`)) as any).default as LangModule;
+
+    const langModule = ((await import(`../../i18n/lang/${locale}.ts`)) as any)
+      .default as LangModule;
     if (!langModule) return;
 
     const { message, momentLocale, momentLocaleName } = langModule;

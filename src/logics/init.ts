@@ -10,6 +10,8 @@ import { getCommonStoragePrefix, getStorageShortName } from '/@/utils/env';
 import { updateGrayMode } from '/@/logics/theme/updateGrayMode';
 import { updateHeaderBgColor, updateSidebarBgColor } from '/@/logics/theme/updateBackground';
 import { useLocaleStore } from '/@/store/modules/locale';
+import { primaryColor } from '../../build/config/themeConfig';
+import { changeTheme } from '/@/logics/theme';
 
 export function initConfigStore() {
   const localeStore = useLocaleStore(),
@@ -26,7 +28,7 @@ export function initConfigStore() {
     menuSetting: { bgColor } = {},
   } = config;
   try {
-    // if(themeColor && themeColor !== primaryColor) changeT
+    if (themeColor && themeColor !== primaryColor) changeTheme(themeColor);
     grayMode && updateGrayMode(grayMode);
     // colorWeak && updateColorW
   } catch (e) {

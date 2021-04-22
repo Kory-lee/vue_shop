@@ -8,6 +8,8 @@ import configMockPlugin from './mock';
 import configPwaConfig from './pwa';
 import configStyleImportPlugin from './styleImport';
 import configWindiCSSPlugin from './windicss';
+import { configThemePlugin } from './theme';
+import { configImageminPlugin } from './imagemin';
 
 export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   const { VITE_USE_MOCK, VITE_LEGACY, VITE_USE_IMAGEMIN } = viteEnv,
@@ -25,8 +27,10 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
 
   vitePlugins.push(configStyleImportPlugin());
 
+  vitePlugins.push(configThemePlugin(isBuild));
+
   if (isBuild) {
-    VITE_USE_IMAGEMIN;
+    VITE_USE_IMAGEMIN && vitePlugins.push(configImageminPlugin());
 
     vitePlugins.push(configPwaConfig(viteEnv));
   }

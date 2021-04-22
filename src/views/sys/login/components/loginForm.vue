@@ -75,8 +75,8 @@
     GoogleCircleFilled,
     TwitterCircleFilled,
   } from '@ant-design/icons-vue';
-  import { userStore } from '/@/store/modules';
   import { notification } from '/@/hooks/web/useMessage';
+  import { useUserStore } from '/@/store/modules/user';
   export default defineComponent({
     name: 'LoginForm',
     components: {
@@ -112,6 +112,9 @@
           };
           return titleObj[unref(getLoginState)];
         });
+
+      const userStore = useUserStore();
+
       const formData = reactive({
           account: 'kory',
           password: '123456',

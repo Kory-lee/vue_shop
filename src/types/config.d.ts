@@ -1,4 +1,4 @@
-import { CacheTypeEnum } from '../enums/cacheEnum';
+import { CacheTypeEnum } from '/@/enums/cacheEnum';
 import {
   ContentEnum,
   PermissionModeEnum,
@@ -7,7 +7,8 @@ import {
   ThemeEnum,
 } from '../enums/configEnum';
 import { MenuModeEnum, MenuTypeEnum, MixSidebarTriggerEnum, TriggerEnum } from '../enums/menuEnum';
-import type { LocaleType } from '../locales/types';
+
+export type LocaleType = 'zh_CN' | 'en' | 'ru' | 'ja' | 'ko';
 
 export interface MenuSetting {
   bgColor: string;
@@ -29,6 +30,7 @@ export interface MenuSetting {
   mixSideTrigger: MixSidebarTriggerEnum;
   mixSideFixed: boolean;
 }
+
 export interface MultiTabsSetting {
   cache: boolean;
   show: boolean;

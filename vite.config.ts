@@ -1,14 +1,17 @@
-import moment from 'moment';
+import type { ConfigEnv, UserConfig } from 'vite';
+
 import { resolve } from 'path';
-import { ConfigEnv, loadEnv, UserConfig } from 'vite';
-import { generateModifyVars } from './build/config/themeConfig';
+import { loadEnv } from 'vite';
 import { OUTPUT_DIR } from './build/constant';
 import { wrapperEnv } from './build/utils';
 import { createVitePlugins } from './build/vite/plugins';
 import { createProxy } from './build/vite/proxy';
-import pkg from './package.json';
+import { generateModifyVars } from './build/config/generate/modifyVars';
 
-const pathResolve = (dir: string): string => resolve(__dirname, '.', dir);
+import pkg from './package.json';
+import moment from 'moment';
+
+const pathResolve = (dir: string): string => resolve(process.cwd(), '.', dir);
 
 const { dependencies, devDependencies, name, version } = pkg;
 const __APP_INFO__ = {
@@ -41,7 +44,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         },
       },
       brotliSize: false,
-      chunkSizeWarningLimit: 1200,
+      chunkSizeWarningLimit: 1500,
     },
     define: {
       // setting vue-i18-next
@@ -55,10 +58,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     css: {
       preprocessorOptions: {
         less: {
-          modifyVars: {
-            hack: `true; @import (reference) "${resolve('src/styles/config.less')}";`,
-            ...generateModifyVars(),
-          },
+          modifyVars: generateModifyVars(),
           javascriptEnabled: true,
         },
       },

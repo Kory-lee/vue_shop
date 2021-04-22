@@ -19,9 +19,9 @@
   import Icon from '/@/components/Icon';
   import { useProviderContext } from './Provider/useAppContext';
   import Dropdown, { DropMenu } from '/@/components/Dropdown';
-  import { LocaleType } from '/@/i18n/types';
   import { localeList } from '/@/settings/localeSetting';
   import { useLocale } from '/@/hooks/web/useLocale';
+  import { LocaleType } from '/@/types/config';
 
   export default defineComponent({
     name: 'LocalePicker',

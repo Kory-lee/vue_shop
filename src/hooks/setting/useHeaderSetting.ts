@@ -8,9 +8,11 @@ import {
   getSplit,
 } from './useMenuSetting';
 import { getRealFullContent, getShowBreadCrumb, getShowLogo } from './useRootSetting';
-import { MenuModeEnum } from '../../enums/menuEnum';
-import { configStore } from '/@/store/modules';
+import { MenuModeEnum } from '/@/enums/menuEnum';
 import { HeaderSetting } from '/@/types/config';
+import { useConfigStoreWidthOut } from '/@/store/modules/config';
+
+const configStore = useConfigStoreWidthOut();
 export const getShowMixHeaderRef = computed<boolean>(
   () => !unref(getIsSidebarType) && unref(getShowHeader)
 );
@@ -64,5 +66,5 @@ export const getShowContent = computed(
 );
 
 export function setHeaderSetting(headerSetting: Partial<HeaderSetting>) {
-  configStore.commitProjectConfigState({ headerSetting });
+  configStore.setProjectConfig({ headerSetting });
 }

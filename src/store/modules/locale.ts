@@ -1,8 +1,8 @@
+import type { LocaleSetting, LocaleType } from '/@/types/config';
+
 import { LOCALE_KEY } from '/@/enums/cacheEnum';
-import { LocaleType } from '/@/i18n/types';
 import { localeSetting } from '/@/settings/localeSetting';
 import store from '/@/store';
-import { LocaleSetting } from '/@/types/config';
 import { createLocalStorage } from '/@/utils/cache';
 import { defineStore } from 'pinia';
 

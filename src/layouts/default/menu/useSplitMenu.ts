@@ -1,14 +1,15 @@
 import { computed, ref, Ref, unref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProviderContext } from '/@/components/Application';
-import { getIsHorizontal, getSplit } from '../../../hooks/setting/useMenuSetting';
-import { MenuSplitTypeEnum } from '../../../enums/menuEnum';
+import { getIsHorizontal, getSplit } from '/@/hooks/setting/useMenuSetting';
+import { MenuSplitTypeEnum } from '/@/enums/menuEnum';
 import { useThrottle } from '/@/hooks/core/useThrottle';
 import { getCurrentParentPath, getMenus, getShallowMenus } from '/@/router/menus';
 import { MenuType } from '/@/router/types';
-import { permissionStore } from '/@/store/modules';
+import { usePermissionStore } from '/@/store/modules/permission';
 
 export default function useSplitMenu(splitType: Ref<MenuSplitTypeEnum>) {
+  const permissionStore = usePermissionStore();
   const [throttleHandleSplitLeftMenu] = useThrottle(handleSplitLeftMenu, 50);
 
   const menusRef = ref<MenuType[]>([]),
@@ -35,7 +36,7 @@ export default function useSplitMenu(splitType: Ref<MenuSplitTypeEnum>) {
   );
 
   watch(
-    [() => permissionStore.getLastBuildMenuTimeState, () => permissionStore.getBackMenuListState],
+    [() => permissionStore.getLastBuildMenuTime, () => permissionStore.getBackMenuList],
     () => {
       genMenus();
     },
