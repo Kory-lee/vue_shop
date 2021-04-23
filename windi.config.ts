@@ -8,7 +8,10 @@ export default defineConfig({
   plugins: [lineClamp, createEnterPlugin()],
   theme: {
     extend: {
-      colors: { ...colors, primary: primaryColor },
+      colors: {
+        ...colors,
+        primary: primaryColor,
+      },
       screens: {
         sm: '576px',
         md: '768px',

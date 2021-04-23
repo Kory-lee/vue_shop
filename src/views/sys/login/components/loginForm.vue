@@ -4,7 +4,7 @@
   </h2>
   <Form v-show="getShow" ref="formRef" class="p-4 enter-x" :model="formData">
     <FormItem name="account" class="enter-x">
-      <Input v-model:value="formData.account" size="large" :placeholder="t('sys.login.username')" />
+      <Input v-model:value="formData.account" size="large" :placeholder="t('sys.login.userName')" />
     </FormItem>
     <FormItem name="password" class="enter-x">
       <InputPassword
@@ -41,7 +41,7 @@
       <Col :xs="24" :md="7">
         <Button block>{{ t('sys.login.mobileSignInFormTitle') }}</Button>
       </Col>
-      <Col :xs="24" :md="{ span: 8, offset: 1 }" class="-md:my-2">
+      <Col :xs="24" :md="{ span: 8, offset: 1 }" class="!my-2 !md:my-0">
         <Button block>{{ t('sys.login.qrSignInFormTitle') }}</Button>
       </Col>
       <Col :xs="24" :md="{ span: 7, offset: 1 }">
@@ -157,5 +157,3 @@
     },
   });
 </script>
-
-<style></style>
