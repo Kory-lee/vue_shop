@@ -15,7 +15,7 @@
       </template>
     </PageHeader>
     <div class="overflow-hidden" :class="getContentClass" :style="getContentStyle">
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
@@ -26,6 +26,9 @@
   import { CSSProperties } from 'node_modules/vue-demi/lib';
   import { useProviderContext } from '../Application';
   import { omit } from '/@/utils/common';
+  import { usePageContext } from '/@/hooks/component/usePageContext';
+  import { nextTick } from 'vue';
+  import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActived';
 
   export default defineComponent({
     name: 'PageWrapper',
@@ -43,11 +46,14 @@
       fixedHeight: Boolean,
     },
     setup(props, { slots }) {
-      // TODO
-      // const headerRef = ref<ComponentRef>(null);
+      const headerRef = ref<ComponentRef>(null),
+        footerRef = ref<ComponentRef>(null),
+        footerHeight = ref(0);
 
       const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('page-wrapper');
+
+      const { contentHeight, setPageHeight, pageHeight } = usePageContext();
 
       const getClass = computed(() => [prefixCls, { [`${prefixCls}-dense`]: props.dense }]);
 
@@ -76,13 +82,63 @@
           ...contentStyle,
           minHeight: height,
           ...(fixedHeight ? { height } : {}),
-          paddibngBottom: `${unref(footerHeight)}px`,
+          paddingBottom: `${unref(footerHeight)}px`,
         };
       });
 
-      // watch(()=>[contentHei])
+      watch(
+        () => [contentHeight, getShowFooter.value],
+        () => {
+          calcContentHeight();
+        },
+        { flush: 'post', immediate: true }
+      );
 
-      return { getClass, getShowFooter, getHeaderSlots, getContentClass, getContentStyle };
+      onMountedOrActivated(() => {
+        nextTick(() => calcContentHeight());
+      });
+
+      function calcContentHeight() {
+        if (!props.contentFullHeight) return;
+        //  fix: in contentHeight mode: delay getting footer and header dom element to get the correct height
+        const footer = unref(footerRef),
+          header = unref(headerRef);
+        footerHeight.value = 0;
+        const footerEl = footer?.$el;
+
+        if (footerEl) footerHeight.value += footerEl?.offsetHeight ?? 0;
+
+        let headerHeight = 0;
+        const headerEl = header?.$el;
+        if (headerEl) headerHeight += headerEl?.offsetHeight ?? 0;
+
+        //  fix:subtract content's marginTop and marginBottom value
+        let subTractHeight = 0,
+          marginBottom = '0px',
+          marginTop = '0px';
+
+        const classElements = document.querySelector(getPrefixCls('page-wrapper-content'));
+        if (classElements?.length) {
+          const contentEl = classElements[0];
+          const cssStyle = getComputedStyle(contentEl);
+          marginBottom = cssStyle?.marginBottom;
+          marginTop = cssStyle?.marginTop;
+        }
+        if (marginBottom) subTractHeight += Number(marginBottom.replace(/[^\d]/g, ''));
+
+        if (marginTop) subTractHeight += Number(marginTop.replace(/[^\d]/g, ''));
+
+        setPageHeight?.(unref(contentHeight) - unref(footerHeight) - headerHeight - subTractHeight);
+      }
+
+      return {
+        getClass,
+        getShowFooter,
+        getHeaderSlots,
+        getContentClass,
+        getContentStyle,
+        pageHeight,
+      };
     },
   });
 </script>

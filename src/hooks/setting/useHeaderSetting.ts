@@ -44,7 +44,7 @@ export const getHeaderBgColor = computed(() => unref(getHeaderSetting).bgColor);
 
 export const getShowSearch = computed(() => unref(getHeaderSetting).showSearch);
 
-export const getUseLockPage = computed(() => unref(getHeaderSetting).useLockpage);
+export const getUseLockPage = computed(() => unref(getHeaderSetting).useLockPage);
 
 export const getShowFullScreen = computed(() => unref(getHeaderSetting).showFullScreen);
 

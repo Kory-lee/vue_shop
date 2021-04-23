@@ -26,6 +26,7 @@ export default function useBreakpoint(fn?: (opt: CreateCallbackParams) => void) 
       md = screenMap.get(sizeEnum.MD)!,
       lg = screenMap.get(sizeEnum.LG)!,
       xl = screenMap.get(sizeEnum.XL)!;
+
     if (width < xs) screenRef.value = sizeEnum.XS;
     else if (width < sm) screenRef.value = sizeEnum.SM;
     else if (width < md) screenRef.value = sizeEnum.MD;
@@ -35,6 +36,7 @@ export default function useBreakpoint(fn?: (opt: CreateCallbackParams) => void) 
 
     realWidthRef.value = width;
   }
+
   useEventListener({
     el: window,
     name: 'resize',
@@ -59,6 +61,7 @@ export default function useBreakpoint(fn?: (opt: CreateCallbackParams) => void) 
       sizeEnum,
     });
   }
+
   resizeFn();
   return {
     screenEnum,

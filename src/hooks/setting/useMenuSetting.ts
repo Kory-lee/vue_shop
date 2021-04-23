@@ -3,13 +3,14 @@ import { getRealFullContent } from './useRootSetting';
 import { SIDE_BAR_MINI_WIDTH, SIDE_BAR_SHOW_TIT_MINI_WIDTH } from '/@/enums/configEnum';
 import { MenuModeEnum, MenuTypeEnum, TriggerEnum } from '/@/enums/menuEnum';
 import { MenuSetting } from '/@/types/config';
-import { useConfigStore } from '/@/store/modules/config';
-
-const configStore = useConfigStore();
+import { useConfigStoreWidthOut } from '/@/store/modules/config';
 
 const mixSideHasChildren = ref(false);
 
-export const getMenuSetting = computed(() => configStore.getProjectConfig.menuSetting);
+export const getMenuSetting = computed(() => {
+  const configStore = useConfigStoreWidthOut();
+  return configStore.getProjectConfig.menuSetting;
+});
 
 export const getCollapsed = computed(() => unref(getMenuSetting).collapsed);
 
@@ -99,6 +100,8 @@ export const getShowSidebar = computed(
 );
 
 export function setMenuSetting(menuSetting: Partial<MenuSetting>): void {
+  const configStore = useConfigStoreWidthOut();
+
   configStore.setProjectConfig({ menuSetting });
 }
 

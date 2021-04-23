@@ -1,26 +1,27 @@
-import { useDebounce } from '../core/useDebounce';
-import { tryOnMounted, tryOnUnmounted } from '/@/utils/helper/vueHelper';
+import { tryOnMounted, tryOnUnmounted, useDebounceFn } from '@vueuse/core';
 
 interface WindowSizeOptions {
   once?: boolean;
   immediate?: boolean;
   listenerOptions?: AddEventListenerOptions | boolean;
 }
-export default function useWindowSizeFn<T>(fn: Fn<T>, wait = 150, options?: WindowSizeOptions) {
+
+export function useWindowSizeFn<T>(fn: Fn<T>, wait = 150, options?: WindowSizeOptions) {
   let handler = () => {
     fn();
   };
-  const [handleSize, cancel] = useDebounce(handler, wait, options);
-  handler = handleSize;
+  handler = useDebounceFn(handler, wait);
+
   const start = () => {
     if (options && options.immediate) handler();
     window.addEventListener('resize', handler);
   };
   const stop = () => {
     window.removeEventListener('resize', handler);
-    cancel();
   };
   tryOnMounted(() => start());
   tryOnUnmounted(() => stop());
   return [start, stop];
 }
+
+export default useWindowSizeFn;
