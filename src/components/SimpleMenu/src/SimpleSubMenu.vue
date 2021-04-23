@@ -55,7 +55,7 @@
       parent: Boolean,
       collapsedShowTitle: Boolean,
       collapse: Boolean,
-      theme: { type: String as PropType<'dark' | 'light'> },
+      theme: { type: String as PropType<'dark' | 'light'>, default: 'light' },
     },
     setup(props) {
       const { getPrefixCls } = useProviderContext(),

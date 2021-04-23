@@ -21,7 +21,7 @@
     "ant-design-vue": "^2.1.2",
     "axios": "^0.21.1",
     "crypto-js": "^4.0.0",
-    "echarts": "^5.0.2",
+    "echarts": "^5.1.0",
     "lodash-es": "^4.17.21",
     "mockjs": "^1.1.0",
     "moment": "^2.29.1",

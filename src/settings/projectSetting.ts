@@ -24,11 +24,12 @@ const setting: ProjectConfig = {
 
   themeColor: primaryColor,
 
-  grayMode: true,
+  grayMode: false,
 
   colorWeak: false,
   // whether to cancel the menu,the top,the multi-tab page display,for possible embedded in other system
   fullContent: false,
+
   contentMode: ContentEnum.FULL,
 
   showLogo: true,

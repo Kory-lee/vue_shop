@@ -46,7 +46,10 @@
       theme: { type: String as PropType<'light' | 'dark'>, default: '' },
       accordion: { type: Boolean, default: true },
       collapsedShowTitle: Boolean,
-      beforeClickFn: { type: Function as PropType<(key: string) => Promise<boolean>> },
+      beforeClickFn: {
+        type: Function as PropType<(key: string) => Promise<boolean>>,
+        default: () => {},
+      },
       isSplitMenu: Boolean,
     },
     emits: ['menuClick'],
@@ -127,6 +130,6 @@
   });
 </script>
 
-<style lang="less" scoped>
-  @import './index';
+<style lang="less">
+  @import './index.less';
 </style>

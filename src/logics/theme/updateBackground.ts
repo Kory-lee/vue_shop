@@ -1,7 +1,6 @@
 import { colorIsDark, darken, lighten } from '/@/utils/color';
 import { ThemeEnum } from '/@/enums/configEnum';
 import { useConfigStore } from '/@/store/modules/config';
-import { darkMode } from '/@/settings/styleSetting';
 import { setCssVar } from '/@/logics/theme/utils';
 
 const HEADER_BG_COLOR_VAR = '--header-bg-color';
@@ -28,7 +27,7 @@ export function updateHeaderBgColor(color?: string) {
   //Determine the depth of the color value and automatically switch the theme
   const isDark = colorIsDark(color);
   configStore.setProjectConfig({
-    headerSetting: { theme: isDark || darkMode ? ThemeEnum.DARK : ThemeEnum.LIGHT },
+    headerSetting: { theme: isDark || isDarkMode ? ThemeEnum.DARK : ThemeEnum.LIGHT },
   });
 }
 
@@ -41,6 +40,7 @@ export function updateSidebarBgColor(color?: string) {
     if (isDarkMode) color = '#212121';
     else color = configStore.getMenuSetting.bgColor;
   }
+
   setCssVar(SIDER_DARK_BG_COLOR, color);
   setCssVar(SIDER_DARK_DARKEN_BG_COLOR, darken(color, 6));
   setCssVar(SIDER_LIGHTEN_BG_COLOR, lighten(color, 5));

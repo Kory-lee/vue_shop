@@ -2,7 +2,7 @@ import { computed, unref } from 'vue';
 import { ContentEnum } from '/@/enums/configEnum';
 import router from '/@/router';
 import type { ProjectConfig } from '/@/types/config';
-import { useConfigStoreWidthOut } from '/@/store/modules/config';
+import useConfigStore, { useConfigStoreWidthOut } from '/@/store/modules/config';
 
 type RootSetting = Omit<
   ProjectConfig,
@@ -60,6 +60,10 @@ export function setRootSetting(setting: Partial<RootSetting>) {
 }
 
 export function useRootSetting() {
+  const configStore = useConfigStore();
+
+  const getDarkMode = computed(() => configStore.getDarkMode);
+
   return {
     setRootSetting,
     getOpenKeepAlive,
@@ -80,5 +84,6 @@ export function useRootSetting() {
     getGrayMode,
     getLockTime,
     getLayoutContentMode,
+    getDarkMode,
   };
 }

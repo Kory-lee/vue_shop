@@ -1,20 +1,23 @@
 import type { EChartsOption } from 'echarts';
+
 import { ref, Ref, unref } from '@vue/reactivity';
 import useEventListener from '../event/useEventListener';
 import useBreakPoint from '../event/useBreakPoint';
 import echarts from '/@/plugins/echarts';
 import { useTimeoutFn } from '../core/useTimeout';
-import { computed, nextTick, watch } from '@vue/runtime-core';
 import { tryOnUnmounted, useDebounceFn } from '@vueuse/core';
-import { getCollapsed } from '../setting/useMenuSetting';
+import { computed, nextTick, watch } from 'vue';
+import { useRootSetting } from '../setting/useRootSetting';
 
 export default function useEcharts(
   elRef: Ref<HTMLDivElement>,
-  theme: 'light' | 'dark' | 'default' = 'light'
+  theme: 'light' | 'dark' | 'default' | string = 'light'
 ) {
   let chartInstance: echarts.ECharts | null = null,
     resizeFn: Fn = resize,
     removeResizeFn: Fn = () => {};
+
+  const { getDarkMode } = useRootSetting();
 
   const cacheOptions = ref<EChartsOption>({});
 
@@ -22,8 +25,8 @@ export default function useEcharts(
 
   const getOptions = computed(
     (): EChartsOption => {
-      // if(getDarkMode)
-      return { backgroundColor: 'transparent' };
+      if (getDarkMode.value !== 'dark') return cacheOptions.value;
+      return { backgroundColor: 'transparent', ...cacheOptions.value };
     }
   );
 
@@ -47,10 +50,12 @@ export default function useEcharts(
       useTimeoutFn(() => setOptions(unref(getOptions)), 30);
       return;
     }
+
     nextTick(() =>
       useTimeoutFn(() => {
         if (!chartInstance) {
-          initCharts();
+          initCharts(getDarkMode.value);
+
           if (!chartInstance) return;
         }
         clear && chartInstance?.clear();
@@ -63,7 +68,17 @@ export default function useEcharts(
   function resize() {
     chartInstance?.resize();
   }
-  watch(getCollapsed, () => resizeFn());
+  watch(
+    () => getDarkMode.value,
+    (theme) => {
+      if (chartInstance) {
+        chartInstance.dispose();
+        initCharts(theme);
+        setOptions(cacheOptions.value);
+      }
+      resizeFn();
+    }
+  );
 
   tryOnUnmounted(() => {
     if (!chartInstance) return;

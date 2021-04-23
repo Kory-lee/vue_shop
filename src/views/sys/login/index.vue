@@ -76,6 +76,9 @@
     overflow: hidden;
     @media (max-width: @screen-xl) {
       background-image: linear-gradient(180deg, #1c3faa, #1c3faa);
+      .@{prefix-cls}-form {
+        background: #fff;
+      }
     }
     &::before {
       position: absolute;
@@ -130,9 +133,6 @@
           color: @primary-color;
         }
       }
-    }
-    .ant-input-affix-wrapper {
-      display: inline-flex;
     }
 
     .ant-input:not([type='checkbox']) {

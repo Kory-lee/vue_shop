@@ -1,5 +1,5 @@
 import { Spin } from 'ant-design-vue';
-import { defineAsyncComponent, h } from 'vue';
+import { defineAsyncComponent } from 'vue';
 import { noop } from '../common';
 
 interface Options {

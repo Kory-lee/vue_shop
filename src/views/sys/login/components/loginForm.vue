@@ -4,7 +4,7 @@
   </h2>
   <Form v-show="getShow" ref="formRef" class="p-4 enter-x" :model="formData">
     <FormItem name="account" class="enter-x">
-      <Input v-model:value="formData.account" size="large" :placeholder="t('sys.login.userName')" />
+      <Input v-model:value="formData.account" size="large" :placeholder="t('sys.login.username')" />
     </FormItem>
     <FormItem name="password" class="enter-x">
       <InputPassword

@@ -1,17 +1,18 @@
+import { primaryColor } from '../../build/config/themeConfig';
 import { PROJ_CFG_KEY } from '../enums/cacheEnum';
 import { ProjectConfig } from '../types/config';
 import { deepMerge } from '../utils/common';
+import { updateColorWeak } from './theme/updateColorWeak';
+import { ThemeEnum } from '/@/enums/configEnum';
+import { changeTheme } from '/@/logics/theme';
+import { updateDarkTheme } from '/@/logics/theme/dark';
+import { updateHeaderBgColor, updateSidebarBgColor } from '/@/logics/theme/updateBackground';
+import { updateGrayMode } from '/@/logics/theme/updateGrayMode';
 import projectSetting from '/@/settings/projectSetting';
 import { useConfigStore } from '/@/store/modules/config';
-import { Persistent } from '/@/utils/cache/persistent';
-import { ThemeEnum } from '/@/enums/configEnum';
-import { updateDarkTheme } from '/@/logics/theme/dark';
-import { getCommonStoragePrefix, getStorageShortName } from '/@/utils/env';
-import { updateGrayMode } from '/@/logics/theme/updateGrayMode';
-import { updateHeaderBgColor, updateSidebarBgColor } from '/@/logics/theme/updateBackground';
 import { useLocaleStore } from '/@/store/modules/locale';
-import { primaryColor } from '../../build/config/themeConfig';
-import { changeTheme } from '/@/logics/theme';
+import { Persistent } from '/@/utils/cache/persistent';
+import { getCommonStoragePrefix, getStorageShortName } from '/@/utils/env';
 
 export function initConfigStore() {
   const localeStore = useLocaleStore(),
@@ -20,6 +21,7 @@ export function initConfigStore() {
   let config: ProjectConfig = Persistent.getLocal(PROJ_CFG_KEY) as ProjectConfig;
   config = deepMerge(projectSetting, config || {});
   const darkMode = configStore.getDarkMode;
+
   const {
     colorWeak,
     grayMode,
@@ -29,8 +31,9 @@ export function initConfigStore() {
   } = config;
   try {
     if (themeColor && themeColor !== primaryColor) changeTheme(themeColor);
+
     grayMode && updateGrayMode(grayMode);
-    // colorWeak && updateColorW
+    colorWeak && updateColorWeak(colorWeak);
   } catch (e) {
     console.log(e);
   }

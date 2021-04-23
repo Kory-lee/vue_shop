@@ -115,5 +115,5 @@
 </script>
 
 <style lang="less">
-  @import './menu';
+  @import './menu.less';
 </style>

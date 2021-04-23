@@ -2,6 +2,7 @@
   import { defineComponent, onMounted, Ref, ref } from '@vue/runtime-core';
   import useEcharts from '/@/hooks/web/useEcharts';
   import { getLineData } from '../data';
+
   export default defineComponent({
     props: {
       width: { type: String, default: '100%' },

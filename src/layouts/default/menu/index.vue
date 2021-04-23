@@ -24,7 +24,7 @@
   export default defineComponent({
     name: 'LayoutMenu',
     props: {
-      theme: { type: String as PropType<'light' | 'dark'>,default: 'light' },
+      theme: { type: String as PropType<'light' | 'dark'>, default: 'light' },
       splitType: {
         type: Number as PropType<MenuSplitTypeEnum>,
         default: MenuSplitTypeEnum.NONE,
@@ -138,7 +138,7 @@
 
       img {
         width: @logo-width;
-        // height: @logo-width;
+        height: @logo-width;
       }
 
       &--mobile {

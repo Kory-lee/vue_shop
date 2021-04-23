@@ -3,6 +3,9 @@ import type { MenuModule } from '/@/router/types';
 
 const { t } = useI18n();
 export default {
-  orderNo: 0,
-  menu: { path: '/home/welcome', name: t('routes.dashboard.welcome') },
+  orderNo: 100000,
+  menu: {
+    path: '/about/index',
+    name: t('routes.dashboard.about'),
+  },
 } as MenuModule;

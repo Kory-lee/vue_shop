@@ -93,7 +93,7 @@ export default {
     policyPlaceholder: 'Register after checking',
     diffPwd: 'The two passwords are inconsistent',
 
-    userName: 'Username',
+    username: 'Username',
     password: 'Password',
     confirmPassword: 'Confirm Password',
     email: 'Email',
