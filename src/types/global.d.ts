@@ -1,7 +1,7 @@
 import type { App } from '@vue/runtime-core';
 
 declare global {
-  const _APP_INFO__: {
+  const __APP_INFO__: {
     pkg: {
       name: string;
       version: string;

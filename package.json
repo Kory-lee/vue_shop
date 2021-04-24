@@ -1,5 +1,5 @@
 {
-  "name": "vite",
+  "name": "kory-admin",
   "version": "0.0.1",
   "scripts": {
     "dev": "cross-env  --max_old_space_size=4096  vite",

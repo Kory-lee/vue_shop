@@ -1,7 +1,7 @@
 <template>
   <div :class="getClass">
     <PageHeader
-      v-if="content || $slots.headerContent || title"
+      v-if="content || $slots.headerContent || title || getHeaderSlots.length"
       ref="headerRef"
       :ghost="ghost"
       :title="title"
@@ -17,22 +17,31 @@
     <div class="overflow-hidden" :class="getContentClass" :style="getContentStyle">
       <slot />
     </div>
+    <PageFooter v-if="getShowFooter" ref="footerRef">
+      <template #left>
+        <slot name="leftFooter"></slot>
+      </template>
+      <template #right>
+        <slot name="rightFooter"></slot>
+      </template>
+    </PageFooter>
   </div>
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, ref, unref, watch } from '@vue/runtime-core';
+  import type { CSSProperties, PropType } from 'vue';
+
   import { PageHeader } from 'ant-design-vue';
-  import { CSSProperties } from 'node_modules/vue-demi/lib';
-  import { useProviderContext } from '../Application';
-  import { omit } from '/@/utils/common';
+  import { useProviderContext } from '../../Application';
+  import { omit } from 'lodash-es';
   import { usePageContext } from '/@/hooks/component/usePageContext';
-  import { nextTick } from 'vue';
+  import { nextTick, computed, defineComponent, ref, unref, watch } from 'vue';
   import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActived';
+  import PageFooter from './PageFooter.vue';
 
   export default defineComponent({
     name: 'PageWrapper',
-    components: { PageHeader },
+    components: { PageHeader, PageFooter },
     inheritAttrs: false,
     props: {
       title: { type: String, default: '' },
@@ -63,28 +72,29 @@
         Object.keys(omit(slots, 'default', 'leftFooter', 'rightFooter', 'headerContent'))
       );
 
-      const getContentClass = computed(
+      const getContentClass = computed(() => {
+        const { contentBackground, contentClass } = props;
+        return [
+          `${prefixCls}-content`,
+          contentClass,
+          { [`${prefixCls}-content-bg`]: contentBackground },
+        ];
+      });
+
+      const getContentStyle = computed(
         (): CSSProperties => {
-          const { contentBackground, contentClass } = props;
-          return [
-            `${prefixCls}-content`,
-            contentClass,
-            { [`${prefixCls}-content-bg`]: contentBackground },
-          ];
+          const { contentFullHeight, contentStyle, fixedHeight } = props;
+
+          if (!contentFullHeight) return { ...contentStyle };
+          const height = `${unref(pageHeight)}px`;
+          return {
+            ...contentStyle,
+            minHeight: height,
+            ...(fixedHeight ? { height } : {}),
+            paddingBottom: `${unref(footerHeight)}px`,
+          };
         }
       );
-
-      const getContentStyle = computed(() => {
-        const { contentFullHeight, contentStyle, fixedHeight } = props;
-        if (!contentFullHeight) return { ...contentStyle };
-        const height = `${unref(pageHeight)}px`;
-        return {
-          ...contentStyle,
-          minHeight: height,
-          ...(fixedHeight ? { height } : {}),
-          paddingBottom: `${unref(footerHeight)}px`,
-        };
-      });
 
       watch(
         () => [contentHeight, getShowFooter.value],
@@ -117,7 +127,7 @@
           marginBottom = '0px',
           marginTop = '0px';
 
-        const classElements = document.querySelector(getPrefixCls('page-wrapper-content'));
+        const classElements = document.querySelectorAll(getPrefixCls('page-wrapper-content'));
         if (classElements?.length) {
           const contentEl = classElements[0];
           const cssStyle = getComputedStyle(contentEl);
@@ -148,5 +158,23 @@
 
   .@{prefix-cls} {
     position: relative;
+
+    &-content {
+      margin: 16px;
+
+      &-bg {
+        background-color: @component-background;
+      }
+    }
+
+    &--dense &-content {
+      margin: 0;
+    }
+
+    ::v-deep(.ant-page-header) {
+      &:empty {
+        padding: 0;
+      }
+    }
   }
 </style>

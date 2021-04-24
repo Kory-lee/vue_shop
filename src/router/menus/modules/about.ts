@@ -5,7 +5,7 @@ const { t } = useI18n();
 export default {
   orderNo: 100000,
   menu: {
-    path: '/about/index',
+    path: '/about',
     name: t('routes.dashboard.about'),
   },
 } as MenuModule;

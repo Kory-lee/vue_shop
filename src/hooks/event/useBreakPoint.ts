@@ -21,11 +21,11 @@ export default function useBreakpoint(fn?: (opt: CreateCallbackParams) => void) 
 
   function getWindowWidth() {
     const width = document.body.clientWidth,
-      xs = screenMap.get(sizeEnum.XS)!,
-      sm = screenMap.get(sizeEnum.SM)!,
-      md = screenMap.get(sizeEnum.MD)!,
-      lg = screenMap.get(sizeEnum.LG)!,
-      xl = screenMap.get(sizeEnum.XL)!;
+      xs = screenMap.get(sizeEnum.XS) ?? screenEnum.XS,
+      sm = screenMap.get(sizeEnum.SM) ?? screenEnum.SM,
+      md = screenMap.get(sizeEnum.MD) ?? screenEnum.MD,
+      lg = screenMap.get(sizeEnum.LG) ?? screenEnum.LG,
+      xl = screenMap.get(sizeEnum.XL) ?? screenEnum.XL;
 
     if (width < xs) screenRef.value = sizeEnum.XS;
     else if (width < sm) screenRef.value = sizeEnum.SM;
@@ -48,7 +48,7 @@ export default function useBreakpoint(fn?: (opt: CreateCallbackParams) => void) 
   getWindowWidth();
 
   globalScreenRef = computed(() => unref(screenRef));
-  globalWidthRef = computed((): number => screenMap.get(unref(screenRef)!)!);
+  globalWidthRef = computed((): number => screenMap.get(unref(screenRef))!);
   globalRealWidthRef = computed((): number => unref(realWidthRef));
 
   function resizeFn() {

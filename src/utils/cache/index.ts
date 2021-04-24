@@ -14,7 +14,7 @@ const createOptions = (storage = sessionStorage, options: Options = {}): Options
 };
 
 export const createStorage = (storage: Storage = sessionStorage, opt = {}) =>
-  create(createOptions(storage, opt))!;
+  create(createOptions(storage, opt));
 
 export const createSessionStorage = (opt: Options = {}) =>
   createStorage(sessionStorage, { ...opt, timeout: DEFAULT_CACHE_TIME });

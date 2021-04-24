@@ -3,17 +3,17 @@ import { LAYOUT } from '/@/router/constant';
 import { t } from '/@/i18n/useI18n';
 
 export default {
-  path: '/about',
+  path: '/',
   name: 'About',
   component: LAYOUT,
-  redirect: '/about/index',
+  redirect: '/about',
   meta: {
     icon: 'simple-icons:about-dot-me',
     title: t('routes.dashboard.about'),
   },
   children: [
     {
-      path: 'index',
+      path: 'about',
       name: 'AboutPage',
       component: () => import('/@/views/about/index.vue'),
       meta: {

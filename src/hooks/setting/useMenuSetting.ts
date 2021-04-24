@@ -88,6 +88,7 @@ export const getCalcContentWidth = computed(() => {
         : SIDE_BAR_SHOW_TIT_MINI_WIDTH +
           (unref(getMixSideFixed) && unref(mixSideHasChildren) ? unref(getRealWidth) : 0)
       : unref(getRealWidth);
+
   return `calc(100% - ${width}px)`;
 });
 

@@ -1,4 +1,5 @@
-import { AppRouteModule } from '../../types';
+import type { AppRouteModule } from '../../types';
+
 import { t } from '/@/i18n/useI18n';
 import { LAYOUT } from '/@/router/constant';
 
