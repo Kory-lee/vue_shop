@@ -1,5 +1,6 @@
-import windiCss from 'vite-plugin-windicss';
 import type { Plugin } from 'vite';
+
+import windiCss from 'vite-plugin-windicss';
 
 export default function configWindiCssPlugin(): Plugin[] {
   return windiCss({

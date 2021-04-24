@@ -5,7 +5,6 @@ import { setupI18n } from './i18n';
 import globalCom from './plugins/registerComponents';
 import router, { setupRouter } from './router';
 import { setupStore } from './store';
-import 'virtual:windi.css';
 
 // if (import.meta.env.DEV) import('ant-design-vue/dist/antd.less');
 

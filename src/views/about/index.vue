@@ -3,7 +3,7 @@
     <template #headerContent>
       <div class="flex justify-between items-center">
         <span class="flex-1">
-          <a href="#" target="_blank">{{ name }}</a>
+          <a :href="GITHUB_URL" target="_blank">{{ name }}</a>
           是一个基于Vue3,、Vite、Ant-Design-Vue、TypeScript的学习项目
         </span>
       </div>
@@ -35,7 +35,7 @@
 
       const commonTagRender = (color: string) => (curVal) => <Tag color={color}>{curVal}</Tag>;
       const commonLinkRender = (text: string) => (href) => (
-        <a href={href} target="_blank" style="color: #0960bd;">
+        <a href={href} target="_blank">
           {text}
         </a>
       );
@@ -79,7 +79,7 @@
         schema: infoSchema,
         column: 2,
       });
-      return { name, t, register, registerDev, infoRegister };
+      return { name, t, register, registerDev, infoRegister, GITHUB_URL };
     },
   });
 </script>
