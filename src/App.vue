@@ -10,8 +10,6 @@
   import { initConfigStore } from '/@/logics/init';
   import { useLocale } from '/@/hooks/web/useLocale';
 
-  import 'virtual:windi.css';
-
   export default defineComponent({
     name: 'App',
     components: { Provider },

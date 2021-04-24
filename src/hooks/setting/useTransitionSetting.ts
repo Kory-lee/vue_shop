@@ -1,9 +1,12 @@
+import type { TransitionSetting } from '/@/types/config';
+
 import { computed, unref } from 'vue';
-import { TransitionSetting } from '/@/types/config';
 import { useConfigStoreWidthOut } from '/@/store/modules/config';
 
-const configStore = useConfigStoreWidthOut();
-export const getTransitionSetting = computed(() => configStore.getProjectConfig.transitionSetting);
+export const getTransitionSetting = computed(() => {
+  const configStore = useConfigStoreWidthOut();
+  return configStore.getProjectConfig.transitionSetting;
+});
 
 export const getEnableTransition = computed(() => unref(getTransitionSetting)?.enable);
 
@@ -16,6 +19,8 @@ export const getOpenPageLoading = computed(
 export const getBasicTransition = computed(() => getTransitionSetting.value?.basicTransition);
 
 export function setTransitionSetting(transitionSetting: Partial<TransitionSetting>) {
+  const configStore = useConfigStoreWidthOut();
+
   configStore.setProjectConfig({ transitionSetting });
 }
 

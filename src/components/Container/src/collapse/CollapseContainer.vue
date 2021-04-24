@@ -1,16 +1,16 @@
 <template>
   <div :class="prefixCls">
-    <CollapseHeader v-bind="$props" :prefix-cls="prefixCls" :show="show" @expand="handleExpand">
-      <template #title>
-        <slot name="title"></slot>
-      </template>
-      <template #action>
+    <div v-if="$slots.header" :class="`${prefixCls}__header`">
+      <slot name="header" />
+    </div>
+    <div v-else :class="`${prefixCls}__header px-2 py-4`">
+      <div :class="`${prefixCls}__action`">
         <slot name="action"></slot>
-      </template>
-    </CollapseHeader>
+      </div>
+    </div>
 
     <div class="p-2">
-      <ASkeleton v-if="loading" :active="active" />
+      <Skeleton v-if="loading" :active="active" />
       <div v-else v-show="show" :class="`${prefixCls}__body`">
         <slot />
       </div>
@@ -26,11 +26,11 @@
   import { useTimeoutFn } from '@vueuse/core';
   import { useProviderContext } from '/@/components/Application';
   import { triggerWindowResize } from '/@/utils/event';
-  import CollapseHeader from './CollapseHeader.vue';
+  import { Skeleton } from 'ant-design-vue';
 
   export default defineComponent({
     name: 'CollapseContainer',
-    components: { CollapseHeader },
+    components: { Skeleton },
     props: {
       title: { type: String, default: '' },
       canExpand: { type: Boolean, default: true },

@@ -2,6 +2,8 @@ import { colorIsDark, darken, lighten } from '/@/utils/color';
 import { ThemeEnum } from '/@/enums/configEnum';
 import { useConfigStore } from '/@/store/modules/config';
 import { setCssVar } from '/@/logics/theme/utils';
+import { unref } from 'vue';
+import { getMenuBgColor } from '/@/hooks/setting/useMenuSetting';
 
 const HEADER_BG_COLOR_VAR = '--header-bg-color';
 const HEADER_BG_HOVER_COLOR_VAR = '--header-bg-hover-color';
@@ -38,7 +40,7 @@ export function updateSidebarBgColor(color?: string) {
   const isDarkMode = configStore.getDarkMode === ThemeEnum.DARK;
   if (!color) {
     if (isDarkMode) color = '#212121';
-    else color = configStore.getMenuSetting.bgColor;
+    else color = unref(getMenuBgColor);
   }
 
   setCssVar(SIDER_DARK_BG_COLOR, color);

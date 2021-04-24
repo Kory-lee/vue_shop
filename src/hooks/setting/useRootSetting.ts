@@ -8,11 +8,18 @@ type RootSetting = Omit<
   ProjectConfig,
   'locale' | 'headerSetting' | 'menuSetting' | 'multiTabsSetting'
 >;
-const configStore = useConfigStoreWidthOut();
 
-export const getRootSetting = computed((): RootSetting => configStore.getProjectConfig);
+export const getRootSetting = computed(
+  (): RootSetting => {
+    const configStore = useConfigStoreWidthOut();
+    return configStore.getProjectConfig;
+  }
+);
 
-export const getPageLoading = computed(() => configStore.getPageLoading);
+export const getPageLoading = computed(() => {
+  const configStore = useConfigStoreWidthOut();
+  return configStore.getPageLoading;
+});
 
 export const getOpenKeepAlive = computed(() => unref(getRootSetting).openKeepAlive);
 
@@ -56,6 +63,7 @@ export const getLayoutContentMode = computed(() =>
 );
 
 export function setRootSetting(setting: Partial<RootSetting>) {
+  const configStore = useConfigStoreWidthOut();
   configStore.setProjectConfig(setting);
 }
 

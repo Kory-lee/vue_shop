@@ -20,9 +20,9 @@ export function resetRouter() {
   });
 }
 
-const { install } = router;
-router.install = (app: App<any>) => {
+export function setupRouter(app: App<Element>) {
+  app.use(router);
   createGuard(router);
-  install.call(router, app);
-};
+}
+
 export default router;

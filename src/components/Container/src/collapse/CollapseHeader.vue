@@ -1,5 +1,5 @@
 <template>
-  <div :class="[`${prefixCls}__header px-2 py-5`, $attrs.class]">
+  <div :class="[`px-2 py-5`, $attrs.class]">
     <div :class="`${prefixCls}__action`">
       <slot name="action"></slot>
     </div>

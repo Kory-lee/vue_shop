@@ -12,7 +12,6 @@ import { MenuModeEnum } from '/@/enums/menuEnum';
 import { HeaderSetting } from '/@/types/config';
 import { useConfigStoreWidthOut } from '/@/store/modules/config';
 
-const configStore = useConfigStoreWidthOut();
 export const getShowMixHeaderRef = computed<boolean>(
   () => !unref(getIsSidebarType) && unref(getShowHeader)
 );
@@ -30,7 +29,10 @@ export const getShowInsetHeaderRef = computed(() => {
   return (need && !unref(getShowMixHeaderRef)) || (need && unref(getIsTopMenu));
 });
 
-export const getHeaderSetting = computed(() => configStore.getProjectConfig.headerSetting);
+export const getHeaderSetting = computed(() => {
+  const configStore = useConfigStoreWidthOut();
+  return configStore.getProjectConfig.headerSetting;
+});
 
 export const getShowHeader = computed(() => unref(getHeaderSetting).show);
 
@@ -66,5 +68,6 @@ export const getShowContent = computed(
 );
 
 export function setHeaderSetting(headerSetting: Partial<HeaderSetting>) {
+  const configStore = useConfigStoreWidthOut();
   configStore.setProjectConfig({ headerSetting });
 }

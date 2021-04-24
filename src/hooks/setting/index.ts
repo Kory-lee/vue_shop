@@ -1,5 +1,4 @@
-import getProjectSetting from '/@/settings/projectSetting';
-import { GlobalConfig, ProjectConfig } from '/@/types/config';
+import type { GlobalConfig } from '/@/types/config';
 import { getGlobalEnvConfig } from '/@/utils/env';
 import { warn } from '/@/utils/log';
 
@@ -12,7 +11,7 @@ export const useGlobalSetting = (): Readonly<GlobalConfig> => {
     VITE_GLOBAL_UPLOAD_URL,
   } = getGlobalEnvConfig();
 
-  if (!/[a-zA-Z\_]*/.test(VITE_GLOBAL_APP_SHORT_NAME)) {
+  if (!/[a-zA-Z_]*/.test(VITE_GLOBAL_APP_SHORT_NAME)) {
     warn(
       `VITE_GLOB_APP_SHORT_NAME Variables can only be characters/underscores, please modify in the environment variables and re-running.`
     );
@@ -25,9 +24,4 @@ export const useGlobalSetting = (): Readonly<GlobalConfig> => {
     prefixUrl: VITE_GLOBAL_API_PREFIX_URL,
     uploadUrl: VITE_GLOBAL_UPLOAD_URL,
   };
-};
-
-export const useProjectSetting = (): ProjectConfig => {
-  // TODO computed
-  return getProjectSetting;
 };
