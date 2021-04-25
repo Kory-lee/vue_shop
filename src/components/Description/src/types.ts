@@ -8,6 +8,7 @@ export interface DescItem {
   contentMinWidth?: number;
   labelStyle?: CSSProperties;
 
+  field: string;
   label: string | VNode | JSX.Element;
   span?: number;
   show?: (...args: any) => boolean;
@@ -24,7 +25,6 @@ export interface DescOptions extends DescriptionsProps {
   schema: DescItem[];
 
   data: Recordable;
-
   //  build-in collapseContainer component configuration
   collapseOptions?: CollapseContainerOptions;
 }

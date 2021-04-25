@@ -1,5 +1,5 @@
 <script lang="tsx">
-  import type { DescOptions } from './types';
+  import type { DescInstance, DescItem, DescOptions } from './types';
   import type { CSSProperties } from 'vue';
   import type { DescriptionsProps } from 'ant-design-vue/es/descriptions';
   import type { CollapseContainerOptions } from '/@/components/Container';
@@ -22,16 +22,14 @@
       const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('description');
 
-      const getMergeProps = computed<DescOptions>(() => ({
-        ...props,
-        ...(unref(propsRef) as Recordable),
-      }));
+      const getMergeProps = computed(
+        () =>
+          ({
+            ...props,
+            ...(unref(propsRef) as Recordable),
+          } as DescOptions)
+      );
 
-      // TODO title待处理
-      const getProps = computed(() => ({
-        ...unref(getMergeProps),
-        title: undefined,
-      }));
       /**
        * @description whether to setting title
        */
@@ -43,15 +41,13 @@
           ...unref(getMergeProps).collapseOptions,
         })
       );
-      const getDescriptionsProps = computed<DescriptionsProps>(() => ({
-        ...unref(getProps),
-      }));
 
       console.log('attrs', attrs);
       console.log('instance.attrs', getCurrentInstance()?.attrs);
 
-      function renderLabel({ label, labelMinWidth, labelStyle }) {
+      function renderLabel({ label, labelMinWidth, labelStyle }: DescItem) {
         if (!labelStyle && !labelMinWidth) return label;
+
         const style: CSSProperties = {
           ...labelStyle,
           minWidth: `${labelMinWidth}px`,
@@ -61,7 +57,6 @@
 
       function renderItem() {
         const { schema, data } = unref(getMergeProps);
-        console.log(getMergeProps);
         return unref(schema)
           .map((item) => {
             const { render, field, span, show, contentMinWidth } = item;
@@ -69,7 +64,6 @@
 
             const getContent = () => {
               if (!data) return null;
-
               const getField = get(data, field);
               return isFunction(render) ? render(getField, data) : getField ?? '';
             };
@@ -87,11 +81,20 @@
           })
           .filter((item) => !!item);
       }
-      const renderDesc = () => (
-        <Descriptions class={prefixCls} {...unref(getDescriptionsProps)}>
-          {renderItem()}
-        </Descriptions>
-      );
+
+      const renderDesc = () => {
+        // Descriptions内不需要放title
+        const getDescriptionsProps = computed<DescriptionsProps>(() => ({
+          ...unref(getMergeProps),
+          title: undefined,
+        }));
+
+        return (
+          <Descriptions class={prefixCls} {...(unref(getDescriptionsProps) as any)}>
+            {renderItem()}
+          </Descriptions>
+        );
+      };
 
       const renderContainer = () => {
         const content = props.useCollapse ? renderDesc() : <div>{renderDesc()}</div>;
@@ -110,7 +113,7 @@
       };
       const methods: DescInstance = {
         setDescProps(descProps: Partial<DescOptions>) {
-          propsRef.value = { ...unref(propsRef), ...descProps };
+          propsRef.value = { ...(unref(propsRef) as Recordable), ...descProps } as Recordable;
         },
       };
       emit('register', methods);
