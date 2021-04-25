@@ -1,27 +1,36 @@
-import { createVNode, defineComponent, h, reactive, render, VNode } from 'vue';
-import { Loading } from '..';
-import { LoadingProps } from './type';
+import type { LoadingProps } from './type';
 
-export function createLoading(props?: Partial<LoadingProps>, target?: HTMLElement) {
+import { createVNode, defineComponent, h, reactive, render, VNode } from 'vue';
+import Loading from './index.vue';
+
+export function createLoading(props?: Partial<LoadingProps>, target?: HTMLElement, wait = false) {
   let vm: Nullable<VNode> = null;
   const data = reactive({ tip: '', loading: true, ...props });
   const LoadingWrap = defineComponent({
-    setup() {
-      return () => h(Loading, { ...data });
+    render() {
+      return  h(Loading, { ...data });
     },
   });
   vm = createVNode(LoadingWrap);
-  render(vm, document.createElement('div'));
+
+  if (wait)
+    setTimeout(() => {
+      render(vm, document.createElement('div'));
+    }, 0);
+  else render(vm, document.createElement('div'));
+
   function close() {
-    if (vm?.el && vm.el.parentNode) vm.el.parentNode.removeChild(vm.el);
+    if (!vm?.el?.parentNode) return;
+    vm.el.parentNode.removeChild(vm.el);
   }
 
   function open(target: HTMLElement = document.body) {
-    if (!vm || !vm.el) return;
+    if (!vm?.el) return;
     target.appendChild(vm.el as HTMLElement);
   }
 
   if (target) open(target);
+
   return {
     vm,
     close,

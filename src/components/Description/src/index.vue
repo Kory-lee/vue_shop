@@ -5,7 +5,7 @@
   import type { CollapseContainerOptions } from '/@/components/Container';
 
   import { Descriptions } from 'ant-design-vue';
-  import { defineComponent, getCurrentInstance, ref, computed, unref } from 'vue';
+  import { defineComponent, ref, computed, unref } from 'vue';
   import props from './props';
   import { useProviderContext } from '/@/components/Application';
   import { isFunction } from '/@/utils/is';
@@ -41,9 +41,6 @@
           ...unref(getMergeProps).collapseOptions,
         })
       );
-
-      console.log('attrs', attrs);
-      console.log('instance.attrs', getCurrentInstance()?.attrs);
 
       function renderLabel({ label, labelMinWidth, labelStyle }: DescItem) {
         if (!labelStyle && !labelMinWidth) return label;
@@ -85,6 +82,7 @@
       const renderDesc = () => {
         // Descriptions内不需要放title
         const getDescriptionsProps = computed<DescriptionsProps>(() => ({
+          ...attrs,
           ...unref(getMergeProps),
           title: undefined,
         }));

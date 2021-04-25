@@ -8,7 +8,7 @@
 
 <script lang="ts">
   import { computed, CSSProperties, defineComponent, unref } from 'vue';
-  import { headerHeightRef } from '../content/contentViewHeight';
+  import { headerHeightRef } from '../content/useContentViewHeight';
   import LayoutHeader from './index.vue';
   import { useProviderContext } from '/@/components/Application';
   import {

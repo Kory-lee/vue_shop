@@ -60,7 +60,7 @@ export const getShowHeaderBreadCrumb = computed(
 );
 
 export const getShowHeaderLogo = computed<boolean>(
-  () => unref(getShowLogo) && !unref(getIsSidebarType)
+  () => unref(getShowLogo) && !unref(getIsSidebarType) && !unref(getIsMixSidebar)
 );
 
 export const getShowContent = computed(

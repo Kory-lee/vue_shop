@@ -38,7 +38,9 @@ export function useEventListener({
         (v, _ov, cleanUp) => {
           if (v) {
             !unref(isAddRef) && addEventListener(v);
-            cleanUp(() => autoRemove && removeEventListener(v));
+            cleanUp(() => {
+              autoRemove && removeEventListener(v);
+            });
           }
         },
         { immediate: true }

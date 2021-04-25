@@ -4,7 +4,7 @@ import { createPageContext } from '/@/hooks/component/usePageContext';
 
 export const headerHeightRef = ref(0);
 
-export function contentViewHeight() {
+export function useContentViewHeight() {
   const contentHeight = ref(window.innerHeight),
     pageHeight = ref(window.innerHeight),
     getViewHeight = computed(() => unref(contentHeight) - unref(headerHeightRef) || 0);

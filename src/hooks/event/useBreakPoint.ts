@@ -15,7 +15,16 @@ export interface CreateCallbackParams {
   sizeEnum: typeof sizeEnum;
 }
 
-export default function useBreakpoint(fn?: (opt: CreateCallbackParams) => void) {
+export function useBreakpoint() {
+  return {
+    screenRef: computed(() => globalScreenRef),
+    widthRef: globalWidthRef,
+    screenEnum,
+    realWidthRef: globalRealWidthRef,
+  };
+}
+
+export default function createBreakpoint(fn?: (opt: CreateCallbackParams) => void) {
   const screenRef = ref(sizeEnum.XL);
   const realWidthRef = ref(window.innerWidth);
 
