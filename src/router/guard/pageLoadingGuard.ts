@@ -1,5 +1,6 @@
+import type { Router } from 'vue-router';
+
 import { unref } from 'vue';
-import { Router } from 'vue-router';
 import { getOpenPageLoading } from '/@/hooks/setting/useTransitionSetting';
 import { useUserStoreWithout } from '/@/store/modules/user';
 import { useConfigStoreWidthOut } from '/@/store/modules/config';
@@ -7,6 +8,7 @@ import { useConfigStoreWidthOut } from '/@/store/modules/config';
 export default function createPageLoadingGuard(router: Router) {
   const userStore = useUserStoreWithout(),
     configStore = useConfigStoreWidthOut();
+
   router.beforeEach(async (to) => {
     if (!userStore.getToken) return true;
 
@@ -20,10 +22,7 @@ export default function createPageLoadingGuard(router: Router) {
   });
 
   router.afterEach(async () => {
-    if (unref(getOpenPageLoading))
-      setTimeout(() => {
-        configStore.setPageLoading(false);
-      }, 220);
+    if (unref(getOpenPageLoading)) setTimeout(async () => configStore.setPageLoading(false), 220);
     return true;
   });
 }

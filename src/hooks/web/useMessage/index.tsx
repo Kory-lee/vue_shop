@@ -25,16 +25,26 @@ export type ModalOptionsPartial = Partial<ModalOptionEx> &
   Pick<ModalOptionEx, 'content'> &
   Pick<ModalOptionEx, 'iconType'>;
 
-// interface ConfirmOptions {
-//   info: ModalFunc;
-//   success: ModalFunc;
-//   error: ModalFunc;
-//   warn: ModalFunc;
-//   warning: ModalFunc;
-// }
+interface ConfirmOptions {
+  info: ModalFunc;
+  success: ModalFunc;
+  error: ModalFunc;
+  warn: ModalFunc;
+  warning: ModalFunc;
+}
 
 function renderContent({ content }: Pick<ModalOptionEx, 'content'>) {
   return <div innerHTML={content && `<div>${content as string}<div/>`} />;
+}
+export function createConfirm(options: ModalOptionEx) {
+  const iconType = options.iconType || 'warning';
+  Reflect.deleteProperty(options, 'iconType');
+  const opt: ModalFuncProps = {
+    centered: true,
+    icon: <ModalIcon type={iconType} />,
+    ...options,
+  };
+  return (Modal.confirm(opt) as unknown) as ConfirmOptions;
 }
 
 function getBaseOptions() {
@@ -43,24 +53,35 @@ function getBaseOptions() {
 }
 
 function createModalOptions(options: ModalOptionsPartial): ModalOptionsPartial {
-  if (options.iconType === 'confirm') {
-    Reflect.deleteProperty(options, 'iconType');
-    return {
-      centered: true,
-      icon: <ModalIcon type={'warning'} />,
-      ...options,
-    };
-  }
+  let iconType = options.iconType;
+  if (options.iconType === 'confirm') iconType = 'warning';
+
   return {
     ...getBaseOptions(),
     ...options,
     content: renderContent(options),
-    icon: <ModalIcon type={options.iconType} />,
+    icon: <ModalIcon type={iconType} />,
   };
 }
 
 export function createModal(opt: ModalOptionsPartial) {
   return (Modal[`${opt.iconType}`] as ModalFunc)(createModalOptions(opt));
+}
+
+export function createSuccessModal(options: Omit<ModalOptionsPartial, 'iconType'>) {
+  return Modal.success(createModalOptions({ ...options, iconType: 'success' }));
+}
+
+export function createErrorModal(options: Omit<ModalOptionsPartial, 'iconType'>) {
+  return Modal.error(createModalOptions({ ...options, iconType: 'error' }));
+}
+
+export function createInfoModal(options: Omit<ModalOptionsPartial, 'iconType'>) {
+  return Modal.info(createModalOptions({ ...options, iconType: 'info' }));
+}
+
+export function createWarningModal(options: Omit<ModalOptionsPartial, 'iconType'>) {
+  return Modal.warning(createModalOptions({ ...options, iconType: 'warning' }));
 }
 
 notification.config({

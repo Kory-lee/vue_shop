@@ -1,5 +1,5 @@
 <template>
-  <h2 class="font-bold text-2xl xl:text-3xl enter-x text-center xl:text-left mb-6">
+  <h2 v-show="getShow" class="font-bold text-2xl xl:text-3xl enter-x text-center xl:text-left mb-6">
     {{ getFormTitle }}
   </h2>
   <Form v-show="getShow" ref="formRef" class="p-4 enter-x" :model="formData">
@@ -103,14 +103,14 @@
         formRef = ref<any>(null),
         loading = ref(false),
         getFormTitle = computed(() => {
-          const titleObj = {
+          const formTitleObj = {
             [LoginStateEnum.RESET_PASSWORD]: t('sys.login.forgetFormTitle'),
             [LoginStateEnum.LOGIN]: t('sys.login.signInFormTitle'),
             [LoginStateEnum.REGISTER]: t('sys.login.signUpFormTitle'),
             [LoginStateEnum.MOBILE]: t('sys.login.mobileSignInFormTitle'),
             [LoginStateEnum.QR_CODE]: t('sys.login.qrSignInFormTitle'),
           };
-          return titleObj[unref(getLoginState)];
+          return formTitleObj[unref(getLoginState)];
         });
 
       const userStore = useUserStore();
