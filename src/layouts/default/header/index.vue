@@ -18,7 +18,12 @@
     <div :class="`${prefixCls}-menu`"></div>
 
     <div :class="`${prefixCls}-action`">
-      <!-- <LocalePicker v-if="getShowLocalPicker" /> -->
+      <LocalePicker
+        v-if="getShowLocalePicker"
+        :reload="true"
+        :show-text="false"
+        :class="`${prefixCls}-action__item`"
+      />
     </div>
   </Header>
 </template>
@@ -43,6 +48,7 @@
     getSplit,
   } from '/@/hooks/setting/useMenuSetting';
   import { getShowBreadCrumb } from '/@/hooks/setting/useRootSetting';
+  import { getShowLocalePicker } from '/@/hooks/setting/useLocaleSetting';
 
   export default defineComponent({
     name: 'LayoutHeader',
@@ -79,11 +85,12 @@
         getSplit,
         getIsMixSidebar,
         getShowBreadCrumb,
+        getShowLocalePicker,
       };
     },
   });
 </script>
 
 <style lang="less" scoped>
-  @import './index';
+  @import './index.less';
 </style>
