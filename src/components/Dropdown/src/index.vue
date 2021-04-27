@@ -3,7 +3,7 @@
     <span> <slot /> </span>
     <template #overlay>
       <a-menu :selected-keys="selectedKeys">
-        <template v-for="item in getMenuList" :key="`${item.event}`">
+        <template v-for="item of getMenuList" :key="`${item.event}`">
           <a-menu-item
             v-bind="getAttr(`${item.event}`)"
             :disabled="item.disabled"
@@ -27,6 +27,7 @@
 
   export default defineComponent({
     name: 'Dropdown',
+    inheritAttrs: false,
     props: {
       trigger: {
         type: [Array] as PropType<('click' | 'contextmenu' | 'hover')[]>,
@@ -44,7 +45,6 @@
       Icon,
     },
     emits: ['menuEvent'],
-    inheritAttrs: false,
     setup(props, { emit }) {
       const getMenuList = computed(() => props.dropMenuList);
       const handleClickMenu = (item: DropMenu) => {

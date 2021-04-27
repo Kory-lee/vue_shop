@@ -17,15 +17,15 @@ export interface CreateCallbackParams {
 
 export function useBreakpoint() {
   return {
-    screenRef: computed(() => globalScreenRef),
+    screenRef: globalScreenRef,
     widthRef: globalWidthRef,
     screenEnum,
     realWidthRef: globalRealWidthRef,
   };
 }
 
-export default function createBreakpoint(fn?: (opt: CreateCallbackParams) => void) {
-  const screenRef = ref(sizeEnum.XL);
+export function createBreakpoint(fn?: (opt: CreateCallbackParams) => void) {
+  const screenRef = ref<sizeEnum>(sizeEnum.XL);
   const realWidthRef = ref(window.innerWidth);
 
   function getWindowWidth() {
@@ -57,7 +57,7 @@ export default function createBreakpoint(fn?: (opt: CreateCallbackParams) => voi
   getWindowWidth();
 
   globalScreenRef = computed(() => unref(screenRef));
-  globalWidthRef = computed((): number => screenMap.get(unref(screenRef))!);
+  globalWidthRef = computed(() => <number>screenMap.get(unref(screenRef)));
   globalRealWidthRef = computed((): number => unref(realWidthRef));
 
   function resizeFn() {
@@ -79,3 +79,5 @@ export default function createBreakpoint(fn?: (opt: CreateCallbackParams) => voi
     realWidthRef: globalRealWidthRef,
   };
 }
+
+export default createBreakpoint;

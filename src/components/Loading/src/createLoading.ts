@@ -8,7 +8,7 @@ export function createLoading(props?: Partial<LoadingProps>, target?: HTMLElemen
   const data = reactive({ tip: '', loading: true, ...props });
   const LoadingWrap = defineComponent({
     render() {
-      return  h(Loading, { ...data });
+      return h(Loading, { ...data });
     },
   });
   vm = createVNode(LoadingWrap);

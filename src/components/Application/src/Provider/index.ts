@@ -1,7 +1,7 @@
 import { ConfigProvider } from 'ant-design-vue';
 import { defineComponent, h, PropType, readonly, ref } from 'vue';
 import { createProviderContext } from './useAppContext';
-import useBreakpointListen from '/@/hooks/event/useBreakPoint';
+import { createBreakpoint } from '/@/hooks/event/useBreakPoint';
 import styleSetting from '/@/settings/styleSetting';
 
 export default defineComponent({
@@ -15,7 +15,7 @@ export default defineComponent({
   },
   setup(props, { attrs, slots }) {
     const isMobileRef = ref(false);
-    useBreakpointListen(({ width, sizeEnum, screenMap }) => {
+    createBreakpoint(({ width, sizeEnum, screenMap }) => {
       const lgWidth = screenMap.get(sizeEnum.LG);
       if (lgWidth) isMobileRef.value = width.value - 1 < lgWidth;
     });
@@ -24,6 +24,7 @@ export default defineComponent({
       if (customizePrefixCls) return customizePrefixCls;
       return scope ? `${prefixCls}-${scope}` : prefixCls;
     };
+
     createProviderContext({ getPrefixCls, isMobile: readonly(isMobileRef) });
     return () => h(ConfigProvider, { ...attrs, ...props }, { default: () => slots.default?.() });
   },

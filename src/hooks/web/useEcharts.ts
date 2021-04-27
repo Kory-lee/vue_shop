@@ -2,7 +2,7 @@ import type { EChartsOption } from 'echarts';
 
 import { ref, Ref, unref } from '@vue/reactivity';
 import useEventListener from '../event/useEventListener';
-import useBreakPoint from '../event/useBreakPoint';
+import { useBreakpoint } from '../event/useBreakPoint';
 import echarts from '/@/plugins/echarts';
 import { useTimeoutFn } from '../core/useTimeout';
 import { tryOnUnmounted, useDebounceFn } from '@vueuse/core';
@@ -39,7 +39,7 @@ export default function useEcharts(
 
     removeResizeFn = removeEvent;
 
-    const { widthRef, screenEnum } = useBreakPoint();
+    const { widthRef, screenEnum } = useBreakpoint();
     if (unref(widthRef) <= screenEnum.MD || el.offsetHeight === 0)
       useTimeoutFn(() => resizeFn(), 30);
   }

@@ -1,6 +1,6 @@
 <template>
   <li :class="getClass" :style="getCollapse ? {} : getItemStyle" @click.stop="handleClickItem">
-    <Tooltip v-if="showTooptip" placement="right">
+    <Tooltip v-if="showTooltip" placement="right">
       <template #title>
         <slot name="title" />
       </template>
@@ -40,11 +40,11 @@
           {
             [`${prefixCls}-item-active`]: unref(active),
             [`${prefixCls}-item-selected`]: unref(active),
-            [`${prefixCls}-item-disabled`]: !!props.disabled,
+            [`${prefixCls}-item-disabled`]: props.disabled,
           },
         ]),
         getCollapse = computed(() => unref(getParentRootMenu)?.props.collapse as boolean),
-        showTooptip = computed(
+        showTooltip = computed(
           () => unref(getParentMenu)?.type.name === 'Menu' && unref(getCollapse) && !!slots.title
         );
 
@@ -79,7 +79,7 @@
         },
         { immediate: true }
       );
-      return { getClass, prefixCls, getItemStyle, getCollapse, handleClickItem, showTooptip };
+      return { getClass, prefixCls, getItemStyle, getCollapse, handleClickItem, showTooltip };
     },
   });
 </script>
