@@ -1,6 +1,5 @@
 import { computed, nextTick, onMounted, ref, Ref, unref } from 'vue';
-import { TriggerEnum } from '../../../enums/menuEnum';
-import { useDebounce } from '/@/hooks/core/useDebounce';
+import { TriggerEnum } from '/@/enums/menuEnum';
 import {
   getCollapsed,
   getMinWidthNumber,
@@ -8,6 +7,7 @@ import {
   getTrigger,
   setMenuSetting,
 } from '/@/hooks/setting/useMenuSetting';
+import {  useDebounceFn } from "@vueuse/core";
 
 export function useSidebarEvent() {
   const brokenRef = ref(false),
@@ -40,7 +40,7 @@ export function useTrigger(isMobile: Ref<boolean>) {
 export function createDragLine(sidebarRef: Ref<any>, dragBarRef: Ref<any>, mix = false) {
   onMounted(() =>
     nextTick(() => {
-      const [exec] = useDebounce(changeWrapWidth, 80);
+      const exec = useDebounceFn(changeWrapWidth, 80);
       exec();
     })
   );
@@ -55,7 +55,6 @@ export function createDragLine(sidebarRef: Ref<any>, dragBarRef: Ref<any>, mix =
   function handleMouseMove(el: HTMLElement, wrap: HTMLElement, clientX: number) {
     document.onmousemove = function (innerE) {
       let iT: number = (el as any).left + (innerE.clientX - clientX);
-      innerE = innerE || window.event;
       const maxT = 800,
         minT = unref(getMinWidthNumber);
       if (iT < 0) iT = 0;

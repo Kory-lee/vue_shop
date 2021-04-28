@@ -63,10 +63,10 @@
   });
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   @prefix-cls: ~'@{namespace}-locale-picker';
 
-  :global(.@{prefix-cls}-overlay) {
+  .@{prefix-cls}-overlay {
     .ant-dropdown-menu-item {
       min-width: 160px;
     }

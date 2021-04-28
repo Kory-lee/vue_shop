@@ -29,7 +29,7 @@
       min-width: unset;
       padding-right: 0;
 
-      :deep(.@{logo-prefix-cls}__title) {
+      .@{logo-prefix-cls}__title {
         display: none;
       }
     }
@@ -37,6 +37,7 @@
     .@{header-trigger-prefix-cls} {
       padding: 0 4px 0 8px !important;
     }
+
     .@{header-prefix-cls}-action {
       padding-right: 4px;
     }
@@ -56,7 +57,7 @@
     padding: 0 10px;
     font-size: 14px;
 
-    :deep(img) {
+    img {
       width: @logo-width;
       height: @logo-width;
       margin-right: 2px;
@@ -83,8 +84,8 @@
         &:hover {
           background: @header-light-bg-hover-color;
         }
-        // do not use /deep/ or ::v-deep, use ::v-deep() or :deep() instead
-        :deep(svg) {
+
+        svg {
           fill: #000;
         }
       }
@@ -109,7 +110,7 @@
     min-width: 180px;
     align-items: center;
 
-   :deep(&__item) {
+    &__item {
       display: flex !important;
       height: @header-height;
       padding: 0 2px;
@@ -127,10 +128,12 @@
         }
       }
     }
+
     span[role='img'] {
       padding: 0 8px;
     }
   }
+
   &--light {
     background: @white;
     border-bottom: 1px solid @header-light-bottom-border-color;
@@ -153,6 +156,7 @@
           padding: 0 10px;
           font-size: 16px !important;
         }
+
         &:hover {
           background: @header-light-bg-hover-color;
         }
@@ -164,6 +168,7 @@
       }
     }
   }
+
   &--dark {
     background: @header-dark-bg-color;
 
@@ -172,6 +177,7 @@
         background-color: @header-dark-bg-hover-color;
       }
     }
+
     .@{header-prefix-cls}-action {
       &__item {
         .app-iconify {

@@ -1,6 +1,6 @@
 <script lang="tsx">
   import { computed, CSSProperties, defineComponent, PropType, toRef, unref } from 'vue';
-  import useSplitMenu from './useSplitMenu';
+  import { useSplitMenu } from './useLayoutMenu';
   import { Logo, useProviderContext } from '/@/components/Application';
   import { BasicMenu } from '/@/components/Menu';
   import { SimpleMenu } from '/@/components/SimpleMenu';
@@ -16,7 +16,7 @@
     getMenuType,
     getSplit,
   } from '/@/hooks/setting/useMenuSetting';
-  import { getShowLogo } from '../../../hooks/setting/useRootSetting';
+  import { getShowLogo } from '/@/hooks/setting/useRootSetting';
   import { useGo } from '/@/hooks/web/usePage';
   import { openWindow } from '/@/utils/common';
   import { isUrl } from '/@/utils/is';
@@ -108,7 +108,7 @@
             {...menuProps}
             isHorizontal={props.isHorizontal}
             type={unref(getMenuType)}
-            // showLogo={unref(getIsShowLogo)}
+            showLogo={unref(getIsShowLogo)}
             mode={unref(getRealMenuMode)}
           />
         );

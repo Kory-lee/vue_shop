@@ -1,5 +1,5 @@
 <template>
-  <a-dropdown :trigger="trigger" v-bind="$attrs">
+  <ADropdown :trigger="trigger">
     <span> <slot /> </span>
     <template #overlay>
       <a-menu :selected-keys="selectedKeys">
@@ -16,7 +16,7 @@
         </template>
       </a-menu>
     </template>
-  </a-dropdown>
+  </ADropdown>
 </template>
 <script lang="ts">
   import { Dropdown, Menu } from 'ant-design-vue';
@@ -27,7 +27,6 @@
 
   export default defineComponent({
     name: 'Dropdown',
-    inheritAttrs: false,
     props: {
       trigger: {
         type: [Array] as PropType<('click' | 'contextmenu' | 'hover')[]>,
@@ -38,7 +37,7 @@
       // ...Dropdown.props,
     },
     components: {
-      [Dropdown.name]: Dropdown,
+      ADropdown: Dropdown,
       [Menu.name]: Menu,
       [Menu.Item.name]: Menu.Item,
       [Menu.Divider.name]: Menu.Divider,
@@ -61,5 +60,3 @@
     },
   });
 </script>
-
-<style></style>

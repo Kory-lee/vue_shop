@@ -10,7 +10,7 @@ export default class Mitt {
       handler && handler.apply(this, args);
       this.off(type, decor);
     };
-    this.once(type, decor);
+    this.on(type, decor);
     return this;
   }
 

@@ -43,7 +43,7 @@
             [`${prefixCls}-item-disabled`]: props.disabled,
           },
         ]),
-        getCollapse = computed(() => unref(getParentRootMenu)?.props.collapse as boolean),
+        getCollapse = computed<boolean>(() => unref(getParentRootMenu)?.props.collapse),
         showTooltip = computed(
           () => unref(getParentMenu)?.type.name === 'Menu' && unref(getCollapse) && !!slots.title
         );

@@ -25,7 +25,7 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
 
   vitePlugins.push(PurgeIcons());
 
-  vitePlugins.push(configStyleImportPlugin());
+  vitePlugins.push(configStyleImportPlugin(isBuild));
 
   vitePlugins.push(configThemePlugin(isBuild));
 

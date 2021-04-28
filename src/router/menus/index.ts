@@ -64,6 +64,16 @@ export async function getShallowMenus(): Promise<MenuType[]> {
   return !isBackMode() ? shallowMenuList.filter(basicFilter(routes)) : shallowMenuList;
 }
 
+/**@description: 获取菜单的children */
+export async function getChildrenMenus(parentPath: string) {
+  const menus = await getMenus(),
+    parent = menus.find(item=> item.path===parentPath)
+  if(!parent?.children||!!parent?.meta?.hideChildrenInMenu) return []  as MenuType[]
+  const routes = router.getRoutes()
+
+  return !isBackMode() ?filter(parent.children,basicFilter(routes)) :parent.children
+}
+
 function basicFilter(routes: RouteRecordNormalized[]) {
   return (menu: MenuType) => {
     const matchRoute = routes.find((route) => {

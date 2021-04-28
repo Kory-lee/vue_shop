@@ -1,16 +1,15 @@
 import { computed, ref, Ref, unref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProviderContext } from '/@/components/Application';
-import { getIsHorizontal, getSplit } from '/@/hooks/setting/useMenuSetting';
+import { getIsHorizontal, getSplit, setMenuSetting } from '/@/hooks/setting/useMenuSetting';
 import { MenuSplitTypeEnum } from '/@/enums/menuEnum';
-import { useThrottle } from '/@/hooks/core/useThrottle';
-import { getCurrentParentPath, getMenus, getShallowMenus } from '/@/router/menus';
+import { getChildrenMenus, getCurrentParentPath, getMenus, getShallowMenus } from '/@/router/menus';
 import { MenuType } from '/@/router/types';
 import { usePermissionStore } from '/@/store/modules/permission';
+import { useThrottleFn } from '@vueuse/core';
 
-export default function useSplitMenu(splitType: Ref<MenuSplitTypeEnum>) {
+export function useSplitMenu(splitType: Ref<MenuSplitTypeEnum>) {
   const permissionStore = usePermissionStore();
-  const [throttleHandleSplitLeftMenu] = useThrottle(handleSplitLeftMenu, 50);
 
   const menusRef = ref<MenuType[]>([]),
     { currentRoute } = useRouter(),
@@ -22,15 +21,18 @@ export default function useSplitMenu(splitType: Ref<MenuSplitTypeEnum>) {
     getSplitTop = computed(() => unref(splitType) === MenuSplitTypeEnum.TOP),
     normalType = computed(() => unref(splitType) === MenuSplitTypeEnum.NONE || !unref(getSplit));
 
+  const throttleHandleSplitLeftMenu = useThrottleFn(handleSplitLeftMenu, 50);
+
   watch(
     [() => unref(currentRoute).path, () => unref(splitType)],
     async ([path]: [string, MenuSplitTypeEnum]) => {
       if (unref(splitNotLeft) || unref(isMobile)) return;
+
       const { meta } = unref(currentRoute),
         currentActiveMenu = meta.currentActiveMenu as string;
       let parentPath = await getCurrentParentPath(path);
       if (!parentPath) parentPath = await getCurrentParentPath(currentActiveMenu);
-      parentPath && throttleHandleSplitLeftMenu(parentPath);
+      parentPath && (await throttleHandleSplitLeftMenu(parentPath));
     },
     { immediate: true }
   );
@@ -42,14 +44,27 @@ export default function useSplitMenu(splitType: Ref<MenuSplitTypeEnum>) {
     },
     { immediate: true }
   );
-  watch([() => getSplit.value], () => {
-    if (unref(splitNotLeft)) return;
-    genMenus();
-  });
+  watch(
+    getSplit,
+    async() => {
+      if (unref(splitNotLeft)) return;
+     await genMenus();
+    }
+  );
+
   async function handleSplitLeftMenu(parentPath: string) {
     if (unref(getSplitLeft) || unref(isMobile)) return;
-    // TODO split menu
+
+    const children = await getChildrenMenus(parentPath);
+    if (!children?.length) {
+      setMenuSetting({ hidden: true });
+      menusRef.value = [];
+      return;
+    }
+    setMenuSetting({ hidden: false });
+    menusRef.value = children;
   }
+
   async function genMenus() {
     if (unref(normalType.value || unref(isMobile))) {
       menusRef.value = await getMenus();
@@ -57,10 +72,10 @@ export default function useSplitMenu(splitType: Ref<MenuSplitTypeEnum>) {
     }
     // split top
     if (unref(getSplitTop)) {
-      const shallowMenus = await getShallowMenus();
-      menusRef.value = shallowMenus;
+      menusRef.value = await getShallowMenus();
       return;
     }
   }
+
   return { menusRef };
 }

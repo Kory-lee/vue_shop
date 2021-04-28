@@ -31,9 +31,9 @@
   import Menu from './components/Menu.vue';
   import SimpleSubMenu from './SimpleSubMenu.vue';
   import useOpenKeys from './useOpenKeys';
-  import { listenerLastChangeTab } from '/@/logics/mitt/tabChange';
   import { REDIRECT_NAME } from '/@/router/constant';
   import { isFunction } from '/@/utils/is';
+  import { listenerRouteChange } from "/@/logics/mitt/routeChange";
 
   export default defineComponent({
     name: 'SimpleMenu',
@@ -90,8 +90,9 @@
         },
         { flush: 'post' }
       );
-
-      listenerLastChangeTab((route) => {
+      console.log('simple');
+      listenerRouteChange((route) => {
+        console.log(route,'init');
         if (route.name === REDIRECT_NAME) return;
 
         currentActiveName.value = route.meta?.currentActiveName as string;
@@ -110,7 +111,7 @@
         }
         const path = (route || unref(currentRoute)).path;
         menuState.activeName = path;
-        setOpenKeys(path);
+        await setOpenKeys(path);
       }
       async function handleSelect(key: string) {
         const { beforeClickFn } = props;
@@ -121,7 +122,7 @@
         emit('menuClick', key);
 
         isClickGo.value = true;
-        setOpenKeys(key);
+        await setOpenKeys(key);
         menuState.activeName = key;
       }
 

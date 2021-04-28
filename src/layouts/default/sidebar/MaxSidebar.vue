@@ -46,6 +46,7 @@
     setup() {
       const dragBarRef = ref<ElRef>(null),
         sidebarRef = ref<ElRef>(null);
+      createDragLine(sidebarRef, dragBarRef);
 
       const { isMobile, getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('layout-sidebar');
@@ -79,7 +80,7 @@
             };
           }
         );
-      createDragLine(sidebarRef, dragBarRef);
+
 
       return {
         sidebarRef,

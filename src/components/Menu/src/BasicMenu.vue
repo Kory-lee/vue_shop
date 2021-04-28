@@ -23,7 +23,7 @@
   import { Menu } from 'ant-design-vue';
   import { basicProps } from './props';
   import type { MenuState } from './types';
-  import { useProviderContext } from '../../Application/src/Provider/useAppContext';
+  import { useProviderContext } from '/@/components/Application';
   import { useRouter } from 'vue-router';
   import { MenuModeEnum, MenuTypeEnum } from '/@/enums/menuEnum';
   import {

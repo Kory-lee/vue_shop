@@ -60,24 +60,25 @@
       Object.keys(devDependencies).forEach((key) => {
         devSchema.push({ field: key, label: key });
       });
+
       const [register] = useDescription({
         title: '生产环境依赖',
         data: dependencies,
         schema,
-        column: 3,
+        column: { xs: 2, sm: 3 },
       });
 
       const [registerDev] = useDescription({
         title: '开发环境依赖',
         data: devDependencies,
         schema: devSchema,
-        column: 3,
+        column: { xs: 2, sm: 3 },
       });
       const [infoRegister] = useDescription({
         title: '项目信息',
         data: infoData,
         schema: infoSchema,
-        column: 2,
+        column: { xs: 1, sm: 2 },
       });
       return { name, t, register, registerDev, infoRegister, GITHUB_URL };
     },
