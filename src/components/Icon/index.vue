@@ -6,7 +6,6 @@
     computed,
     CSSProperties,
     defineComponent,
-    h,
     nextTick,
     onMounted,
     ref,
@@ -18,8 +17,8 @@
   export default defineComponent({
     name: 'Icon',
     props: {
-      icon: { type: String },
-      color: { type: String },
+      icon: { type: String, required: true },
+      color: { type: String, default: '' },
       size: {
         type: [String, Number],
         default: 16,

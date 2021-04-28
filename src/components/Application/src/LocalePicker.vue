@@ -1,10 +1,10 @@
 <template>
   <Dropdown
-    placement="bottomCenter"
     :trigger="['click']"
     :drop-menu-list="localeList"
     :selected-keys="selectedKeys"
     :overlay-class-name="`${prefixCls}-overlay`"
+    placement="bottomCenter"
     @menuEvent="handleMenuEvent"
   >
     <span class="cursor-pointer flex items-center">
@@ -29,7 +29,7 @@
     props: {
       showText: { type: Boolean, default: true },
       reload: Boolean,
-      size: [String, Number],
+      size: { type: [String, Number], default: 16 },
     },
     setup(props) {
       const { getPrefixCls } = useProviderContext(),
@@ -53,9 +53,9 @@
         props.reload && location.reload();
       }
 
-      function handleMenuEvent(menu: DropMenu) {
-        if (unref(getLocale) === menu.event) return;
-        toggleLocale(menu.event as string);
+      function handleMenuEvent({ event }: DropMenu) {
+        if (unref(getLocale) === event) return;
+        toggleLocale(event as string);
       }
 
       return { localeList, prefixCls, getLangText, handleMenuEvent, selectedKeys };

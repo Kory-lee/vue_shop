@@ -52,7 +52,13 @@
 
   export default defineComponent({
     name: 'LayoutHeader',
-    components: { Header: Layout.Header, Logo, LayoutTrigger, LayoutBreadcrumb, LocalePicker },
+    components: {
+      Header: Layout.Header,
+      Logo,
+      LayoutTrigger,
+      LayoutBreadcrumb,
+      LocalePicker,
+    },
     props: { fixed: Boolean },
     setup(props) {
       const { isMobile, getPrefixCls } = useProviderContext(),
@@ -73,6 +79,7 @@
           const width = unref(getMenuWidth) < 180 ? 180 : unref(getMenuWidth);
           return { width: `${width}px` };
         });
+
       return {
         isMobile,
         prefixCls,

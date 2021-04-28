@@ -1,51 +1,61 @@
 <template>
-  <ADropdown :trigger="trigger">
+  <Dropdown :trigger="trigger" v-bind="$attrs">
     <span> <slot /> </span>
+
     <template #overlay>
-      <a-menu :selected-keys="selectedKeys">
-        <template v-for="item of getMenuList" :key="`${item.event}`">
-          <a-menu-item
-            v-bind="getAttr(`${item.event}`)"
+      <Menu :selected-keys="selectedKeys">
+        <template v-for="item in dropMenuList" :key="item.event">
+          <MenuItem
+            v-bind="getAttr(item.event)"
             :disabled="item.disabled"
             @click="handleClickMenu(item)"
           >
-            <Icon v-if="item.icon" :icon="item.icon" />
-            <span class="ml-1">{{ item.text }}</span>
-          </a-menu-item>
-          <a-menu-divider v-if="item.divider" :key="`d-${item.event}`" />
+            <Popconfirm v-if="popconfirm && item.popConfirm" v-bind="item">
+              <Icon v-if="item.icon" :icon="item.icon" />
+              <span class="ml-1">{{ item.text }}</span>
+            </Popconfirm>
+            <template v-else>
+              <Icon v-if="item.icon" :icon="item.icon" />
+              <span class="ml-1">{{ item.text }}</span>
+            </template>
+          </MenuItem>
+          <MenuDivider v-if="item.divider" :key="`d-${item.event}`" />
         </template>
-      </a-menu>
+      </Menu>
     </template>
-  </ADropdown>
+  </Dropdown>
 </template>
 <script lang="ts">
-  import { Dropdown, Menu } from 'ant-design-vue';
-  import type { PropType } from 'vue';
-  import { computed, defineComponent } from 'vue';
   import type { DropMenu } from './types';
-  import Icon from '/@/components/Icon';
+  import type { PropType } from 'vue';
+
+  import { Dropdown, Menu, Popconfirm } from 'ant-design-vue';
+  import { defineComponent } from 'vue';
+  import { Icon } from '/@/components/Icon';
 
   export default defineComponent({
-    name: 'Dropdown',
+    name: 'BasicDropdown',
+    components: {
+      Dropdown,
+      Menu,
+      MenuItem: Menu.Item,
+      MenuDivider: Menu.Divider,
+      Icon,
+      Popconfirm,
+    },
     props: {
+      popconfirm: Boolean,
       trigger: {
-        type: [Array] as PropType<('click' | 'contextmenu' | 'hover')[]>,
+        type: [Array] as PropType<('click' | 'contextmenu' | 'hover' | string)[]>,
         default: () => ['contextmenu'],
       },
-      dropMenuList: { type: Array as PropType<DropMenu[]>, default: () => [] },
+      dropMenuList: { type: Array as PropType<(DropMenu & Recordable)[]>, default: () => [] },
       selectedKeys: { type: Array as PropType<string[]>, default: () => [] },
       // ...Dropdown.props,
     },
-    components: {
-      ADropdown: Dropdown,
-      [Menu.name]: Menu,
-      [Menu.Item.name]: Menu.Item,
-      [Menu.Divider.name]: Menu.Divider,
-      Icon,
-    },
+
     emits: ['menuEvent'],
     setup(props, { emit }) {
-      const getMenuList = computed(() => props.dropMenuList);
       const handleClickMenu = (item: DropMenu) => {
         const { event } = item;
         const menu = props.dropMenuList.find((item) => `${item.event}` === `${event}`);
@@ -54,8 +64,7 @@
       };
       return {
         handleClickMenu,
-        getMenuList,
-        getAttr: (key: string) => ({ key }),
+        getAttr: (key: string | number) => ({ key }),
       };
     },
   });
