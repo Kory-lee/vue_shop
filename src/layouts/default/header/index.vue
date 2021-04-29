@@ -24,6 +24,7 @@
         :show-text="false"
         :class="`${prefixCls}-action__item`"
       />
+      <UserDropdown :theme="getHeaderTheme" />
     </div>
   </Header>
 </template>
@@ -33,6 +34,7 @@
   import { computed, defineComponent, unref } from 'vue';
   import LayoutTrigger from '../trigger/index.vue';
   import LayoutBreadcrumb from './components/Breadcrumb.vue';
+  import UserDropdown from './components/UserDropdown/index.vue';
   import { Logo, LocalePicker } from '/@/components/Application';
   import { useProviderContext } from '/@/components/Application';
   import {
@@ -58,6 +60,7 @@
       LayoutTrigger,
       LayoutBreadcrumb,
       LocalePicker,
+      UserDropdown,
     },
     props: { fixed: Boolean },
     setup(props) {
