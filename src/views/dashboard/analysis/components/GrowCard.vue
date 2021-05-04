@@ -14,11 +14,13 @@
         </template>
 
         <div class="py-4 px-4 flex justify-between">
+          <CountTo prefix="$" :start-val="1" :end-val="item.value" class="text-2xl" />
           <Icon :icon="item.icon" :size="40" />
         </div>
 
         <div class="p-2 px-4 flex justify-between">
           <span>总{{ item.title }}</span>
+          <CountTo prefix="$" :start-val="1" :end-val="item.total" />
         </div>
       </Card>
     </template>
@@ -29,11 +31,12 @@
   import { defineComponent } from 'vue-demi';
   import { growCardList } from '/@/views/dashboard/analysis/data';
   import { Card, Tag } from 'ant-design-vue';
-  import { Icon } from '/@/components/Icon/index';
+  import Icon from '/@/components/Icon/index';
+  import CountTo from '/@/components/CountTo';
 
   export default defineComponent({
     name: 'GrowCard',
-    components: { Card, Tag, Icon },
+    components: { Card, Tag, Icon, CountTo },
     props: { loading: Boolean },
     setup() {
       return { growCardList };
