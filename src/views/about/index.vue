@@ -65,20 +65,20 @@
         title: '生产环境依赖',
         data: dependencies,
         schema,
-        column: { xs: 2, sm: 3 },
+        column: { xs: 2, sm: 2, md: 3, xl: 4 },
       });
 
       const [registerDev] = useDescription({
         title: '开发环境依赖',
         data: devDependencies,
         schema: devSchema,
-        column: { xs: 2, sm: 3 },
+        column: { xs: 2, sm: 2, md: 3, xl: 4 },
       });
       const [infoRegister] = useDescription({
         title: '项目信息',
         data: infoData,
         schema: infoSchema,
-        column: { xs: 1, sm: 2 },
+        column: { xs: 2, sm: 2, xl: 3 },
       });
       return { name, t, register, registerDev, infoRegister, GITHUB_URL };
     },

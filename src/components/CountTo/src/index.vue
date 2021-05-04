@@ -45,12 +45,7 @@
       watch([() => props.startVal, () => props.endVal], () => {
         if (props.autoplay) start();
       });
-      watch(
-        () => state.displayName,
-        (val) => {
-          console.log(val);
-        }
-      );
+
       onMounted(() => {
         if (props.autoplay) start();
         emit('mounted');
