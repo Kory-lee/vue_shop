@@ -17,6 +17,5 @@
       sidebar: { type: Boolean, default: true },
       theme: { type: String as PropType<'light' | 'dark'>, default: 'light' },
     },
-    setup() {},
   });
 </script>
