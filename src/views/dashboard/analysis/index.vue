@@ -1,22 +1,20 @@
 <template>
-  <div class="p-4 analysis"
-    >analysis
-    <Row class="pl-2">
-      <!-- <template> </template> -->
-    </Row>
+  <div class="p-4">
+    <GrowCard :loading="loading" class="enter-y" />
   </div>
 </template>
 
 <script lang="ts">
-  import { defineComponent } from '@vue/runtime-core';
-  import { Row, Col } from 'ant-design-vue';
+  import { ref, defineComponent } from 'vue';
+  import GrowCard from './components/GrowCard.vue';
+
   export default defineComponent({
     name: 'Analysis',
-    components: { Row, Col },
+    components: { GrowCard },
     setup() {
-      console.log('ana');
+      const loading = ref(true);
+      setTimeout(() => (loading.value = false), 1500);
+      return { loading };
     },
   });
 </script>
-
-<style lang="less"></style>

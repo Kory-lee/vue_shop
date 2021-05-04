@@ -9,9 +9,9 @@ export const ROLES_KEY = 'ROLES__KEYS__';
 // project config key
 export const PROJ_CFG_KEY = 'PROJ__CFG__KEY__';
 
-export const LOCK_INFO_KEY = 'LOCK__INFO__KEY__';
+export const LOCK_INFO_KEY = 'LOCK_INFO_KEY__';
 
-export const BASE_LOCAL_CACHE_KEY = 'LOCAL__CACHE__KEY__';
+export const MULTIPLE_TABS_KEY = 'MULTIPLE_TABS_KEY__';
 
 export const BASE_SESSION_CACHE_KEY = 'SESSION__CACHE__KEY__';
 

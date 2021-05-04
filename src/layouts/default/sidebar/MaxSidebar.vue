@@ -81,7 +81,6 @@
           }
         );
 
-
       return {
         sidebarRef,
         dragBarRef,

@@ -9,13 +9,13 @@
 
   export default defineComponent({
     name: 'LayoutTrigger',
-    props: {
-      sidebar: { type: Boolean, default: true },
-      theme: { type: String as PropType<'light' | 'dark'> },
-    },
     components: {
       SidebarTrigger: createAsyncComponent(() => import('./sidebarTrigger.vue')),
       HeaderTrigger: createAsyncComponent(() => import('./headerTrigger.vue'), { loading: true }),
+    },
+    props: {
+      sidebar: { type: Boolean, default: true },
+      theme: { type: String as PropType<'light' | 'dark'>, default: 'light' },
     },
     setup() {},
   });

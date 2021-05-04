@@ -7,7 +7,7 @@ import {
   getTrigger,
   setMenuSetting,
 } from '/@/hooks/setting/useMenuSetting';
-import {  useDebounceFn } from "@vueuse/core";
+import { useDebounceFn } from '@vueuse/core';
 
 export function useSidebarEvent() {
   const brokenRef = ref(false),

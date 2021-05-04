@@ -6,9 +6,9 @@ const loadingDirective: Directive = {
     const tip = el.getAttribute('loading-tip'),
       background = el.getAttribute('loading-background'),
       size = el.getAttribute('loading-size') || 'large',
-      fullscreen = !!binding.modifiers.fullscreen;
+      fullscreen = binding.modifiers.fullscreen;
 
-    const instance = createLoading(
+    el.instance = createLoading(
       {
         tip,
         background,
@@ -18,7 +18,6 @@ const loadingDirective: Directive = {
       },
       fullscreen ? document.body : el
     );
-    el.instance = instance;
   },
   updated(el, binding) {
     const instance = el.instance;

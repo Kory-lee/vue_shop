@@ -1,4 +1,3 @@
-import { unref } from 'vue';
 import { RouteLocationRaw, Router, useRouter } from 'vue-router';
 import { PageEnum } from '/@/enums/pageEnum';
 import { isString } from '/@/utils/is';
@@ -9,23 +8,17 @@ function handleError(e: Error) {
   console.error(e);
 }
 export function useGo(router?: Router) {
-  if (!router) router = useRouter();
-
-  const { push, replace } = router;
+  const { push, replace } = router || useRouter();
   return async function (
     opt: PageEnum | RouteLocationRawEx | string = PageEnum.BASE_HOME,
     isReplace = false
   ) {
     if (!opt) return;
 
+    const pushOrReplace = isReplace ? replace : push;
     try {
-      const pushOrReplace = isReplace ? replace : push;
-
       if (isString(opt)) await pushOrReplace(opt);
-      else {
-        const o = opt as RouteLocationRaw;
-        await pushOrReplace(o);
-      }
+      else await pushOrReplace(opt as RouteLocationRaw);
     } catch (e) {
       handleError(e);
     }
@@ -33,24 +26,14 @@ export function useGo(router?: Router) {
 }
 
 export const useRefresh = (router?: Router) => {
-  if (!router) router = useRouter();
-
-  const { push, currentRoute } = router;
-  const { query, params } = currentRoute.value;
-  async function refresh() {
-    // function refresh() {
-    //   return new Promise((resolve) => {
-    //     push({ path: '/redirect' + unref(currentRoute).fullPath, query, params }).then(() =>
-    //       resolve(true)
-    //     );
-    //   });
-    // }
+  const { push, currentRoute } = router || useRouter();
+  const { query, params, fullPath } = currentRoute.value;
+  return async function refresh() {
     try {
-      await push({ path: '/redirect' + unref(currentRoute).fullPath, query, params });
+      await push({ path: '/redirect' + fullPath, query, params });
       return true;
     } catch (e) {
       warn(e);
     }
-  }
-  return refresh;
+  };
 };

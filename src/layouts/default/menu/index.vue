@@ -131,6 +131,7 @@
 <style lang="less">
   @prefix-cls: ~'@{namespace}-layout-menu';
   @logo-prefix-cls: ~'@{namespace}-app-logo';
+
   .@{prefix-cls} {
     &-logo {
       height: @header-height;

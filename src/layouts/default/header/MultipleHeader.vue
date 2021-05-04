@@ -2,7 +2,7 @@
   <div v-if="getIsShowPlaceholderDom" :style="getPlaceholderDomStyle"></div>
   <div :style="getWrapStyle" :class="getClass">
     <LayoutHeader v-if="getShowInsetHeaderRef" />
-    <!-- MultipleT -->
+    <MultipleTabs />
   </div>
 </template>
 
@@ -10,6 +10,7 @@
   import { computed, CSSProperties, defineComponent, unref } from 'vue';
   import { headerHeightRef } from '../content/useContentViewHeight';
   import LayoutHeader from './index.vue';
+  import MultipleTabs from '../tabs/index.vue';
   import { useProviderContext } from '/@/components/Application';
   import {
     getFixed,
@@ -23,9 +24,10 @@
   import { getRealFullContent } from '/@/hooks/setting/useRootSetting';
   const HEADER_HEIGHT = 48,
     TABS_HEIGHT = 32;
+
   export default defineComponent({
     name: 'LayoutMultipleHeader',
-    components: { LayoutHeader },
+    components: { LayoutHeader, MultipleTabs },
     setup() {
       const { isMobile, getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('layout-multiple-header'),

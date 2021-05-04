@@ -1,17 +1,18 @@
-import { APP_DARK_MODE_KEY_, PROJ_CFG_KEY } from '/@/enums/cacheEnum';
-import { resetRouter } from '/@/router';
-import store from '/@/store';
-import {
+import type {
   HeaderSetting,
   MenuSetting,
-  MultiTabsSetting,
+  MultipleTabsSetting,
   ProjectConfig,
   TransitionSetting,
 } from '/@/types/config';
+import type { BeforeMiniState } from '/@/types/store';
+
+import { APP_DARK_MODE_KEY_, PROJ_CFG_KEY } from '/@/enums/cacheEnum';
+import { resetRouter } from '/@/router';
+import store from '/@/store';
 import { deepMerge } from '/@/utils/common';
 import { Persistent } from '/@/utils/cache/persistent';
 import { ThemeEnum } from '/@/enums/configEnum';
-import { BeforeMiniState } from '/@/types/store';
 import { defineStore } from 'pinia';
 import { darkMode } from '/@/settings/styleSetting';
 
@@ -39,13 +40,13 @@ export const useConfigStore = defineStore({
     beforeMiniInfo: {},
   }),
   getters: {
-    getPageLoading() {
+    getPageLoading(): boolean {
       return this.pageLoading;
     },
     getDarkMode(): 'dark' | 'light' | string {
       return this.darkMode || localStorage.getItem(APP_DARK_MODE_KEY_) || darkMode;
     },
-    getBeforeMiniInfo() {
+    getBeforeMiniInfo(): BeforeMiniState {
       return this.beforeMiniInfo;
     },
     getProjectConfig(): ProjectConfig {
@@ -60,8 +61,8 @@ export const useConfigStore = defineStore({
     getTransitionSetting(): TransitionSetting {
       return this.getProjectConfig.transitionSetting;
     },
-    getMultiTabsSetting(): MultiTabsSetting {
-      return this.getProjectConfig.multiTabsSetting;
+    getMultiTabsSetting(): MultipleTabsSetting {
+      return this.getProjectConfig.multipleTabsSetting;
     },
   },
   actions: {

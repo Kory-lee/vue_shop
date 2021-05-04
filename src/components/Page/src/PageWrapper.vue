@@ -1,8 +1,9 @@
 <template>
   <div :class="getClass">
     <PageHeader
-      v-if="content || $slots.headerContent || title || getHeaderSlots.length"
+      v-if="content || $slots.headerContent || title || getHeaderSlots?.length"
       ref="headerRef"
+      v-bind="$attrs"
       :ghost="ghost"
       :title="title"
     >
@@ -85,7 +86,7 @@
         (): CSSProperties => {
           const { contentFullHeight, contentStyle, fixedHeight } = props;
 
-          if (!contentFullHeight) return { ...contentStyle };
+          if (!contentFullHeight) return contentStyle;
           const height = `${unref(pageHeight)}px`;
           return {
             ...contentStyle,
@@ -97,7 +98,7 @@
       );
 
       watch(
-        () => [contentHeight, getShowFooter.value],
+        () => [contentHeight?.value, getShowFooter.value],
         () => {
           calcContentHeight();
         },

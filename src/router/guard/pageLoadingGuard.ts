@@ -22,7 +22,7 @@ export default function createPageLoadingGuard(router: Router) {
   });
 
   router.afterEach(async () => {
-    if (unref(getOpenPageLoading)) setTimeout(async () => configStore.setPageLoading(false), 220);
+    if (unref(getOpenPageLoading)) setTimeout(() => configStore.setPageLoading(false), 260);
     return true;
   });
 }

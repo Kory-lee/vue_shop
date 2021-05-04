@@ -23,15 +23,3 @@ export function setTransitionSetting(transitionSetting: Partial<TransitionSettin
 
   configStore.setProjectConfig({ transitionSetting });
 }
-
-export default function useTransitionSetting() {
-  return {
-    setTransitionSetting,
-
-    getTransitionSetting,
-    getEnableTransition,
-    getOpenNProgress,
-    getOpenPageLoading,
-    getBasicTransition,
-  };
-}

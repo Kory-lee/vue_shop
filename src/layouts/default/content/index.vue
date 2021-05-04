@@ -29,7 +29,7 @@
   });
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   @prefix-cls: ~'@{namespace}-layout-content';
 
   .@{prefix-cls} {

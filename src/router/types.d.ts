@@ -23,8 +23,6 @@ export interface RouteMeta {
   icon?: string;
   // Jump address
   frameSrc?: string;
-  // Outer link jump address
-  externalLink?: string;
 
   // current page transition
   transitionName?: string;
@@ -41,7 +39,7 @@ export interface RouteMeta {
 
   currentActiveMenu?: string;
 
-  hidTab?: boolean;
+  hideTab?: boolean;
   hideMenu?: boolean;
   isLink?: boolean;
 }

@@ -31,7 +31,7 @@ export interface MenuSetting {
   mixSideFixed: boolean;
 }
 
-export interface MultiTabsSetting {
+export interface MultipleTabsSetting {
   cache: boolean;
   show: boolean;
   showQuick: boolean;
@@ -101,7 +101,7 @@ export interface ProjectConfig {
   menuSetting: MenuSetting;
 
   // 多标签设置
-  multiTabsSetting: MultiTabsSetting;
+  multipleTabsSetting: MultipleTabsSetting;
 
   transitionSetting: TransitionSetting;
   // pageLayout是否开启keepAlive

@@ -33,7 +33,7 @@
   import useOpenKeys from './useOpenKeys';
   import { REDIRECT_NAME } from '/@/router/constant';
   import { isFunction } from '/@/utils/is';
-  import { listenerRouteChange } from "/@/logics/mitt/routeChange";
+  import { listenerRouteChange } from '/@/logics/mitt/routeChange';
 
   export default defineComponent({
     name: 'SimpleMenu',
@@ -90,9 +90,8 @@
         },
         { flush: 'post' }
       );
-      console.log('simple');
+
       listenerRouteChange((route) => {
-        console.log(route,'init');
         if (route.name === REDIRECT_NAME) return;
 
         currentActiveName.value = route.meta?.currentActiveName as string;

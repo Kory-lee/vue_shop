@@ -68,7 +68,7 @@ const setting: ProjectConfig = {
     mixSideTrigger: MixSidebarTriggerEnum.CLICK,
     mixSideFixed: false,
   },
-  multiTabsSetting: {
+  multipleTabsSetting: {
     cache: false,
     show: true,
     canDrag: true,
@@ -78,7 +78,7 @@ const setting: ProjectConfig = {
   },
   transitionSetting: {
     enable: true,
-    basicTransition: RouterTransitionEnum.FADE_SIDE,
+    basicTransition: RouterTransitionEnum.FADE_SLIDE,
     openPageLoading: true,
     openNProgress: false,
   },

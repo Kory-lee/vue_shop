@@ -6,7 +6,7 @@ export function getRawRoute(route: RouteLocationNormalized): RouteLocationNormal
   return {
     ...opt,
     matched: (matched
-      ? matched.map(({ meta, name, path }) => ({
+      ? matched.map(({ meta, name = '', path = '' }) => ({
           meta,
           name,
           path,

@@ -11,8 +11,8 @@
             def: getBasicTransition,
           })
         "
-        mode="out-in"
         appear
+        mode="out-in"
       >
         <keep-alive v-if="openCache" :include="getCaches">
           <component :is="Component" :key="route.fullPath" />
@@ -26,15 +26,18 @@
 <script lang="ts">
   import { computed, defineComponent, unref } from 'vue';
   import { getTransitionName } from './transition';
-  import { getShowMultipleTab } from '../../hooks/setting/useMultipleTabSetting';
-  import { getCanEmbedIFramePage, getOpenKeepAlive } from '../../hooks/setting/useRootSetting';
+  import { getShowMultipleTab } from '/@/hooks/setting/useMultipleTabSetting';
+  import { getCanEmbedIFramePage, getOpenKeepAlive } from '/@/hooks/setting/useRootSetting';
   import { getBasicTransition, getEnableTransition } from '/@/hooks/setting/useTransitionSetting';
+  import { useMultipleTabsStore } from '/@/store/modules/multipleTabs';
 
   export default defineComponent({
     name: 'PageLayout',
     setup() {
+      const tabStore = useMultipleTabsStore();
       const getCaches = computed(() => {
-          return [];
+          if (!unref(getOpenKeepAlive)) return [];
+          return tabStore.getCachedTabList;
         }),
         openCache = computed(() => unref(getOpenKeepAlive) && unref(getShowMultipleTab));
 
@@ -49,5 +52,3 @@
     },
   });
 </script>
-
-<style></style>
