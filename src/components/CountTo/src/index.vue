@@ -5,11 +5,9 @@
 </template>
 
 <script lang="ts">
-  import { reactive, defineComponent, watch, unref, toRef } from 'vue';
   import countToProps from './props';
   import { isNumber } from '/@/utils/is';
-  import { onMounted } from '@vue/runtime-core';
-  import { computed } from 'vue-demi';
+  import { computed, reactive, defineComponent, watch, unref, toRef, onMounted } from 'vue-demi';
 
   export default defineComponent({
     name: 'CountTo',
