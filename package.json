@@ -13,8 +13,7 @@
     "update": "yarn upgrade-interactive --latest",
     "preview": "npm run build && vite preview",
     "preview:dist": "vite preview",
-    "log": "conventional-changelog -p angular -i CHANGELOG.md -s",
-    "deploy": "git subtree push --prefix dist origin gh-pages"
+    "log": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "dependencies": {
     "@iconify/iconify": "^2.0.0-rc.6",
