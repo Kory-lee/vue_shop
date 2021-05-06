@@ -7,7 +7,6 @@ const menu: MenuModule = {
     name: t('routes.demo.charts.charts'),
     path: '/charts',
     children: [
-      { path: 'apexChart', name: t('routes.demo.charts.apexChart') },
       {
         path: 'echarts',
         name: 'Echarts',

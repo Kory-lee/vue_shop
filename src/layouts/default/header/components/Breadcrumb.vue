@@ -13,8 +13,10 @@
 </template>
 
 <script lang="ts">
+  import type { MenuType } from '/@/router/types';
+  import type { Route } from 'ant-design-vue/lib/breadcrumb/Breadcrumb';
+
   import { Breadcrumb } from 'ant-design-vue';
-  import { Route } from 'ant-design-vue/lib/breadcrumb/Breadcrumb';
   import { defineComponent, PropType, Ref, ref, watchEffect } from 'vue';
   import { useI18n } from 'vue-i18n';
   import { RouteLocationMatched, useRouter } from 'vue-router';
@@ -27,7 +29,6 @@
   import { isString } from '/@/utils/is';
   import { getAllParentPath } from '/@/utils/helper/menuHelper';
   import { getMenus } from '/@/router/menus';
-  import { MenuType } from '/@/router/types';
 
   const filterItem = (list: RouteLocationMatched[]) => {
     return filter(list, (item) => {
