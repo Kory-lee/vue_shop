@@ -1,0 +1,1 @@
+import{_ as r}from"./PageWrapper.50cc8deb.js";import{d as e,g as a,a as o,b as p}from"./vendor.9dfb8857.js";import"./index.9c2a56c0.js";import"./index.19d428bb.js";var t=e({components:{PageWrapper:r}});t.render=function(r,e,t,s,n,d){const i=a("PageWrapper");return o(),p(i,{title:"表单基础示例"})};export default t;
