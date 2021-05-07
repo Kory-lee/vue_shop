@@ -1,15 +1,17 @@
+import type { Plugin } from 'vite';
+
 import legacy from '@vitejs/plugin-legacy';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import type { Plugin } from 'vite';
 import PurgeIcons from 'vite-plugin-purge-icons';
 import configHtmlPlugin from './html';
 import configMockPlugin from './mock';
 import configPwaConfig from './pwa';
 import configStyleImportPlugin from './styleImport';
-import configWindiCSSPlugin from './windicss';
+import { configWindiCSSPlugin } from './windicss';
 import { configThemePlugin } from './theme';
 import { configImageminPlugin } from './imagemin';
+import { configVisualizerConfig } from './visualizer';
 
 export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   const { VITE_USE_MOCK, VITE_LEGACY, VITE_USE_IMAGEMIN } = viteEnv,
@@ -26,6 +28,9 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   vitePlugins.push(PurgeIcons());
 
   vitePlugins.push(configStyleImportPlugin(isBuild));
+
+  // rollup-plugin-visualizer
+  vitePlugins.push(configVisualizerConfig());
 
   vitePlugins.push(configThemePlugin(isBuild));
 

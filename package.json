@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "cross-env  --max_old_space_size=4096  vite",
     "build": "vite build && esno ./build/script/index.ts",
+    "report": "cross-env REPORT=true npm run build",
     "clean:cache": "rimraf node_modules/.cache/ && rimraf node_modules/.vite",
     "clean:lib": "npx rimraf node_modules",
     "lint:eslint": "eslint \"{src,mock}/**/*.{vue,ts,tsx}\" --fix",
