@@ -37,10 +37,10 @@ declare global {
     VITE_GLOBAL_APP_SHORT_NAME: string;
     VITE_USE_CDN: boolean;
     VITE_DROP_CONSOLE: boolean;
-    VITE_BUILD_GZIP: boolean;
     VITE_BUILD_COMPRESS: 'gzip' | 'brotli' | 'none';
-    VITE_DYNAMIC_IMPORT: boolean;
+    VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE: boolean;
     VITE_LEGACY: boolean;
     VITE_USE_IMAGEMIN: boolean;
+    VITE_GENERATE_UI: string;
   }
 }

@@ -12,9 +12,16 @@ import { configWindiCSSPlugin } from './windicss';
 import { configThemePlugin } from './theme';
 import { configImageminPlugin } from './imagemin';
 import { configVisualizerConfig } from './visualizer';
+import { configCompressPlugin } from './compress';
 
 export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
-  const { VITE_USE_MOCK, VITE_LEGACY, VITE_USE_IMAGEMIN } = viteEnv,
+  const {
+      VITE_USE_MOCK,
+      VITE_LEGACY,
+      VITE_USE_IMAGEMIN,
+      VITE_BUILD_COMPRESS,
+      VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE,
+    } = viteEnv,
     vitePlugins: (Plugin | Plugin[])[] = [vue(), vueJsx()];
 
   VITE_LEGACY && isBuild && vitePlugins.push(legacy());
@@ -36,6 +43,10 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
 
   if (isBuild) {
     VITE_USE_IMAGEMIN && vitePlugins.push(configImageminPlugin());
+
+    vitePlugins.push(
+      configCompressPlugin(VITE_BUILD_COMPRESS, VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE)
+    );
 
     vitePlugins.push(configPwaConfig(viteEnv));
   }
