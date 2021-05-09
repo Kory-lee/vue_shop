@@ -2,7 +2,7 @@ import html from 'vite-plugin-html';
 import pkg from '../../../package.json';
 import { GLOBAL_CONFIG_FILE_NAME } from '../../constant';
 
-export default function configHtmlPlugin(env: ViteEnv, isBuild: boolean) {
+export function configHtmlPlugin(env: ViteEnv, isBuild: boolean) {
   const { VITE_GLOBAL_APP_TITLE, VITE_PUBLIC_PATH } = env,
     path = VITE_PUBLIC_PATH.endsWith('/') ? `${VITE_PUBLIC_PATH}` : `${VITE_PUBLIC_PATH}/`;
 

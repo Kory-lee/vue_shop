@@ -7,6 +7,8 @@ import globalCom from './plugins/registerComponents';
 import router, { setupRouter } from './router';
 import { setupStore } from './store';
 
+import 'vite-plugin-svg-icons/register';
+
 if (import.meta.env.DEV) import('ant-design-vue/dist/antd.less');
 
 (async () => {

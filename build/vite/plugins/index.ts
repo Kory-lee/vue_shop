@@ -4,15 +4,16 @@ import legacy from '@vitejs/plugin-legacy';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import PurgeIcons from 'vite-plugin-purge-icons';
-import configHtmlPlugin from './html';
-import configMockPlugin from './mock';
-import configPwaConfig from './pwa';
-import configStyleImportPlugin from './styleImport';
+import { configHtmlPlugin } from './html';
+import { configMockPlugin } from './mock';
+import { configPwaConfig } from './pwa';
+import { configStyleImportPlugin } from './styleImport';
 import { configWindiCSSPlugin } from './windicss';
 import { configThemePlugin } from './theme';
 import { configImageminPlugin } from './imagemin';
 import { configVisualizerConfig } from './visualizer';
 import { configCompressPlugin } from './compress';
+import { configSvgIconsPlugin } from './svgSprite';
 
 export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   const {
@@ -27,6 +28,8 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   VITE_LEGACY && isBuild && vitePlugins.push(legacy());
 
   vitePlugins.push(configHtmlPlugin(viteEnv, isBuild));
+
+  vitePlugins.push(configSvgIconsPlugin(isBuild));
 
   vitePlugins.push(configWindiCSSPlugin());
 
