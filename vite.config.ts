@@ -44,7 +44,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         },
       },
       brotliSize: false,
-      chunkSizeWarningLimit: 1500,
+      chunkSizeWarningLimit: 2000,
     },
     define: {
       // setting vue-i18-next
