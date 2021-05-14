@@ -1,4 +1,4 @@
-import { YYYY_MM_DD_HH_MM } from '../data';
+import { YYYY_MM_DD_HH_MM } from '../date';
 import { isObject, isString } from '../is';
 
 export function createNow<T extends boolean>(

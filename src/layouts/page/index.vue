@@ -21,6 +21,7 @@
       </transition>
     </template>
   </RouterView>
+  <FrameLayout v-if="getCanEmbedIFramePage" />
 </template>
 
 <script lang="ts">
@@ -30,9 +31,11 @@
   import { getCanEmbedIFramePage, getOpenKeepAlive } from '/@/hooks/setting/useRootSetting';
   import { getBasicTransition, getEnableTransition } from '/@/hooks/setting/useTransitionSetting';
   import { useMultipleTabsStore } from '/@/store/modules/multipleTabs';
+  import FrameLayout from '/@/layouts/iframe/index.vue';
 
   export default defineComponent({
     name: 'PageLayout',
+    components: { FrameLayout },
     setup() {
       const tabStore = useMultipleTabsStore();
       const getCaches = computed(() => {

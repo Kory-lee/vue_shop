@@ -1,4 +1,5 @@
-import { RouteLocationNormalized, RouteLocationRaw, Router } from 'vue-router';
+import type { RouteLocationNormalized, RouteLocationRaw, Router } from 'vue-router';
+
 import { useGo } from '/@/hooks/web/usePage';
 import { toRaw, unref } from 'vue';
 import projectSetting from '/@/settings/projectSetting';
@@ -8,7 +9,7 @@ import { MULTIPLE_TABS_KEY } from '/@/enums/cacheEnum';
 import store from '/@/store';
 import { getRawRoute } from '/@/utils';
 import { PageEnum } from '/@/enums/pageEnum';
-import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '/@/router/constant';
+import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '/@/router/routes/basic';
 
 export interface MultipleTabsState {
   cacheTabList: Set<string>;

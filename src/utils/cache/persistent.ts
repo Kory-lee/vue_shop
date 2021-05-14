@@ -1,3 +1,8 @@
+import type { LockInfo } from '/@/store/modules/config';
+import type { ProjectConfig } from '/@/types/config';
+import type { UserInfo } from '/@/types/store';
+import type { RouteLocationNormalized } from 'vue-router';
+
 import { toRaw } from '@vue/reactivity';
 import { createLocalStorage, createSessionStorage } from '.';
 import Memory from './Memory';
@@ -12,10 +17,6 @@ import {
   USER_INFO_KEY,
 } from '/@/enums/cacheEnum';
 import { DEFAULT_CACHE_TIME } from '/@/settings/encryptionSetting';
-import { LockInfo } from '/@/store/modules/config';
-import { ProjectConfig } from '/@/types/config';
-import { UserInfo } from '/@/types/store';
-import { RouteLocationNormalized } from 'vue-router';
 
 interface BasicCache {
   [TOKEN_KEY]: string | number | null | undefined;
@@ -39,7 +40,6 @@ const localMemory = new Memory(DEFAULT_CACHE_TIME),
   sessionMemory = new Memory(DEFAULT_CACHE_TIME);
 
 export class Persistent {
-  constructor() {}
   static getLocal<T>(key: LocalKeys) {
     return localMemory.get(key)?.value as Nullable<T>;
   }

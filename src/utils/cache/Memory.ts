@@ -9,7 +9,7 @@ const NOT_ALIVE = 0;
 
 export default class Memory<T = any, V = any> {
   private cache: { [key in keyof T]?: Cache<V> } = {};
-  private alive: number;
+  readonly alive: number;
 
   constructor(alive = NOT_ALIVE) {
     this.alive = alive * 1000;
@@ -41,10 +41,14 @@ export default class Memory<T = any, V = any> {
 
     if (!expires) return value;
 
-    item.time = new Date().getTime() + this.alive;
-    item.timeoutId = setTimeout(() => {
-      this.remove(key);
-    }, expires);
+    const now = Date.now();
+    item.time = now + this.alive;
+    item.timeoutId = setTimeout(
+      () => {
+        this.remove(key);
+      },
+      expires > now ? expires - now : expires
+    );
     return value;
   }
   remove<K extends keyof T>(key: K) {
@@ -67,7 +71,7 @@ export default class Memory<T = any, V = any> {
   }
   restCache(cache: { [K in keyof T]: Cache }) {
     Object.keys(cache).forEach((key) => {
-      const item = cache[<keyof T>key];
+      const item = cache[key];
       if (item && item.time) {
         const now = new Date().getTime(),
           expire = item.time;

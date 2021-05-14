@@ -19,10 +19,10 @@
     },
     setup(props) {
       const chartRef = ref<HTMLDivElement | null>(null);
-      const { setOptions } = useEcharts(chartRef);
       watch(
         () => props.loading,
         () => {
+          const { setOptions } = useEcharts(chartRef);
           if (props.loading) {
             return;
           }

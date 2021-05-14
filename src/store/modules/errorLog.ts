@@ -1,6 +1,7 @@
+import type { ErrorLogInfo } from '/@/types/store';
+
 import { defineStore } from 'pinia';
-import { ErrorLogInfo } from '/@/types/store';
-import { formatToDateTime } from '/@/utils/data';
+import { formatToDateTime } from '/@/utils/date';
 import projectSetting from '/@/settings/projectSetting';
 import { ErrorTypeEnum } from '/@/enums/exceptionEnum';
 import store from '/@/store';
@@ -17,10 +18,10 @@ export const useErrorLogStore = defineStore({
     errorLogListCount: 0,
   }),
   getters: {
-    getErrorLogInfoList() {
+    getErrorLogInfoList(): Nullable<ErrorLogInfo[]> {
       return this.errorLogInfoList || [];
     },
-    getErrorLogListCount() {
+    getErrorLogListCount(): number {
       return this.errorLogListCount;
     },
   },

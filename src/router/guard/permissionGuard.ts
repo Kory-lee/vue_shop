@@ -1,8 +1,9 @@
-import { Router, RouteRecordRaw } from 'vue-router';
-import { PAGE_NOT_FOUND_ROUTE } from '../constant';
+import type { Router, RouteRecordRaw } from 'vue-router';
+
 import { PageEnum } from '/@/enums/pageEnum';
 import { useUserStoreWithout } from '/@/store/modules/user';
 import { usePermissionStoreWidthOut } from '/@/store/modules/permission';
+import { PAGE_NOT_FOUND_ROUTE } from '../routes/basic';
 
 const LOGIN_PATH = PageEnum.BASE_LOGIN;
 const whitePathList: PageEnum[] = [LOGIN_PATH];
@@ -48,7 +49,7 @@ export default function createPermissionGuard(router: Router) {
     const routes = await permissionStore.buildRoutesAction();
 
     routes.forEach((route) => {
-      router.addRoute((route as unknown) as RouteRecordRaw);
+      router.addRoute(route as unknown as RouteRecordRaw);
     });
 
     const redirectPath = (from.query.redirect || to.path) as string,

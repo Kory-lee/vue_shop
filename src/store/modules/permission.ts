@@ -1,13 +1,13 @@
+import type { AppRouteRecordRaw, MenuType } from '/@/router/types';
+
 import { toRaw } from 'vue';
 import { getMenuListById } from '/@/api/sys/menu';
 import { getPermCodeByUserId } from '/@/api/sys/user';
 import { PermissionModeEnum } from '/@/enums/configEnum';
 import { useI18n } from '/@/i18n/useI18n';
 import { createMessage } from '/@/hooks/web/useMessage';
-import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE } from '/@/router/constant';
 import { flatMultiLevelRoutes } from '/@/router/helper/routeHelper';
 import { asyncRoutes } from '/@/router/routes';
-import { AppRouteRecordRaw, MenuType } from '/@/router/types';
 import store from '/@/store';
 import { filter } from '/@/utils/helper/treeHelper';
 import { defineStore } from 'pinia';
@@ -15,6 +15,7 @@ import { useUserStore } from '/@/store/modules/user';
 import { useConfigStore } from '/@/store/modules/config';
 import projectSetting from '/@/settings/projectSetting';
 import { transformRouteToMenu } from '/@/utils/helper/menuHelper';
+import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
 
 interface PermissionState {
   permCodeList: string[];

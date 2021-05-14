@@ -10,9 +10,12 @@ export interface CreateStorageParams extends EncryptionParams {
 }
 /**
  *
- * @param prefixKey 键名前缀,默认''
- * @param storage 缓存,默认使用 sessionStorage
+ * @param {String} prefixKey  键名前缀,默认''
+ * @param {Storage} storage 缓存,默认使用 sessionStorage
  * @param hasEncrypt 确认加密
+ * @param iv
+ * @param key
+ * @param timeout
  */
 export const createStorage = ({
   prefixKey = '',
