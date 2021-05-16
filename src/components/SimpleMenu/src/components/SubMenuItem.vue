@@ -103,9 +103,8 @@
           },
         ]);
 
-      const { getParentSubMenu, getItemStyle, getParentMenu, getParentList } = useMenuItem(
-          instance
-        ),
+      const { getParentSubMenu, getItemStyle, getParentMenu, getParentList } =
+          useMenuItem(instance),
         {
           addSubMenu: parentAddSubMenu,
           removeSubMenu: parentRemoveSubMenu,

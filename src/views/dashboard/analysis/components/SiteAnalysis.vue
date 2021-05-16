@@ -16,11 +16,10 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue-demi';
+  import { defineComponent, ref } from 'vue-demi';
   import { Card } from 'ant-design-vue';
-  import { ref } from 'vue';
-  import VisitAnalysis from '/@/views/dashboard/analysis/components/VisitAnalysis.vue';
-  import VisitAnalysisBar from '/@/views/dashboard/analysis/components/VisitAnalysisBar.vue';
+  import VisitAnalysis from './VisitAnalysis.vue';
+  import VisitAnalysisBar from './VisitAnalysisBar.vue';
 
   export default defineComponent({
     name: 'SiteAnalysis',

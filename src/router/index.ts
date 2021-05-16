@@ -8,7 +8,7 @@ const WHITE_NAME_LIST = [LoginRoute.name, REDIRECT_NAME];
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: (basicRoutes as unknown) as RouteRecordRaw[],
+  routes: basicRoutes as unknown as RouteRecordRaw[],
   strict: true,
 });
 

@@ -31,7 +31,7 @@
   import { defineComponent } from 'vue-demi';
   import { growCardList } from '/@/views/dashboard/analysis/data';
   import { Card, Tag } from 'ant-design-vue';
-  import Icon from '/@/components/Icon/index';
+  import Icon from '/@/components/Icon';
   import CountTo from '/@/components/CountTo';
 
   export default defineComponent({

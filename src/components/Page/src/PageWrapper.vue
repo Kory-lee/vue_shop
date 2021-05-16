@@ -15,7 +15,7 @@
         <slot v-bind="data" :name="item" />
       </template>
     </PageHeader>
-    <div class="overflow-hidden" :class="getContentClass" :style="getContentStyle">
+    <div :class="getContentClass" :style="getContentStyle" class="overflow-hidden">
       <slot />
     </div>
     <PageFooter v-if="getShowFooter" ref="footerRef">
@@ -82,20 +82,18 @@
         ];
       });
 
-      const getContentStyle = computed(
-        (): CSSProperties => {
-          const { contentFullHeight, contentStyle, fixedHeight } = props;
+      const getContentStyle = computed((): CSSProperties => {
+        const { contentFullHeight, contentStyle, fixedHeight } = props;
 
-          if (!contentFullHeight) return contentStyle;
-          const height = `${unref(pageHeight)}px`;
-          return {
-            ...contentStyle,
-            minHeight: height,
-            ...(fixedHeight ? { height } : {}),
-            paddingBottom: `${unref(footerHeight)}px`,
-          };
-        }
-      );
+        if (!contentFullHeight) return contentStyle;
+        const height = `${unref(pageHeight)}px`;
+        return {
+          ...contentStyle,
+          minHeight: height,
+          ...(fixedHeight ? { height } : {}),
+          paddingBottom: `${unref(footerHeight)}px`,
+        };
+      });
 
       watch(
         () => [contentHeight?.value, getShowFooter.value],

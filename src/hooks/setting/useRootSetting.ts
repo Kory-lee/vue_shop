@@ -9,12 +9,10 @@ type RootSetting = Omit<
   'locale' | 'headerSetting' | 'menuSetting' | 'multiTabsSetting'
 >;
 
-export const getRootSetting = computed(
-  (): RootSetting => {
-    const configStore = useConfigStoreWidthOut();
-    return configStore.getProjectConfig;
-  }
-);
+export const getRootSetting = computed((): RootSetting => {
+  const configStore = useConfigStoreWidthOut();
+  return configStore.getProjectConfig;
+});
 
 export const getPageLoading = computed(() => {
   const configStore = useConfigStoreWidthOut();

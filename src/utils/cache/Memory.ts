@@ -55,14 +55,14 @@ export default class Memory<T = any, V = any> {
     const item = this.get(key);
     Reflect.deleteProperty(this.cache, key);
     if (item) {
-      clearTimeout(item.timeoutId!);
+      item.timeoutId && clearTimeout(item.timeoutId);
       return item.value;
     }
   }
   clear() {
     Object.keys(this.cache).forEach((key) => {
-      const item = this.get(key as keyof T);
-      if (item && item.timeoutId) {
+      const item = this.cache[key];
+      if (item?.timeoutId) {
         clearTimeout(item.timeoutId);
         item.timeoutId = undefined;
       }

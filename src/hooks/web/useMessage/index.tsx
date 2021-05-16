@@ -7,20 +7,30 @@ import { IconsType } from './ModalIcon/icons';
 
 export interface NotifyApi {
   info(config: ArgsProps): void;
+
   success(config: ArgsProps): void;
+
   error(config: ArgsProps): void;
+
   warn(config: ArgsProps): void;
+
   warning(config: ArgsProps): void;
+
   open(args: ArgsProps): void;
+
   close(key: string): void;
+
   config(opt: ConfigProps): void;
+
   destroy(): void;
 }
+
 export declare type NotificationPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
 
 export interface ModalOptionEx extends Omit<ModalFuncProps, 'iconType'> {
-  iconType: IconsType | 'confirm';
+  iconType: IconsType;
 }
+
 export type ModalOptionsPartial = Partial<ModalOptionEx> &
   Pick<ModalOptionEx, 'content'> &
   Pick<ModalOptionEx, 'iconType'>;
@@ -36,6 +46,7 @@ interface ConfirmOptions {
 function renderContent({ content }: Pick<ModalOptionEx, 'content'>) {
   return <div innerHTML={content && `<div>${content as string}<div/>`} />;
 }
+
 export function createConfirm(options: ModalOptionEx) {
   const iconType = options.iconType || 'warning';
   Reflect.deleteProperty(options, 'iconType');
@@ -44,7 +55,7 @@ export function createConfirm(options: ModalOptionEx) {
     icon: <ModalIcon type={iconType} />,
     ...options,
   };
-  return (Modal.confirm(opt) as unknown) as ConfirmOptions;
+  return Modal.confirm(opt) as unknown as ConfirmOptions;
 }
 
 function getBaseOptions() {
@@ -53,8 +64,7 @@ function getBaseOptions() {
 }
 
 function createModalOptions(options: ModalOptionsPartial): ModalOptionsPartial {
-  let iconType = options.iconType;
-  if (options.iconType === 'confirm') iconType = 'warning';
+  const iconType = options.iconType;
 
   return {
     ...getBaseOptions(),

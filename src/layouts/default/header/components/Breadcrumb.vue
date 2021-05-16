@@ -86,10 +86,10 @@
         const breadcrumbList = filterItem(matched);
 
         if (currentRoute.value.meta?.currentActiveMenu) {
-          breadcrumbList.push(({
+          breadcrumbList.push({
             ...currentRoute.value,
             name: currentRoute.value.meta?.title || currentRoute.value.name,
-          } as unknown) as RouteLocationMatched);
+          } as unknown as RouteLocationMatched);
         }
         routes.value = breadcrumbList;
       });
@@ -128,7 +128,7 @@
       return {
         prefixCls: getPrefixCls('layout-breadcrumb'),
         getIcon,
-        routes: (routes as unknown) as Ref<Route[]>,
+        routes: routes as unknown as Ref<Route[]>,
         t,
         getShowBreadCrumbIcon,
         handleClick,

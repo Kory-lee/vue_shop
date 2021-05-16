@@ -34,11 +34,12 @@
         devSchema: DescItem[] = [];
 
       const commonTagRender = (color: string) => (curVal) => <Tag color={color}>{curVal}</Tag>;
-      const commonLinkRender = (text: string) => (href) => (
-        <a href={href} target="_blank">
-          {text}
-        </a>
-      );
+      const commonLinkRender = (text: string) => (href) =>
+        (
+          <a href={href} target="_blank">
+            {text}
+          </a>
+        );
 
       const infoSchema: DescItem[] = [
         { label: '版本', field: 'version', render: commonTagRender('blue') },

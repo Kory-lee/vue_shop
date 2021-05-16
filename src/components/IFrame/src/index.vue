@@ -51,7 +51,7 @@
       function init() {
         nextTick(() => {
           const iframe = unref(frameRef);
-          if (!iframe) reutrn;
+          if (!iframe) return;
           const _frame = iframe as any;
           if (_frame.attachEvent) {
             _frame.attachEvent('onload', () => {

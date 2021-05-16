@@ -1,10 +1,9 @@
 <script lang="tsx">
-  import { ref } from 'vue';
   import { basicProps } from './props';
   import useEcharts from '/@/hooks/web/useEcharts';
-  import { onMounted } from '@vue/runtime-core';
+  import { defineComponent, onMounted, ref } from 'vue-demi';
 
-  export default {
+  export default defineComponent({
     name: 'VisitAnalysis',
     props: basicProps,
     setup(props) {
@@ -104,5 +103,5 @@
       });
       return () => <div ref={chartRef} style={props}></div>;
     },
-  };
+  });
 </script>

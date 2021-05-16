@@ -148,7 +148,7 @@ export class VAxios {
             ret !== errorResult ? resolve(ret) : reject(new Error('request error!'));
             return;
           }
-          resolve((res as unknown) as Promise<T>);
+          resolve(res as unknown as Promise<T>);
         })
         .catch((e: Error) => {
           if (requestCatchHook && isFunction(requestCatchHook)) {

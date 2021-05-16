@@ -33,30 +33,25 @@
         prefixCls = getPrefixCls('layout-multiple-header'),
         getShowTabs = computed(() => unref(getShowMultipleTab) && !unref(getRealFullContent)),
         getIsShowPlaceholderDom = computed(() => unref(getFixed) || unref(getShowFullHeaderRef)),
-        getWrapStyle = computed(
-          (): CSSProperties => {
-            const style: CSSProperties = {};
-            if (unref(getFixed))
-              style.width = unref(isMobile) ? '100%' : unref(getCalcContentWidth);
-            if (unref(getShowFullHeaderRef)) style.top = `${HEADER_HEIGHT}px`;
-            return style;
-          }
-        ),
+        getWrapStyle = computed((): CSSProperties => {
+          const style: CSSProperties = {};
+          if (unref(getFixed)) style.width = unref(isMobile) ? '100%' : unref(getCalcContentWidth);
+          if (unref(getShowFullHeaderRef)) style.top = `${HEADER_HEIGHT}px`;
+          return style;
+        }),
         getIsFixed = computed(() => unref(getFixed) || unref(getShowFullHeaderRef)),
-        getPlaceholderDomStyle = computed(
-          (): CSSProperties => {
-            let height = 0;
-            if (
-              (unref(getShowFullHeaderRef) || !unref(getSplit)) &&
-              unref(getShowHeader) &&
-              !unref(getRealFullContent)
-            )
-              height += HEADER_HEIGHT;
-            if (unref(getShowMultipleTab) && !unref(getRealFullContent)) height += TABS_HEIGHT;
-            headerHeightRef.value = height;
-            return { height: `${height}px` };
-          }
-        ),
+        getPlaceholderDomStyle = computed((): CSSProperties => {
+          let height = 0;
+          if (
+            (unref(getShowFullHeaderRef) || !unref(getSplit)) &&
+            unref(getShowHeader) &&
+            !unref(getRealFullContent)
+          )
+            height += HEADER_HEIGHT;
+          if (unref(getShowMultipleTab) && !unref(getRealFullContent)) height += TABS_HEIGHT;
+          headerHeightRef.value = height;
+          return { height: `${height}px` };
+        }),
         getClass = computed(() => [
           prefixCls,
           `${prefixCls}--${unref(getHeaderTheme)}`,

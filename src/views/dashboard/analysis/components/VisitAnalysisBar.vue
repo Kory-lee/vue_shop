@@ -1,6 +1,6 @@
 <script lang="tsx">
   import { ref, onMounted } from 'vue';
-  import { basicProps } from '/@/views/dashboard/analysis/components/props';
+  import { basicProps } from './props';
   import useEcharts from '/@/hooks/web/useEcharts';
 
   export default {

@@ -5,22 +5,20 @@ export default function useMenuItem(instance: ComponentInternalInstance | null) 
     getParentRootMenu = computed(() => findParentMenu(['Menu'])),
     getParentSubMenu = computed(() => findParentMenu(['SubMenu']));
 
-  const getItemStyle = computed(
-    (): CSSProperties => {
-      let parent = instance?.parent;
-      if (!parent) return {};
-      const indentSize = (unref(getParentRootMenu)?.props.indentSize as number) ?? 20;
-      let padding = indentSize;
-      if (unref(getParentRootMenu)?.props.collapse) padding = indentSize;
-      else {
-        while (parent && parent.type.name !== 'Menu') {
-          if (parent.type.name === 'SubMenu') padding += indentSize;
-          parent = parent.parent;
-        }
+  const getItemStyle = computed((): CSSProperties => {
+    let parent = instance?.parent;
+    if (!parent) return {};
+    const indentSize = (unref(getParentRootMenu)?.props.indentSize as number) ?? 20;
+    let padding = indentSize;
+    if (unref(getParentRootMenu)?.props.collapse) padding = indentSize;
+    else {
+      while (parent && parent.type.name !== 'Menu') {
+        if (parent.type.name === 'SubMenu') padding += indentSize;
+        parent = parent.parent;
       }
-      return { paddingLeft: padding + 'px' };
     }
-  );
+    return { paddingLeft: padding + 'px' };
+  });
 
   function findParentMenu(name: string[]) {
     let parent = instance?.parent;

@@ -1,26 +1,53 @@
 <template>
-  <a-row class="workbench p-4" :gutter="12">
-    <a-col :md="24" :lg="17">
-      <ProdTotal class="mb-3" />
-      <TodoList class="mb-3" />
-    </a-col>
-    <a-col :md="24" :lg="7">
-      <img :src="workImg" class="workbench__img mb-3" />
-    </a-col>
-  </a-row>
+  <PageWrapper>
+    <template #headerContent> <WorkbenchHeader /></template>
+    <div class="lg:flex">
+      <div class="lg:w-7/10 w-full !mr-4 enter-y">
+        <ProjectCard :loading="loading" class="enter-y" />
+        <DynamicInfo :loading="loading" class="!my-4 enter-y" />
+      </div>
+      <div class="lg:w-3/10 w-full enter-y">
+        <QuickNav :loading="loading" class="enter-y" />
+
+        <Card :loading="loading" class="!my-4 enter-y">
+          <img :src="illustrationImg" alt="" />
+        </Card>
+        <SaleRadar :loading="loading" />
+      </div>
+    </div>
+  </PageWrapper>
 </template>
 
 <script lang="ts">
-  import { Col, Row } from 'ant-design-vue';
-  import { defineComponent } from 'vue';
-  import ProdTotal from './components/ProdTotal.vue';
-  import TodoList from './components/TodoList.vue';
-  import workImg from '/@/assets/img/dashboard/workbench/workbench.png';
+  import { defineComponent, ref } from 'vue-demi';
+  import PageWrapper from '/@/components/Page/src/PageWrapper.vue';
+  import WorkbenchHeader from './components/WorkbenchHeader.vue';
+  import ProjectCard from './components/ProjectCard.vue';
+  import DynamicInfo from './components/DynamicInfo.vue';
+  import QuickNav from './components/QuickNav.vue';
+  import { Card } from 'ant-design-vue';
+  import illustrationImg from '/@/assets/svg/illustration.svg';
+  import SaleRadar from '/@/views/dashboard/workbench/components/SaleRadar.vue';
+
   export default defineComponent({
     name: 'Workbench',
-    components: { ProdTotal, TodoList, 'a-col': Col, 'a-row': Row },
+    components: {
+      SaleRadar,
+      QuickNav,
+      DynamicInfo,
+      ProjectCard,
+      WorkbenchHeader,
+      PageWrapper,
+      Card,
+    },
     setup() {
-      return { workImg };
+      const loading = ref(true);
+      setTimeout(() => (loading.value = false), 1500);
+
+      return {
+        loading,
+        illustrationImg,
+      };
     },
   });
 </script>

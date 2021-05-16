@@ -67,19 +67,17 @@
           },
         ]),
         // BUG
-        getHiddenDomStyle = computed(
-          (): CSSProperties => {
-            const width = `${unref(getRealWidth)}px`;
-            return {
-              width,
-              overflow: `hidden`,
-              flex: `0 0 ${width}`,
-              maxWidth: width,
-              minWidth: width,
-              transition: 'all 0.2s',
-            };
-          }
-        );
+        getHiddenDomStyle = computed((): CSSProperties => {
+          const width = `${unref(getRealWidth)}px`;
+          return {
+            width,
+            overflow: `hidden`,
+            flex: `0 0 ${width}`,
+            maxWidth: width,
+            minWidth: width,
+            transition: 'all 0.2s',
+          };
+        });
 
       return {
         sidebarRef,
