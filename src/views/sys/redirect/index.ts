@@ -1,4 +1,4 @@
-import { defineComponent, unref } from 'vue';
+import { defineComponent, h, unref } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
@@ -12,5 +12,7 @@ export default defineComponent({
       // { path } = params,
       _path = Array.isArray(path) ? path.join('/') : path;
     replace({ path: '/' + _path, query });
+
+    return () => h('div');
   },
 });

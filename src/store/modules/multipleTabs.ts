@@ -1,6 +1,6 @@
 import type { RouteLocationNormalized, RouteLocationRaw, Router } from 'vue-router';
 
-import { useGo } from '/@/hooks/web/usePage';
+import { useGo, useRefresh } from '/@/hooks/web/usePage';
 import { toRaw, unref } from 'vue';
 import projectSetting from '/@/settings/projectSetting';
 import { defineStore } from 'pinia';
@@ -17,9 +17,9 @@ export interface MultipleTabsState {
   lastDragEndIndex: number;
 }
 
-function handleGotoPage(router: Router) {
+async function handleGotoPage(router: Router) {
   const go = useGo(router);
-  go(unref(router.currentRoute).path, true);
+  await go(unref(router.currentRoute).path, true);
 }
 
 const cacheTab = projectSetting.multipleTabsSetting.cache;
@@ -42,6 +42,9 @@ export const useMultipleTabsStore = defineStore({
       return this.lastDragEndIndex;
     },
   },
+  /**
+   * update the cache according to the currently opened tabs
+   */
   actions: {
     async updateCacheTab() {
       const cacheSet: Set<string> = new Set();
@@ -58,10 +61,11 @@ export const useMultipleTabsStore = defineStore({
       const { currentRoute } = router;
       const route = unref(currentRoute);
       const name = route.name;
+
       const findTab = this.getCachedTabList.find((item) => item === name);
-      if (findTab) {
-        this.cacheTabList.delete(findTab);
-      }
+      if (findTab) this.cacheTabList.delete(findTab);
+      const refresh = useRefresh(router);
+      await refresh();
     },
     clearCacheTabs(): void {
       this.cacheTabList = new Set();
@@ -172,7 +176,7 @@ export const useMultipleTabsStore = defineStore({
       }
       this.bulkCloseTabs(pathList);
       this.updateCacheTab();
-      handleGotoPage(router);
+      await handleGotoPage(router);
     },
     async closeRightTabs(route: RouteLocationNormalized, router: Router) {
       const index = this.tabList.findIndex((item) => item.fullPath === route.fullPath);
@@ -186,7 +190,7 @@ export const useMultipleTabsStore = defineStore({
       }
       this.bulkCloseTabs(pathList);
       this.updateCacheTab();
-      handleGotoPage(router);
+      await handleGotoPage(router);
     },
     async closeAllTabs(router: Router) {
       this.tabList = this.tabList.filter((item) => item?.meta?.affix ?? false);
@@ -206,7 +210,7 @@ export const useMultipleTabsStore = defineStore({
       }
       this.bulkCloseTabs(pathList);
       this.updateCacheTab();
-      handleGotoPage(router);
+      await handleGotoPage(router);
     },
     async bulkCloseTabs(pathList: string[]) {
       if (!pathList.length) return;

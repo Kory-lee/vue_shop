@@ -40,7 +40,7 @@
 <script lang="ts">
   import type { MenuType } from '/@/router/types';
 
-  import { computed, defineComponent, PropType } from 'vue';
+  import { computed, defineComponent, PropType } from 'vue-demi';
   import { useI18n } from 'vue-i18n';
   import { useProviderContext } from '../../Application';
   import Icon from '../../Icon';
@@ -65,7 +65,7 @@
         getIcon = computed(() => props?.item.icon),
         getI18nName = computed(() => t(props.item?.name)),
         getShowSubTitle = computed(() => !props.collapse || !props.parent),
-        getIsCollapseParent = computed(() => !!props.collapse && !!props.parent),
+        getIsCollapseParent = computed(() => props.collapse && props.parent),
         getLevelClass = computed(() => ({
           [`${prefixCls}__parent`]: props.parent,
           [`${prefixCls}__children`]: !props.parent,

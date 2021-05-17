@@ -1,6 +1,6 @@
 import { Ref, unref } from 'vue';
 import { createLoading } from './createLoading';
-import { LoadingProps } from './type';
+import type { LoadingProps } from './type';
 export interface UseLoadingOptions {
   target?: HTMLElement | Ref<ElRef>;
   props?: Partial<LoadingProps>;

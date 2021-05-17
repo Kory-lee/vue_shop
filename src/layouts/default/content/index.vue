@@ -41,5 +41,11 @@
       width: 1200px;
       margin: 0 auto;
     }
+
+    &-loading {
+      position: absolute;
+      top: 200px;
+      z-index: @page-loading-z-index;
+    }
   }
 </style>

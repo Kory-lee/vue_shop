@@ -20,7 +20,7 @@ export function useTabs(_router?: Router) {
   function canIUseTabs(): boolean {
     const { show } = configStore.getMultiTabsSetting;
     if (!show) throw new Error('the multi-tab page is not open,please open it in the setting');
-    return !!show;
+    return show;
   }
 
   const router = _router || useRouter();
