@@ -1,6 +1,7 @@
+import type { ProjectConfig } from '../types/config';
+
 import { primaryColor } from '../../build/config/themeConfig';
 import { PROJ_CFG_KEY } from '../enums/cacheEnum';
-import { ProjectConfig } from '../types/config';
 import { deepMerge } from '../utils/common';
 import { updateColorWeak } from './theme/updateColorWeak';
 import { ThemeEnum } from '/@/enums/configEnum';
@@ -14,7 +15,7 @@ import { useLocaleStore } from '/@/store/modules/locale';
 import { Persistent } from '/@/utils/cache/persistent';
 import { getCommonStoragePrefix, getStorageShortName } from '/@/utils/env';
 
-export function initConfigStore() {
+export async function initConfigStore() {
   const localeStore = useLocaleStore(),
     configStore = useConfigStore();
 
@@ -30,7 +31,7 @@ export function initConfigStore() {
     menuSetting: { bgColor } = {},
   } = config;
   try {
-    if (themeColor && themeColor !== primaryColor) changeTheme(themeColor);
+    if (themeColor && themeColor !== primaryColor) await changeTheme(themeColor);
 
     grayMode && updateGrayMode(grayMode);
     colorWeak && updateColorWeak(colorWeak);
@@ -39,7 +40,7 @@ export function initConfigStore() {
   }
   configStore.setProjectConfig(config);
 
-  updateDarkTheme(darkMode);
+  await updateDarkTheme(darkMode);
   if (darkMode === ThemeEnum.DARK) {
     updateHeaderBgColor();
     updateSidebarBgColor();

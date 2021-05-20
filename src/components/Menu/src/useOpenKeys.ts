@@ -5,7 +5,7 @@ import { MenuModeEnum } from '/@/enums/menuEnum';
 import { useTimeoutFn } from '/@/hooks/core/useTimeout';
 import { MenuType } from '/@/router/types';
 import { getAllParentPath } from '/@/utils/helper/menuHelper';
-import { uniq } from 'lodash-es';
+import uniq from 'lodash-es/uniq';
 
 export default function useOpenKeys(
   menuState: MenuState,

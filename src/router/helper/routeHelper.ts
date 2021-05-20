@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import { createRouter, createWebHashHistory, Router, RouteRecordNormalized } from 'vue-router';
 import type { AppRouteModule, AppRouteRecordRaw } from '../types';
 import { LAYOUT } from '/@/router/constant';

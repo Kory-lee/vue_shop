@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import { isArray, isUrl } from '../is';
 import { findPath, treeMap } from './treeHelper';
 import type { AppRouteModule, AppRouteRecordRaw, MenuModule, MenuType } from '/@/router/types';

@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import { isFunction } from '../is';
 import AxiosCanceler from './AxiosCancel';
 import { CreateAxiosOptions, RequestOptions, Result, UploadFileParams } from './type';

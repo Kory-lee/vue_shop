@@ -34,7 +34,7 @@
 
   import { PageHeader } from 'ant-design-vue';
   import { useProviderContext } from '../../Application';
-  import { omit } from 'lodash-es';
+  import omit from 'lodash-es/omit';
   import { usePageContext } from '/@/hooks/component/usePageContext';
   import { nextTick, computed, defineComponent, ref, unref, watch } from 'vue';
   import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActived';

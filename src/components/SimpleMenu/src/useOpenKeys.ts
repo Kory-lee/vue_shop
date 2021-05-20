@@ -1,4 +1,4 @@
-import { uniq } from 'lodash';
+import uniq from 'lodash-es/uniq';
 import { computed, Ref, toRaw, unref } from 'vue';
 import { SimpleMenuState } from './types';
 import { useTimeoutFn } from '/@/hooks/core/useTimeout';

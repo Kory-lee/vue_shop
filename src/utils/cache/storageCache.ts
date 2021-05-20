@@ -9,7 +9,6 @@ export interface CreateStorageParams extends EncryptionParams {
   timeout?: Nullable<number>;
 }
 /**
- *
  * @param {String} prefixKey  键名前缀,默认''
  * @param {Storage} storage 缓存,默认使用 sessionStorage
  * @param hasEncrypt 确认加密
@@ -27,12 +26,13 @@ export const createStorage = ({
 }: Partial<CreateStorageParams> = {}) => {
   if (hasEncrypt && [key.length, iv.length].some((item) => item !== 16))
     throw new Error('When hasEncrypt is true, the key or iv must be 16 bits!');
+
   const encryption = new AesEncryption({ key, iv });
 
   class WebStorage {
     private storage: Storage;
     private encryption: AesEncryption;
-    private hasEncrypt: boolean;
+    private readonly hasEncrypt: boolean;
     private prefixKey?: string;
 
     constructor() {
@@ -65,6 +65,7 @@ export const createStorage = ({
     get(key: string, def: any = null) {
       const item = this.storage.getItem(this.getKey(key));
       if (!item) return def;
+
       try {
         const decItem = this.hasEncrypt ? this.encryption.decryptByAES(item) : item;
         const { value, expire } = JSON.parse(decItem);
@@ -77,7 +78,7 @@ export const createStorage = ({
     /**
      * Delete cache based on key
      * @param {string} key
-     * @memberof Cache
+     * @memberOf Cache
      */
     remove(key: string) {
       this.storage.removeItem(this.getKey(key));

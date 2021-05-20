@@ -1,4 +1,4 @@
-import { set } from 'lodash-es';
+import set from 'lodash-es/set';
 
 export function genMessage(langs: Record<string, Record<string, any>>, prefix = 'lang') {
   const obj: Recordable = {};

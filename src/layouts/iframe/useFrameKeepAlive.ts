@@ -2,9 +2,8 @@ import type { AppRouteRecordRaw } from '/@/router/types';
 
 import { useRouter } from 'vue-router';
 import { useMultipleTabsStore } from '/@/store/modules/multipleTabs';
-import { computed } from 'vue-demi';
-import { uniqBy } from 'lodash-es';
-import { toRaw, unref } from 'vue';
+import { computed, toRaw, unref } from 'vue-demi';
+import uniqBy from 'lodash-es/uniqBy';
 import { getShowMultipleTab } from '/@/hooks/setting/useMultipleTabSetting';
 
 export function useFrameKeepAlive() {

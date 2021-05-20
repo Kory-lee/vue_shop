@@ -6,7 +6,7 @@ import { getPermCodeByUserId } from '/@/api/sys/user';
 import { PermissionModeEnum } from '/@/enums/configEnum';
 import { useI18n } from '/@/i18n/useI18n';
 import { createMessage } from '/@/hooks/web/useMessage';
-import { flatMultiLevelRoutes } from '/@/router/helper/routeHelper';
+import { flatMultiLevelRoutes, transformObjToRoute } from '/@/router/helper/routeHelper';
 import { asyncRoutes } from '/@/router/routes';
 import store from '/@/store';
 import { filter } from '/@/utils/helper/treeHelper';
@@ -99,13 +99,14 @@ export const usePermissionStore = defineStore({
         const paramId = id || userStore.getUserInfo?.userId;
         // !Simulate to obtain permission codes from the background,
         // this function may only need to be executed once, and the actual project can be put at the right time by itself
+        let routeList: AppRouteRecordRaw[] = [];
         try {
           this.changePermissionCode('1');
+          routeList = (await getMenuListById({ id: paramId })) as AppRouteRecordRaw[];
         } catch {}
         if (!paramId) throw new Error('paramID is undefined!');
-        let routeList = (await getMenuListById({ id: paramId })) as AppRouteRecordRaw[];
         //  dynamic introduce components
-        //
+        routeList = transformObjToRoute(routeList);
 
         const backMenuList = transformRouteToMenu(routeList);
         this.setBackMenuList(backMenuList);

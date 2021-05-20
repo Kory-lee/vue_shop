@@ -8,6 +8,7 @@
   import { defineComponent, watch, ref } from 'vue-demi';
   import { Card } from 'ant-design-vue';
   import useEcharts from '/@/hooks/web/useEcharts';
+  import type { Ref } from 'vue';
 
   export default defineComponent({
     name: 'SaleRadar',
@@ -15,11 +16,11 @@
     props: {
       loading: Boolean,
       width: { type: String, default: '100%' },
-      height: { type: String, default: '400px' },
+      height: { type: String, default: '380px' },
     },
     setup(props) {
-      const chartRef = ref<HTMLDivElement>(null);
-      const { setOptions } = useEcharts(chartRef);
+      const chartRef = ref<HTMLDivElement | null>(null);
+      const { setOptions } = useEcharts(chartRef as Ref<HTMLDivElement>);
       watch(
         () => props.loading,
         (val) => {
@@ -54,16 +55,12 @@
                   {
                     value: [90, 50, 86, 40, 50, 20],
                     name: 'Visits',
-                    itemStyle: {
-                      color: '#b6a2de',
-                    },
+                    itemStyle: { color: '#b6a2de' },
                   },
                   {
                     value: [70, 75, 70, 76, 20, 85],
                     name: 'Sales',
-                    itemStyle: {
-                      color: '#67e0e3',
-                    },
+                    itemStyle: { color: '#67e0e3' },
                   },
                 ],
               },

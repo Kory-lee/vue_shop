@@ -9,7 +9,7 @@
   import props from './props';
   import { useProviderContext } from '/@/components/Application';
   import { isFunction } from '/@/utils/is';
-  import { get } from 'lodash-es';
+  import get from 'lodash-es/get';
   import { CollapseContainer } from '/@/components/Container';
 
   export default defineComponent({
