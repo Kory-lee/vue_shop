@@ -7,4 +7,4 @@ export const cacheCipher = {
   iv: '@11111000001111_',
 };
 
-export const enableStorageEncryption = isDevMode();
+export const enableStorageEncryption = !isDevMode();
