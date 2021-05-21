@@ -1,4 +1,10 @@
-import { RouteLocationNormalized, RouteRecordNormalized } from 'vue-router';
+import type { RouteLocationNormalized, RouteRecordNormalized } from 'vue-router';
+
+export const noop = () => {};
+
+export function getPopupContainer(node?: HTMLElement): HTMLElement {
+  return (node?.parentNode as HTMLElement) ?? document.body;
+}
 
 export function getRawRoute(route: RouteLocationNormalized): RouteLocationNormalized {
   if (!route) return route;
