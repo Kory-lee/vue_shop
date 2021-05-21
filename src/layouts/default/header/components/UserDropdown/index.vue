@@ -44,6 +44,7 @@
   import { Menu, Dropdown } from 'ant-design-vue';
   import { getShowDoc } from '/@/hooks/setting/useHeaderSetting';
   import Icon from '/@/components/Icon';
+  import { useModal } from '/@/components/Modal';
 
   type MenuEvent = 'logout' | 'doc' | 'lock';
 
@@ -66,6 +67,8 @@
         return { realName, desc };
       });
 
+      const [register, { openModal }] = useModal();
+
       function handleLoginOut() {
         userStore.confirmLoginOut();
       }
@@ -73,7 +76,9 @@
       function openDoc() {
         openWindow(DOC_URL);
       }
-
+      function handleLock() {
+        openModal(true);
+      }
       function handleMenuClick(e: { key: MenuEvent }) {
         switch (e.key) {
           case 'logout':
@@ -83,7 +88,7 @@
             openDoc();
             break;
           case 'lock':
-            console.log('lock');
+            handleLock();
             break;
         }
       }
@@ -97,6 +102,7 @@
         openDoc,
         getShowDoc,
         handleMenuClick,
+        register,
       };
     },
   });
