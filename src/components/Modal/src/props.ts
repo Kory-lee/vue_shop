@@ -1,5 +1,7 @@
-import { PropType } from 'vue-demi';
-import { ModalWrapperProps } from './types';
+import type { ButtonProps } from 'ant-design-vue/lib/button/buttonTypes';
+import type { VueNode } from 'ant-design-vue/lib/_util/type';
+import type { CSSProperties, PropType } from 'vue-demi';
+import type { ModalWrapperProps } from './types';
 import { useI18n } from '/@/i18n/useI18n';
 
 const { t } = useI18n();
@@ -32,5 +34,38 @@ export const basicProps = {
     /**@description show confirmation button */
     showOkBtn: { type: Boolean, default: true },
     wrapperProps: Object as PropType<Partial<ModalWrapperProps>>,
+
+    afterClose: Function as PropType<() => Promise<VueNode>>,
+
+    bodyStyle: [Object, Array, String] as PropType<CSSProperties>,
+
+    closeable: { type: Boolean, default: true },
+
+    closeIcon: Object as PropType<VueNode>,
+
+    confirmLoading: Boolean,
+
+    destroyOnClose: Boolean,
+    footer: Object as PropType<VueNode>,
+
+    getContainer: Function as PropType<() => any>,
+
+    mask: { type: Boolean, default: true },
+    maskClosable: { type: Boolean, default: true },
+
+    keyboard: { type: Boolean, default: true },
+    maskStyle: [Object, String, Array] as PropType<CSSProperties>,
+
+    okType: { type: String, default: 'primary' },
+    okButtonProps: Object as PropType<ButtonProps>,
+    cancelButtonProps: Object as PropType<ButtonProps>,
+
+    title: { type: String, default: '' },
+    visible: Boolean,
+
+    width: [String, Number] as PropType<string | number>,
+
+    wrapClassName: { type: String, default: '' },
+    zIndex: Number,
   },
 };
