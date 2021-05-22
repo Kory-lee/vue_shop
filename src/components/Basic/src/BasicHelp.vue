@@ -4,10 +4,10 @@
   import { computed, defineComponent, unref } from 'vue-demi';
   import { Tooltip } from 'ant-design-vue';
   import { useProviderContext } from '/@/components/Application';
-  import { getSlot } from 'ant-design-vue/es/_util/props-util';
   import { isArray, isString } from '/@/utils/is';
   import { InfoCircleOutlined } from '@ant-design/icons-vue';
   import { getPopupContainer } from '/@/utils';
+  import { getSlot } from '/@/utils/helper/jsxHelper';
 
   export default defineComponent({
     name: 'BasicHelp',

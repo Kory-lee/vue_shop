@@ -27,6 +27,10 @@ declare global {
 
   declare type TimeoutHandle = ReturnType<typeof setTimeout>;
 
+  declare interface ChangeEvent extends Event {
+    target: HTMLInputElement;
+  }
+
   declare interface ViteEnv {
     VITE_PORT: number;
     VITE_USE_MOCK: boolean;

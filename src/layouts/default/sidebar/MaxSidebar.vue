@@ -1,5 +1,9 @@
 <template>
-  <div v-if="!isMobile && getMenuFixed" v-show="showClassSidebarRef" :style="getHiddenDomStyle" />
+  <div
+    v-if="!isMobile && getMenuFixed"
+    v-show="showClassSidebarRef"
+    :style="getHiddenDomStyle"
+  ></div>
   <Sider
     v-show="showClassSidebarRef"
     ref="sideRef"

@@ -76,9 +76,11 @@
       function openDoc() {
         openWindow(DOC_URL);
       }
+
       function handleLock() {
         openModal(true);
       }
+
       function handleMenuClick(e: { key: MenuEvent }) {
         switch (e.key) {
           case 'logout':

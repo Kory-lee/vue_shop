@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="表单基础示例"></PageWrapper>
+  <PageWrapper title="表单基础示例" />
 </template>
 
 <script lang="ts">

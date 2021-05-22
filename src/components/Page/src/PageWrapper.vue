@@ -9,14 +9,14 @@
     >
       <template #default>
         <template v-if="content">{{ content }}</template>
-        <slot v-else name="headerContent" />
+        <slot v-else name="headerContent"></slot>
       </template>
       <template v-for="item in getHeaderSlots" #[item]="data" :key="item">
-        <slot v-bind="data" :name="item" />
+        <slot v-bind="data" :name="item"></slot>
       </template>
     </PageHeader>
     <div :class="getContentClass" :style="getContentStyle" class="overflow-hidden">
-      <slot />
+      <slot></slot>
     </div>
     <PageFooter v-if="getShowFooter" ref="footerRef">
       <template #left>

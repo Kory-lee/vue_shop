@@ -1,7 +1,7 @@
 <template>
   <div :class="prefixCls">
     <div v-if="$slots.header" :class="`${prefixCls}__header`">
-      <slot name="header" />
+      <slot name="header"></slot>
     </div>
     <div v-else :class="`${prefixCls}__header px-2 py-4`">
       <div :class="`${prefixCls}__action`">
@@ -12,11 +12,11 @@
     <div class="p-2">
       <Skeleton v-if="loading" :active="active" />
       <div v-else v-show="show" :class="`${prefixCls}__body`">
-        <slot />
+        <slot></slot>
       </div>
     </div>
     <div v-if="$slots.footer" :class="`${prefixCls}__footer`">
-      <slot name="footer" />
+      <slot name="footer"></slot>
     </div>
   </div>
 </template>

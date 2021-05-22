@@ -2,14 +2,14 @@
   <li :class="getClass" :style="getCollapse ? {} : getItemStyle" @click.stop="handleClickItem">
     <Tooltip v-if="showTooltip" placement="right">
       <template #title>
-        <slot name="title" />
+        <slot name="title"></slot>
       </template>
-      <div :class="`${prefixCls}-tooltip`"> <slot /> </div>
+      <div :class="`${prefixCls}-tooltip`"> <slot></slot> </div>
     </Tooltip>
 
     <template v-else>
-      <slot />
-      <slot name="title" />
+      <slot></slot>
+      <slot name="title"></slot>
     </template>
   </li>
 </template>

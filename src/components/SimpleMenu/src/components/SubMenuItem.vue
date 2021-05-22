@@ -2,7 +2,7 @@
   <li :class="getClass">
     <template v-if="!getCollapse">
       <div :class="`${prefixCls}-submenu-title`" :style="getItemStyle" @click.stop="handleClick">
-        <slot name="title" />
+        <slot name="title"></slot>
         <Icon
           icon="eva:arrow-ios-downward-outline"
           :size="14"
@@ -10,7 +10,7 @@
         />
       </div>
       <ul v-show="opened" :class="prefixCls">
-        <slot />
+        <slot></slot>
       </ul>
     </template>
     <Popover
@@ -29,7 +29,7 @@
             [`${prefixCls}-submenu-collapsed-show-title`]: collapsedShowTitle,
           }"
         >
-          <slot name="title" />
+          <slot name="title"></slot>
         </div>
         <Icon
           v-if="getParentSubMenu"
@@ -41,7 +41,7 @@
       <template #content>
         <div v-show="opened" v-bind="getEvents(true)">
           <ul :class="[prefixCls, `${prefixCls}-${getTheme}`, `${prefixCls}-popup`]">
-            <slot />
+            <slot></slot>
           </ul>
         </div>
       </template>

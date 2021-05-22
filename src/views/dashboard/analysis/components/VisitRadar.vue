@@ -1,6 +1,6 @@
 <template>
   <Card title="转化率" :loading="loading">
-    <div ref="chartRef" :style="{ width, height }" />
+    <div ref="chartRef" :style="{ width, height }"></div>
   </Card>
 </template>
 

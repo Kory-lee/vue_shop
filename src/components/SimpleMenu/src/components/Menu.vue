@@ -1,6 +1,6 @@
 <template>
   <ul :class="getClass">
-    <slot />
+    <slot></slot>
   </ul>
 </template>
 
