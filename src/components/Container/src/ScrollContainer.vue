@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue-demi';
+  import { defineComponent, ref, unref } from 'vue-demi';
   import { Scrollbar, ScrollbarType } from '../../Scrollbar';
 
   export default defineComponent({
@@ -15,7 +15,7 @@
       const scrollbarRef = ref<ScrollbarType | null>(null);
 
       function getScrollWrap() {
-        const scrollbar = ref(scrollbarRef);
+        const scrollbar = unref(scrollbarRef);
         if (!scrollbar) return null;
         return scrollbar.wrap;
       }
@@ -24,4 +24,18 @@
   });
 </script>
 
-<style lang="less"></style>
+<style lang="less">
+  .scroll-container {
+    width: 100%;
+    height: 100%;
+
+    .scrollbar__wrap {
+      margin-bottom: 18px o !important;
+      overflow-x: hidden;
+    }
+
+    .scrollbar__view {
+      box-sizing: border-box;
+    }
+  }
+</style>

@@ -25,6 +25,7 @@
     onBeforeUnmount,
   } from 'vue-demi';
   import componentSetting from '/@/settings/componentSetting';
+  import { addResizeListener, removeResizeListener } from '/@/utils/event';
 
   const { scrollbar } = componentSetting;
 
@@ -69,11 +70,14 @@
         if (props.native) return;
         nextTick(update);
         if (props.noresize) return;
-        // TODO
+        addResizeListener(unref(resize), update);
+        addResizeListener(unref(wrap), update);
         addEventListener('resize', update);
       });
       onBeforeUnmount(() => {
         if (props.native || props.noresize) return;
+        removeResizeListener(unref(resize), update);
+        removeResizeListener(unref(wrap), update);
         removeEventListener('resize', update);
       });
       return { resize, wrap, handleScroll };
