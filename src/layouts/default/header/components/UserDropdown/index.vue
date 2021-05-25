@@ -1,7 +1,7 @@
 <template>
   <Dropdown :overlay-class-name="`${prefixCls}-dropdown-overlay`" placement="bottomLeft">
     <span :class="[prefixCls, `${prefixCls}--${theme}`]" class="flex">
-      <img :class="`${prefixCls}__header`" :src="headerImg" alt="" />
+      <img :class="`${prefixCls}__header`" :src="getUserInfo.avatar" alt="" />
       <span :class="`${prefixCls}__info hidden md:block`">
         <span :class="`${prefixCls}__name truncate`"> {{ getUserInfo.realName }}</span>
       </span>
@@ -63,8 +63,8 @@
       const { t } = useI18n();
       const userStore = useUserStore();
       const getUserInfo = computed(() => {
-        const { realName = '', desc } = userStore.getUserInfo || {};
-        return { realName, desc };
+        const { realName = '', desc, avatar } = userStore.getUserInfo || {};
+        return { realName, desc, avatar: avatar || headerImg };
       });
 
       const [register, { openModal }] = useModal();
@@ -97,7 +97,6 @@
 
       return {
         prefixCls: getPrefixCls('header-user-dropdown'),
-        headerImg,
         t,
         getUserInfo,
         handleLoginOut,

@@ -11,6 +11,30 @@
 
     <template #title v-if="!$slots.title"></template>
 
+    <template #footer v-if="!$slots.footer">
+      <!--        <template #[item]="data" v-for="item in Object.keys($slots)">-->
+      <!--          <slot :name="item" v-bind="data"></slot>-->
+      <!--        </template>-->
+    </template>
+
+    <ModalWrapper
+      ref="modalWrapperRef"
+      v-bind="omit(getProps.wrapperProps, 'visible', 'height', 'modalFooterHeight')"
+      :use-wrapper="getProps.useWrapper"
+      :footer-offset="wrapperFooterOffset"
+      :fullscreen="fullScreenRef"
+      :loading="getProps.loading"
+      :loading-tip="getProps.loadingTip"
+      :min-height="getProps.minHeight"
+      :height="getWrapperHeight"
+      :visible="visibleRef"
+      :modal-footer-height="!footer ? 0 : undefined"
+      @ext-height="handleExtHeight"
+      @height-change="handleHeightChange"
+    >
+      <slot></slot>
+    </ModalWrapper>
+
     <template #[item]="data" v-for="item of Object.keys(omit($slots, 'default'))">
       <slot :name="item" v-bind="data"></slot>
     </template>
@@ -29,10 +53,11 @@
   import { deepMerge } from '/@/utils/common';
   import { useFullScreen } from './hooks/useModalFullScreen';
   import { isFunction } from '/@/utils/is';
+  import ModalWrapper from './components/ModalWrapper.vue';
 
   export default defineComponent({
     name: 'BasicModal',
-    components: { ModalClose, Modal },
+    components: { ModalWrapper, ModalClose, Modal },
     inheritAttrs: false,
     props: basicProps,
     emits: ['register', 'visible-change', 'cancel', 'ok', 'height-change'],
@@ -140,6 +165,7 @@
       }
 
       return {
+        visibleRef,
         getBindValue,
         omit,
         getMergeProps,

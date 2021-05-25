@@ -5,13 +5,16 @@ function resizeHandler(entries: any[]) {
   for (const entry of entries) {
     const listeners = entry.target.__resizeListeners__ || [];
     if (!listeners.length) continue;
-    listeners.forEach((fn: () => any) => isFunction(fn) && fn());
+    listeners.forEach((fn: () => any) => fn());
   }
 }
 
 const isServer = typeof window === 'undefined';
+
 export function addResizeListener(el: any, fn: () => any) {
+  if (!isFunction(fn)) throw new Error('handle is not function');
   if (isServer) return;
+
   if (!el.__resizeListeners__) {
     el.__resizeListeners__ = [];
     el.__ro__ = new ResizeObserver(resizeHandler);

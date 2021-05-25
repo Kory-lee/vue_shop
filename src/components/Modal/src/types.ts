@@ -16,6 +16,15 @@ export interface ReturnMethods extends ModalMethods {
 
 export type UseModalReturnType = [RegisterFn, ReturnMethods];
 
+export interface ReturnInnerMethods extends ModalMethods {
+  closeModal: () => void;
+  changeLoading: (loading: boolean) => void;
+  changeOkLoading: (loading: boolean) => void;
+  getVisible?: ComputedRef<boolean>;
+}
+
+export type UseModalInnerReturnType = [RegisterFn, ReturnInnerMethods];
+
 export interface ModalProps {
   minHeight?: number;
   height?: number;

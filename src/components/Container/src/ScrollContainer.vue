@@ -5,8 +5,9 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, unref } from 'vue-demi';
+  import { defineComponent, nextTick, ref, unref } from 'vue-demi';
   import { Scrollbar, ScrollbarType } from '../../Scrollbar';
+  import { useScrollTo } from '/@/hooks/event/useScrollTo';
 
   export default defineComponent({
     name: 'ScrollContainer',
@@ -14,12 +15,33 @@
     setup() {
       const scrollbarRef = ref<ScrollbarType | null>(null);
 
+      function scrollTo(to: number, duration = 500) {
+        const wrap = getScrollWrap();
+        if (!wrap) return;
+        nextTick(() => {
+          const { start } = useScrollTo({
+            el: wrap,
+            to,
+            duration,
+          });
+          start();
+        });
+      }
+
+      function scrollBottom() {
+        const wrap = getScrollWrap();
+        if (!wrap) return;
+        const scrollHeight = wrap.scrollHeight;
+        scrollTo(scrollHeight);
+      }
+
       function getScrollWrap() {
         const scrollbar = unref(scrollbarRef);
         if (!scrollbar) return null;
         return scrollbar.wrap;
       }
-      return { scrollbarRef, getScrollWrap };
+
+      return { scrollbarRef, getScrollWrap, scrollBottom, scrollTo };
     },
   });
 </script>
@@ -30,7 +52,7 @@
     height: 100%;
 
     .scrollbar__wrap {
-      margin-bottom: 18px o !important;
+      margin-bottom: 18px !important;
       overflow-x: hidden;
     }
 

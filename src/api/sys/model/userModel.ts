@@ -18,6 +18,7 @@ export interface GetUserInfoByUserIdModel {
   userId: string | number;
   username: string;
   realName: string;
+  avatar: string;
   // 介绍
   desc?: string;
 }

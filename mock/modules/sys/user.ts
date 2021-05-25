@@ -7,6 +7,7 @@ function createFakeUserList() {
       userId: '1',
       username: 'kory',
       realName: 'Kory Admin',
+      avatar: 'http://identicon.net/img/identicon.png',
       desc: 'manager',
       password: '123456',
       token: 'fakeToken1',
@@ -17,6 +18,7 @@ function createFakeUserList() {
       username: 'test',
       password: '123456',
       realName: 'test user',
+      avatar: 'http://q1.qlogo.cn/g?b=qq&nk=339449197&s=640',
       desc: 'tester',
       token: 'fakeToken2',
       roles: [{ roleName: 'Tester', value: 'test' }],
@@ -43,7 +45,7 @@ export default [
 
       if (!checkUser) return { body, ...resultError('Incorrect account or password！') };
 
-      const { userId, username: _username, token, realName, desc, roles } = checkUser;
+      const { userId, username: _username, token, realName, desc, roles, avatar } = checkUser;
       return resultSuccess({
         roles,
         userId,
@@ -51,6 +53,7 @@ export default [
         token,
         realName,
         desc,
+        avatar,
       });
     },
   },

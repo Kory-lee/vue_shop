@@ -35,9 +35,9 @@
       native: { type: Boolean, default: scrollbar?.native ?? false },
       wrapStyle: { type: Object, default: () => ({}) },
       wrapClass: { type: Object, default: () => ({}) },
-      viewClass: { type: [String, Array, Object], defualt: '' },
-      viewStyle: { type: [String, Array, Object], defualt: '' },
-      noresize: Boolean, // 如果container尺寸不会发生变化,最好设置它,可以优化性能
+      viewClass: { type: [String, Array, Object], default: '' },
+      viewStyle: { type: [String, Array, Object], default: '' },
+      noResize: Boolean, // 如果container尺寸不会发生变化,最好设置它,可以优化性能
       tag: { type: String, default: 'div' },
     },
     setup(props) {
@@ -69,13 +69,14 @@
       onMounted(() => {
         if (props.native) return;
         nextTick(update);
-        if (props.noresize) return;
+        if (props.noResize) return;
         addResizeListener(unref(resize), update);
         addResizeListener(unref(wrap), update);
         addEventListener('resize', update);
       });
       onBeforeUnmount(() => {
-        if (props.native || props.noresize) return;
+        if (props.native || props.noResize) return;
+
         removeResizeListener(unref(resize), update);
         removeResizeListener(unref(wrap), update);
         removeEventListener('resize', update);
