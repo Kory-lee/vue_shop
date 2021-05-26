@@ -9,7 +9,9 @@
       />
     </template>
 
-    <template #title v-if="!$slots.title"></template>
+    <template #title v-if="!$slots.title">
+      <ModalHeader :help-message="getProps.helpMessage" :title="getMergeProps.title" />
+    </template>
 
     <template #footer v-if="!$slots.footer">
       <!--        <template #[item]="data" v-for="item in Object.keys($slots)">-->
@@ -47,17 +49,18 @@
   import { computed, defineComponent, getCurrentInstance, watch, watchEffect } from 'vue-demi';
   import Modal from './components/Modal.vue';
   import ModalClose from './components/ModalClose.vue';
+  import ModalWrapper from './components/ModalWrapper.vue';
+  import ModalHeader from './components/ModalHeader.vue';
   import omit from 'lodash-es/omit';
   import { nextTick, ref, toRef, unref } from 'vue';
   import { basicProps } from './props';
   import { deepMerge } from '/@/utils/common';
   import { useFullScreen } from './hooks/useModalFullScreen';
   import { isFunction } from '/@/utils/is';
-  import ModalWrapper from './components/ModalWrapper.vue';
 
   export default defineComponent({
     name: 'BasicModal',
-    components: { ModalWrapper, ModalClose, Modal },
+    components: { ModalWrapper, ModalClose, Modal, ModalHeader },
     inheritAttrs: false,
     props: basicProps,
     emits: ['register', 'visible-change', 'cancel', 'ok', 'height-change'],
