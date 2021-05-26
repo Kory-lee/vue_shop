@@ -80,7 +80,7 @@ export const useConfigStore = defineStore({
       this.projectConfig = deepMerge(this.projectConfig || {}, config);
       Persistent.setLocal(PROJ_CFG_KEY, this.projectConfig);
     },
-    async resetAllState() {
+    async resetState() {
       resetRouter();
       Persistent.clearAll();
     },
