@@ -1,6 +1,25 @@
 <template>
-  <BasicModal>
-    <div></div>
+  <BasicModal
+    v-bind="$attrs"
+    :footer="null"
+    :title="t('layout.header.lockScreen')"
+    :class="prefixCls"
+    @register="register"
+  >
+    <div :class="`${prefixCls}__entry`">
+      <div :class="`${prefixCls}__header`">
+        <img :src="avatar" :class="`${prefixCls}__header-img`" alt="" />
+        <p :class="`${prefixCls}__header-name`">
+          {{ getRealName }}
+        </p>
+      </div>
+
+      <div :class="`${prefixCls}__footer`">
+        <a-button type="primary" block class="mt-2" @click="handleLock">
+          {{ t('layout.header.lockScreenBtn') }}
+        </a-button>
+      </div>
+    </div>
   </BasicModal>
 </template>
 
@@ -40,4 +59,12 @@
   });
 </script>
 
-<style scoped></style>
+<style lang="less" scoped>
+  @prefix-cls: ~'@{namespace}-header-lock-modal';
+
+  .@{prefix-cls} {
+    &__entry {
+      position: relative;
+    }
+  }
+</style>

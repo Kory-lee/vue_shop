@@ -31,6 +31,7 @@
       </Menu>
     </template>
   </Dropdown>
+  <LockAction @register="register" />
 </template>
 
 <script lang="ts">
@@ -45,12 +46,14 @@
   import { getShowDoc } from '/@/hooks/setting/useHeaderSetting';
   import Icon from '/@/components/Icon';
   import { useModal } from '/@/components/Modal';
+  import createAsyncComponent from '/@/utils/factory/createAsyncComponent';
 
   type MenuEvent = 'logout' | 'doc' | 'lock';
 
   export default defineComponent({
     name: 'UserDropdown',
     components: {
+      LockAction: createAsyncComponent(() => import('../lock/LockModal.vue')),
       Menu,
       MenuItem: Menu.Item,
       MenuDivider: Menu.Divider,
