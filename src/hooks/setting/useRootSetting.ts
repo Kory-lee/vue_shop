@@ -1,7 +1,8 @@
+import type { ProjectConfig } from '/@/types/config';
+
 import { computed, unref } from 'vue';
 import { ContentEnum } from '/@/enums/configEnum';
 import router from '/@/router';
-import type { ProjectConfig } from '/@/types/config';
 import useConfigStore, { useConfigStoreWidthOut } from '/@/store/modules/config';
 
 type RootSetting = Omit<
@@ -21,19 +22,19 @@ export const getPageLoading = computed(() => {
 
 export const getOpenKeepAlive = computed(() => unref(getRootSetting).openKeepAlive);
 
-export const getCanEmbedIFramePage = computed(() => getRootSetting.value.canEmbedIFramePage);
+export const getCanEmbedIFramePage = computed(() => unref(getRootSetting).canEmbedIFramePage);
 
 export const getPermissionMode = computed(() => unref(getRootSetting).permissionMode);
 
-export const getShowLogo = computed(() => getRootSetting.value.showLogo);
+export const getShowLogo = computed(() => unref(getRootSetting).showLogo);
 
-export const getContentMode = computed(() => getRootSetting.value.contentMode);
+export const getContentMode = computed(() => unref(getRootSetting).contentMode);
 
 export const getUseOpenBackTop = computed(() => getRootSetting.value.useOpenBackTop);
 
 export const getShowSettingButton = computed(() => getRootSetting.value.showSettingButton);
 
-export const getUseErrorHandle = computed(() => getRootSetting.value.useErrorHandle);
+export const getUseErrorHandle = computed(() => unref(getRootSetting).useErrorHandle);
 
 export const getShowFooter = computed(() => unref(getRootSetting).showFooter);
 

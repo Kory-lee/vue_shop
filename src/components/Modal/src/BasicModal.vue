@@ -134,6 +134,7 @@
 
       async function handleCancel(e: Event) {
         e?.stopPropagation();
+
         if (props.closeFunc && isFunction(props.closeFunc)) {
           const isClose: boolean = await props.closeFunc();
           visibleRef.value = !isClose;

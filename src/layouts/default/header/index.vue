@@ -18,6 +18,8 @@
     <div :class="`${prefixCls}-menu`"></div>
 
     <div :class="`${prefixCls}-action`">
+      <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" />
+
       <LocalePicker
         v-if="getShowLocalePicker"
         :reload="true"
@@ -34,6 +36,7 @@
   import { computed, defineComponent, unref } from 'vue';
   import LayoutTrigger from '../trigger/index.vue';
   import LayoutBreadcrumb from './components/Breadcrumb.vue';
+  import ErrorAction from './components/ErrorAction.vue';
   import UserDropdown from './components/UserDropdown/index.vue';
   import { Logo, LocalePicker } from '/@/components/Application';
   import { useProviderContext } from '/@/components/Application';
@@ -49,12 +52,13 @@
     getShowHeaderTrigger,
     getSplit,
   } from '/@/hooks/setting/useMenuSetting';
-  import { getShowBreadCrumb } from '/@/hooks/setting/useRootSetting';
+  import { getShowBreadCrumb, getUseErrorHandle } from '/@/hooks/setting/useRootSetting';
   import { getShowLocalePicker } from '/@/hooks/setting/useLocaleSetting';
 
   export default defineComponent({
     name: 'LayoutHeader',
     components: {
+      ErrorAction,
       Header: Layout.Header,
       Logo,
       LayoutTrigger,
@@ -96,6 +100,7 @@
         getIsMixSidebar,
         getShowBreadCrumb,
         getShowLocalePicker,
+        getUseErrorHandle,
       };
     },
   });

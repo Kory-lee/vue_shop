@@ -80,14 +80,15 @@ const setting: ProjectConfig = {
     enable: true,
     basicTransition: RouterTransitionEnum.FADE_SLIDE,
     openPageLoading: true,
-    openNProgress: false,
+    openNProgress: true,
   },
   openKeepAlive: true,
   lockTime: 0,
   showBreadCrumb: true,
   showBreadCrumbIcon: false,
 
-  useErrorHandle: false,
+  useErrorHandle: true,
+
   useOpenBackTop: true,
   canEmbedIFramePage: true,
 

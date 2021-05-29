@@ -12,7 +12,7 @@ export function getSlot(slots: Slots, slot = 'default', data?: any) {
 }
 
 export function extendSlots(slots: Slots, excludeKeys: string[] = []) {
-  const ret: any = [];
+  const ret: any = {};
   for (const key of Object.keys(slots)) {
     if (excludeKeys.includes(key)) continue;
     ret[key] = () => getSlot(slots, key);

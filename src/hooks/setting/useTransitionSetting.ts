@@ -10,13 +10,13 @@ export const getTransitionSetting = computed(() => {
 
 export const getEnableTransition = computed(() => unref(getTransitionSetting)?.enable);
 
-export const getOpenNProgress = computed(() => getTransitionSetting.value?.openNProgress);
+export const getOpenNProgress = computed(() => unref(getTransitionSetting)?.openNProgress);
 
 export const getOpenPageLoading = computed(
-  (): boolean => !!getTransitionSetting.value?.openPageLoading
+  (): boolean => !!unref(getTransitionSetting)?.openPageLoading
 );
 
-export const getBasicTransition = computed(() => getTransitionSetting.value?.basicTransition);
+export const getBasicTransition = computed(() => unref(getTransitionSetting)?.basicTransition);
 
 export function setTransitionSetting(transitionSetting: Partial<TransitionSetting>) {
   const configStore = useConfigStoreWidthOut();

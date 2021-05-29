@@ -1,6 +1,9 @@
 <template>
   <div class="p-4">
-    <template v-for="src in imgList" :key="src"></template>
+    <template v-for="src in imgList" :key="src">
+      <img :src="src" v-show="false" alt="" />
+    </template>
+    error-log
   </div>
 </template>
 
