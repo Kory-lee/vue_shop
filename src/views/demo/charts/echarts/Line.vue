@@ -69,7 +69,7 @@
               itemStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                   { offset: 0, color: 'rgba(20, 200, 212, 0.5)' },
-                  { offset: 0.2, color: 'rbga(20, 200, 212, 0.2)' },
+                  { offset: 0.2, color: 'rgba(20, 200, 212, 0.2)' },
                   { offset: 1, color: 'rgba(20, 200, 212, 0)' },
                 ]),
               },
