@@ -1,7 +1,5 @@
 <template>
-  <h2 v-show="getShow" class="font-bold text-2xl xl:text-3xl enter-x text-center xl:text-left mb-6">
-    {{ getFormTitle }}
-  </h2>
+  <LoginFormTitle class="enter-x" />
   <Form v-show="getShow" ref="formRef" class="p-4 enter-x" :model="formData">
     <FormItem name="account" class="enter-x">
       <Input v-model:value="formData.account" size="large" :placeholder="t('sys.login.username')" />
@@ -23,7 +21,7 @@
         </FormItem>
       </Col>
       <Col :span="12">
-        <FormItem style="text-align: right">
+        <FormItem class="text-right">
           <Button type="link" size="small" @click="(e) => {}">{{
             t('sys.login.forgetPassword')
           }}</Button>
@@ -65,9 +63,6 @@
   import { useI18n } from 'vue-i18n';
   import { useProviderContext } from '/@/components/Application';
   import { Col, Row, Checkbox, Form, Input, Button, Divider } from 'ant-design-vue';
-  import { computed, defineComponent, reactive, ref, toRaw, unref } from 'vue';
-  import { getLoginState, LoginStateEnum } from './useLogin';
-
   import {
     GithubFilled,
     WechatFilled,
@@ -77,9 +72,14 @@
   } from '@ant-design/icons-vue';
   import { notification } from '/@/hooks/web/useMessage';
   import { useUserStore } from '/@/store/modules/user';
+  import LoginFormTitle from '/@/views/sys/login/components/LoginFormTitle.vue';
+  import { defineComponent, reactive, ref, toRaw, unref, computed } from 'vue-demi';
+  import { getLoginState, LoginStateEnum } from '/@/views/sys/login/components/useLogin';
+
   export default defineComponent({
     name: 'LoginForm',
     components: {
+      LoginFormTitle,
       Col,
       Row,
       Button,
@@ -101,17 +101,7 @@
         prefixCls = getPrefixCls('login'),
         rememberMe = ref(false),
         formRef = ref<any>(null),
-        loading = ref(false),
-        getFormTitle = computed(() => {
-          const formTitleObj = {
-            [LoginStateEnum.RESET_PASSWORD]: t('sys.login.forgetFormTitle'),
-            [LoginStateEnum.LOGIN]: t('sys.login.signInFormTitle'),
-            [LoginStateEnum.REGISTER]: t('sys.login.signUpFormTitle'),
-            [LoginStateEnum.MOBILE]: t('sys.login.mobileSignInFormTitle'),
-            [LoginStateEnum.QR_CODE]: t('sys.login.qrSignInFormTitle'),
-          };
-          return formTitleObj[unref(getLoginState)];
-        });
+        loading = ref(false);
 
       const userStore = useUserStore();
 
@@ -147,7 +137,6 @@
         t,
         formData,
         prefixCls,
-        getFormTitle,
         rememberMe,
         formRef,
         loading,

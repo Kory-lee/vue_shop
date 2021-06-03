@@ -48,6 +48,7 @@
             "
           >
             <LoginForm />
+            <ForgetPasswordForm />
           </div>
         </div>
       </div>
@@ -62,12 +63,13 @@
   import { Logo, useProviderContext } from '/@/components/Application';
   import { useGlobalSetting } from '/@/hooks/setting';
   import { LocalePicker } from '/@/components/Application';
-  import LoginForm from './components/loginForm.vue';
+  import LoginForm from './components/LoginForm.vue';
   import useLocaleStore from '/@/store/modules/locale';
+  import ForgetPasswordForm from '/@/views/sys/login/components/ForgetPasswordForm.vue';
 
   export default defineComponent({
     name: 'Login',
-    components: { Logo, LocalePicker, LoginForm },
+    components: { ForgetPasswordForm, Logo, LocalePicker, LoginForm },
     setup() {
       const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('login'),
@@ -100,19 +102,21 @@
         background: #fff;
       }
     }
+
     &::before {
       position: absolute;
-      content: '';
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       margin-left: -48%;
       background: url(/@/assets/svg/login-bg.svg) 100% 100% / auto 100% no-repeat;
+      content: '';
       @media (max-width: @screen-xl) {
         display: none;
       }
     }
+
     .@{logo-prefix-cls} {
       position: absolute;
       top: 12px;
@@ -122,6 +126,7 @@
         font-size: 16px;
         color: #fff;
       }
+
       img {
         width: 32px;
       }
@@ -143,6 +148,7 @@
         }
       }
     }
+
     &-sign-in-way {
       .anticon {
         font-size: 22px;
