@@ -43,7 +43,9 @@
         <Button block>{{ t('sys.login.qrSignInFormTitle') }}</Button>
       </Col>
       <Col :xs="24" :md="{ span: 7, offset: 1 }">
-        <Button block>{{ t('sys.login.registerButton') }}</Button>
+        <Button block @click="setLoginState(LoginStateEnum.REGISTER)">
+          {{ t('sys.login.registerButton') }}
+        </Button>
       </Col>
     </Row>
 
@@ -74,7 +76,7 @@
   import { useUserStore } from '/@/store/modules/user';
   import LoginFormTitle from '/@/views/sys/login/components/LoginFormTitle.vue';
   import { defineComponent, reactive, ref, toRaw, unref, computed } from 'vue-demi';
-  import { getLoginState, LoginStateEnum } from '/@/views/sys/login/components/useLogin';
+  import { LoginStateEnum, useLoginState } from '/@/views/sys/login/components/useLogin';
 
   export default defineComponent({
     name: 'LoginForm',
@@ -104,6 +106,7 @@
         loading = ref(false);
 
       const userStore = useUserStore();
+      const { getLoginState, setLoginState } = useLoginState();
 
       const formData = reactive({
           account: 'kory',
@@ -142,6 +145,8 @@
         loading,
         getShow,
         handleLogin,
+        setLoginState,
+        LoginStateEnum,
       };
     },
   });

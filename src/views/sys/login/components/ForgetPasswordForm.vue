@@ -6,8 +6,8 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, computed } from 'vue-demi';
-  import { LoginStateEnum } from '/@/views/sys/login/components/useLogin';
+  import { defineComponent, computed, unref } from 'vue-demi';
+  import { LoginStateEnum, useLoginState } from '/@/views/sys/login/components/useLogin';
   import LoginFormTitle from '/@/views/sys/login/components/LoginFormTitle.vue';
   import { Form } from 'ant-design-vue';
 
