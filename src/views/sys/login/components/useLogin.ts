@@ -8,7 +8,7 @@ export enum LoginStateEnum {
   QR_CODE,
 }
 
-const currentState = ref(LoginStateEnum.LOGIN);
+const currentState = ref<LoginStateEnum>(LoginStateEnum.LOGIN);
 
 export function useLoginState() {
   const getLoginState = readonly(currentState);
@@ -19,16 +19,6 @@ export function useLoginState() {
     setLoginState(LoginStateEnum.LOGIN);
   }
   return { setLoginState, getLoginState, handleBackLogin };
-}
-
-export function changeLoginState() {
-  function setLoginState(state: LoginStateEnum) {
-    currentState.value = state;
-  }
-  function handleBackLogin() {
-    setLoginState(LoginStateEnum.LOGIN);
-  }
-  return { setLoginState, handleBackLogin };
 }
 
 export function validForm() {}

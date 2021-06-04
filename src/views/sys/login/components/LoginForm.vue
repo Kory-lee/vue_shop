@@ -1,64 +1,72 @@
 <template>
-  <LoginFormTitle class="enter-x" />
-  <Form v-show="getShow" ref="formRef" class="p-4 enter-x" :model="formData">
-    <FormItem name="account" class="enter-x">
-      <Input v-model:value="formData.account" size="large" :placeholder="t('sys.login.username')" />
-    </FormItem>
-    <FormItem name="password" class="enter-x">
-      <InputPassword
-        v-model:value="formData.password"
-        size="large"
-        visibility-toggle
-        :placeholder="t('sys.login.password')"
-      />
-    </FormItem>
-    <Row class="enter-x">
-      <Col :span="12">
-        <FormItem>
-          <Checkbox v-model="rememberMe" size="small">
-            {{ t('sys.login.rememberMe') }}
-          </Checkbox>
-        </FormItem>
-      </Col>
-      <Col :span="12">
-        <FormItem class="text-right">
-          <Button type="link" size="small" @click="(e) => {}">{{
-            t('sys.login.forgetPassword')
-          }}</Button>
-        </FormItem>
-      </Col>
-    </Row>
+  <template v-if="getShow">
+    <LoginFormTitle class="enter-x" />
+    <Form ref="formRef" class="p-4 enter-x" :model="formData">
+      <FormItem name="account" class="enter-x">
+        <Input
+          v-model:value="formData.account"
+          size="large"
+          :placeholder="t('sys.login.username')"
+        />
+      </FormItem>
+      <FormItem name="password" class="enter-x">
+        <InputPassword
+          v-model:value="formData.password"
+          size="large"
+          visibility-toggle
+          :placeholder="t('sys.login.password')"
+        />
+      </FormItem>
+      <Row class="enter-x">
+        <Col :span="12">
+          <FormItem>
+            <Checkbox v-model="rememberMe" size="small">
+              {{ t('sys.login.rememberMe') }}
+            </Checkbox>
+          </FormItem>
+        </Col>
+        <Col :span="12">
+          <FormItem class="text-right">
+            <Button type="link" size="small" @click="(e) => {}"
+              >{{ t('sys.login.forgetPassword') }}
+            </Button>
+          </FormItem>
+        </Col>
+      </Row>
 
-    <FormItem class="enter-x">
-      <Button type="primary" size="large" block :loading="loading" @click="handleLogin">
-        {{ t('sys.login.loginButton') }}
-      </Button>
-    </FormItem>
-
-    <Row class="enter-x">
-      <Col :xs="24" :md="7">
-        <Button block>{{ t('sys.login.mobileSignInFormTitle') }}</Button>
-      </Col>
-      <Col :xs="24" :md="{ span: 8, offset: 1 }" class="!my-2 !md:my-0">
-        <Button block>{{ t('sys.login.qrSignInFormTitle') }}</Button>
-      </Col>
-      <Col :xs="24" :md="{ span: 7, offset: 1 }">
-        <Button block @click="setLoginState(LoginStateEnum.REGISTER)">
-          {{ t('sys.login.registerButton') }}
+      <FormItem class="enter-x">
+        <Button type="primary" size="large" block :loading="loading" @click="handleLogin">
+          {{ t('sys.login.loginButton') }}
         </Button>
-      </Col>
-    </Row>
+      </FormItem>
 
-    <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
+      <Row class="enter-x">
+        <Col :xs="24" :md="7">
+          <Button block>{{ t('sys.login.mobileSignInFormTitle') }}</Button>
+        </Col>
+        <Col :xs="24" :md="{ span: 8, offset: 1 }" class="!my-2 !md:my-0">
+          <Button block @click="setLoginState(LoginStateEnum.QR_CODE)"
+            >{{ t('sys.login.qrSignInFormTitle') }}
+          </Button>
+        </Col>
+        <Col :xs="24" :md="{ span: 7, offset: 1 }">
+          <Button block @click="setLoginState(LoginStateEnum.REGISTER)">
+            {{ t('sys.login.registerButton') }}
+          </Button>
+        </Col>
+      </Row>
 
-    <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
-      <GithubFilled />
-      <WechatFilled />
-      <AlipayCircleFilled />
-      <GoogleCircleFilled />
-      <TwitterCircleFilled />
-    </div>
-  </Form>
+      <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
+
+      <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
+        <GithubFilled />
+        <WechatFilled />
+        <AlipayCircleFilled />
+        <GoogleCircleFilled />
+        <TwitterCircleFilled />
+      </div>
+    </Form>
+  </template>
 </template>
 
 <script lang="ts">

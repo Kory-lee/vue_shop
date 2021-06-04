@@ -7,6 +7,7 @@
   import useEcharts from '/@/hooks/web/useEcharts';
   import { mapData } from '/@/views/demo/charts/data';
   import { registerMap } from 'echarts';
+  import { GeoJSON } from 'echarts/types/src/coord/geo/geoTypes';
 
   export default defineComponent({
     props: {
@@ -20,7 +21,7 @@
       onMounted(async () => {
         const json = (await import('./china.json')).default;
 
-        registerMap('china', json);
+        registerMap('china', json as unknown as GeoJSON);
         setOptions({
           visualMap: [
             {

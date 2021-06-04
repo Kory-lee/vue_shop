@@ -1,9 +1,9 @@
 <template>
-  <div :class="prefixCls" class="relative w-full h-full px-4">
+  <div class="relative w-full h-full px-4" :class="prefixCls">
     <LocalePicker
+      :show-text="false"
       class="absolute top-4 right-4 text-white xl:text-gray-600 text-lg enter-x"
       size="20"
-      :show-text="false"
     />
 
     <span class="-enter-x xl:hidden">
@@ -49,6 +49,7 @@
           >
             <LoginForm />
             <ForgetPasswordForm />
+            <QrCodeForm />
           </div>
         </div>
       </div>
@@ -66,10 +67,11 @@
   import LoginForm from './components/LoginForm.vue';
   import useLocaleStore from '/@/store/modules/locale';
   import ForgetPasswordForm from '/@/views/sys/login/components/ForgetPasswordForm.vue';
+  import QrCodeForm from '/@/views/sys/login/components/QrCodeForm.vue';
 
   export default defineComponent({
     name: 'Login',
-    components: { ForgetPasswordForm, Logo, LocalePicker, LoginForm },
+    components: { QrCodeForm, ForgetPasswordForm, Logo, LocalePicker, LoginForm },
     setup() {
       const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('login'),

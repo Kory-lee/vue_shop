@@ -10,7 +10,7 @@ import { computed, nextTick, watch } from 'vue';
 import { useRootSetting } from '../setting/useRootSetting';
 
 export default function useEcharts(
-  elRef: Ref<HTMLDivElement>,
+  elRef: Ref<HTMLDivElement | null>,
   theme: 'light' | 'dark' | 'default' | string = 'light'
 ) {
   let chartInstance: echarts.ECharts | null = null,
