@@ -1,20 +1,20 @@
 <template>
   <template v-if="getShow">
     <LoginFormTitle class="enter-x" />
-    <Form ref="formRef" class="p-4 enter-x" :model="formData">
+    <Form ref="formRef" :model="formData" class="p-4 enter-x" @keypress.enter="handleLogin">
       <FormItem name="account" class="enter-x">
         <Input
           v-model:value="formData.account"
-          size="large"
           :placeholder="t('sys.login.username')"
+          size="large"
         />
       </FormItem>
       <FormItem name="password" class="enter-x">
         <InputPassword
           v-model:value="formData.password"
-          size="large"
           visibility-toggle
           :placeholder="t('sys.login.password')"
+          size="large"
         />
       </FormItem>
       <Row class="enter-x">
@@ -27,7 +27,7 @@
         </Col>
         <Col :span="12">
           <FormItem class="text-right">
-            <Button type="link" size="small" @click="(e) => {}"
+            <Button type="link" size="small" @click="setLoginState(LoginStateEnum.RESET_PASSWORD)"
               >{{ t('sys.login.forgetPassword') }}
             </Button>
           </FormItem>
@@ -42,7 +42,9 @@
 
       <Row class="enter-x">
         <Col :xs="24" :md="7">
-          <Button block>{{ t('sys.login.mobileSignInFormTitle') }}</Button>
+          <Button block @click="setLoginState(LoginStateEnum.MOBILE)"
+            >{{ t('sys.login.mobileSignInFormTitle') }}
+          </Button>
         </Col>
         <Col :xs="24" :md="{ span: 8, offset: 1 }" class="!my-2 !md:my-0">
           <Button block @click="setLoginState(LoginStateEnum.QR_CODE)"
