@@ -31,10 +31,10 @@
 <style lang="less" scoped>
   .full-loading {
     position: fixed;
-    display: flex;
     top: 0;
     left: 0;
     z-index: 200;
+    display: flex;
     width: 100%;
     height: 100%;
     justify-content: center;
