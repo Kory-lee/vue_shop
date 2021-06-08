@@ -27,13 +27,13 @@
   export default defineComponent({
     name: 'KLayout',
     components: {
+      Layout,
       LayoutFeature: createAsyncComponent(() => import('./feature/index.vue')),
       LayoutFooter: createAsyncComponent(() => import('./footer/index.vue')),
       LayoutContent,
       LayoutHeader,
       LayoutSidebar,
       LayoutMultipleHeader,
-      Layout,
     },
     setup() {
       const { isMobile, getPrefixCls } = useProviderContext();

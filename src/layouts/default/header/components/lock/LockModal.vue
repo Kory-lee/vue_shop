@@ -15,9 +15,9 @@
       </div>
 
       <div :class="`${prefixCls}__footer`">
-        <a-button type="primary" block class="mt-2" @click="handleLock">
+        <Button type="primary" block class="mt-2" @click="handleLock">
           {{ t('layout.header.lockScreenBtn') }}
-        </a-button>
+        </Button>
       </div>
     </div>
   </BasicModal>
@@ -32,10 +32,11 @@
   import { useLockStore } from '/@/store/modules/lock';
   import { useModalInner } from '/@/components/Modal/src/hooks/useModal';
   import headerImg from '/@/assets/img/logo.png';
+  import { Button } from 'ant-design-vue';
 
   export default defineComponent({
     name: 'LockModal',
-    components: { BasicModal },
+    components: { BasicModal, Button },
     setup() {
       const { t } = useI18n(),
         { getPrefixCls } = useProviderContext(),

@@ -1,7 +1,7 @@
 <template>
   <Card :loading="loading" v-bind="$attrs" title="项目">
     <template #extra>
-      <a-button type="link" size="small"> 更多</a-button>
+      <Button type="link" size="small"> 更多</Button>
     </template>
 
     <template v-for="item in items" :key="item">
@@ -22,13 +22,13 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue-demi';
-  import { Card } from 'ant-design-vue';
-  import Icon from '/@/components/Icon';
+  import { Card, Button } from 'ant-design-vue';
+  import { Icon } from '/@/components/Icon';
   import { groupItems } from './data';
 
   export default defineComponent({
     name: 'ProjectCard',
-    components: { Icon, Card, CardGrid: Card.Grid },
+    components: { Icon, Card, CardGrid: Card.Grid, Button },
     props: {
       loading: Boolean,
     },

@@ -44,7 +44,7 @@
   import { DOC_URL } from '/@/settings/siteSetting';
   import { Menu, Dropdown } from 'ant-design-vue';
   import { getShowDoc } from '/@/hooks/setting/useHeaderSetting';
-  import Icon from '/@/components/Icon';
+  import { Icon } from '/@/components/Icon';
   import { useModal } from '/@/components/Modal';
   import createAsyncComponent from '/@/utils/factory/createAsyncComponent';
 

@@ -27,7 +27,7 @@
       const { t } = useI18n(),
         { push } = useRouter();
       const errorLogStore = useErrorLogStore();
-      const getCount = computed(() => errorLogStore.setErrorLogListCount);
+      const getCount = computed(() => errorLogStore.getErrorLogListCount);
 
       async function handleToErrorList() {
         await push(PageEnum.ERROR_LOG_PAGE);
