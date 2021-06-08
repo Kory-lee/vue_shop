@@ -2,7 +2,7 @@
   <Layout :class="prefixCls">
     <LayoutFeature />
     <LayoutHeader v-if="getShowFullHeaderRef" fixed />
-    <Layout :class="{ 'ant-layout-has-sider': getIsMixSidebar }">
+    <Layout :has-sider="!(getIsMixSidebar || isMobile)">
       <LayoutSidebar v-if="getShowSidebar || isMobile" />
       <Layout :class="`${prefixCls}__main`">
         <LayoutMultipleHeader />
@@ -24,6 +24,7 @@
   import { getShowFullHeaderRef } from '/@/hooks/setting/useHeaderSetting';
   import { getIsMixSidebar, getShowSidebar } from '/@/hooks/setting/useMenuSetting';
   import createAsyncComponent from '/@/utils/factory/createAsyncComponent';
+
   export default defineComponent({
     name: 'KLayout',
     components: {
