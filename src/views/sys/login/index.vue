@@ -48,6 +48,8 @@
             "
           >
             <LoginForm />
+            <RegisterForm />
+            <MobileForm />
             <ForgetPasswordForm />
             <QrCodeForm />
           </div>
@@ -66,12 +68,22 @@
   import { LocalePicker } from '/@/components/Application';
   import LoginForm from './components/LoginForm.vue';
   import useLocaleStore from '/@/store/modules/locale';
-  import ForgetPasswordForm from '/@/views/sys/login/components/ForgetPasswordForm.vue';
+  import RegisterForm from '/@/views/sys/login/components/RegisterForm.vue';
   import QrCodeForm from '/@/views/sys/login/components/QrCodeForm.vue';
+  import ForgetPasswordForm from '/@/views/sys/login/components/ForgetPasswordForm.vue';
+  import MobileForm from '/@/views/sys/login/components/MobileForm.vue';
 
   export default defineComponent({
     name: 'Login',
-    components: { QrCodeForm, ForgetPasswordForm, Logo, LocalePicker, LoginForm },
+    components: {
+      MobileForm,
+      ForgetPasswordForm,
+      QrCodeForm,
+      RegisterForm,
+      Logo,
+      LocalePicker,
+      LoginForm,
+    },
     setup() {
       const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('login'),
