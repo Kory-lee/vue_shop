@@ -7,7 +7,7 @@ import { getAllParentPath, transformMenuModule } from '/@/utils/helper/menuHelpe
 import { filter } from '/@/utils/helper/treeHelper';
 import { isUrl } from '/@/utils/is';
 import { useConfigStoreWidthOut } from '/@/store/modules/config';
-import { usePermissionStoreWidthOut } from '/@/store/modules/permission';
+import { usePermissionStore } from '/@/store/modules/permission';
 
 const modules = import.meta.globEager('./modules/**/*.ts');
 const menuModules: MenuModule[] = [];
@@ -16,10 +16,6 @@ Object.keys(modules).forEach((key) => {
     modList = Array.isArray(mod) ? [...mod] : [mod];
   menuModules.push(...modList);
 });
-
-const configStore = useConfigStoreWidthOut();
-const permissionStore = usePermissionStoreWidthOut();
-
 const staticMenus = (() => {
   const menus: MenuType[] = [];
   menuModules.sort((a, b) => (a.orderNo || 0) - (b.orderNo || 0));
@@ -29,21 +25,36 @@ const staticMenus = (() => {
   return menus;
 })();
 
-const isBackMode = () => configStore.getProjectConfig.permissionMode === PermissionModeEnum.BACK;
+const getPermissionMode = () => {
+  const configStore = useConfigStoreWidthOut();
+  return configStore.getProjectConfig.permissionMode;
+};
 
 /**
  * @description 前端角色控制菜单 直接读取菜单文件
  */
 async function getAsyncMenus() {
-  return !isBackMode() ? staticMenus : permissionStore.getBackMenuList;
+  const permissionStore = usePermissionStore();
+  const mode = getPermissionMode();
+  switch (mode) {
+    case PermissionModeEnum.BACK:
+      return permissionStore.getBackMenuList;
+    case PermissionModeEnum.ROUTE_MAPPING:
+      return permissionStore.getFrontMenuList.filter((item) => !item.hideMenu);
+    case PermissionModeEnum.ROLE:
+      return staticMenus;
+  }
 }
 /**
  * @description 获取树级菜单
  */
 export const getMenus = async (): Promise<MenuType[]> => {
-  const menus = await getAsyncMenus(),
-    routes = router.getRoutes();
-  return !isBackMode() ? filter(menus, basicFilter(routes)) : menus;
+  const menus = await getAsyncMenus();
+  if (getPermissionMode() === PermissionModeEnum.ROLE) {
+    const routes = router.getRoutes();
+    return filter(menus, basicFilter(routes));
+  }
+  return menus;
 };
 
 /**
@@ -59,9 +70,13 @@ export async function getCurrentParentPath(currentPath: string) {
  */
 export async function getShallowMenus(): Promise<MenuType[]> {
   const menus = await getAsyncMenus(),
-    routes = router.getRoutes(),
     shallowMenuList = menus.map((item) => ({ ...item, children: undefined }));
-  return !isBackMode() ? shallowMenuList.filter(basicFilter(routes)) : shallowMenuList;
+
+  if (getPermissionMode() === PermissionModeEnum.ROLE) {
+    const routes = router.getRoutes();
+    return shallowMenuList.filter(basicFilter(routes));
+  }
+  return shallowMenuList;
 }
 
 /**@description: 获取菜单的children */
@@ -69,9 +84,12 @@ export async function getChildrenMenus(parentPath: string) {
   const menus = await getMenus(),
     parent = menus.find((item) => item.path === parentPath);
   if (!parent?.children || !!parent?.meta?.hideChildrenInMenu) return [] as MenuType[];
-  const routes = router.getRoutes();
 
-  return !isBackMode() ? filter(parent.children, basicFilter(routes)) : parent.children;
+  if (getPermissionMode() === PermissionModeEnum.ROLE) {
+    const routes = router.getRoutes();
+    return filter(parent.children, basicFilter(routes));
+  }
+  return parent.children;
 }
 
 function basicFilter(routes: RouteRecordNormalized[]) {
@@ -84,7 +102,7 @@ function basicFilter(routes: RouteRecordNormalized[]) {
       if (!isSame) return false;
 
       if (route.meta?.ignoreAuth) return true;
-      return isSame;
+      return isSame || pathToRegexp(route.path).test(menu.path);
     });
     if (!matchRoute) return false;
     menu.icon = (menu.icon || matchRoute.meta.icon) as string;

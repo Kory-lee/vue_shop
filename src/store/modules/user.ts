@@ -12,7 +12,7 @@ import { RoleEnum } from '/@/enums/roleEnum';
 import { defineStore } from 'pinia';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
 import store from '/@/store';
-import { getUserInfoById, loginApi } from '/@/api/sys/user';
+import { getUserInfo, loginApi } from '/@/api/sys/user';
 import { PageEnum } from '/@/enums/pageEnum';
 import router from '/@/router';
 import { useI18n } from '/@/i18n/useI18n';
@@ -78,7 +78,7 @@ export const useUserStore = defineStore({
       }
     },
     async getUserInfoAction({ userId }: GetUserInfoByUserIdParams) {
-      const userInfo = await getUserInfoById({ userId });
+      const userInfo = await getUserInfo({ userId });
       const { roles } = userInfo;
       const roleList = roles.map((item) => item.value) as RoleEnum[];
 

@@ -19,6 +19,7 @@ export enum SettingButtonPositionEnum {
 export enum PermissionModeEnum {
   ROLE = 'ROLE',
   BACK = 'BACK',
+  ROUTE_MAPPING = 'ROUTE_MAPPING',
 }
 
 export enum RouterTransitionEnum {

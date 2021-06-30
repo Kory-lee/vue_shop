@@ -3,9 +3,6 @@ export interface LoginParams {
   password: string;
 }
 
-export interface GetUserInfoByUserIdParams {
-  userId: string | number;
-}
 export interface RoleInfo {
   roleName: string;
   value: string;

@@ -30,10 +30,13 @@ export function transformMenuModule(menuModule: MenuModule): MenuType {
   return menu;
 }
 
-export function transformRouteToMenu(routeModList: AppRouteModule[]) {
+export function transformRouteToMenu(routeModList: AppRouteModule[], routerMapping = false) {
   const cloneRouteModList = cloneDeep(routeModList),
     routeList: AppRouteRecordRaw[] = [];
   cloneRouteModList.forEach((item) => {
+    if (routerMapping && item.meta.hideChildrenInMenu && typeof item.redirect === 'string') {
+      item.path = item.redirect;
+    }
     if (item.meta?.single) {
       const realItem = item?.children?.[0];
       realItem && routeList.push(realItem);

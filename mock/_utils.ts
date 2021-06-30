@@ -39,9 +39,18 @@ export function resultError(message = 'Request failed', { code = -1, result = nu
 
 export function pagination<T = any>(pageNo: number, pageSize: number, array: T[]): T[] {
   const offset = (pageNo - 1) * Number(pageSize);
-  const ret =
-    offset + Number(pageSize) >= array.length
-      ? array.slice(offset, array.length)
-      : array.slice(offset, offset + Number(pageSize));
-  return ret;
+  return offset + Number(pageSize) >= array.length
+    ? array.slice(offset, array.length)
+    : array.slice(offset, offset + Number(pageSize));
+}
+
+export interface requestParams {
+  methods: string;
+  body: any;
+  headers?: { authorization?: string };
+  query: any;
+}
+
+export function getRequestToken({ headers }: requestParams): string | undefined {
+  return headers?.authorization;
 }
