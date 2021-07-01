@@ -9,6 +9,7 @@ export type Component<T extends any = any> =
   | (() => Promise<T>);
 
 export interface RouteMeta {
+  orderNo?: number;
   // title
   title: string;
   // Whether to ignore permissions

@@ -1,12 +1,13 @@
 import type { AppRouteModule, AppRouteRecordRaw } from '/@/router/types';
 
 import { PageEnum } from '/@/enums/pageEnum';
-import { t } from '/@/i18n/useI18n';
+import { useI18n } from '/@/i18n/useI18n';
 import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from './basic';
 
 const modules = import.meta.globEager('./modules/**/*.ts');
 const routeModuleList: AppRouteModule[] = [];
 
+const { t } = useI18n();
 // 浅复制
 Object.keys(modules).forEach((key) => {
   const mod = modules[key].default || {};

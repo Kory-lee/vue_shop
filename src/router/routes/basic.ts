@@ -1,8 +1,9 @@
 import type { AppRouteRecordRaw } from '/@/router/types';
 
-import { t } from '/@/i18n/useI18n';
+import { useI18n } from '/@/i18n/useI18n';
 import { EXCEPTION_COMPONENT, LAYOUT, REDIRECT_NAME } from '/@/router/constant';
 
+const { t } = useI18n();
 export const PAGE_NOT_FOUND_ROUTE: AppRouteRecordRaw = {
   path: '/:path(.*)*',
   name: 'ErrorPage',

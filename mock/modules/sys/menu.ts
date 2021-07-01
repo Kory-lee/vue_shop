@@ -2,13 +2,12 @@ import { getRequestToken, requestParams, resultError, resultSuccess } from '../.
 import { MockMethod } from 'vite-plugin-mock';
 import { createFakeUserList } from './user';
 
-// single
 const dashboardRoute = {
-  path: '/home',
-  name: 'Home',
-  component: '/dashboard/welcome/index',
+  path: '/dashboard',
+  name: 'Welcome',
+  component: '/dashboard/analysis/index',
   meta: {
-    title: 'routes.dashboard.welcome',
+    title: 'routes.dashboard.analysis',
     affix: true,
     icon: 'bx:bx-home',
   },
@@ -210,7 +209,7 @@ export default [
         return resultSuccess([dashboardRoute, authRoute, levelRoute, sysRoute, linkRoute]);
       }
       if (id === '2') {
-        return resultSuccess([dashboardRoute, authRoute1, levelRoute]);
+        return resultSuccess([dashboardRoute, authRoute, levelRoute, linkRoute]);
       }
     },
   },

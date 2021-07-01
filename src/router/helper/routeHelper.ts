@@ -1,24 +1,63 @@
 import cloneDeep from 'lodash/cloneDeep';
-import { createRouter, createWebHashHistory, Router, RouteRecordNormalized } from 'vue-router';
 import type { AppRouteModule, AppRouteRecordRaw } from '../types';
-import { LAYOUT } from '/@/router/constant';
+import type { Component } from '../types';
 
+import { createRouter, createWebHashHistory, Router, RouteRecordNormalized } from 'vue-router';
+import { getParentLayout, LAYOUT } from '/@/router/constant';
+import { warn } from '/@/utils/log';
+
+const IFRAME = () => import('/@/views/sys/iframe/FrameBlank.vue');
 export type LayoutMapKey = 'LAYOUT';
-const LayoutMap = new Map<LayoutMapKey, () => Promise<typeof import('*.vue')>>();
+const LayoutMap = new Map<string, Component>();
+
+LayoutMap.set('LAYOUT', LAYOUT);
+LayoutMap.set('IFRAME', IFRAME);
 
 let dynamicViewsModes: Record<string, () => Promise<Recordable>>;
+
 function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
   dynamicViewsModes = dynamicViewsModes || import.meta.glob('../../views/**/*.{vue,tsx}');
   if (!routes) return;
+  routes.forEach((item) => {
+    if (!item.component && item.meta?.frameSrc) {
+      item.component = 'IFRAME';
+    }
+    const { component, name } = item;
+    const { children } = item;
+    if (component) {
+      const layoutFound = LayoutMap.get(component as string);
+      item.component = layoutFound
+        ? layoutFound
+        : dynamicImport(dynamicViewsModes, component as string);
+    } else if (name) {
+      item.component = getParentLayout();
+    }
+    children && asyncImportRoute(children);
+  });
 }
-
+function dynamicImport(
+  dynamicViewsModules: Record<string, () => Promise<Recordable>>,
+  component: string
+) {
+  const keys = Object.keys(dynamicViewsModules);
+  const matchKeys = keys.filter((key) => {
+    let k = key.replace('../../views', '');
+    const lastIndex = k.lastIndexOf('.');
+    k = k.substring(0, lastIndex);
+    return k === component;
+  });
+  if (matchKeys?.length === 1) return dynamicViewsModules[matchKeys[0]];
+  if (matchKeys?.length > 1)
+    warn(
+      'Please do not create `.vue` and `.TSX` files with the same file name in the same hierarchical directory under the views folder. This will cause dynamic introduction failure'
+    );
+}
 export function transformObjToRoute<T>(routeList: AppRouteModule[]): T[] {
-  LayoutMap.set('LAYOUT', LAYOUT);
   routeList.forEach((route) => {
-    if (route.component) {
-      if ((route.component as string).toUpperCase() === 'LAYOUT') {
-        // route.component = LayoutMap.get(route.component);
-        route.component = LayoutMap.get((route.component as string).toUpperCase() as LayoutMapKey);
+    const component = route.component as string;
+    if (component) {
+      if (component.toUpperCase() === 'LAYOUT') {
+        route.component = LayoutMap.get(component.toUpperCase() as LayoutMapKey);
       } else {
         route.children = [cloneDeep(route)];
         route.component = LAYOUT;

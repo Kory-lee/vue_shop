@@ -94,7 +94,7 @@ export const usePermissionStore = defineStore({
         if (!roles) return true;
         return roleList.some((role) => roles.includes(role));
       };
-      console.log(permissionMode, configStore.getProjectConfig);
+
       switch (permissionMode) {
         case PermissionModeEnum.ROLE:
           routes = filter(asyncRoutes, routeFilter);
@@ -124,7 +124,6 @@ export const usePermissionStore = defineStore({
           try {
             this.changePermissionCode();
             routeList = (await getMenuList()) as AppRouteRecordRaw[];
-            console.log(routeList);
           } catch (e) {
             console.error(e);
           }
@@ -136,6 +135,7 @@ export const usePermissionStore = defineStore({
 
           routeList = flatMultiLevelRoutes(routeList);
           routes = [PAGE_NOT_FOUND_ROUTE, ...routeList];
+          console.log(routes);
           break;
       }
       routes.push(ERROR_LOG_ROUTE);

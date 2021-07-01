@@ -1,7 +1,9 @@
-import { t } from '/@/i18n/useI18n';
-import { getParentLayout, LAYOUT } from '/@/router/constant';
-import { AppRouteModule } from '/@/router/types';
+import type { AppRouteModule } from '/@/router/types';
 
+import { useI18n } from '/@/i18n/useI18n';
+import { getParentLayout, LAYOUT } from '/@/router/constant';
+
+const { t } = useI18n();
 const charts: AppRouteModule = {
   path: '/charts',
   name: 'Charts',

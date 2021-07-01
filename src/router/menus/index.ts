@@ -1,7 +1,8 @@
+import type { MenuModule, MenuType } from '../types';
+import type { RouteRecordNormalized } from 'vue-router';
+
 import { pathToRegexp } from 'path-to-regexp';
-import { RouteRecordNormalized } from 'vue-router';
 import router from '..';
-import { MenuModule, MenuType } from '../types';
 import { PermissionModeEnum } from '/@/enums/configEnum';
 import { getAllParentPath, transformMenuModule } from '/@/utils/helper/menuHelper';
 import { filter } from '/@/utils/helper/treeHelper';
