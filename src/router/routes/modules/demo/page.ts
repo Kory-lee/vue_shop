@@ -8,7 +8,7 @@ const page: AppRouteModule = {
   name: 'PageDemo',
   component: LAYOUT,
   redirect: '/page-demo/exception',
-  meta: { icon: 'mdi:page-next-outline', title: t('') },
+  meta: { orderNo: 20, icon: 'mdi:page-next-outline', title: t('routes.demo.page.page') },
   children: [],
 };
 export default page;

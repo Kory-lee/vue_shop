@@ -107,7 +107,7 @@ export const usePermissionStore = defineStore({
           routes = filter(asyncRoutes, routeFilter);
           routes = routes.filter(routeFilter);
 
-          const menuList = transformRouteToMenu(asyncRoutes, true);
+          const menuList = transformRouteToMenu(routes, true);
           menuList.sort((a, b) => (a.meta?.orderNo || 0) - (b.meta?.orderNo || 0));
 
           this.setFrontMenuList(menuList);
@@ -135,7 +135,6 @@ export const usePermissionStore = defineStore({
 
           routeList = flatMultiLevelRoutes(routeList);
           routes = [PAGE_NOT_FOUND_ROUTE, ...routeList];
-          console.log(routes);
           break;
       }
       routes.push(ERROR_LOG_ROUTE);

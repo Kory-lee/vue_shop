@@ -26,11 +26,11 @@ export function usePermission() {
     });
     location.reload();
   }
-  async function resume(id?: string | number) {
+  async function resume() {
     const tabsStore = useMultipleTabsStore();
     tabsStore.clearCacheTabs();
     resetRouter();
-    const routes = await permissionStore.buildRoutesAction(id);
+    const routes = await permissionStore.buildRoutesAction();
     routes.forEach((route) => {
       router.addRoute(route as unknown as RouteRecordRaw);
     });

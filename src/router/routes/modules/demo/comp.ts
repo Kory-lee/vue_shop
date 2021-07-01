@@ -7,7 +7,7 @@ const comp: AppRouteModule = {
   path: '/comp',
   name: 'Comp',
   component: LAYOUT,
-  meta: { icon: 'ion:layers-outline', title: t('routes.demo.comp.comp') },
+  meta: { orderNo: 30, icon: 'ion:layers-outline', title: t('routes.demo.comp.comp') },
   children: [
     {
       path: 'basic',

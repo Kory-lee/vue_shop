@@ -31,7 +31,7 @@
 
   import { Dropdown, Menu, Popconfirm } from 'ant-design-vue';
   import { defineComponent } from 'vue';
-  import { Icon } from '/@/components/Icon';
+  import Icon from '/@/components/Icon';
 
   export default defineComponent({
     name: 'BasicDropdown',

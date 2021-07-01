@@ -8,7 +8,7 @@ export const PAGE_NOT_FOUND_ROUTE: AppRouteRecordRaw = {
   path: '/:path(.*)*',
   name: 'ErrorPage',
   component: LAYOUT,
-  meta: { title: 'ErrorPage', hideBreadcrumb: true },
+  meta: { title: 'ErrorPage', hideBreadcrumb: true, hideMenu: true },
   children: [
     {
       path: '/:path(.*)*',
@@ -19,18 +19,17 @@ export const PAGE_NOT_FOUND_ROUTE: AppRouteRecordRaw = {
   ],
 };
 
-const redirect_meta = { title: REDIRECT_NAME, hideBreadcrumb: true };
 export const REDIRECT_ROUTE: AppRouteRecordRaw = {
   path: '/redirect',
   name: REDIRECT_NAME,
-  meta: redirect_meta,
+  meta: { title: REDIRECT_NAME, hideBreadcrumb: true, hideMenu: true },
   component: LAYOUT,
   children: [
     {
       path: '/redirect/:path(.*)',
       name: REDIRECT_NAME,
       component: () => import('/@/views/sys/redirect'),
-      meta: redirect_meta,
+      meta: { title: REDIRECT_NAME, hideBreadcrumb: true },
     },
   ],
 };
