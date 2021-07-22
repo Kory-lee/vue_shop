@@ -14,6 +14,7 @@ import { configImageminPlugin } from './imagemin';
 import { configVisualizerConfig } from './visualizer';
 import { configCompressPlugin } from './compress';
 import { configSvgIconsPlugin } from './svgSprite';
+import { configCssRenderPlugin } from './cssRender';
 
 export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   const {
@@ -43,6 +44,8 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   vitePlugins.push(configVisualizerConfig());
 
   vitePlugins.push(configThemePlugin(isBuild));
+
+  vitePlugins.push(configCssRenderPlugin());
 
   if (isBuild) {
     VITE_USE_IMAGEMIN && vitePlugins.push(configImageminPlugin());
