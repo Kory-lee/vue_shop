@@ -5,6 +5,7 @@ import { ref, computed, defineComponent, renderSlot } from 'vue';
 import { useTheme } from '/@/ui/_mixins/use-theme';
 import style from './styles/input.cssr';
 import inputLight from '/@/ui/input/styles/light';
+import useConfig from '../../_mixins/use-config';
 
 const inputProps = {
   ...useTheme.props,
@@ -36,7 +37,7 @@ export default defineComponent({
   name: 'Input',
   props: inputProps,
   setup(props) {
-    const mergedClsPrefixRef = `ko`;
+    const { mergedClsPrefixRef, mergedBorderedRef } = useConfig(props);
     const themeRef = useTheme('Input', 'Input', style, inputLight, props);
     console.log(themeRef, inputLight);
     const wrapperElRef = ref<HTMLElement | null>(null),
@@ -52,7 +53,13 @@ export default defineComponent({
         '--height': '20px',
       } as CSSProperties;
     });
-    return { mergedClsPrefix: mergedClsPrefixRef, wrapperElRef, textareaElRef, cssVars };
+    return {
+      mergedClsPrefix: mergedClsPrefixRef,
+      mergedBordered: mergedBorderedRef,
+      wrapperElRef,
+      textareaElRef,
+      cssVars,
+    };
   },
   render() {
     const { mergedClsPrefix } = this;

@@ -1,5 +1,8 @@
 import type { InjectionKey, PropType, ComputedRef } from 'vue';
-import {
+import type { GlobalTheme, GlobalThemeOverrides } from './interface';
+import type { NDateLocale } from '../../locales/date';
+import type { Hljs } from '../../_mixins/use-hljs';
+import type {
   ConfigProviderInjection,
   GlobalComponentConfig,
   GlobalIconConfig,

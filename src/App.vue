@@ -1,6 +1,8 @@
 <template>
   <Provider :locale="getAntdLocale">
-    <router-view />
+    <KConfigProvider abstract>
+      <router-view />
+    </KConfigProvider>
   </Provider>
 </template>
 
@@ -9,11 +11,12 @@
   import { Provider } from '/@/components/Application';
   import { initConfigStore } from '/@/logics/init';
   import { useLocale } from '/@/hooks/web/useLocale';
+  import { KConfigProvider } from '/@/ui/config-provider';
   import 'virtual:windi.css';
 
   export default defineComponent({
     name: 'App',
-    components: { Provider },
+    components: { Provider, KConfigProvider },
     setup() {
       initConfigStore();
       const { getAntdLocale } = useLocale();
