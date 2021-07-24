@@ -29,6 +29,16 @@ export type ExtractThemeVars<T> = T extends Theme<unknown, infer U, unknown>
     ? {}
     : U
   : {};
+
+export function createTheme<N extends string, T, R>(theme: Theme<N, T, R>): Theme<N, T, R> {
+  return theme;
+}
+
+type UseThemeProps<T> = Readonly<{
+  theme?: T | undefined;
+  themeOverrides?: ExtractThemeOverrides<T>;
+  builtinThemeOverrides?: ExtractThemeOverrides<T>;
+}>;
 export type ExtractPeerOverrides<T> = T extends Theme<unknown, unknown, infer V>
   ? {
       peers?: {
@@ -39,10 +49,10 @@ export type ExtractPeerOverrides<T> = T extends Theme<unknown, unknown, infer V>
 
 export function useTheme<N, T, R>(
   resolveId,
-  mountId,
+  mountId: string,
   style: CNode | undefined,
   defaultTheme: Theme<N, T, R>,
-  props,
+  props: UseThemeProps<Theme<N, T, R>>,
   clsPrefixRef?: Ref<string | undefined>
 ) {
   const ssrAdapter = useSsrAdapter();
@@ -100,7 +110,7 @@ export function useTheme<N, T, R>(
       selfCommonOverrides
     );
     const mergedSelf = merge(
-      (self || globalSelf || defaultTheme.self)?.mergedCommon as T,
+      (self || globalSelf || defaultTheme.self)?.(mergedCommon) as T,
       builtinOverrides,
       globalSelfOverrides,
       selfOverrides

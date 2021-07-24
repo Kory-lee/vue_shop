@@ -55,7 +55,7 @@ export function terseCssr(code) {
     TemplateElement(path) {
       ['raw', 'cooked'].forEach((type) => {
         path.node.value[type] = path.node.value[type]
-          .replace(patternSpace, '')
+          .replace(patternSpace, ' ')
           .replace(patternEnter, '\n');
       });
     },
