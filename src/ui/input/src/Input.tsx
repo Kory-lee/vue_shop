@@ -1,8 +1,8 @@
 import type { CSSProperties, InputHTMLAttributes, PropType, TextareaHTMLAttributes } from 'vue';
-import type { InputSize, OnUpdateValue } from '/@/ui/input/src/interface';
+import type { InputSize, OnUpdateValue, OnUpdateValueImpl } from '/@/ui/input/src/interface';
 import type { MaybeArray } from '/@/ui/_utils/vue/call';
 
-import { ref, computed, defineComponent, renderSlot, toRef } from 'vue';
+import { ref, computed, defineComponent, renderSlot, toRef, onMounted } from 'vue';
 import { ThemeProps, useTheme } from '/@/ui/_mixins/use-theme';
 import style from './styles/input.cssr';
 import inputLight, { InputTheme } from '/@/ui/input/styles/light';
@@ -10,6 +10,9 @@ import { getCurrentInstance } from 'vue-demi';
 import { call } from '/@/ui/_utils/vue/call';
 import { useMergedState } from 'vooks';
 import useConfig from '../../_mixins/use-config';
+import useFormItem from '../../_mixins/use-form-item';
+import { createKey } from '../../_utils/cssr';
+import { getPadding } from 'seemly';
 
 const inputProps = {
   ...(useTheme.props as ThemeProps<InputTheme>),
@@ -57,14 +60,26 @@ const inputProps = {
     default: true,
   },
   showCount: Boolean,
-  loading: {
-    type: Boolean,
-    default: undefined,
-  },
-  onInput: [Function, Array] as PropType<OnUpdateValue>,
+  loading: Boolean,
+  onMousedown: Function as PropType<(e: MouseEvent) => void>,
+  onKeydown: Function as PropType<(e: KeyboardEvent) => void>,
+  onKeyup: Function as PropType<(e: KeyboardEvent) => void>,
   'onUpdate:value': [Function, Array] as PropType<MaybeArray<OnUpdateValue>>,
   onUpdateValue: [Function, Array] as PropType<MaybeArray<OnUpdateValue>>,
+  onInput: [Function, Array] as PropType<OnUpdateValue>,
   onChange: [Function, Array] as PropType<OnUpdateValue>,
+  onBlur: [Function, Array] as PropType<MaybeArray<(e: FocusEvent) => void>>,
+  onClick: [Function, Array] as PropType<MaybeArray<(e: MouseEvent) => void>>,
+  onClear: [Function, Array] as PropType<MaybeArray<(e: MouseEvent) => void>>,
+  // private
+  textDecoration: [String, Array] as PropType<string | [string, string]>,
+  attrSize: { type: Number, default: 20 },
+  onInputBlur: [Function, Array] as PropType<MaybeArray<(e: FocusEvent) => void>>,
+  onInputFocus: [Function, Array] as PropType<MaybeArray<(e: FocusEvent) => void>>,
+  onDeactivate: [Function, Array] as PropType<MaybeArray<() => void>>,
+  onActivate: [Function, Array] as PropType<MaybeArray<() => void>>,
+  onWrapperFocus: [Function, Array] as PropType<MaybeArray<(e: FocusEvent) => void>>,
+  onWrapperBlur: [Function, Array] as PropType<MaybeArray<(e: FocusEvent) => void>>,
   internalDeactivateOnEnter: Boolean,
   internalForceFocus: Boolean,
 };
@@ -76,7 +91,7 @@ export default defineComponent({
     const { mergedClsPrefixRef, mergedBorderedRef } = useConfig(props);
 
     //dom ref
-    const themeRef = useTheme('Input', 'Input', style, inputLight, props);
+    const themeRef = useTheme('Input', 'Input', style, inputLight, props, mergedClsPrefixRef);
     const wrapperElRef = ref<HTMLElement | null>(null),
       textareaElRef = ref<HTMLTextAreaElement | null>(null),
       textareaMirrorElRef = ref<HTMLElement | null>(null),
@@ -87,7 +102,9 @@ export default defineComponent({
     const uncontrolledValueRef = ref(props.defaultValue);
     const controlledValueRef = toRef(props, 'value');
     const mergedValueRef = useMergedState(controlledValueRef, uncontrolledValueRef);
-
+    // form-item
+    const formItem = useFormItem(props);
+    const { mergedSizeRef } = formItem;
     //state
     const focusedRef = ref(false);
     const hoverRef = ref(false);
@@ -137,132 +154,37 @@ export default defineComponent({
     });
 
     const passwordVisibleRef = ref(false);
-
-    const cssVars = computed(() => {
-      const {
-        common: { cubicBezierEaseInOut },
-        self: {
-          countTextColor,
-          color,
-          fontSize,
-          borderRadius,
-          textColor,
-
-          caretColor,
-          caretColorError,
-          caretColorWarning,
-          textDecorationColor,
-          border,
-          borderDisabled,
-          borderHover,
-          borderFocus,
-          placeholderColor,
-          placeholderColorDisabled,
-          lineHeightTextarea,
-          colorDisabled,
-          colorFocus,
-          textColorDisabled,
-          boxShadowFocus,
-          iconSize,
-          colorFocusWarning,
-          boxShadowFocusWarning,
-          borderWarning,
-          borderFocusWarning,
-          borderHoverWarning,
-          colorFocusError,
-          boxShadowFocusError,
-          borderError,
-          borderFocusError,
-          borderHoverError,
-          clearSize,
-          clearColor,
-          clearColorHover,
-          clearColorPressed,
-          iconColor,
-          iconColorDisabled,
-          suffixTextColor,
-          iconColorHover,
-          iconColorPressed,
-          loadingColor,
-          loadingColorError,
-          loadingColorWarning,
-        },
-      } = themeRef.value;
-      return {
-        '--bezier': cubicBezierEaseInOut,
-        '--count-text-color': countTextColor,
-        '--color': color,
-        '--font-size': fontSize,
-        '--border-radius': borderRadius,
-        '--text-color': textColor,
-        '--caret-color': caretColor,
-        '--text-decoration-color': textDecorationColor,
-        '--border': border,
-        '--border-disabled': borderDisabled,
-        '--border-hover': borderHover,
-        '--border-focus': borderFocus,
-        '--placeholder-color': placeholderColor,
-        '--placeholder-color-disabled': placeholderColorDisabled,
-        '--icon-size': iconSize,
-        '--line-height-textarea': lineHeightTextarea,
-        '--color-disabled': colorDisabled,
-        '--color-focus': colorFocus,
-        '--text-color-disabled': textColorDisabled,
-        '--box-shadow-focus': boxShadowFocus,
-        '--loading-color': loadingColor,
-        // form warning
-        '--caret-color-warning': caretColorWarning,
-        '--color-focus-warning': colorFocusWarning,
-        '--box-shadow-focus-warning': boxShadowFocusWarning,
-        '--border-warning': borderWarning,
-        '--border-focus-warning': borderFocusWarning,
-        '--border-hover-warning': borderHoverWarning,
-        '--loading-color-warning': loadingColorWarning,
-        // form error
-        '--caret-color-error': caretColorError,
-        '--color-focus-error': colorFocusError,
-        '--box-shadow-focus-error': boxShadowFocusError,
-        '--border-error': borderError,
-        '--border-focus-error': borderFocusError,
-        '--border-hover-error': borderHoverError,
-        '--loading-color-error': loadingColorError,
-        // clear-button
-        '--clear-color': clearColor,
-        '--clear-size': clearSize,
-        '--clear-color-hover': clearColorHover,
-        '--clear-color-pressed': clearColorPressed,
-        '--icon-color': iconColor,
-        '--icon-color-hover': iconColorHover,
-        '--icon-color-pressed': iconColorPressed,
-        '--icon-color-disabled': iconColorDisabled,
-        '--suffix-text-color': suffixTextColor,
-        // '--height': height,
-        // '--padding-left': paddingLeft,
-        // '--padding-right': paddingRight,
-        // [createKey('padding', size)]: padding,
-        // [createKey('fontSize', size)]: fontSize,
-        // [createKey('height', size)]: height
-      } as CSSProperties;
-    });
     const mergedFocusRef = computed(() => props.internalForceFocus || focusedRef.value);
 
     const vm = getCurrentInstance()!.proxy!;
-    console.log(vm);
-
     function doUpdateValue(value: string | [string, string]): void {
       const { onUpdateValue, 'onUpdate:value': _onUpdateValue, onInput } = props;
-      if (onUpdateValue) call(onUpdateValue, value);
-      if (_onUpdateValue) call(_onUpdateValue, value);
-      if (onInput) call(onInput, value);
+      if (onUpdateValue) call(onUpdateValue as OnUpdateValueImpl, value);
+      if (_onUpdateValue) call(_onUpdateValue as OnUpdateValueImpl, value);
+      if (onInput) call(onInput as OnUpdateValueImpl, value);
       uncontrolledValueRef.value = value;
     }
 
     function doChange(value: string | [string, string]): void {
       const { onChange } = props;
-      if (onChange) call(onChange, value);
+      if (onChange) call(onChange as OnUpdateValueImpl, value);
       uncontrolledValueRef.value = value;
     }
 
+    function doBlur(e: FocusEvent) {
+      const { onBlur } = props;
+      if (onBlur) call(onBlur, e);
+    }
+    function doClear(e: FocusEvent) {
+      const { onClear } = props;
+      if (onClear) call(onClear, e);
+    }
+    function doClick(e: MouseEvent) {
+      const { onClick } = props;
+      if (onClick) call(onClick, e);
+    }
+
+    // methods
     function handleInput(
       e: InputEvent | CompositionEvent | Event,
       index: 0 | 1 = 0,
@@ -288,6 +210,15 @@ export default defineComponent({
       handleInput(e, index, 'change');
     }
 
+    function handleClick(e: MouseEvent): void {
+      doClick(e);
+    }
+    function handleClear(e: MouseEvent): void {
+      doClear(e);
+      if (props.pair) doUpdateValue(['', '']);
+      else doUpdateValue('');
+    }
+
     function syncMirror(value: string | null) {
       const { type, pair, autosize } = props;
       if (!pair && autosize) {
@@ -303,7 +234,12 @@ export default defineComponent({
         }
       }
     }
-
+    onMounted(() => {
+      const value = mergedValueRef.value;
+      if (!Array.isArray(value)) {
+        syncMirror(value);
+      }
+    });
     return {
       // dom ref
       wrapperElRef,
@@ -318,6 +254,7 @@ export default defineComponent({
       isComposing: isComposingRef,
       activated: activatedRef,
       showClearButton: showClearButtonRef,
+      mergedSize: mergedSizeRef,
       mergedValue: mergedValueRef,
       mergedClsPrefix: mergedClsPrefixRef,
       mergedFocus: mergedFocusRef,
@@ -327,8 +264,116 @@ export default defineComponent({
       showPlaceholder2: showPlaceholder2Ref,
       handleInput,
       handleChange,
+      handleClick,
+      handleClear,
       mergedTheme: themeRef,
-      cssVars,
+      cssVars: computed(() => {
+        const size = mergedSizeRef.value;
+        const {
+          common: { cubicBezierEaseInOut },
+          self: {
+            countTextColor,
+            color,
+            borderRadius,
+            textColor,
+            caretColor,
+            caretColorError,
+            caretColorWarning,
+            textDecorationColor,
+            border,
+            borderDisabled,
+            borderHover,
+            borderFocus,
+            placeholderColor,
+            placeholderColorDisabled,
+            lineHeightTextarea,
+            colorDisabled,
+            colorFocus,
+            textColorDisabled,
+            boxShadowFocus,
+            iconSize,
+            colorFocusWarning,
+            boxShadowFocusWarning,
+            borderWarning,
+            borderFocusWarning,
+            borderHoverWarning,
+            colorFocusError,
+            boxShadowFocusError,
+            borderError,
+            borderFocusError,
+            borderHoverError,
+            clearSize,
+            clearColor,
+            clearColorHover,
+            clearColorPressed,
+            iconColor,
+            iconColorDisabled,
+            suffixTextColor,
+            iconColorHover,
+            iconColorPressed,
+            loadingColor,
+            loadingColorError,
+            loadingColorWarning,
+            [createKey('padding', size)]: padding,
+            [createKey('fontSize', size)]: fontSize,
+            [createKey('height', size)]: height,
+          },
+        } = themeRef.value;
+        const { left: paddingLeft, right: paddingRight } = getPadding(padding );
+
+        return {
+          '--bezier': cubicBezierEaseInOut,
+          '--count-text-color': countTextColor,
+          '--color': color,
+          '--height': height,
+          '--padding-left': paddingLeft,
+          '--padding-right': paddingRight,
+          '--font-size': fontSize,
+          '--border-radius': borderRadius,
+          '--text-color': textColor,
+          '--caret-color': caretColor,
+          '--text-decoration-color': textDecorationColor,
+          '--border': border,
+          '--border-disabled': borderDisabled,
+          '--border-hover': borderHover,
+          '--border-focus': borderFocus,
+          '--placeholder-color': placeholderColor,
+          '--placeholder-color-disabled': placeholderColorDisabled,
+          '--icon-size': iconSize,
+          '--line-height-textarea': lineHeightTextarea,
+          '--color-disabled': colorDisabled,
+          '--color-focus': colorFocus,
+          '--text-color-disabled': textColorDisabled,
+          '--box-shadow-focus': boxShadowFocus,
+          '--loading-color': loadingColor,
+          // form warning
+          '--caret-color-warning': caretColorWarning,
+          '--color-focus-warning': colorFocusWarning,
+          '--box-shadow-focus-warning': boxShadowFocusWarning,
+          '--border-warning': borderWarning,
+          '--border-focus-warning': borderFocusWarning,
+          '--border-hover-warning': borderHoverWarning,
+          '--loading-color-warning': loadingColorWarning,
+          // form error
+          '--caret-color-error': caretColorError,
+          '--color-focus-error': colorFocusError,
+          '--box-shadow-focus-error': boxShadowFocusError,
+          '--border-error': borderError,
+          '--border-focus-error': borderFocusError,
+          '--border-hover-error': borderHoverError,
+          '--loading-color-error': loadingColorError,
+          // clear-button
+          '--clear-color': clearColor,
+          '--clear-size': clearSize,
+          '--clear-color-hover': clearColorHover,
+          '--clear-color-pressed': clearColorPressed,
+          '--icon-color': iconColor,
+          '--icon-color-hover': iconColorHover,
+          '--icon-color-pressed': iconColorPressed,
+          '--icon-color-disabled': iconColorDisabled,
+          '--suffix-text-color': suffixTextColor,
+        } as CSSProperties;
+      }),
     };
   },
   render() {
@@ -349,6 +394,7 @@ export default defineComponent({
           },
         ]}
         style={this.cssVars}
+        onClick={this.handleClick}
       >
         {/* textarea & basic input*/}
         <div class={`${this.mergedClsPrefix}-input-wrapper`}>
@@ -461,7 +507,7 @@ export default defineComponent({
           </div>
         ) : null}
         {/*border*/}
-        {}
+        {this.mergedBordered ? <div class={`${this.mergedClsPrefix}-input__state-border`} /> : null}
       </div>
     );
   },

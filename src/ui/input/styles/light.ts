@@ -1,7 +1,8 @@
 import type { Theme } from '/@/ui/_mixins/use-theme';
 
-import { commonLight, commonVariables, ThemeCommonVars } from '/@/ui/_styles/common';
+import { commonLight, ThemeCommonVars } from '/@/ui/_styles/common';
 import { changeColor } from 'seemly';
+import commonVariables from './_common';
 
 const self = (vars: ThemeCommonVars) => {
   const {

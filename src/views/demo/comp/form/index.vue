@@ -6,6 +6,7 @@
       placeholder="anything"
       @update:value="handleInput"
       @change="handleChange"
+      @click="handleInput"
     />
   </PageWrapper>
 </template>
