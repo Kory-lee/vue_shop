@@ -9,6 +9,7 @@ import inputLight, { InputTheme } from '/@/ui/input/styles/light';
 import { getCurrentInstance } from 'vue-demi';
 import { call } from '/@/ui/_utils/vue/call';
 import { useMergedState } from 'vooks';
+import useConfig from '../../_mixins/use-config';
 
 const inputProps = {
   ...(useTheme.props as ThemeProps<InputTheme>),
@@ -72,7 +73,7 @@ export default defineComponent({
   name: 'Input',
   props: inputProps,
   setup(props) {
-    const mergedClsPrefixRef = `k`;
+    const { mergedClsPrefixRef, mergedBorderedRef } = useConfig(props);
 
     //dom ref
     const themeRef = useTheme('Input', 'Input', style, inputLight, props);
@@ -320,6 +321,7 @@ export default defineComponent({
       mergedValue: mergedValueRef,
       mergedClsPrefix: mergedClsPrefixRef,
       mergedFocus: mergedFocusRef,
+      mergedBordered: mergedBorderedRef,
       mergedPlaceholder: mergedPlaceholderRef,
       showPlaceholder1: showPlaceholder1Ref,
       showPlaceholder2: showPlaceholder2Ref,
