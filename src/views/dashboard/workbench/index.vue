@@ -12,7 +12,6 @@
         <Card :loading="loading" class="!my-4 enter-y">
           <img :src="illustrationImg" alt="" />
         </Card>
-        <SaleRadar :loading="loading" />
       </div>
     </div>
   </PageWrapper>
@@ -27,12 +26,10 @@
   import QuickNav from './components/QuickNav.vue';
   import { Card } from 'ant-design-vue';
   import illustrationImg from '/@/assets/svg/illustration.svg';
-  import SaleRadar from '/@/views/dashboard/workbench/components/SaleRadar.vue';
 
   export default defineComponent({
     name: 'Workbench',
     components: {
-      SaleRadar,
       QuickNav,
       DynamicInfo,
       ProjectCard,

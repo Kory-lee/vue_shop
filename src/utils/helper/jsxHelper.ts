@@ -1,12 +1,17 @@
-import type { Slots } from 'vue';
+import type { Slots, VNodeChild } from 'vue';
 import { isFunction } from '/@/utils/is';
 
-export function getSlot(slots: Slots, slot = 'default', data?: any) {
-  if (!slots || !Reflect.has(slots, slot)) return null;
+export function getSlot(
+  slots: Slots,
+  slot = 'default',
+  data?: any,
+  fallback: VNodeChild[] = []
+): VNodeChild[] {
+  if (!slots || !Reflect.has(slots, slot)) return fallback;
   const slotFn = slots[slot];
   if (!isFunction(slotFn)) {
     console.error(`${slot} is not a function`);
-    return null;
+    return fallback;
   }
   return slotFn(data);
 }

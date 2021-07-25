@@ -8,6 +8,10 @@
       @change="handleChange"
       @click="handleInput"
     />
+    <KSpace justify="end">
+      <span v-for="item in 3" :key="item">{{ item }}</span>
+    </KSpace>
+    <KButton>test</KButton>
   </PageWrapper>
 </template>
 
@@ -16,9 +20,11 @@
   import PageWrapper from '/@/components/Page/src/PageWrapper.vue';
   import { KInput } from '/@/ui/input';
   import { ref } from 'vue';
+  import { KSpace } from '/@/ui/space';
+  import { KButton } from '/@/ui/button';
 
   export default defineComponent({
-    components: { PageWrapper, KInput },
+    components: { PageWrapper, KInput, KSpace, KButton },
     setup() {
       const inputValue = ref('');
       function handleInput(val) {

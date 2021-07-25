@@ -49,10 +49,7 @@ const inputProps = {
   readonly: { type: [String, Boolean], default: false },
   passivelyActivated: Boolean,
   showPasswordToggle: Boolean,
-  stateful: {
-    type: Boolean,
-    default: true,
-  },
+  stateful: { type: Boolean, default: true },
   autofocus: Boolean,
   inputProps: Object as PropType<TextareaHTMLAttributes | InputHTMLAttributes>,
   resizable: {
@@ -319,7 +316,7 @@ export default defineComponent({
             [createKey('height', size)]: height,
           },
         } = themeRef.value;
-        const { left: paddingLeft, right: paddingRight } = getPadding(padding );
+        const { left: paddingLeft, right: paddingRight } = getPadding(padding);
 
         return {
           '--bezier': cubicBezierEaseInOut,
