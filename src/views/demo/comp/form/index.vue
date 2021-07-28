@@ -9,9 +9,8 @@
       @click="handleInput"
     />
     <KSpace justify="end">
-      <span v-for="item in 3" :key="item">{{ item }}</span>
+      <KButton v-for="item in 3" :key="item" @click="handleInput(item)">test{{ item }}</KButton>
     </KSpace>
-    <KButton>test</KButton>
   </PageWrapper>
 </template>
 

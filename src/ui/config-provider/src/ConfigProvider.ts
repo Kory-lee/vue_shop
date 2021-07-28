@@ -48,11 +48,11 @@ export default defineComponent({
   alias: ['App'],
   props: configProviderProps,
   setup(props) {
-    const NConfigProvider = inject(configProviderInjectionKey, null);
+    const ConfigProvider = inject(configProviderInjectionKey, null);
     const mergedThemeRef = computed(() => {
       const { theme } = props;
       if (theme === null) return undefined;
-      const inheritedTheme = NConfigProvider?.mergedThemeRef.value;
+      const inheritedTheme = ConfigProvider?.mergedThemeRef.value;
       return theme === undefined
         ? inheritedTheme
         : inheritedTheme === undefined
@@ -62,38 +62,38 @@ export default defineComponent({
     const mergedThemeOverridesRef = computed(() => {
       const { themeOverrides } = props;
       if (themeOverrides === null) return undefined;
-      if (themeOverrides === undefined) return NConfigProvider?.mergedThemeOverridesRef.value;
+      if (themeOverrides === undefined) return ConfigProvider?.mergedThemeOverridesRef.value;
       else {
-        const inheritedThemeOverrides = NConfigProvider?.mergedThemeOverridesRef.value;
+        const inheritedThemeOverrides = ConfigProvider?.mergedThemeOverridesRef.value;
         if (inheritedThemeOverrides === undefined) return themeOverrides;
         return merge({}, inheritedThemeOverrides, themeOverrides);
       }
     });
     const mergedNamespaceRef = useMemo(() => {
         const { namespace } = props;
-        return namespace === undefined ? NConfigProvider?.mergedNamespaceRef.value : namespace;
+        return namespace === undefined ? ConfigProvider?.mergedNamespaceRef.value : namespace;
       }),
       mergedBorderedRef = useMemo(() => {
         const { bordered } = props;
-        return bordered === undefined ? NConfigProvider?.mergedBorderedRef.value : bordered;
+        return bordered === undefined ? ConfigProvider?.mergedBorderedRef.value : bordered;
       }),
       mergedIconsRef = computed(() => {
         const { icons } = props;
-        return icons === undefined ? NConfigProvider?.mergedIconsRef.value : icons;
+        return icons === undefined ? ConfigProvider?.mergedIconsRef.value : icons;
       }),
       mergedComponentPropsRef = computed(() => {
         const { componentOptions } = props;
         if (componentOptions !== undefined) return componentOptions;
-        return NConfigProvider?.mergedComponentPropsRef.value;
+        return ConfigProvider?.mergedComponentPropsRef.value;
       }),
       mergedClsPrefixRef = computed(() => {
         const { clsPrefix } = props;
-        return NConfigProvider?.mergedClsPrefixRef.value ?? clsPrefix;
+        return ConfigProvider?.mergedClsPrefixRef.value ?? clsPrefix;
       });
     const mergedRtlRef: ComputedRef<RtlEnabledState | undefined> = computed(() => {
       const { rtl } = props;
       if (rtl === undefined) {
-        return NConfigProvider?.mergedRtlRef.value;
+        return ConfigProvider?.mergedRtlRef.value;
       }
       const rtlEnabledState: RtlEnabledState = {};
       for (const rtlInfo of rtl) {
@@ -112,16 +112,16 @@ export default defineComponent({
       mergedLocaleRef: computed(() => {
         const { locale } = props;
         if (locale === null) return undefined;
-        return locale === undefined ? NConfigProvider?.mergedLocaleRef.value : locale;
+        return locale === undefined ? ConfigProvider?.mergedLocaleRef.value : locale;
       }),
       mergedDateLocaleRef: computed(() => {
         const { dateLocale } = props;
         if (dateLocale === null) return undefined;
-        return dateLocale === undefined ? NConfigProvider?.mergedDateLocaleRef.value : dateLocale;
+        return dateLocale === undefined ? ConfigProvider?.mergedDateLocaleRef.value : dateLocale;
       }),
       mergedHljsRef: computed(() => {
         const { hljs } = props;
-        return hljs === undefined ? NConfigProvider?.mergedHljsRef.value : hljs;
+        return hljs === undefined ? ConfigProvider?.mergedHljsRef.value : hljs;
       }),
       mergedThemeRef,
       mergedThemeOverridesRef,

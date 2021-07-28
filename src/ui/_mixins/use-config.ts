@@ -13,22 +13,22 @@ export default function useConfig(
   props: UseConfigProps,
   options: { defaultBordered?: boolean } = { defaultBordered: true }
 ): {
-  NConfigProvider: ConfigProviderInjection | null;
+  ConfigProvider: ConfigProviderInjection | null;
   mergedBorderedRef: ComputedRef<boolean>;
   mergedClsPrefixRef: ComputedRef<string>;
   namespaceRef: ComputedRef<string | undefined>;
 } {
-  const NConfigProvider = inject(configProviderInjectionKey, null);
+  const ConfigProvider = inject(configProviderInjectionKey, null);
   return {
-    NConfigProvider,
+    ConfigProvider,
     mergedBorderedRef: computed(() => {
       const { bordered } = props;
       if (bordered !== undefined) return bordered;
-      return NConfigProvider?.mergedBorderedRef.value ?? options.defaultBordered ?? true;
+      return ConfigProvider?.mergedBorderedRef.value ?? options.defaultBordered ?? true;
     }),
     mergedClsPrefixRef: computed(
-      () => NConfigProvider?.mergedClsPrefixRef.value || defaultClsPrefix
+      () => ConfigProvider?.mergedClsPrefixRef.value || defaultClsPrefix
     ),
-    namespaceRef: computed(() => NConfigProvider?.mergedNamespaceRef.value),
+    namespaceRef: computed(() => ConfigProvider?.mergedNamespaceRef.value),
   };
 }

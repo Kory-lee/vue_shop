@@ -79,7 +79,7 @@ export function useTheme<N, T, R>(
       onBeforeMount(mountStyle);
     }
   }
-  const NConfigProvider = inject(configProviderInjectionKey, null);
+  const ConfigProvider = inject(configProviderInjectionKey, null);
 
   return computed(() => {
     const {
@@ -95,9 +95,9 @@ export function useTheme<N, T, R>(
         self: globalSelf = undefined,
         peers: globalPeers = {},
       } = {},
-    } = NConfigProvider?.mergedThemeRef.value || {};
+    } = ConfigProvider?.mergedThemeRef.value || {};
     const { common: globalCommonOverrides = undefined, [resolveId]: globalSelfOverrides = {} } =
-      NConfigProvider?.mergedThemeOverridesRef.value || {};
+      ConfigProvider?.mergedThemeOverridesRef.value || {};
 
     const { common: globalSelfCommonOverrides, peers: globalPeersOverrides = {} } =
       globalSelfOverrides;

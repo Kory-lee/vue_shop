@@ -166,34 +166,6 @@ const sysRoute = {
   ],
 };
 
-const linkRoute = {
-  path: '/link',
-  name: 'Link',
-  component: 'LAYOUT',
-  meta: {
-    icon: 'ion:tv-outline',
-    title: 'routes.demo.iframe.frame',
-  },
-  children: [
-    {
-      path: 'doc',
-      name: 'Doc',
-      meta: {
-        title: 'routes.demo.iframe.doc',
-        frameSrc: 'https://vvbin.cn/doc-next/',
-      },
-    },
-    {
-      path: 'https://vvbin.cn/doc-next/',
-      name: 'DocExternal',
-      component: 'LAYOUT',
-      meta: {
-        title: 'routes.demo.iframe.docExternal',
-      },
-    },
-  ],
-};
-
 export default [
   {
     url: '/basic-api/getMenuList',
@@ -206,10 +178,10 @@ export default [
       if (!checkUser) return resultError('Invalid user token');
       const id = checkUser.userId;
       if (!id || id === '1') {
-        return resultSuccess([dashboardRoute, authRoute, levelRoute, sysRoute, linkRoute]);
+        return resultSuccess([dashboardRoute, authRoute, levelRoute, sysRoute]);
       }
       if (id === '2') {
-        return resultSuccess([dashboardRoute, authRoute, levelRoute, linkRoute]);
+        return resultSuccess([dashboardRoute, authRoute, levelRoute]);
       }
     },
   },

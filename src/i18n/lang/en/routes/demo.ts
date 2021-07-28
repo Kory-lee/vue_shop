@@ -106,12 +106,6 @@ export default {
     customerForm: 'Custom',
     appendForm: 'Append',
   },
-  iframe: {
-    frame: 'External',
-    antv: 'antVue doc (embedded)',
-    doc: 'Project doc (embedded)',
-    docExternal: 'Project doc (external)',
-  },
   level: { level: 'MultiMenu' },
   page: {
     page: 'Page',
