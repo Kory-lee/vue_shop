@@ -1,8 +1,17 @@
 import type { ButtonTheme } from '/@/ui/button/styles';
 import type { ButtonSize, ButtonType } from '/@/ui/button/src/interface';
-import type { BaseWaveRef } from '/@/ui/_internal/wave/src/Wave';
+import { BaseWaveRef, BaseWave } from '/@/ui/_internal/wave';
 
-import { computed, defineComponent, nextTick, PropType, ref, renderSlot, unref } from 'vue';
+import {
+  computed,
+  CSSProperties,
+  defineComponent,
+  nextTick,
+  PropType,
+  ref,
+  renderSlot,
+  unref,
+} from 'vue';
 import useTheme, { ThemeProps } from '/@/ui/_mixins/use-theme';
 import { call, MaybeArray } from '/@/ui/_utils/vue/call';
 import useConfig from '/@/ui/_mixins/use-config';
@@ -104,6 +113,18 @@ export default defineComponent({
       handleClick,
       handleKeyUp,
       handleKeyDown,
+      customColorCssVar: computed(() => {
+        const { color } = props;
+        if (!color) return null;
+        const hoverColor = createHoverColor(color);
+        return {
+          '--border-color': color,
+          '--border-color-hover': hoverColor,
+          '--border-color-pressed': createPressedColor(color),
+          '--border-color-focus': hoverColor,
+          '--border-color-disabled': color,
+        };
+      }),
       cssVars: computed(() => {
         const {
           common: { cubicBezierEaseInOut, cubicBezierEaseOut },
@@ -112,7 +133,7 @@ export default defineComponent({
         const { rippleDuration, opacityDisabled, fontWeightText, fontWeighGhost, fontWeight } =
           self;
         const size = mergedSizeRef.value;
-        const { dashed, type, ghost, text, color, round, circle } = props;
+        const { dashed, type, ghost, text, color, round, circle, depth } = props;
         //font
         const fontProps = {
           '--font-weight': text ? fontWeightText : ghost ? fontWeighGhost : fontWeight,
@@ -268,6 +289,21 @@ export default defineComponent({
         {}
         {$slots.default && this.iconPlacement === 'left' ? (
           <span class={`${mergedClsPrefix}-button__content`}>{renderSlot($slots, 'default')}</span>
+        ) : null}
+        {!this.text ? <BaseWave ref="waveRef" clsPrefix={mergedClsPrefix} /> : null}
+        {this.showBorder ? (
+          <div
+            aria-hidden
+            class={`${mergedClsPrefix}-button__border`}
+            style={this.customColorCssVar as CSSProperties}
+          />
+        ) : null}
+        {this.showBorder ? (
+          <div
+            aria-hidden
+            class={`${mergedClsPrefix}-button__state-border`}
+            style={this.customColorCssVar as CSSProperties}
+          />
         ) : null}
       </Component>
     );
