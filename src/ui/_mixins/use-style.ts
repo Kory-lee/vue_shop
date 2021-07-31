@@ -9,7 +9,7 @@ export default function useStyle(
   clsPrefixRef?: Ref<string | undefined>
 ) {
   if (!style) {
-    if (__DEV__) throw new Error('use-style no style');
+    if (__IS_DEV__) throw new Error('use-style no style');
   }
   const ssrAdapter = useSsrAdapter();
   const mountStyle = (): void => {};

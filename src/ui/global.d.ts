@@ -1,5 +1,5 @@
 export {};
 
 declare global {
-  const __DEV__: boolean;
+  const __IS_DEV__: boolean;
 }
