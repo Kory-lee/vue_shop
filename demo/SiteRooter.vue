@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin: 30px">
     <KInput
       type="input"
       v-model:value="inputValue"
@@ -17,14 +17,10 @@
 </template>
 
 <script>
-  import { KInput } from '/@/input';
   import { ref } from 'vue';
-  import { KSpace } from '/@/space';
-  import { KButton } from '/@/button';
 
   export default {
     name: 'SiteProvider',
-    components: { KSpace, KButton, KInput },
     setup() {
       const inputValue = ref('');
 

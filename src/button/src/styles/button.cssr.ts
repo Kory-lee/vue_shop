@@ -165,6 +165,23 @@ export default c([
       pointer-events: none;
     `
       ),
+      cE('border', {
+        border: 'var(--border)',
+      }),
+      cE('state-border', { border: 'var(--border)', borderColor: '#0000', zIndex: 1 }),
+      cE(
+        'icon',
+        `
+      margin: var(--icon-margin);
+      margin-left: 0;
+      height: var(--icon-size);
+      width: var(--icon-size);
+      max-width: var(--icon-size);
+      font-size: var(--icon-size);
+      position: relative;
+      flex-shrink: 0;
+      `
+      ),
     ]
   ),
 ]);

@@ -23,6 +23,8 @@ import { createKey } from '/@/_utils/cssr';
 import { createHoverColor, createPressedColor } from '/@/_utils/color';
 import useFormItem from '/@/_mixins/use-form-item';
 
+export type ButtonProps = ExtractPublicPropTypes<typeof buttonProps>;
+
 const buttonProps = {
   ...(useTheme.props as ThemeProps<ButtonTheme>),
   color: String,

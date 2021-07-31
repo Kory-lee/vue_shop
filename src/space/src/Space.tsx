@@ -2,10 +2,10 @@ import { spaceLight, SpaceTheme } from '../styles';
 
 import { computed, CSSProperties, defineComponent, ExtractDefaultPropTypes, PropType } from 'vue';
 import useTheme, { ThemeProps } from '../../_mixins/use-theme';
-import useConfig from '../../_mixins/use-config';
-import { createKey } from '../../_utils/cssr';
+import useConfig from '/@/_mixins/use-config';
+import { createKey } from '/@/_utils/cssr';
 import { depx, getGap } from 'seemly';
-import { flatten } from '../../_utils/vue/flatten';
+import { flatten } from '/@/_utils/vue/flatten';
 import getSlot from '../../_utils/vue/getSlot';
 
 type Align = 'stretch' | 'baseline' | 'start' | 'end' | 'enter' | 'flex-end' | 'flex-start';
