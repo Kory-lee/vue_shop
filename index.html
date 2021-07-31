@@ -9,31 +9,11 @@
     content='width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0'
   />
   <link rel='icon' href='/favicon.ico' />
-  <title><%= title %></title>
+  <title>Kory UI</title>
 </head>
 <body>
-<script>
-  (() => {
-    let htmlRoot = document.getElementById('htmlRoot');
-    let theme = window.localStorage.getItem('__APP__DARK__MODE__');
-    if (htmlRoot && theme) {
-      htmlRoot.setAttribute('data-theme', theme);
-      theme = htmlRoot = null;
-    }
-  })();
-</script>
 <div id='app'>
-  <link rel='stylesheet' href='/resource/style/index.css' />
-  <div class='app-loading'>
-    <div class='app-loading-wrap'>
-      <img src='/resource/img/logo.png' class='app-loading-logo' alt='Logo' />
-      <div class='app-loading dots'>
-        <span class='dot dot-spin'> <i></i><i></i><i></i><i></i> </span>
-      </div>
-      <div class='app-loading-title'><%= title %></div>
-    </div>
-  </div>
 </div>
-<script type='module' src='/src/main.ts'></script>
+<script type='module' src='/demo/index.dev.js'></script>
 </body>
 </html>

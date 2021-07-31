@@ -6,18 +6,8 @@ import { OUTPUT_DIR } from './build/constant';
 import { wrapperEnv } from './build/utils';
 import { createVitePlugins } from './build/vite/plugins';
 import { createProxy } from './build/vite/proxy';
-import { generateModifyVars } from './build/config/generate/modifyVars';
-
-import pkg from './package.json';
-import moment from 'moment';
 
 const pathResolve = (dir: string): string => resolve(process.cwd(), '.', dir);
-
-const { dependencies, devDependencies, name, version } = pkg;
-const __APP_INFO__ = {
-  pkg: { dependencies, devDependencies, name, version },
-  lastBuildTime: moment().format('YYYY-MM-DD HH:mm:ss'),
-};
 
 export default ({ command, mode }: ConfigEnv): UserConfig => {
   const root = process.cwd(),
@@ -52,27 +42,12 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       __VUE_I18N_LEGACY_API__: false,
       __VUE_I18N_FULL_INSTALL__: false,
       __INTLIFY_PROD_DEVTOOLS__: false,
-      __APP_INFO__: JSON.stringify(__APP_INFO__),
       __IS_DEV__: mode !== 'production',
-    },
-    css: {
-      preprocessorOptions: {
-        less: {
-          modifyVars: generateModifyVars(),
-          javascriptEnabled: true,
-        },
-      },
     },
     plugins: createVitePlugins(viteEnv, isBuild),
     optimizeDeps: {
-      include: [
-        '@iconify/iconify',
-        'moment/dist/locale/zh-cn',
-        'moment/dist/locale/eu',
-        'ant-design-vue/es/locale/zh_CN',
-        'ant-design-vue/es/locale/en_US',
-      ],
-      exclude: ['vue-demi'],
+      include: [],
+      exclude: [],
     },
   };
 };

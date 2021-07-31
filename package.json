@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "cross-env  --max_old_space_size=4096  vite --host",
-    "build": "vite build && esno ./build/script/index.ts",
+    "build": "vite build",
     "report": "cross-env REPORT=true npm run build",
     "type:check": "vue-tsc --noEmit --skipLibCheck",
     "clean:cache": "rimraf node_modules/.cache/ && rimraf node_modules/.vite",
@@ -24,29 +24,18 @@
   "dependencies": {
     "@css-render/plugin-bem": "^0.15.5",
     "@css-render/vue3-ssr": "^0.15.5",
-    "@iconify/iconify": "^2.0.3",
-    "@vueuse/core": "^5.2.0",
-    "ant-design-vue": "^2.2.2",
     "async-validator": "^3.5.2",
-    "axios": "^0.21.1",
-    "crypto-js": "^4.1.1",
     "css-render": "^0.15.5",
     "date-fns": "^2.23.0",
     "highlight.js": "^11.1.0",
     "lodash-es": "^4.17.21",
-    "mockjs": "^1.1.0",
-    "moment": "^2.29.1",
     "path-to-regexp": "^6.2.0",
-    "pinia": "^2.0.0-beta.5",
-    "qrcode": "^1.4.4",
     "qs": "^6.10.1",
-    "resize-observer-polyfill": "^1.5.1",
     "seemly": "^0.3.1",
     "sortablejs": "^1.14.0",
     "vfonts": "^0.1.0",
     "vooks": "^0.2.8",
     "vue": "^3.1.5",
-    "vue-i18n": "^9.1.7",
     "vue-router": "^4.0.10",
     "vueuc": "^0.4.9"
   },
@@ -61,13 +50,7 @@
     "@commitlint/config-conventional": "^12.1.4",
     "@iconify/json": "^1.1.380",
     "@purge-icons/generated": "^0.7.0",
-    "@types/crypto-js": "^4.0.2",
-    "@types/fs-extra": "^9.0.12",
-    "@types/http-proxy": "^1.17.7",
     "@types/lodash-es": "^4.17.4",
-    "@types/mockjs": "^1.0.4",
-    "@types/qrcode": "^1.4.1",
-    "@types/qs": "^6.9.7",
     "@types/yargs": "^17.0.2",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.28.5",
@@ -79,7 +62,6 @@
     "commitizen": "^4.2.4",
     "conventional-changelog-cli": "^2.1.1",
     "cross-env": "^7.0.3",
-    "dot-prop": "^6.0.1",
     "dotenv": "^10.0.0",
     "eslint": "^7.31.0",
     "eslint-config-prettier": "^8.3.0",
@@ -87,10 +69,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.14.0",
     "esno": "^0.8.0",
-    "fs-extra": "^10.0.0",
-    "http-server": "^0.12.3",
     "is-ci": "^3.0.0",
-    "less": "^4.1.1",
     "lint-staged": "^11.1.1",
     "postcss": "^8.3.6",
     "prettier": "^2.3.2",
@@ -104,24 +83,35 @@
     "ts-node": "^10.1.0",
     "typescript": "^4.3.5",
     "vite": "^2.4.4",
-    "vite-plugin-compression": "^0.2.6",
-    "vite-plugin-html": "^2.0.7",
-    "vite-plugin-imagemin": "^0.3.2",
-    "vite-plugin-mock": "^2.9.3",
-    "vite-plugin-purge-icons": "^0.7.0",
-    "vite-plugin-pwa": "^0.7.3",
-    "vite-plugin-style-import": "^0.10.1",
-    "vite-plugin-svg-icons": "^0.7.1",
-    "vite-plugin-theme": "^0.8.1",
-    "vite-plugin-windicss": "1.2.6",
     "vue-eslint-parser": "^7.10.0",
     "vue-tsc": "^0.1.7"
   },
-  "resolutions": {
-    "bin-wrapper": "npm:bin-wrapper-china",
-    "rollup": "^2.44.0"
-  },
   "engines": {
     "node": "^12 || >=14"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.ts": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.tsx": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.vue": [
+      "prettier --parser=vue --write",
+      "eslint --fix"
+    ],
+    "*.css": [
+      "prettier --write"
+    ],
+    "*.md": [
+      "prettier --write --parser markdown --prose-wrap never",
+      "eslint --fix"
+    ]
   }
 }
