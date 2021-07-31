@@ -1,4 +1,6 @@
 import { c, cB, cE, cM, cNotM } from '/@/_utils/cssr';
+import iconSwitchTransition from '/@/_styles/transitions/icon-switch.cssr';
+import fadeInWidthExpandTransition from '/@/_styles/transitions/fade-in-width-expand.cssr';
 
 export default c([
   cB(
@@ -180,8 +182,73 @@ export default c([
       font-size: var(--icon-size);
       position: relative;
       flex-shrink: 0;
-      `
+      `,
+        [
+          cB(
+            'icon-slot',
+            `
+        height: var(--icon-size);
+        width: var(--icon-size);
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        `,
+            [iconSwitchTransition({ top: '50%', originalTransform: 'translateY(-50%)' })]
+          ),
+          fadeInWidthExpandTransition(),
+        ]
       ),
+      cE(
+        'content',
+        `
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+    `,
+        [
+          c('~', [
+            cE('icon', {
+              margin: 'var(--icon-margin)',
+              marginRight: 0,
+            }),
+          ]),
+        ]
+      ),
+      cM(
+        'block',
+        `
+      display: flex;
+      width: 100%;
+    `
+      ),
+      cM('dashed', [
+        cE('border, state-border', {
+          borderStyle: 'dashed !important',
+        }),
+      ]),
+      cM('disabled', {
+        cursor: 'not-allowed',
+        opacity: 'var(--opacity-disabled)',
+      }),
     ]
   ),
+  c('@keyframes button-wave-spread', {
+    from: {
+      boxShadow: '0 0 0.5px 0 var(--ripple-color)',
+    },
+    to: {
+      // don't use exact 5px since chrome will display the animation with glitches
+      boxShadow: '0 0 0.5px 4.5px var(--ripple-color)',
+    },
+  }),
+  c('@keyframes button-wave-opacity', {
+    from: {
+      opacity: 'var(--wave-opacity)',
+    },
+    to: {
+      opacity: 0,
+    },
+  }),
 ]);
