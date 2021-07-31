@@ -64,13 +64,22 @@ export default defineComponent({
       {},
       {
         defaultSize: 'medium',
-        mergedSize: () => {
+        mergedSize: (KFormItem) => {
           const { size } = props;
           if (size) return size;
+          const { mergedSize: formItemSize } = KFormItem || {};
+          if (formItemSize) return formItemSize.value;
           return 'medium';
         },
       }
     );
+    const mergedFocusableRef = computed(() => props.focusable && !props.disabled);
+
+    function handleMouseDown(e: MouseEvent) {
+      e.preventDefault();
+      if (props.disabled) return;
+      if (mergedFocusableRef.value) selfRef.value?.focus({ preventScroll: true });
+    }
 
     function handleClick(e) {
       if (props.disabled) return;
@@ -102,15 +111,22 @@ export default defineComponent({
           enterPressedRef.value = true;
       }
     }
+    function handleBlur(): void {
+      enterPressedRef.value = false;
+    }
 
     const rtlEnabledRef = useRtl('Button', ConfigProvider?.mergedRtlRef, mergedClsPrefixRef);
     return {
       selfRef,
       mergedClsPrefix: mergedClsPrefixRef,
+      mergedFocusable: mergedFocusableRef,
+      mergedSize: mergedSizeRef,
       showBorder: showBorderRef,
       rtlEnabled: rtlEnabledRef,
       enterPressed: enterPressedRef,
       handleClick,
+      handleMouseDown,
+      handleBlur,
       handleKeyUp,
       handleKeyDown,
       customColorCssVar: computed(() => {
@@ -276,12 +292,15 @@ export default defineComponent({
             [`${mergedClsPrefix}-button--ghost`]: this.ghost, // required for button group border collapse
           },
         ]}
+        tabindex={this.mergedFocusable ? 0 : -1}
         type={this.attrType}
         style={this.cssVars}
         disabled={this.disabled}
         onClick={this.handleClick}
+        onBlur={this.handleBlur}
         onKeyup={this.handleKeyUp}
         onKeydown={this.handleKeyDown}
+        onMousedown={this.handleMouseDown}
       >
         {$slots.default && this.iconPlacement === 'right' ? (
           <div class={`${mergedClsPrefix}-button__content`}>{renderSlot($slots, 'default')}</div>
