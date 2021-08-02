@@ -36,6 +36,7 @@ import useFormItem from '../../_mixins/use-form-item';
 import { createKey } from '/@/_utils/cssr';
 import { getPadding } from 'seemly';
 import { inputInjectionKey } from '/@/input/src/interface';
+import WordCount from './WordCount';
 
 const inputProps = {
   ...(useTheme.props as ThemeProps<InputTheme>),
@@ -177,6 +178,15 @@ export default defineComponent({
     const passwordVisibleRef = ref(false);
     const mergedFocusRef = computed(() => props.internalForceFocus || focusedRef.value);
 
+    //text-decoration
+    const textDecorationStyleRef = computed(() => {
+      const { textDecoration } = props;
+      if (!textDecoration) return ['', ''];
+      if (Array.isArray(textDecoration)) return textDecoration.map((v) => ({ textDecoration: v }));
+      return [{ textDecoration }];
+    });
+
+    // word count
     const maxlengthRef = computed(() => {
       const maxLength = props;
       return maxLength === undefined ? undefined : Number(maxLength);
@@ -570,6 +580,7 @@ export default defineComponent({
       mergedPlaceholder: mergedPlaceholderRef,
       showPlaceholder1: showPlaceholder1Ref,
       showPlaceholder2: showPlaceholder2Ref,
+      textDecorationStyle: textDecorationStyleRef,
       //methods
       handleCompositionStart,
       handleCompositionEnd,
@@ -754,6 +765,7 @@ export default defineComponent({
                 minlength={this.minlength}
                 readonly={this.readonly as any}
                 tabindex={this.passivelyActivated && !this.activated ? -1 : undefined}
+                style={this.textDecorationStyle[0]}
                 onBlur={this.handleInputBlur}
                 onFocus={this.handleInputFocus}
                 onInput={this.handleInput}
@@ -764,10 +776,12 @@ export default defineComponent({
                   {this.mergedPlaceholder[0]}
                 </div>
               ) : null}
+              {}
             </div>
           ) : (
             <div class={`${mergedClsPrefix}-input__input`}>
               <input
+                {...this.inputProps}
                 ref="inputElRef"
                 type={
                   this.type === 'password' && this.showPasswordToggle && this.passwordVisible
@@ -777,7 +791,7 @@ export default defineComponent({
                 class={`${mergedClsPrefix}-input__input-el`}
                 tabindex={this.passivelyActivated && !this.activated ? -1 : undefined}
                 placeholder={this.mergedPlaceholder[0]}
-                disabled={this.disabled}
+                disabled={this.mergedDisabled}
                 maxlength={this.maxlength}
                 minlength={this.minlength}
                 value={
@@ -785,6 +799,10 @@ export default defineComponent({
                 }
                 readonly={this.readonly as any}
                 autofocus={this.autofocus}
+                size={this.attrSize}
+                style={this.textDecorationStyle[0]}
+                onBlur={this.handleInputBlur}
+                onFocus={this.handleInputFocus}
                 onInput={(e) => this.handleInput(e, 0)}
                 onChange={(e) => this.handleChange(e, 0)}
               />
@@ -810,7 +828,13 @@ export default defineComponent({
             this.showCount ||
             this.showPasswordToggle ||
             this.loading !== undefined) ? (
-            <div class={`${mergedClsPrefix}-input__suffix`}>{[]}</div>
+            <div class={`${mergedClsPrefix}-input__suffix`}>
+              {[
+                'clear-icon',
+                renderSlot(this.$slots, 'suffix'),
+                this.showCount && this.type !== 'textarea' ? <WordCount /> : null,
+              ]}
+            </div>
           ) : null}
         </div>
         {/*pair input*/}
@@ -833,7 +857,9 @@ export default defineComponent({
                 minlength={this.minlength}
                 value={Array.isArray(this.mergedValue) ? this.mergedValue[1] : undefined}
                 readonly={this.readonly as any}
-                style={{}}
+                style={this.textDecorationStyle[1]}
+                onBlur={this.handleInputBlur}
+                onFocus={this.handleInputFocus}
                 onInput={(e) => this.handleInput(e, 1)}
                 onChange={(e) => this.handleChange(e, 1)}
               />
@@ -853,6 +879,7 @@ export default defineComponent({
         ) : null}
         {this.mergedBordered ? <div class={`${mergedClsPrefix}-input__border`} /> : null}
         {this.mergedBordered ? <div class={`${mergedClsPrefix}-input__state-border`} /> : null}
+        {this.showCount && this.type === 'textarea' ? <WordCount /> : null}
       </div>
     );
   },
