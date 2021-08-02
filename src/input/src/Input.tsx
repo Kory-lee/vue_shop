@@ -1,5 +1,16 @@
-import type { CSSProperties, InputHTMLAttributes, PropType, TextareaHTMLAttributes } from 'vue';
-import type { InputSize, OnUpdateValue, OnUpdateValueImpl } from '/@/input/src/interface';
+import type {
+  CSSProperties,
+  InputHTMLAttributes,
+  PropType,
+  TextareaHTMLAttributes,
+  WatchStopHandle,
+} from 'vue';
+import type {
+  InputSize,
+  InputWrappedRef,
+  OnUpdateValue,
+  OnUpdateValueImpl,
+} from '/@/input/src/interface';
 import type { MaybeArray } from '/@/_utils/vue/call';
 
 import {
@@ -10,6 +21,10 @@ import {
   toRef,
   onMounted,
   getCurrentInstance,
+  provide,
+  watchEffect,
+  watch,
+  nextTick,
 } from 'vue';
 import { ThemeProps, useTheme } from '/@/_mixins/use-theme';
 import style from './styles/input.cssr';
@@ -20,6 +35,7 @@ import useConfig from '../../_mixins/use-config';
 import useFormItem from '../../_mixins/use-form-item';
 import { createKey } from '/@/_utils/cssr';
 import { getPadding } from 'seemly';
+import { inputInjectionKey } from '/@/input/src/interface';
 
 const inputProps = {
   ...(useTheme.props as ThemeProps<InputTheme>),
@@ -29,7 +45,7 @@ const inputProps = {
   },
   type: {
     type: String as PropType<'input' | 'textarea' | 'password'>,
-    default: 'input',
+    default: undefined,
   },
   placeholder: [Array, String] as PropType<string | [string, string]>,
   defaultValue: {
@@ -72,6 +88,7 @@ const inputProps = {
   onUpdateValue: [Function, Array] as PropType<MaybeArray<OnUpdateValue>>,
   onInput: [Function, Array] as PropType<OnUpdateValue>,
   onChange: [Function, Array] as PropType<OnUpdateValue>,
+  onFocus: [Function, Array] as PropType<MaybeArray<(e: FocusEvent) => void>>,
   onBlur: [Function, Array] as PropType<MaybeArray<(e: FocusEvent) => void>>,
   onClick: [Function, Array] as PropType<MaybeArray<(e: MouseEvent) => void>>,
   onClear: [Function, Array] as PropType<MaybeArray<(e: MouseEvent) => void>>,
@@ -108,7 +125,7 @@ export default defineComponent({
     const mergedValueRef = useMergedState(controlledValueRef, uncontrolledValueRef);
     // form-item
     const formItem = useFormItem(props);
-    const { mergedSizeRef } = formItem;
+    const { mergedSizeRef, mergedDisabledRef } = formItem;
     //state
     const focusedRef = ref(false);
     const hoverRef = ref(false);
@@ -160,25 +177,68 @@ export default defineComponent({
     const passwordVisibleRef = ref(false);
     const mergedFocusRef = computed(() => props.internalForceFocus || focusedRef.value);
 
+    const maxlengthRef = computed(() => {
+      const maxLength = props;
+      return maxLength === undefined ? undefined : Number(maxLength);
+    });
+    const updateTextAreaStyle = (): void => {
+      if (props.type !== 'textarea') return;
+      const { autosize } = props;
+      if (typeof autosize === 'boolean') return;
+      if (!textareaElRef.value) return;
+      const {
+        paddingTop: stylePaddingTop,
+        paddingBottom: stylePaddingBottom,
+        lineHeight: styleLineHeight,
+      } = window.getComputedStyle(textareaElRef.value);
+      const paddingTop = Number(stylePaddingTop.slice(0, -2));
+      const paddingBottom = Number(stylePaddingBottom.slice(0, -2));
+      const lineHeight = Number(styleLineHeight.slice(0, -2));
+      const textareaMirrorEl = textareaMirrorElRef.value;
+      if (!textareaMirrorEl) return;
+      if (autosize.minRows) {
+        const minRows = Math.max(autosize.minRows, 1);
+        textareaMirrorEl.style.minHeight = `${paddingTop + paddingBottom + lineHeight * minRows}px`;
+      }
+      if (autosize.maxRows) {
+        textareaMirrorEl.style.maxHeight = `${
+          paddingTop + paddingBottom + lineHeight * autosize.maxRows
+        }px`;
+      }
+    };
+
     const vm = getCurrentInstance()!.proxy!;
 
     function doUpdateValue(value: string | [string, string]): void {
       const { onUpdateValue, 'onUpdate:value': _onUpdateValue, onInput } = props;
+      const { triggerFormInput } = formItem;
       if (onUpdateValue) call(onUpdateValue as OnUpdateValueImpl, value);
       if (_onUpdateValue) call(_onUpdateValue as OnUpdateValueImpl, value);
       if (onInput) call(onInput as OnUpdateValueImpl, value);
       uncontrolledValueRef.value = value;
+      triggerFormInput();
     }
 
     function doChange(value: string | [string, string]): void {
       const { onChange } = props;
+      const { triggerFormChange } = formItem;
       if (onChange) call(onChange as OnUpdateValueImpl, value);
       uncontrolledValueRef.value = value;
+      triggerFormChange();
     }
 
     function doBlur(e: FocusEvent) {
       const { onBlur } = props;
+      const { triggerFormBlur } = formItem;
       if (onBlur) call(onBlur, e);
+      triggerFormBlur();
+    }
+
+    function doFocus(e: FocusEvent): void {
+      const { onFocus } = props;
+      const { triggerFormFocus } = formItem;
+      if (onFocus) call(onFocus, e);
+      triggerFormFocus();
     }
 
     function doClear(e: FocusEvent) {
@@ -186,12 +246,52 @@ export default defineComponent({
       if (onClear) call(onClear, e);
     }
 
+    function doUpdateValueBlur(e: FocusEvent): void {
+      const { onInputBlur } = props;
+      if (onInputBlur) call(onInputBlur, e);
+    }
+
+    function doUpdateValueFocus(e: FocusEvent): void {
+      const { onInputFocus } = props;
+      if (onInputFocus) call(onInputFocus, e);
+    }
+
+    function doDeactivate(): void {
+      const { onDeactivate } = props;
+      if (onDeactivate) call(onDeactivate);
+    }
+
+    function doActivate(): void {
+      const { onActivate } = props;
+      if (onActivate) call(onActivate);
+    }
+
     function doClick(e: MouseEvent) {
       const { onClick } = props;
       if (onClick) call(onClick, e);
     }
 
+    function doWrapperFocus(e: FocusEvent): void {
+      const { onWrapperFocus } = props;
+      if (onWrapperFocus) call(onWrapperFocus, e);
+    }
+
+    function doWrapperBlur(e: FocusEvent): void {
+      const { onWrapperBlur } = props;
+      if (onWrapperBlur) call(onWrapperBlur, e);
+    }
+
     // methods
+    function handleCompositionStart(): void {
+      isComposingRef.value = true;
+    }
+
+    function handleCompositionEnd(e: CompositionEvent): void {
+      isComposingRef.value = false;
+      if (e.target === inputEl2Ref.value) handleInput(e, 1);
+      else handleInput(e, 0);
+    }
+
     function handleInput(
       e: InputEvent | CompositionEvent | Event,
       index: 0 | 1 = 0,
@@ -213,6 +313,109 @@ export default defineComponent({
       vm.$forceUpdate();
     }
 
+    function dealWithEvent(e: FocusEvent, type: 'focus' | 'blur'): void {
+      if (
+        e.relatedTarget !== null &&
+        (e.relatedTarget === inputElRef.value ||
+          e.relatedTarget === inputEl2Ref.value ||
+          e.relatedTarget === textareaElRef.value ||
+          e.relatedTarget === wrapperElRef.value)
+      )
+        return;
+
+      switch (type) {
+        case 'focus':
+          doFocus(e);
+          focusedRef.value = true;
+          break;
+        case 'blur':
+          doBlur(e);
+          focusedRef.value = false;
+      }
+    }
+
+    function handleInputBlur(e: FocusEvent): void {
+      doUpdateValueBlur(e);
+      if (e.relatedTarget === wrapperElRef.value) doDeactivate();
+      if (
+        e.relatedTarget === null ||
+        (e.relatedTarget !== inputElRef.value &&
+          e.relatedTarget !== inputEl2Ref.value &&
+          e.relatedTarget !== textareaElRef.value)
+      )
+        activatedRef.value = false;
+      dealWithEvent(e, 'blur');
+    }
+
+    function handleInputFocus(e: FocusEvent): void {
+      doUpdateValueFocus(e);
+      focusedRef.value = true;
+      activatedRef.value = true;
+      doActivate();
+      dealWithEvent(e, 'focus');
+    }
+
+    function handleWrapperBlur(e: FocusEvent): void {
+      if (!props.passivelyActivated) return;
+      doWrapperBlur(e);
+      dealWithEvent(e, 'blur');
+    }
+
+    function handleWrapperFocus(e: FocusEvent): void {
+      if (!props.passivelyActivated) return;
+      focusedRef.value = true;
+      doWrapperFocus(e);
+      dealWithEvent(e, 'focus');
+    }
+
+    function handleMouseEnter(): void {
+      hoverRef.value = true;
+    }
+
+    function handleMouseLeave(): void {
+      hoverRef.value = false;
+    }
+
+    function handlePasswordToggleClick(): void {
+      if (mergedDisabledRef.value) return;
+      passwordVisibleRef.value = !passwordVisibleRef.value;
+    }
+
+    function handlePasswordToggleMousedown(e: MouseEvent): void {
+      if (mergedDisabledRef.value) return;
+      e.preventDefault();
+    }
+
+    function handlePasswordToggleMouseup(e: MouseEvent): void {
+      if (mergedDisabledRef.value) return;
+      e.preventDefault();
+    }
+
+    function handleWrapperKeyDownEnter(e: KeyboardEvent): void {
+      if (!props.passivelyActivated) return;
+      const focused = activatedRef.value;
+      if (focused) {
+        if (props.internalDeactivateOnEnter) handleWrapperKeyDownEsc();
+        return;
+      }
+      e.preventDefault();
+      if (props.type === 'textarea') textareaElRef.value?.focus();
+      else inputElRef.value?.focus();
+    }
+
+    function handleWrapperKeyDown(e: KeyboardEvent): void {
+      props.onKeydown?.(e);
+      switch (e.code) {
+        case 'Escape':
+          handleWrapperKeyDownEsc();
+          break;
+        case 'Enter':
+        case 'NumpadEnter':
+          handleWrapperKeyDownEnter(e);
+          break;
+      }
+    }
+
     function handleChange(e: Event, index?: 0 | 1): void {
       handleInput(e, index, 'change');
     }
@@ -225,6 +428,68 @@ export default defineComponent({
       doClear(e);
       if (props.pair) doUpdateValue(['', '']);
       else doUpdateValue('');
+    }
+
+    function handleMouseDown(e: MouseEvent): void {
+      props.onMousedown?.(e);
+      const { tagName } = e.target as HTMLElement;
+      if (tagName === 'INPUT' || tagName === 'TEXTAREA') return;
+      if (props.resizable) {
+        const wrapperEl = wrapperElRef.value;
+        if (wrapperEl) {
+          const { left, top, width, height } = wrapperEl.getBoundingClientRect();
+          const resizeHandleSize = 14;
+          if (
+            left + width - resizeHandleSize < e.clientX &&
+            e.clientX < left + width &&
+            top + height - resizeHandleSize < e.clientY &&
+            e.clientY < top + height
+          )
+            return;
+        }
+      }
+      e.preventDefault();
+      if (!focusedRef.value) focus();
+    }
+
+    function handleWrapperKeyDownEsc(): void {
+      if (!props.passivelyActivated) return;
+      activatedRef.value = false;
+      void nextTick(() => wrapperElRef.value?.focus());
+    }
+
+    function handleTextAreaMirrorResize(): void {
+      updateTextAreaStyle();
+    }
+
+    function focus(): void {
+      if (mergedDisabledRef.value) return;
+      if (props.passivelyActivated) wrapperElRef.value?.focus();
+      else {
+        textareaElRef.value?.focus();
+        inputElRef.value?.focus();
+      }
+    }
+
+    function blur(): void {
+      if (mergedDisabledRef.value) return;
+      if (props.passivelyActivated) wrapperElRef.value?.focus();
+      else {
+        textareaElRef.value?.focus();
+        inputElRef.value?.focus();
+      }
+    }
+
+    function activate(): void {
+      if (mergedDisabledRef.value) return;
+      if (textareaElRef.value) textareaElRef.value.focus();
+      else if (inputElRef.value) inputElRef.value.focus();
+    }
+
+    function deactivate(): void {
+      const wrapperEl = wrapperElRef.value;
+      if (wrapperEl?.contains(document.activeElement) && wrapperEl !== document.activeElement)
+        handleWrapperKeyDownEsc();
     }
 
     function syncMirror(value: string | null) {
@@ -243,13 +508,46 @@ export default defineComponent({
       }
     }
 
+    let stopWatchMergedValue: WatchStopHandle | null = null;
+    watchEffect(() => {
+      const { autosize, type } = props;
+      if (autosize && type === 'textarea')
+        stopWatchMergedValue = watch(mergedValueRef, (value) => {
+          if (Array.isArray(value) || value === syncSource) return;
+          syncMirror(value);
+        });
+      else stopWatchMergedValue?.();
+    });
+
     onMounted(() => {
       const value = mergedValueRef.value;
       if (!Array.isArray(value)) {
         syncMirror(value);
       }
     });
+
+    provide(inputInjectionKey, {
+      wordCountRef: computed(() => {
+        const mergedValue = mergedValueRef.value;
+        if (mergedValue === null || Array.isArray(mergedValue)) return 0;
+        return mergedValue.length;
+      }),
+      mergedClsPrefixRef,
+      maxlengthRef,
+    });
+
+    const exposedProps: InputWrappedRef = {
+      wrapperElRef,
+      inputElRef,
+      textareaElRef,
+      isCompositing: isComposingRef,
+      focus,
+      blur,
+      activate,
+      deactivate,
+    };
     return {
+      ...exposedProps,
       // dom ref
       wrapperElRef,
       inputElRef,
@@ -264,6 +562,7 @@ export default defineComponent({
       activated: activatedRef,
       showClearButton: showClearButtonRef,
       mergedSize: mergedSizeRef,
+      mergedDisabled: mergedDisabledRef,
       mergedValue: mergedValueRef,
       mergedClsPrefix: mergedClsPrefixRef,
       mergedFocus: mergedFocusRef,
@@ -271,10 +570,25 @@ export default defineComponent({
       mergedPlaceholder: mergedPlaceholderRef,
       showPlaceholder1: showPlaceholder1Ref,
       showPlaceholder2: showPlaceholder2Ref,
+      //methods
+      handleCompositionStart,
+      handleCompositionEnd,
       handleInput,
+      handleInputBlur,
+      handleInputFocus,
+      handleWrapperBlur,
+      handleWrapperFocus,
+      handleMouseEnter,
+      handleMouseLeave,
+      handleMouseDown,
       handleChange,
       handleClick,
       handleClear,
+      handlePasswordToggleClick,
+      handlePasswordToggleMousedown,
+      handlePasswordToggleMouseup,
+      handleWrapperKeyDown,
+      handleTextAreaMirrorResize,
       mergedTheme: themeRef,
       cssVars: computed(() => {
         const size = mergedSizeRef.value;
@@ -392,7 +706,7 @@ export default defineComponent({
         class={[
           `${mergedClsPrefix}-input`,
           {
-            [`${mergedClsPrefix}-input--disabled`]: this.disabled,
+            [`${mergedClsPrefix}-input--disabled`]: this.mergedDisabled,
             [`${mergedClsPrefix}-input--textarea`]: this.type === 'textarea',
             [`${mergedClsPrefix}-input--resizable`]: this.resizable && !this.autosize,
             [`${mergedClsPrefix}-input--autosize`]: this.autosize,
@@ -403,7 +717,18 @@ export default defineComponent({
           },
         ]}
         style={this.cssVars}
+        tabindex={
+          !this.mergedDisabled && this.passivelyActivated && !this.activated ? 0 : undefined
+        }
+        onFocus={this.handleWrapperFocus}
         onClick={this.handleClick}
+        onMousedown={this.handleMouseDown}
+        onMouseenter={this.handleMouseEnter}
+        onMouseleave={this.handleMouseLeave}
+        onCompositionstart={this.handleCompositionStart}
+        onCompositionend={this.handleCompositionEnd}
+        onKeyup={this.onKeyup}
+        onKeydown={this.handleWrapperKeyDown}
       >
         {/* textarea & basic input*/}
         <div class={`${mergedClsPrefix}-input-wrapper`}>
@@ -417,14 +742,25 @@ export default defineComponent({
           {this.type === 'textarea' ? (
             <div class={`${mergedClsPrefix}-input__textarea`}>
               <textarea
+                {...this.inputProps}
                 ref="textareaElRef"
                 class={`${mergedClsPrefix}-input__textarea-el`}
-                disabled={this.disabled}
+                autofocus={this.autofocus}
+                rows={Number(this.rows)}
+                placeholder={this.placeholder as string | undefined}
+                value={this.mergedValue as string | undefined}
+                disabled={this.mergedDisabled}
+                maxlength={this.maxlength}
+                minlength={this.minlength}
+                readonly={this.readonly as any}
+                tabindex={this.passivelyActivated && !this.activated ? -1 : undefined}
+                onBlur={this.handleInputBlur}
+                onFocus={this.handleInputFocus}
                 onInput={this.handleInput}
                 onChange={this.handleChange}
               />
               {this.showPlaceholder1 ? (
-                <div class={`${mergedClsPrefix}-input__placeholder`}>
+                <div class={`${mergedClsPrefix}-input__placeholder`} key="placeholder">
                   {this.mergedPlaceholder[0]}
                 </div>
               ) : null}

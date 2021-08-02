@@ -3,6 +3,8 @@ import type { CNode } from 'css-render';
 import type { InputTheme } from '/@/input/styles/light';
 import type { InputSize } from '/@/input/src/interface';
 import type { ButtonSize } from '/@/button/src/interface';
+import { Hljs } from '/@/_mixins/use-hljs';
+import { KDateLocale } from '/@/locales/date';
 
 export interface GlobalThemeWithoutCommon {
   Input?: InputTheme;
@@ -57,12 +59,12 @@ export type RtlProp = RtlItem[];
 
 export type RtlEnabledState = Partial<Record<keyof GlobalThemeWithoutCommon, RtlItem>>;
 
-export interface ConfigProviderInjection {
+export interface KConfigProviderInjection {
   mergedClsPrefixRef: Ref<string | undefined>;
   mergedBorderedRef: Ref<boolean | undefined>;
   mergedNamespaceRef: Ref<string | undefined>;
   mergedLocaleRef: Ref<NLocale | undefined>;
-  mergedDateLocaleRef: Ref<NDateLocale | undefined>;
+  mergedDateLocaleRef: Ref<KDateLocale | undefined>;
   mergedHljsRef: Ref<Hljs | undefined>;
   mergedComponentPropsRef: Ref<GlobalComponentConfig | undefined>;
   mergedIconsRef: Ref<GlobalIconConfig | undefined>;

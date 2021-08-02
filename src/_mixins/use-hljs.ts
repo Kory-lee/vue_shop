@@ -1,4 +1,4 @@
-import { HLJSApi } from 'highlight.js';
+import type { HLJSApi } from 'highlight.js';
 
 interface UseHljsProps {
   hljs?: unknown;
@@ -7,5 +7,5 @@ interface UseHljsProps {
 
 export interface Hljs {
   highlight: HLJSApi['highlight'];
-  getLauguage: HLJSApi['getLanguage'];
+  getLanguage: HLJSApi['getLanguage'];
 }

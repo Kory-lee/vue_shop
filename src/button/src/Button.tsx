@@ -60,7 +60,7 @@ export default defineComponent({
     );
 
     const { mergedClsPrefixRef } = useConfig(props);
-    const { ConfigProvider } = useConfig(props);
+    const { KConfigProvider } = useConfig(props);
     const themeRef = useTheme('Button', 'Button', style, buttonLight, props, mergedClsPrefixRef);
     const { mergedSizeRef } = useFormItem(
       {},
@@ -117,7 +117,7 @@ export default defineComponent({
       enterPressedRef.value = false;
     }
 
-    const rtlEnabledRef = useRtl('Button', ConfigProvider?.mergedRtlRef, mergedClsPrefixRef);
+    const rtlEnabledRef = useRtl('Button', KConfigProvider?.mergedRtlRef, mergedClsPrefixRef);
     return {
       selfRef,
       mergedClsPrefix: mergedClsPrefixRef,

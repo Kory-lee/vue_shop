@@ -1,7 +1,7 @@
 import { enUS } from 'date-fns/locale';
-import { NDateLocale } from '.';
+import { KDateLocale } from '.';
 
-const dateEnUs: NDateLocale = {
+const dateEnUs: KDateLocale = {
   name: 'en-US',
   locale: enUS,
 };

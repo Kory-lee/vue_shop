@@ -1,5 +1,5 @@
 import type { Locale } from 'date-fns';
-export interface NDateLocale {
+export interface KDateLocale {
   name: string;
   locale: Locale;
 }

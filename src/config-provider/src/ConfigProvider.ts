@@ -1,9 +1,9 @@
 import type { InjectionKey, PropType, ComputedRef } from 'vue';
 import type { GlobalTheme, GlobalThemeOverrides } from './interface';
-import type { NDateLocale } from '/@/locales/date';
+import type { KDateLocale } from '/@/locales/date';
 import type { Hljs } from '/@/_mixins/use-hljs';
 import type {
-  ConfigProviderInjection,
+  KConfigProviderInjection,
   GlobalComponentConfig,
   GlobalIconConfig,
   RtlEnabledState,
@@ -14,7 +14,7 @@ import { defineComponent, h, inject, renderSlot, computed, provide, warn, markRa
 import { merge } from 'lodash-es';
 import { useMemo } from 'vooks';
 
-export const configProviderInjectionKey: InjectionKey<ConfigProviderInjection> =
+export const configProviderInjectionKey: InjectionKey<KConfigProviderInjection> =
   Symbol('configProviderInjection');
 
 export const configProviderProps = {
@@ -24,8 +24,8 @@ export const configProviderProps = {
     default: undefined,
   },
   clsPrefix: String,
-  locale: Object as PropType<NDateLocale | null>,
-  dateLocale: Object as PropType<NDateLocale | null>,
+  locale: Object as PropType<KDateLocale | null>,
+  dateLocale: Object as PropType<KDateLocale | null>,
   namespace: String,
   rtl: Array as PropType<RtlProp>,
   tag: { type: String, default: 'div' },

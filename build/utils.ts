@@ -3,7 +3,7 @@ import parser from '@babel/parser';
 import traverse from '@babel/traverse';
 import generator from '@babel/generator';
 
-export function wrapperEnv(envConfig: any): ViteEnv {
+export function wrapperEnv(envConfig: any) {
   const ret: any = [];
   for (const envName of Object.keys(envConfig)) {
     let realName = envConfig[envName].replace(/\\n/g, '\n');
