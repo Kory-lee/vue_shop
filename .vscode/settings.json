@@ -9,6 +9,7 @@
   "i18n-ally.sourceLanguage": "zh",
   "i18n-ally.enabledFrameworks": ["vue", "react"],
   "cSpell.words": [
+    "Cascader",
     "VITE",
     "Vuex",
     "Windi",
