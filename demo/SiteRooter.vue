@@ -4,6 +4,7 @@
       <KInput
         type="input"
         v-model:value="inputValue"
+        clearable
         placeholder="hello"
         @update:value="handleInput"
         @change="handleChange"

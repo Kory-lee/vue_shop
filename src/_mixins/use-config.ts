@@ -10,7 +10,7 @@ type UseConfigProps = Readonly<{
 export const defaultClsPrefix = `k`;
 
 export default function useConfig(
-  props: UseConfigProps,
+  props: UseConfigProps = {},
   options: { defaultBordered?: boolean } = { defaultBordered: true }
 ): {
   KConfigProvider: KConfigProviderInjection | null;

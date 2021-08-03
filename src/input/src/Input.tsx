@@ -37,6 +37,10 @@ import { createKey } from '/@/_utils/cssr';
 import { getPadding } from 'seemly';
 import { inputInjectionKey } from '/@/input/src/interface';
 import WordCount from './WordCount';
+import { BaseIcon } from '/@/_internal/icon';
+import Eye from '/@/_internal/icons/Eye';
+import EyeOff from '/@/_internal/icons/EyeOff';
+import { BaseClear } from '/@/_internal/clear';
 
 const inputProps = {
   ...(useTheme.props as ThemeProps<InputTheme>),
@@ -167,11 +171,20 @@ export default defineComponent({
     });
 
     const showClearButtonRef = computed(() => {
-      if (props.disabled || !props.clearable || (!mergedFocusRef.value && !hoverRef.value))
+      if (
+        mergedDisabledRef.value ||
+        props.readonly ||
+        !props.clearable ||
+        (!mergedFocusRef.value && !hoverRef.value)
+      )
         return false;
-      const mergedValue = mergedValueRef;
-      const mergedFocus = mergedFocusRef;
-      if (props.pair) return !!Array.isArray(mergedValue) && (mergedValue[0] || mergedValue[1]);
+      const mergedValue = mergedValueRef.value;
+      const mergedFocus = mergedFocusRef.value;
+      if (props.pair)
+        return (
+          !!(Array.isArray(mergedValue) && (mergedValue[0] || mergedValue[1])) &&
+          (hoverRef.value || mergedFocus)
+        );
       return !!mergedValue && (hoverRef.value || mergedFocus);
     });
 
@@ -830,9 +843,31 @@ export default defineComponent({
             this.loading !== undefined) ? (
             <div class={`${mergedClsPrefix}-input__suffix`}>
               {[
-                'clear-icon',
+                this.clearable || this.$slots.clear ? (
+                  <BaseClear
+                    clsPrefix={mergedClsPrefix}
+                    show={this.showClearButton}
+                    onClear={this.handleClear}
+                  >
+                    {{
+                      default: () => renderSlot(this.$slots, 'clear'),
+                    }}
+                  </BaseClear>
+                ) : null,
                 renderSlot(this.$slots, 'suffix'),
                 this.showCount && this.type !== 'textarea' ? <WordCount /> : null,
+                this.showPasswordToggle && this.type === 'password' ? (
+                  <BaseIcon
+                    clsPrefix={mergedClsPrefix}
+                    class={`${mergedClsPrefix}-input__eye`}
+                    onMousedown={this.handlePasswordToggleMousedown}
+                    onMouseup={this.handlePasswordToggleMouseup}
+                  >
+                    {{
+                      default: () => (this.passwordVisible ? <Eye /> : <EyeOff />),
+                    }}
+                  </BaseIcon>
+                ) : null,
               ]}
             </div>
           ) : null}

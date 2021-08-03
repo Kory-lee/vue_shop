@@ -6,6 +6,7 @@ import { OUTPUT_DIR } from './build/constant';
 import { wrapperEnv } from './build/utils';
 import { createVitePlugins } from './build/vite/plugins';
 import { createProxy } from './build/vite/proxy';
+// import { babel } from '@rollup/plugin-babel';
 
 const pathResolve = (dir: string): string => resolve(process.cwd(), '.', dir);
 
@@ -40,12 +41,26 @@ export default ({ mode }: ConfigEnv): UserConfig => {
     },
     plugins: createVitePlugins(),
     optimizeDeps: {
-      include: [],
+      include: [
+        '@css-render/plugin-bem',
+        'async-validator',
+        'css-render',
+        'date-fns',
+        'evtd',
+        'highlight.js',
+        'lodash-es',
+        'seemly',
+        'vooks',
+        'vue',
+        'vue-router',
+        'vueuc',
+      ],
       exclude: [],
     },
     esbuild: {
       jsxFactory: 'h',
       jsxFragment: 'Fragment',
+      jsxInject: `import {h} from 'vue'`,
     },
   };
 };
