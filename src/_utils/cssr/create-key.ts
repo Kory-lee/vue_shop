@@ -82,7 +82,7 @@ type UpperFirst<T> = T extends `${infer P}${string}` ? `${characterMap[P]}${Rest
 
 export function createKey<P extends string, S extends string>(
   prefix: P,
-  suffix: S = 'default'
+  suffix: S
 ): S extends 'default' ? P : `${P}${UpperFirst<S>}` {
   return (prefix +
     (suffix === 'default'

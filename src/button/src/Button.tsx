@@ -1,6 +1,6 @@
 import type { ButtonTheme } from '/@/button/styles';
 import type { ButtonSize, ButtonType } from '/@/button/src/interface';
-import { BaseWaveRef, BaseWave } from '/@/_internal/wave';
+import type { ExtractPublicPropTypes } from '/@/_utils/ui/extract-public-props';
 
 import {
   computed,
@@ -22,6 +22,7 @@ import { buttonLight } from '/@/button/styles';
 import { createKey } from '/@/_utils/cssr';
 import { createHoverColor, createPressedColor } from '/@/_utils/color';
 import useFormItem from '/@/_mixins/use-form-item';
+import { BaseWaveRef, BaseWave } from '/@/_internal/wave';
 
 export type ButtonProps = ExtractPublicPropTypes<typeof buttonProps>;
 
