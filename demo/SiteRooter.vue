@@ -15,7 +15,7 @@
           >test{{ item }}
         </KButton>
       </KSpace>
-      <k-el tag="k-button">帆帆帆帆</k-el>
+      <k-el tag="span">帆帆帆帆</k-el>
     </div>
   </component>
 </template>
