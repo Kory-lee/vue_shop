@@ -1,8 +1,23 @@
-import { defineComponent, inject, PropType, renderSlot } from 'vue';
+import {
+  defineComponent,
+  inject,
+  PropType,
+  renderSlot,
+  getCurrentInstance,
+  CSSProperties,
+} from 'vue';
 import { ExtractPublicPropTypes } from '/@/_utils/ui/extract-public-props';
 import { gridInjectionKey } from '/@/grid/src/Grid';
+import { pxfy } from 'seemly';
 
 export const defaultSpan = 1;
+
+interface GridItemVNodeProps {
+  privateOffset?: number;
+  privateSpan?: number;
+  privateColStart?: number;
+  privateShow: boolean;
+}
 
 export const gridItemProps = {
   span: { type: [Number, String] as PropType<string | number>, default: defaultSpan },
@@ -22,15 +37,39 @@ export default defineComponent({
   name: 'GridItem',
   alias: ['Gi'],
   props: gridItemProps,
-  setup(props) {
-    const { xGapRef, itemStyleRef, overflowRef } = inject(gridInjectionKey, {});
+  setup() {
+    const { xGapRef, itemStyleRef, overflowRef } = inject(gridInjectionKey)!;
+    const self = getCurrentInstance();
 
     return {
       overflow: overflowRef,
       itemStyle: itemStyleRef,
+      deriveStyle: () => {
+        // Here is quite a hack, I hope there is a better way to solve it
+        const {
+          privateSpan = defaultSpan,
+          privateShow = true,
+          privateColStart = undefined,
+          privateOffset = 0,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        } = self!.vnode.props as GridItemVNodeProps;
+        const { value: xGap } = xGapRef;
+        const mergedXGap = pxfy(xGap || 0);
+        return {
+          display: !privateShow ? 'none' : '',
+          gridColumn: `${privateColStart ?? `span ${privateSpan}`} / span ${privateSpan}`,
+          marginLeft: privateOffset
+            ? `calc((100% - (${privateSpan} - 1) * ${mergedXGap}) / ${privateSpan} * ${privateOffset} + ${mergedXGap} * ${privateOffset})`
+            : '',
+        };
+      },
     };
   },
   render() {
-    return <div style>{renderSlot(this.$slots, 'default', { overflow: this.overflow })}</div>;
+    return (
+      <div style={[this.itemStyle, this.deriveStyle()] as unknown as CSSProperties}>
+        {renderSlot(this.$slots, 'default', { overflow: this.overflow })}
+      </div>
+    );
   },
 });
