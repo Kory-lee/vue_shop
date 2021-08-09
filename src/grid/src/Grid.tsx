@@ -18,6 +18,7 @@ import { VResizeObserver, VResizeObserverOnResize } from 'vueuc';
 import getSlot from '/@/_utils/vue/getSlot';
 import { flatten } from '/@/_utils/vue/flatten';
 import { defaultSpan } from './GridItem';
+import { ExtractPublicPropTypes } from '/@/_utils/ui/extract-public-props';
 
 const defaultCols = 24;
 
@@ -30,6 +31,8 @@ const gridProps = {
   xGap: { type: [Number, String] as PropType<number | string>, default: 0 },
   yGap: { type: [Number, String] as PropType<number | string>, default: 0 },
 };
+
+export type GridProps = ExtractPublicPropTypes<typeof gridProps>;
 
 export interface GridInjection {
   itemStyleRef: Ref<CSSProperties | string | undefined>;

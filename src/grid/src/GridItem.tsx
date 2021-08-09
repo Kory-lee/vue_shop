@@ -1,12 +1,6 @@
-import {
-  defineComponent,
-  inject,
-  PropType,
-  renderSlot,
-  getCurrentInstance,
-  CSSProperties,
-} from 'vue';
-import { ExtractPublicPropTypes } from '/@/_utils/ui/extract-public-props';
+import type { ExtractPublicPropTypes } from '/@/_utils/ui/extract-public-props';
+
+import { defineComponent, inject, PropType, renderSlot, CSSProperties, computed } from 'vue';
 import { gridInjectionKey } from '/@/grid/src/Grid';
 import { pxfy } from 'seemly';
 
@@ -37,14 +31,14 @@ export default defineComponent({
   name: 'GridItem',
   alias: ['Gi'],
   props: gridItemProps,
-  setup() {
+  setup(props) {
     const { xGapRef, itemStyleRef, overflowRef } = inject(gridInjectionKey)!;
-    const self = getCurrentInstance();
+    // const self = getCurrentInstance();
 
     return {
       overflow: overflowRef,
       itemStyle: itemStyleRef,
-      deriveStyle: () => {
+      deriveStyle: computed(() => {
         // Here is quite a hack, I hope there is a better way to solve it
         const {
           privateSpan = defaultSpan,
@@ -52,7 +46,7 @@ export default defineComponent({
           privateColStart = undefined,
           privateOffset = 0,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        } = self!.vnode.props as GridItemVNodeProps;
+        } = props as GridItemVNodeProps;
         const { value: xGap } = xGapRef;
         const mergedXGap = pxfy(xGap || 0);
         return {
@@ -62,12 +56,12 @@ export default defineComponent({
             ? `calc((100% - (${privateSpan} - 1) * ${mergedXGap}) / ${privateSpan} * ${privateOffset} + ${mergedXGap} * ${privateOffset})`
             : '',
         };
-      },
+      }),
     };
   },
   render() {
     return (
-      <div style={[this.itemStyle, this.deriveStyle()] as unknown as CSSProperties}>
+      <div style={[this.itemStyle, this.deriveStyle] as unknown as CSSProperties}>
         {renderSlot(this.$slots, 'default', { overflow: this.overflow })}
       </div>
     );
