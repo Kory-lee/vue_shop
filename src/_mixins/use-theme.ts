@@ -1,4 +1,4 @@
-import type { PropType, Ref } from 'vue';
+import type { ComputedRef, PropType, Ref } from 'vue';
 import type { ThemeCommonVars } from '/@/_styles/common';
 import type { CNode } from 'css-render';
 
@@ -29,6 +29,12 @@ export type ExtractThemeVars<T> = T extends Theme<unknown, infer U, unknown>
     : U
   : {};
 
+export type ExtractMergedPeerOverrides<T> = T extends Theme<unknown, unknown, infer V>
+  ? {
+      [k in keyof V]?: ExtractPeerOverrides<V[k]>;
+    }
+  : T;
+
 export function createTheme<N extends string, T, R>(theme: Theme<N, T, R>): Theme<N, T, R> {
   return theme;
 }
@@ -46,6 +52,15 @@ export type ExtractPeerOverrides<T> = T extends Theme<unknown, unknown, infer V>
     }
   : T;
 
+export type MergedTheme<T> = T extends Theme<unknown, infer V, infer W>
+  ? {
+      common: ThemeCommonVars;
+      self: V;
+      peers: W;
+      peerOverrides: ExtractMergedPeerOverrides<T>;
+    }
+  : T;
+
 export function useTheme<N, T, R>(
   resolveId,
   mountId: string,
@@ -53,7 +68,7 @@ export function useTheme<N, T, R>(
   defaultTheme: Theme<N, T, R>,
   props: UseThemeProps<Theme<N, T, R>>,
   clsPrefixRef?: Ref<string | undefined>
-) {
+): ComputedRef<MergedTheme<Theme<N, T, R>>> {
   const ssrAdapter = useSsrAdapter();
   if (style) {
     const mountStyle = (): void => {

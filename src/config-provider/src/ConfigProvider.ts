@@ -13,6 +13,7 @@ import type {
 import { defineComponent, h, inject, renderSlot, computed, provide, warn, markRaw } from 'vue';
 import { merge } from 'lodash-es';
 import { useMemo } from 'vooks';
+import { defaultClsPrefix } from '/@/_mixins/use-config';
 
 export const configProviderInjectionKey: InjectionKey<KConfigProviderInjection> =
   Symbol('configProviderInjection');
@@ -140,7 +141,7 @@ export default defineComponent({
       ? h(
           this.as || this.tag,
           {
-            class: `${this.mergedClsPrefix}-config-provider`,
+            class: `${this.mergedClsPrefix || defaultClsPrefix}-config-provider`,
           },
           renderSlot(this.$slots, 'default')
         )

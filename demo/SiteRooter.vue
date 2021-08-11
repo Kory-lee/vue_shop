@@ -16,50 +16,7 @@
         </KButton>
       </KSpace>
       <k-el tag="span">帆帆帆帆</k-el>
-      <k-grid cols="2 400:4 600:6">
-        <k-grid-item>
-          <div class="light-green">1</div>
-        </k-grid-item>
-        <k-grid-item>
-          <div class="green">2</div>
-        </k-grid-item>
-        <k-grid-item>
-          <div class="light-green">3</div>
-        </k-grid-item>
-        <k-grid-item>
-          <div class="green">4</div>
-        </k-grid-item>
-        <k-grid-item>
-          <div class="light-green">5</div>
-        </k-grid-item>
-        <k-grid-item>
-          <div class="green">6</div>
-        </k-grid-item>
-      </k-grid>
-
-      <k-grid cols="2 s:3 m:4 l:5 xl:6 2xl:7" responsive="screen">
-        <k-grid-item>
-          <div class="light-green">1</div>
-        </k-grid-item>
-        <k-grid-item>
-          <div class="green">2</div>
-        </k-grid-item>
-        <k-grid-item>
-          <div class="light-green">3</div>
-        </k-grid-item>
-        <k-grid-item>
-          <div class="green">4</div>
-        </k-grid-item>
-        <k-grid-item>
-          <div class="light-green">5</div>
-        </k-grid-item>
-        <k-grid-item>
-          <div class="green">6</div>
-        </k-grid-item>
-        <k-grid-item>
-          <div class="light-green">7</div>
-        </k-grid-item>
-      </k-grid>
+      <k-divider title-placement="right">哗啦啦</k-divider>
     </div>
   </component>
 </template>
@@ -88,15 +45,5 @@
 <style>
   .demo {
     padding: 30px;
-  }
-
-  .light-green {
-    height: 108px;
-    background-color: rgba(0, 128, 0, 0.12);
-  }
-
-  .green {
-    height: 108px;
-    background-color: rgba(0, 128, 0, 0.24);
   }
 </style>
