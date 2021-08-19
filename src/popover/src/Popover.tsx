@@ -1,12 +1,25 @@
-import type { InternalRenderBody } from './interface';
+import type { InternalRenderBody, PopoverTrigger } from './interface';
+import type { ExtractPublicPropTypes } from '/@/_utils/ui/extract-public-props';
 
-import { defineComponent, PropType, Fragment, toRef } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import useTheme from '/@/_mixins/use-theme';
-import { VBinder } from 'vueuc';
-import { ExtractPublicPropTypes } from '/@/_utils/ui/extract-public-props';
+import { FollowerPlacement, VBinder } from 'vueuc';
 
 export const popoverBaseProps = {
-  show: Boolean,
+  show: Boolean as PropType<boolean | undefined>,
+  defaultShow: Boolean,
+  showArrow: { type: Boolean, default: true },
+  trigger: {
+    type: String as PropType<PopoverTrigger>,
+    default: 'hover',
+  },
+  delay: { type: Number, default: 100 },
+  duration: { type: Number, default: 100 },
+  raw: Boolean,
+  placement: { type: String as PropType<FollowerPlacement>, default: 'top' },
+  x: Number,
+  y: Number,
+  disabled: Boolean,
 };
 
 const popoverProps = {
@@ -30,7 +43,7 @@ export default defineComponent({
       <VBinder>
         {{
           default: () => {
-            return <Fragment></Fragment>;
+            return [];
           },
         }}
       </VBinder>

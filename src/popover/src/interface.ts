@@ -1,5 +1,7 @@
 import type { CSSProperties, Ref, VNode } from 'vue';
 
+export type PopoverTrigger = 'click' | 'hover' | 'focus' | 'manual';
+
 export type InternalRenderBody = (
   className: any,
   ref: Ref<HTMLElement | null>,
