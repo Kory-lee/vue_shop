@@ -14,6 +14,12 @@
         <KButton v-for="item in 3" :key="item" :disabled="item === 2" @click="handleInput"
           >test{{ item }}
         </KButton>
+        <k-popover trigger="click" placement="right">
+          <template #trigger>
+            <k-button> 悬浮 </k-button>
+          </template>
+          <span>或许不想知道你的花园长得咋样</span>
+        </k-popover>
       </KSpace>
       <k-el tag="span">帆帆帆帆</k-el>
       <k-divider title-placement="right">哗啦啦</k-divider>
@@ -44,13 +50,6 @@
           </tr>
         </tbody>
       </k-table>
-
-      <k-popover trigger="click" placement="right">
-        <template #trigger>
-          <k-button> 悬浮 </k-button>
-        </template>
-        <span>或许不想知道你的花园长得咋样</span>
-      </k-popover>
     </div>
   </component>
 </template>
