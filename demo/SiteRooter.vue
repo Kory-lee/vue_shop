@@ -44,6 +44,13 @@
           </tr>
         </tbody>
       </k-table>
+
+      <k-popover trigger="click" placement="right">
+        <template #trigger>
+          <k-button> 悬浮 </k-button>
+        </template>
+        <span>或许不想知道你的花园长得咋样</span>
+      </k-popover>
     </div>
   </component>
 </template>

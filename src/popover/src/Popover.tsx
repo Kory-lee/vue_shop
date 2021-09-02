@@ -14,13 +14,16 @@ import {
   Ref,
   provide,
   toRef,
+  mergeProps,
 } from 'vue';
-import useTheme from '/@/_mixins/use-theme';
+import useTheme, { ThemeProps } from '/@/_mixins/use-theme';
 import { FollowerPlacement, VBinder, VTarget } from 'vueuc';
 import { call, MaybeArray } from '/@/_utils/vue/call';
 import { useCompitable, useIsMounted, useMemo, useMergedState } from 'vooks';
 import { getFirstSlotVNode } from '/@/_utils/vue/getFirstSlotVNode';
-import PopoverBody from '/@/popover/src/PopoverBody';
+import PopoverBody, { popoverBodyProps } from '/@/popover/src/PopoverBody';
+import { PopoverTheme } from '/@/popover/styles';
+import { pick } from 'lodash-es';
 
 interface BodyInstance {
   syncPosition: () => void;
@@ -43,7 +46,7 @@ export interface PopoverInjection {
 export const popoverInjectionKey = Symbol('Popover');
 
 export const popoverBaseProps = {
-  show: Boolean as PropType<boolean | undefined>,
+  show: { type: Boolean as PropType<boolean | undefined>, default: undefined },
   defaultShow: Boolean,
   showArrow: { type: Boolean, default: true },
   trigger: {
@@ -113,12 +116,14 @@ export const popoverBaseProps = {
 };
 
 const popoverProps = {
-  ...useTheme.props,
+  ...(useTheme.props as ThemeProps<PopoverTheme>),
   ...popoverBaseProps,
   internalRenderBody: Function as PropType<InternalRenderBody>,
 };
 
 export type PopoverProps = ExtractPublicPropTypes<typeof popoverBaseProps>;
+
+const bodyPropKeys = Object.keys(popoverBodyProps) as Array<keyof typeof popoverBodyProps>;
 
 const triggerEventMap = {
   focus: ['onFocus', 'onBlur'],
@@ -260,7 +265,7 @@ export default defineComponent({
       if (props.trigger !== 'click' || props.disabled) return;
       clearShowTimer();
       clearHideTimer();
-      doUpdateShow(unref(mergedShowRef));
+      doUpdateShow(!unref(mergedShowRef));
     }
     function setShow(value: boolean): void {
       uncontrolledShowRef.value = value;
@@ -303,32 +308,40 @@ export default defineComponent({
     };
   },
   render() {
+    const renderTriggerVNode = () => {
+      if (this.positionManually) return null;
+      const triggerVNode = this.$slots.activator
+        ? getFirstSlotVNode(this.$slots, 'activator')
+        : getFirstSlotVNode(this.$slots, 'trigger');
+      if (triggerVNode) {
+        appendEvents(triggerVNode, this.positionManually ? 'manual' : this.trigger, {
+          onClick: this.handleClick,
+          onMouseenter: this.handleMouseEnter,
+          onMouseleave: this.handleMouseLeave,
+          onFocus: this.handleFocus,
+          onBlur: this.handleBlur,
+        });
+      }
+      this.setTriggerVNode(triggerVNode);
+      return <VTarget>{{ default: () => triggerVNode }}</VTarget>;
+    };
+
     return (
       <VBinder>
         {{
           default: () => {
-            let triggerVNode: VNode | null;
-            if (!this.positionManually) {
-              if (this.$slots.activator) triggerVNode = getFirstSlotVNode(this.$slots, 'activator');
-              else triggerVNode = getFirstSlotVNode(this.$slots, 'trigger');
-              if (triggerVNode) {
-                //   triggerVNode = cloneVNode(triggerVNode);
-                //   triggerVNode =
-                //     triggerVNode.type === textVNodeType ? <span>{triggerVNode}</span> : triggerVNode;
-                appendEvents(triggerVNode, this.positionManually ? 'manual' : this.trigger, {
-                  onClick: this.handleClick,
-                  onMouseenter: this.handleMouseEnter,
-                  onMouseleave: this.handleMouseLeave,
-                  onFocus: this.handleFocus,
-                  onBlur: this.handleBlur,
-                });
-              }
-              this.setTriggerVNode(triggerVNode);
-            }
             void this.mergedShowConsideringDisabledProp;
             return [
-              this.positionManually ? null : <VTarget>{{ default: () => triggerVNode }}</VTarget>,
-              <PopoverBody />,
+              renderTriggerVNode(),
+              <PopoverBody
+                {...mergeProps(pick(this.$props, bodyPropKeys), {
+                  ...this.$attrs,
+                  showArrow: this.mergedShowArrow,
+                  show: this.mergedShow,
+                })}
+              >
+                {this.$slots}
+              </PopoverBody>,
             ];
           },
         }}

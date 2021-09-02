@@ -1,4 +1,4 @@
-import { inject, PropType, unref } from 'vue';
+import { ComputedRef, inject, PropType, unref } from 'vue';
 import { popoverBodyInjectionKey } from '/@/popover/src/interface';
 import { useMemo } from 'vooks';
 
@@ -7,7 +7,7 @@ interface UseAdjustedToProps {
   [key: string]: unknown;
 }
 const teleportDisabled = '__disabled__';
-export function useAdjustedTo(props: UseAdjustedToProps) {
+export function useAdjustedTo(props: UseAdjustedToProps): ComputedRef<HTMLElement | string> {
   const popover = inject(popoverBodyInjectionKey, null);
   return useMemo(() => {
     const { to } = props;
@@ -16,7 +16,8 @@ export function useAdjustedTo(props: UseAdjustedToProps) {
       if (to === true) return 'body';
       return to;
     }
-    if (unref(popover)) return unref(popover);
+    const unrefPopover = unref(popover);
+    if (unrefPopover) return unrefPopover;
     return to ?? 'body';
   });
 }
