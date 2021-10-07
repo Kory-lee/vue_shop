@@ -1,3 +1,4 @@
+export * from './code';
 export * from './button';
 export * from './divider';
 export * from './config-provider';

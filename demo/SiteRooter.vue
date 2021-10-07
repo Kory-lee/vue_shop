@@ -51,6 +51,7 @@
         </tbody>
       </k-table>
     </div>
+      <k-code>1234fff</k-code>
   </component>
 </template>
 
