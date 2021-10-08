@@ -12,6 +12,18 @@ const charts: AppRouteModule = {
   meta: { orderNo: 500, icon: 'ion:bar-chart-outline', title: t('routes.demo.charts.charts') },
   children: [
     {
+      path: 'baidu-map',
+      name: 'BaiduMap',
+      meta: { title: '百度地图' },
+      component: () => import('/@/views/demo/charts/map/Baidu.vue'),
+    },
+    {
+      path: 'gaode-map',
+      name: 'GaodeMap',
+      meta: { title: '高德地图' },
+      component: () => import('/@/views/demo/charts/map/Gaode.vue'),
+    },
+    {
       path: 'echarts',
       name: 'Echarts',
       component: getParentLayout('Echarts'),

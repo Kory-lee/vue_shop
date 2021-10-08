@@ -5,6 +5,7 @@
     content-class="p-4"
     content="由于刷新的时候会请求用户信息接口，会根据接口重置角色信息，所以刷新后界面会恢复原样，如果不需要，可以注释 src/layout/default/index内的获取用户信息接口"
   >
+    <CurrentPermissionMode />
     <p>
       <span>当前角色</span>
       <a>{{ userStore.getRoleList }}</a>
@@ -31,17 +32,28 @@
   import { useUserStore } from '/@/store/modules/user';
   import { RoleEnum } from '/@/enums/roleEnum';
   import { usePermission } from '/@/hooks/web/usePermission';
+  import CurrentPermissionMode from '/@/views/demo/permission/CurrentPermissionMode.vue';
 
   export default defineComponent({
     name: 'PermissionFrontDemo',
-    components: { ButtonGroup: Button.Group, Button, PageWrapper, Alert },
+    components: { CurrentPermissionMode, ButtonGroup: Button.Group, Button, PageWrapper, Alert },
     setup() {
-      const { changeRole } = usePermission(),
-        userStore = useUserStore(),
-        isSupper = computed(() => userStore.getRoleList.includes(RoleEnum.SUPER)),
-        isTest = computed(() => userStore.getRoleList.includes(RoleEnum.TEST));
+      const { changeRole } = usePermission();
+      const userStore = useUserStore();
 
-      return { userStore, RoleEnum, isSupper, isTest, changeRole };
+      return {
+        userStore,
+        RoleEnum,
+        isSupper: computed(() => userStore.getRoleList.includes(RoleEnum.SUPER)),
+        isTest: computed(() => userStore.getRoleList.includes(RoleEnum.TEST)),
+        changeRole,
+      };
     },
   });
 </script>
+
+<style lang="less" scoped>
+  .demo {
+    background-color: @component-background;
+  }
+</style>

@@ -10,6 +10,7 @@ import { useMultipleTabsStore } from '/@/store/modules/multipleTabs';
 import router, { resetRouter } from '/@/router';
 import { usePermissionStore } from '/@/store/modules/permission';
 import { useTabs } from '/@/hooks/web/useTabs';
+import { intersection } from 'lodash-es';
 
 export function usePermission() {
   const userStore = useUserStore(),
@@ -21,7 +22,7 @@ export function usePermission() {
     configStore.setProjectConfig({
       permissionMode:
         projectSetting.permissionMode === PermissionModeEnum.BACK
-          ? PermissionModeEnum.ROLE
+          ? PermissionModeEnum.ROUTE_MAPPING
           : PermissionModeEnum.BACK,
     });
     location.reload();
@@ -38,8 +39,28 @@ export function usePermission() {
     await closeAll();
   }
 
+  function hasPermission(value?: RoleEnum | RoleEnum[] | string | string[], def = true): boolean {
+    if (!value) return def;
+    const permMode = projectSetting.permissionMode;
+    if ([PermissionModeEnum.ROUTE_MAPPING, PermissionModeEnum.ROLE].includes(permMode)) {
+      if (!isArray(value)) {
+        return userStore.getRoleList?.includes(value as RoleEnum);
+      }
+
+      return intersection(value, userStore.getRoleList).length > 0;
+    }
+    if (PermissionModeEnum.BACK === permMode) {
+      const allCodeList = permissionStore.getPermCodeList;
+      if (!isArray(value)) {
+        return allCodeList.includes(value);
+      }
+      return intersection(value, allCodeList).length > 0;
+    }
+    return true;
+  }
+
   async function changeRole(roles: RoleEnum | RoleEnum[]): Promise<void> {
-    if (projectSetting.permissionMode !== PermissionModeEnum.ROLE)
+    if (projectSetting.permissionMode !== PermissionModeEnum.ROUTE_MAPPING)
       throw new Error(
         'please switch permissionModeEnum to ROLE mode in the configuration to operate'
       );
@@ -47,5 +68,8 @@ export function usePermission() {
     userStore.setRoleList(roles);
     await resume();
   }
-  return { togglePermissionMode, changeRole, resume };
+  async function refreshMenu() {
+    resume();
+  }
+  return { togglePermissionMode, changeRole, hasPermission, resume, refreshMenu };
 }

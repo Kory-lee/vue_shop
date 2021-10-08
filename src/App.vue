@@ -10,12 +10,14 @@
   import { initConfigStore } from '/@/logics/init';
   import { useLocale } from '/@/hooks/web/useLocale';
   import 'virtual:windi.css';
+  import { useTitle } from '/@/hooks/web/useTitle';
 
   export default defineComponent({
     name: 'App',
     components: { Provider },
     setup() {
       initConfigStore();
+      useTitle();
       const { getAntdLocale } = useLocale();
 
       return { getAntdLocale };

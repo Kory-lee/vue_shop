@@ -27,6 +27,30 @@ const permission: AppRouteModule = {
         },
       ],
     },
+    {
+      path: 'back',
+      name: 'PermissionBackDemo',
+      component: getParentLayout('PermissionBackDemo'),
+      meta: { title: t('routes.demo.permission.back') },
+      children: [
+        {
+          path: 'page',
+          name: 'BackAuthPage',
+          component: () => import('/@/views/demo/permission/back/index.vue'),
+          meta: {
+            title: t('routes.demo.permission.backPage'),
+          },
+        },
+        {
+          path: 'btn',
+          name: 'BackAuthBtn',
+          component: () => import('/@/views/demo/permission/back/Btn.vue'),
+          meta: {
+            title: t('routes.demo.permission.backBtn'),
+          },
+        },
+      ],
+    },
   ],
 };
 
