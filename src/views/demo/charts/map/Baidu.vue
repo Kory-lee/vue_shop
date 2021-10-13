@@ -1,9 +1,46 @@
 <template>
-  <div>baidu</div>
+  <div ref="wrapRef" :style="{ height, width }"></div>
 </template>
 
-<script>
-  export default {
+<script lang="ts">
+  import { defineComponent, nextTick, onMounted, ref, unref } from 'vue';
+  import { useScript } from '/@/hooks/web/useScript';
+
+  const BAI_DU_MAP_URL =
+    'https://api.map.baidu.com/api?v=1.0&type=webgl&ak=ibzAyAif5MnYFqi2VVQN0mpPCGwV7MTt';
+
+  export default defineComponent({
     name: 'BaiduMap',
-  };
+    props: {
+      width: {
+        type: String,
+        default: '100%',
+      },
+      height: {
+        type: String,
+        default: 'calc(100vh - 78px)',
+      },
+    },
+    setup() {
+      const wrapRef = ref<HTMLDivElement | null>(null);
+      const { toPromise } = useScript({ src: BAI_DU_MAP_URL });
+
+      async function initMap() {
+        await toPromise();
+        await nextTick();
+        const wrapEl = unref(wrapRef);
+        const BMap = (window as any).BMap;
+
+        const map = new BMap.Map(wrapEl);
+        const point = new BMap.Point(116.404, 39.915);
+        map.centerAndZoom(point, 15);
+        map.enableScrollWheelZoom(true);
+      }
+
+      onMounted(() => {
+        initMap();
+      });
+      return { wrapRef };
+    },
+  });
 </script>

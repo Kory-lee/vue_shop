@@ -36,6 +36,7 @@
           viewMode: '3D',
         });
       }
+
       onMounted(() => {
         initMap();
       });
