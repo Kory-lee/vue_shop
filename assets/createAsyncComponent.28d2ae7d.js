@@ -1,0 +1,1 @@
+import{bb as p,q as f,ae as d}from"./vendor.4f112e74.js";import{ar as u}from"./index.a8042b0d.js";function C(e,n={}){const{size:o="small",delay:t=100,timeout:r=3e4,loading:a=!1,retry:s=!0}=n;return p({loader:e,loadingComponent:a?f(d,{spinning:!0,size:o},null):void 0,timeout:r,delay:t,onError:s?(i,m,c,l)=>{i.message.match(/fetch/)&&l<=3?m():c()}:u})}export{C as c};
