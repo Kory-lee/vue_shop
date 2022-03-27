@@ -11,7 +11,7 @@ export function configHtmlPlugin(env: ViteEnv, isBuild: boolean) {
   return html({
     minify: isBuild,
     inject: {
-      injectData: { title: VITE_GLOBAL_APP_TITLE },
+      data: { title: VITE_GLOBAL_APP_TITLE },
       tags: isBuild ? [{ tag: 'script', attrs: { src: getAppConfigSrc() } }] : [],
     },
   });

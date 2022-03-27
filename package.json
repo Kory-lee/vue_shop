@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "cross-env  --max_old_space_size=4096  vite --host",
     "build": "vite build && esno ./build/script/index.ts",
-    "build:gh-pages": "vite build --base admin && esno ./build/script/index.ts",
+    "build:gh-pages": "cross-env vite build --mode gh-pages && esno ./build/script/index.ts",
     "report": "cross-env REPORT=true npm run build",
     "type:check": "vue-tsc --noEmit --skipLibCheck",
     "clean:cache": "rimraf node_modules/.cache/ && rimraf node_modules/.vite",
