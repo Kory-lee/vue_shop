@@ -1,5 +1,5 @@
 <template>
-  <div :class="prefixCls" class="relative w-full h-full px-4">
+  <div class="relative w-full h-full px-4" :class="prefixCls">
     <LocalePicker
       :show-text="false"
       class="absolute top-4 right-4 text-white xl:text-gray-600 text-lg enter-x"
@@ -15,7 +15,7 @@
         <div class="hidden xl:flex xl:flex-col xl:w-6/12 min-h-full mr-4 pl-4">
           <Logo class="-enter-x" />
           <div class="my-auto">
-            <img :alt="title" :src="LoginBg" class="w-1/2 -mt-16 -enter-x" />
+            <img :src="LoginBg" :alt="title" class="w-1/2 -mt-16 -enter-x" />
             <div class="mt-10 font-medium text-white -enter-x">
               <span class="mt-4 text-3xl inline-block">{{ t('sys.login.signInTitle') }}</span>
             </div>
@@ -63,8 +63,9 @@
   import { computed, defineComponent } from 'vue';
   import { useI18n } from 'vue-i18n';
   import LoginBg from '/@/assets/svg/login-box-bg.svg';
-  import { LocalePicker, Logo, useProviderContext } from '/@/components/Application';
+  import { Logo, useProviderContext } from '/@/components/Application';
   import { useGlobalSetting } from '/@/hooks/setting';
+  import { LocalePicker } from '/@/components/Application';
   import LoginForm from './components/LoginForm.vue';
   import useLocaleStore from '/@/store/modules/locale';
   import RegisterForm from '/@/views/sys/login/components/RegisterForm.vue';
