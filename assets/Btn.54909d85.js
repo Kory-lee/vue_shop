@@ -1,0 +1,1 @@
+import{_ as t}from"./index.387d2779.js";import{o as e,a as n}from"./vendor.2611dcfe.js";const o={name:"Btn"};function r(a,c,s,p,_,f){return e(),n("div",null,"btn")}var l=t(o,[["render",r]]);export{l as default};
