@@ -1,1 +1,0 @@
-var O=(R=>(R[R.PAGE_NOT_ACCESS=403]="PAGE_NOT_ACCESS",R[R.PAGE_NOT_FOUND=404]="PAGE_NOT_FOUND",R[R.ERROR=500]="ERROR",R[R.NET_WORK_ERROR=1e4]="NET_WORK_ERROR",R[R.PAGE_NOT_DATA=10100]="PAGE_NOT_DATA",R))(O||{}),_=(R=>(R.VUE="vue",R.SCRIPT="script",R.RESOURCE="resource",R.AJAX="ajax",R.PROMISE="promise",R))(_||{});export{O as E,_ as a};
