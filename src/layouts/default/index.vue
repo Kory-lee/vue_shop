@@ -2,7 +2,7 @@
   <Layout :class="prefixCls">
     <LayoutFeature />
     <LayoutHeader v-if="getShowFullHeaderRef" fixed />
-    <Layout :has-sider="!(getIsMixSidebar || isMobile)">
+    <Layout :class="layoutClass">
       <LayoutSidebar v-if="getShowSidebar || isMobile" />
       <Layout :class="`${prefixCls}__main`">
         <LayoutMultipleHeader />
@@ -15,14 +15,14 @@
 
 <script lang="ts">
   import { Layout } from 'ant-design-vue';
-  import { defineComponent } from 'vue';
+  import { computed, defineComponent, unref } from 'vue';
   import LayoutContent from './content/index.vue';
   import LayoutHeader from './header/index.vue';
   import LayoutMultipleHeader from './header/MultipleHeader.vue';
   import LayoutSidebar from './sidebar/index.vue';
   import { useProviderContext } from '/@/components/Application';
   import { getShowFullHeaderRef } from '/@/hooks/setting/useHeaderSetting';
-  import { getIsMixSidebar, getShowSidebar } from '/@/hooks/setting/useMenuSetting';
+  import { getIsMixSidebar, getShowSidebar, getShowMenu } from '/@/hooks/setting/useMenuSetting';
   import createAsyncComponent from '/@/utils/factory/createAsyncComponent';
 
   export default defineComponent({
@@ -38,12 +38,21 @@
     },
     setup() {
       const { isMobile, getPrefixCls } = useProviderContext();
+      const layoutClass = computed(() => {
+        return [
+          'ant-layout',
+          {
+            'ant-layout-has-sider': unref(getIsMixSidebar) || unref(getShowMenu),
+          },
+        ];
+      });
       return {
         prefixCls: getPrefixCls('default-layout'),
         getShowFullHeaderRef,
         isMobile,
         getIsMixSidebar,
         getShowSidebar,
+        layoutClass,
       };
     },
   });

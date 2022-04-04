@@ -5,7 +5,7 @@ import { MenuModeEnum, MenuTypeEnum, TriggerEnum } from '/@/enums/menuEnum';
 import { MenuSetting } from '/@/types/config';
 import useConfigStore from '/@/store/modules/config';
 
-const mixSideHasChildren = ref(false);
+export const mixSideHasChildren = ref(false);
 
 const getMenuSetting = computed(() => {
   const configStore = useConfigStore();
@@ -39,9 +39,11 @@ export const getCanDrag = computed(() => unref(getMenuSetting).canDrag);
 export const getAccordion = computed(() => unref(getMenuSetting).accordion);
 
 export const getMixSideFixed = computed(() => unref(getMenuSetting).mixSideFixed);
+
 export const getCloseMixSidebarOnchange = computed(
   () => unref(getMenuSetting).closeMixSidebarOnChange
 );
+
 export const getCollapsedShowTitle = computed(() => unref(getMenuSetting).collapsedShowTitle);
 
 export const getTopMenuAlign = computed(() => unref(getMenuSetting).topMenuAlign);
@@ -53,6 +55,7 @@ export const getIsTopMenu = computed(() => unref(getMenuType) === MenuTypeEnum.T
 export const getShowTopMenu = computed(
   () => unref(getMenuMode) === MenuModeEnum.HORIZONTAL || unref(getSplit)
 );
+
 export const getShowHeaderTrigger = computed(() => {
   if (unref(getMenuType) === MenuTypeEnum.TOP_MENU || !unref(getShowMenu) || unref(getMenuHidden))
     return false;
@@ -83,10 +86,8 @@ export const getCalcContentWidth = computed(() => {
     unref(getIsTopMenu) || !unref(getShowMenu) || (unref(getSplit) && unref(getMenuHidden))
       ? 0
       : unref(getIsMixSidebar)
-      ? unref(getCollapsed)
-        ? SIDE_BAR_MINI_WIDTH
-        : SIDE_BAR_SHOW_TIT_MINI_WIDTH +
-          (unref(getMixSideFixed) && unref(mixSideHasChildren) ? unref(getRealWidth) : 0)
+      ? (unref(getCollapsed) ? SIDE_BAR_MINI_WIDTH : SIDE_BAR_SHOW_TIT_MINI_WIDTH) +
+        (unref(getMixSideFixed) && unref(mixSideHasChildren) ? unref(getRealWidth) : 0)
       : unref(getRealWidth);
 
   return `calc(100% - ${width}px)`;

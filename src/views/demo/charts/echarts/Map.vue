@@ -1,5 +1,5 @@
 <template>
-  <div ref="chartRef" :style="{ height, width }"> hello</div>
+  <div ref="chartRef" :style="{ height, width }"> </div>
 </template>
 
 <script lang="ts">
@@ -7,7 +7,6 @@
   import useEcharts from '/@/hooks/web/useEcharts';
   import { mapData } from '/@/views/demo/charts/data';
   import { registerMap } from 'echarts';
-  import { GeoJSON } from 'echarts/types/src/coord/geo/geoTypes';
 
   export default defineComponent({
     props: {
@@ -19,9 +18,9 @@
       const { setOptions } = useEcharts(chartRef);
 
       onMounted(async () => {
-        const json = (await import('./china.json')).default;
+        const json = (await import('./china.json')).default as any;
 
-        registerMap('china', json as unknown as GeoJSON);
+        registerMap('china', json);
         setOptions({
           visualMap: [
             {

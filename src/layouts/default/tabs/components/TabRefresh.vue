@@ -15,8 +15,8 @@
     components: { RedoOutlined },
     setup() {
       const loading = ref(false);
-      const { getPrefixCls } = useProviderContext(),
-        prefixCls = getPrefixCls('multiple-tabs-content');
+      const { getPrefixCls } = useProviderContext();
+      const prefixCls = getPrefixCls('multiple-tabs-content');
 
       const { refreshPage } = useTabs();
 

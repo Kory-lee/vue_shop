@@ -1,5 +1,11 @@
 <template>
-  <Dropdown :drop-menu-list="getDropMenuList" :trigger="getTrigger" @menu-event="handleMenuEvent">
+  <Dropdown
+    :drop-menu-list="getDropMenuList"
+    :trigger="getTrigger"
+    overlayClassName="multiple-tabs__dropdown"
+    @menu-event="handleMenuEvent"
+    placement="bottom"
+  >
     <div v-if="getIsTabs" :class="`${prefixCls}__info`" @contextmenu="handleContext">
       <span class="ml-1">{{ getTitle }}</span>
     </div>

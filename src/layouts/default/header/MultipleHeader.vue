@@ -75,12 +75,11 @@
   @prefix-cls: ~'@{namespace}-layout-multiple-header';
 
   .@{prefix-cls} {
-    // margin-left: 1px;
     transition: width 0.2s;
     flex: 0 0 auto;
 
     &--dark {
-      margin-left: 0;
+      margin-left: -1px;
     }
 
     &--fixed {

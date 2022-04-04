@@ -9,17 +9,6 @@ import {
 } from '/@/hooks/setting/useMenuSetting';
 import { useDebounceFn } from '@vueuse/core';
 
-export function useSidebarEvent() {
-  const brokenRef = ref(false),
-    getCollapsedWidth = computed(() => (unref(brokenRef) ? 0 : unref(getMinWidthNumber)));
-
-  function onBreakpointChange(broken: boolean) {
-    brokenRef.value = broken;
-  }
-
-  return { getCollapsedWidth, onBreakpointChange };
-}
-
 export function useTrigger(isMobile: Ref<boolean>) {
   const getShowTrigger = computed(() => {
       const trigger = unref(getTrigger);

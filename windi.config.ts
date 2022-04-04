@@ -1,15 +1,15 @@
 import { defineConfig } from 'vite-plugin-windicss';
-import colors from 'windicss/colors';
-import lineClamp from 'windicss/plugin/line-clamp';
 import { primaryColor } from './build/config/themeConfig';
 
 export default defineConfig({
   darkMode: 'class',
-  plugins: [lineClamp, createEnterPlugin()],
+  plugins: [createEnterPlugin()],
   theme: {
     extend: {
+      zIndex: {
+        '-1': '-1',
+      },
       colors: {
-        ...colors,
         primary: primaryColor,
       },
       screens: {

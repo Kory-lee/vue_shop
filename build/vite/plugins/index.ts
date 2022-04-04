@@ -4,16 +4,18 @@ import legacy from '@vitejs/plugin-legacy';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import PurgeIcons from 'vite-plugin-purge-icons';
+import windiCSS from 'vite-plugin-windicss';
+import VitePluginCertificate from 'vite-plugin-mkcert';
+import vueSetupExtend from 'vite-plugin-vue-setup-extend';
 import { configHtmlPlugin } from './html';
 import { configMockPlugin } from './mock';
 import { configPwaConfig } from './pwa';
-import { configStyleImportPlugin } from './styleImport';
-import { configWindiCSSPlugin } from './windicss';
 import { configThemePlugin } from './theme';
 import { configImageminPlugin } from './imagemin';
 import { configVisualizerConfig } from './visualizer';
 import { configCompressPlugin } from './compress';
 import { configSvgIconsPlugin } from './svgSprite';
+import { configComponentsImportPlugin } from './components';
 
 export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   const {
@@ -23,7 +25,16 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
       VITE_BUILD_COMPRESS,
       VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE,
     } = viteEnv,
-    vitePlugins: (Plugin | Plugin[])[] = [vue(), vueJsx()];
+    vitePlugins: (Plugin | Plugin[])[] = [
+      vue(),
+      vueJsx(),
+      // support name
+      vueSetupExtend(),
+      VitePluginCertificate({
+        source: 'coding',
+      }),
+      windiCSS(),
+    ];
 
   VITE_LEGACY && isBuild && vitePlugins.push(legacy());
 
@@ -31,13 +42,11 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
 
   vitePlugins.push(configSvgIconsPlugin(isBuild));
 
-  vitePlugins.push(configWindiCSSPlugin());
-
   VITE_USE_MOCK && vitePlugins.push(configMockPlugin(isBuild));
 
   vitePlugins.push(PurgeIcons());
 
-  vitePlugins.push(configStyleImportPlugin(isBuild));
+  vitePlugins.push(configComponentsImportPlugin(isBuild));
 
   // rollup-plugin-visualizer
   vitePlugins.push(configVisualizerConfig());

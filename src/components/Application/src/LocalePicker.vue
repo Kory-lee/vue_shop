@@ -4,8 +4,8 @@
     :drop-menu-list="localeList"
     :selected-keys="selectedKeys"
     :overlay-class-name="`${prefixCls}-overlay`"
-    placement="bottomCenter"
-    @menuEvent="handleMenuEvent"
+    placement="bottom"
+    @menu-event="handleMenuEvent"
   >
     <span class="cursor-pointer flex items-center">
       <Icon icon="ion:language" :size="size" />
@@ -15,13 +15,15 @@
 </template>
 
 <script lang="ts">
+  import type { LocaleType } from '/@/types/config';
+  import type { DropMenu } from '/@/components/Dropdown';
+
   import { computed, defineComponent, ref, unref, watchEffect } from 'vue';
   import Icon from '/@/components/Icon';
   import { useProviderContext } from './Provider/useAppContext';
-  import Dropdown, { DropMenu } from '/@/components/Dropdown';
+  import Dropdown from '/@/components/Dropdown';
   import { localeList } from '/@/settings/localeSetting';
   import { useLocale } from '/@/hooks/web/useLocale';
-  import { LocaleType } from '/@/types/config';
 
   export default defineComponent({
     name: 'LocalePicker',

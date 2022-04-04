@@ -9,14 +9,14 @@ import { createProxy } from './build/vite/proxy';
 import { generateModifyVars } from './build/config/generate/modifyVars';
 
 import pkg from './package.json';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const pathResolve = (dir: string): string => resolve(process.cwd(), '.', dir);
 
 const { dependencies, devDependencies, name, version } = pkg;
 const __APP_INFO__ = {
   pkg: { dependencies, devDependencies, name, version },
-  lastBuildTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+  lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 };
 
 export default ({ command, mode }: ConfigEnv): UserConfig => {
@@ -67,8 +67,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     optimizeDeps: {
       include: [
         '@iconify/iconify',
-        'moment/dist/locale/zh-cn',
-        'moment/dist/locale/eu',
         'ant-design-vue/es/locale/zh_CN',
         'ant-design-vue/es/locale/en_US',
       ],

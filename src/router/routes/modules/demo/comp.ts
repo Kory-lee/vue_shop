@@ -10,12 +10,6 @@ const comp: AppRouteModule = {
   meta: { orderNo: 30, icon: 'ion:layers-outline', title: t('routes.demo.comp.comp') },
   children: [
     {
-      path: 'basic',
-      name: 'BasicDemo',
-      component: () => import('/@/views/demo/comp/button/index.vue'),
-      meta: { title: t('routes.demo.comp.basic') },
-    },
-    {
       path: 'form',
       name: 'FormDemo',
       redirect: '/comp/form/basic',

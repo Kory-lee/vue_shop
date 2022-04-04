@@ -1,8 +1,8 @@
 import { computed, unref } from 'vue-demi';
 import { i18n } from '/@/i18n';
 import { useLocaleStoreWithout } from '/@/store/modules/locale';
-import moment from 'moment';
 import { LocaleType } from '/@/types/config';
+import { setHtmlPageLang } from '/@/i18n/helper';
 
 interface LangModule {
   message: Recordable;
@@ -18,7 +18,7 @@ function setI18nLanguage(locale: LocaleType) {
     (i18n.global.locale as any).value = locale;
   }
   localeStore.setLocaleInfo({ locale });
-  document.querySelector('html')?.setAttribute('lang', locale);
+  setHtmlPageLang(locale);
 }
 
 // Switching the language will change the locale of useI18n
@@ -27,8 +27,9 @@ function setI18nLanguage(locale: LocaleType) {
 const loadLocalePool: LocaleType[] = [];
 
 export function useLocale() {
-  const localeStore = useLocaleStoreWithout(),
-    getLocale = computed(() => localeStore.getLocale),
+  const localeStore = useLocaleStoreWithout();
+
+  const getLocale = computed(() => localeStore.getLocale),
     getShowLocalePicker = computed(() => localeStore.getShowPicker),
     getAntdLocale = computed(
       () => i18n.global.getLocaleMessage(unref(getLocale))?.antdLocale ?? {}
@@ -50,10 +51,9 @@ export function useLocale() {
       .default as LangModule;
     if (!langModule) return;
 
-    const { message, momentLocale, momentLocaleName } = langModule;
+    const { message } = langModule;
 
     globalI18n.setLocaleMessage(locale, message);
-    moment.updateLocale(momentLocaleName, momentLocale);
     loadLocalePool.push(locale);
 
     setI18nLanguage(locale);

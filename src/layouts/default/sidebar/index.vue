@@ -2,6 +2,7 @@
   <Drawer
     v-if="isMobile"
     placement="left"
+    :closable="false"
     :class="prefixCls"
     :width="getMenuWidth"
     :visible="!getCollapsed"
@@ -55,6 +56,7 @@
 
 <style lang="less" scoped>
   @prefix-cls: ~'@{namespace}-layout-sider-wrapper';
+
   .@{prefix-cls} {
     .ant-drawer-body {
       height: 100vh;

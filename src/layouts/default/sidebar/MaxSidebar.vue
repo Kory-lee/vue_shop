@@ -11,11 +11,10 @@
     collapsible
     :class="getSidebarClass"
     :width="getMenuWidth"
-    :collapsed="getCollapsed"
-    :collapsed-width="getCollapsedWidth"
+    :collapsed="isCollapsed"
+    :collapsed-width="getMinWidthNumber"
     :theme="getMenuTheme"
     v-bind="getTriggerAttr"
-    @breakpoint="onBreakpointChange"
   >
     <!-- TODO doesn't work -->
     <template v-if="getShowTrigger" #trigger>
@@ -30,7 +29,7 @@
   import { computed, CSSProperties, defineComponent, ref, unref } from 'vue';
   import LayoutMenu from '../menu/index.vue';
   import LayoutTrigger from '../trigger/index.vue';
-  import { createDragLine, useSidebarEvent, useTrigger } from './useLayoutSidebar';
+  import { createDragLine, useTrigger } from './useLayoutSidebar';
   import { useProviderContext } from '/@/components/Application';
   import { MenuModeEnum, MenuSplitTypeEnum } from '/@/enums/menuEnum';
   import {
@@ -42,6 +41,7 @@
     getMenuWidth,
     getRealWidth,
     getSplit,
+    getMinWidthNumber,
   } from '/@/hooks/setting/useMenuSetting';
 
   export default defineComponent({
@@ -52,36 +52,36 @@
         sidebarRef = ref<ElRef>(null);
       createDragLine(sidebarRef, dragBarRef);
 
-      const { isMobile, getPrefixCls } = useProviderContext(),
-        prefixCls = getPrefixCls('layout-sidebar');
+      const { isMobile, getPrefixCls } = useProviderContext();
+      const prefixCls = getPrefixCls('layout-sidebar');
 
-      const { getTriggerAttr, getShowTrigger } = useTrigger(isMobile),
-        { getCollapsedWidth, onBreakpointChange } = useSidebarEvent();
+      const { getTriggerAttr, getShowTrigger } = useTrigger(isMobile);
+      const isCollapsed = computed(() => (unref(isMobile) ? false : unref(getCollapsed)));
 
-      const getMode = computed(() => (unref(getSplit) ? MenuModeEnum.INLINE : null)),
-        getSplitType = computed(() =>
+      const getMode = computed(() => (unref(getSplit) ? MenuModeEnum.INLINE : null));
+      const getSplitType = computed(() =>
           unref(getSplit) ? MenuSplitTypeEnum.LEFT : MenuSplitTypeEnum.NONE
         ),
-        showClassSidebarRef = computed(() => (unref(getSplit) ? !unref(getMenuHidden) : true)),
-        getSidebarClass = computed(() => [
-          prefixCls,
-          {
-            [`${prefixCls}--fixed`]: unref(getMenuFixed),
-            [`${prefixCls}--mix`]: unref(getIsMixMode) && !unref(isMobile),
-          },
-        ]),
-        // BUG
-        getHiddenDomStyle = computed((): CSSProperties => {
-          const width = `${unref(getRealWidth)}px`;
-          return {
-            width,
-            overflow: `hidden`,
-            flex: `0 0 ${width}`,
-            maxWidth: width,
-            minWidth: width,
-            transition: 'all 0.2s',
-          };
-        });
+        showClassSidebarRef = computed(() => (unref(getSplit) ? !unref(getMenuHidden) : true));
+      const getSidebarClass = computed(() => [
+        prefixCls,
+        {
+          [`${prefixCls}--fixed`]: unref(getMenuFixed),
+          [`${prefixCls}--mix`]: unref(getIsMixMode) && !unref(isMobile),
+        },
+      ]);
+
+      const getHiddenDomStyle = computed((): CSSProperties => {
+        const width = `${unref(getRealWidth)}px`;
+        return {
+          width,
+          overflow: `hidden`,
+          flex: `0 0 ${width}`,
+          maxWidth: width,
+          minWidth: width,
+          transition: 'all 0.2s',
+        };
+      });
 
       return {
         sidebarRef,
@@ -91,15 +91,15 @@
         getHiddenDomStyle,
         getSidebarClass,
         getTriggerAttr,
-        getCollapsedWidth,
         showClassSidebarRef,
         getMenuWidth,
         getCollapsed,
         getMenuTheme,
-        onBreakpointChange,
         getMode,
         getSplitType,
         getShowTrigger,
+        getMinWidthNumber,
+        isCollapsed,
       };
     },
   });

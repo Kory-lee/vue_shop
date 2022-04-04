@@ -1,5 +1,6 @@
 import { MenuModeEnum, MenuTypeEnum } from '/@/enums/menuEnum';
 import { ErrorTypeEnum } from '/@/enums/exceptionEnum';
+import type { RoleInfo } from '../api/sys/model/userModel';
 
 export interface ErrorLogInfo {
   type: ErrorTypeEnum;
@@ -17,6 +18,8 @@ export interface UserInfo {
   realName: string;
   avatar: string;
   desc?: string;
+  homePath?: string;
+  roles: RoleInfo[];
 }
 
 export interface BeforeMiniState {

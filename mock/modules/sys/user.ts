@@ -7,7 +7,7 @@ export function createFakeUserList() {
       userId: '1',
       username: 'kory',
       realName: 'Kory Admin',
-      avatar: 'http://identicon.net/img/identicon.png',
+      avatar: 'https://avatars.githubusercontent.com/u/62596617?v=4',
       desc: 'manager',
       password: '123456',
       token: 'fakeToken1',

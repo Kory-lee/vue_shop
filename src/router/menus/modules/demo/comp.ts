@@ -9,7 +9,6 @@ const menu: MenuModule = {
     path: '/comp',
     tag: { dot: true },
     children: [
-      { path: 'basic', name: t('routes.demo.comp.basic') },
       {
         path: 'form',
         name: t('routes.demo.comp.form.form'),

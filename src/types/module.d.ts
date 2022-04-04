@@ -9,9 +9,3 @@ declare module 'ant-design-vue/es/locale/*' {
   const locale: Locale & ReadonlyRecordable;
   export default locale as Locale & ReadonlyRecordable;
 }
-
-declare module 'moment/dist/locale/*' {
-  import { LocaleSpecification } from 'moment';
-  const locale: LocaleSpecification & ReadonlyRecordable;
-  export default locale;
-}

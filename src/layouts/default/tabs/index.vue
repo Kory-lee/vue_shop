@@ -18,9 +18,10 @@
         </TabPane>
       </template>
 
-      <template v-if="getShowRefresh || getShowQuick" #tabBarExtraContent>
+      <template v-if="getShowRefresh || getShowQuick" #rightExtra>
         <TabRefresh v-if="getShowRefresh" />
         <TabContent v-if="getShowQuick" is-extra :tab-item="$route" />
+        <FoldButton v-if="getShowFold" />
       </template>
     </Tabs>
   </div>
@@ -32,6 +33,7 @@
   import { REDIRECT_NAME } from '/@/router/constant';
   import TabContent from './components/TabContent.vue';
   import TabRefresh from './components/TabRefresh.vue';
+  import FoldButton from './components/FoldButton.vue';
   import { Tabs } from 'ant-design-vue';
   import { initAffixTabs } from './useMultipleTabs';
   import { useMultipleTabsStore } from '/@/store/modules/multipleTabs';
@@ -39,19 +41,23 @@
   import { RouteLocationNormalized, useRouter } from 'vue-router';
   import { useProviderContext } from '/@/components/Application';
   import { useGo } from '/@/hooks/web/usePage';
-  import { getShowQuick, getShowRefresh } from '/@/hooks/setting/useMultipleTabSetting';
+  import {
+    getShowQuick,
+    getShowRefresh,
+    getShowFold,
+  } from '/@/hooks/setting/useMultipleTabSetting';
 
   export default defineComponent({
     name: 'MultipleTabs',
-    components: { TabRefresh, TabContent, Tabs, TabPane: Tabs.TabPane },
+    components: { TabRefresh, TabContent, Tabs, TabPane: Tabs.TabPane, FoldButton },
     setup() {
       const affixTextList = initAffixTabs();
       const activeKeyRef = ref('');
 
-      const tabStore = useMultipleTabsStore(),
-        userStore = useUserStore(),
-        router = useRouter(),
-        { getPrefixCls } = useProviderContext(),
+      const tabStore = useMultipleTabsStore();
+      const userStore = useUserStore();
+      const router = useRouter();
+      const { getPrefixCls } = useProviderContext(),
         prefixCls = getPrefixCls('multiple-tabs'),
         go = useGo();
 
@@ -73,7 +79,7 @@
           isHide = !hideTab ? null : currentActiveMenu;
 
         const p = isHide || fullPath || path;
-        if (activeKeyRef !== p) activeKeyRef.value = p;
+        if (activeKeyRef.value !== p) activeKeyRef.value = p as string;
 
         if (isHide) {
           const findParentRoute = router
@@ -84,7 +90,7 @@
         } else tabStore.addTab(unref(route));
       });
 
-      function handleChange(activeKey: unknown) {
+      function handleChange(activeKey: any) {
         activeKeyRef.value = activeKey;
         go(activeKey, false);
       }
@@ -103,179 +109,12 @@
         getWrapClass,
         handleEdit,
         handleChange,
+        getShowFold,
       };
     },
   });
 </script>
 
 <style lang="less">
-  @prefix-cls: ~'@{namespace}-multiple-tabs';
-
-  html[data-theme='dark'] {
-    .@{prefix-cls} {
-      .ant-tabs-tab {
-        border-bottom: 1px solid @border-color-base;
-      }
-    }
-  }
-  html[data-theme='light'] {
-    .@{prefix-cls} {
-      .ant-tabs-tab {
-        border-bottom: 1px solid #d9d9d9 !important;
-      }
-    }
-  }
-  .@{prefix-cls} {
-    z-index: 10;
-    height: @multiple-height+2;
-    line-height: @multiple-height+2;
-    background-color: @component-background;
-    border-bottom: 1px solid @border-color-base;
-
-    .ant-tabs-small {
-      height: @multiple-height;
-    }
-
-    .ant-tabs.ant-tabs-card {
-      .ant-tabs-card-bar {
-        height: @multiple-height;
-        margin: 0;
-        background-color: @component-background;
-        border: 0;
-        box-shadow: none;
-
-        .ant-tabs-nav-container {
-          height: @multiple-height;
-          padding-top: 2px;
-        }
-        .ant-tabs-tab {
-          height: calc(@multiple-height - 2px);
-          padding-right: 12px;
-          line-height: calc(@multiple-height - 2px);
-          color: @text-color-base;
-          background-color: @component-background;
-          transition: none;
-
-          &:hover {
-            .ant-tabs-close-x {
-              opacity: 1;
-            }
-          }
-          .ant-tabs-close-x {
-            width: 8px;
-            height: 12px;
-            font-size: 12px;
-            color: inherit;
-            opacity: 0;
-            transition: none;
-
-            &:hover {
-              svg {
-                width: 0.8em;
-              }
-            }
-          }
-          > div {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          }
-          svg {
-            fill: @text-color-base;
-          }
-        }
-        .ant-tabs-tab:not(.ant-tabs-tab-active) {
-          &:hover {
-            color: @primary-color;
-          }
-        }
-
-        .ant-tabs-tab-active {
-          position: relative;
-          padding-left: 18px;
-          color: @white !important;
-          background: @primary-color;
-          border: 0;
-          transition: none;
-
-          .ant-tabs-close-x {
-            opacity: 1;
-          }
-
-          svg {
-            width: 0.7em;
-            fill: @white;
-          }
-        }
-      }
-      .ant-tabs-nav > div:nth-child(1) {
-        padding: 0 6px;
-
-        .ant-tabs-tab {
-          margin-right: 3px !important;
-        }
-      }
-    }
-    .ant-tabs-tab:not(.ant-tabs-tab-active) {
-      .anticon-close {
-        font-size: 12px;
-
-        svg {
-          width: 0.6em;
-        }
-      }
-    }
-    .ant-tabs-extra-content {
-      margin-top: 2px;
-      line-height: @multiple-height !important;
-    }
-
-    .ant-dropdown-trigger {
-      display: inline-flex;
-    }
-    &--hide-close {
-      .ant-tabs-close-x {
-        opacity: 0 !important;
-      }
-    }
-    &-content {
-      &__extra-quick,
-      &__extra-refresh,
-      &__extra-fold {
-        display: inline-block;
-        width: 36px;
-        height: @multiple-height;
-        line-height: @multiple-height;
-        color: @text-color-secondary;
-        text-align: center;
-        cursor: pointer;
-        border-left: 1px solid @border-color-base;
-
-        &:hover {
-          color: @text-color-base;
-        }
-
-        span[role='img'] {
-          transform: rotate(90deg);
-        }
-      }
-
-      &__extra-refresh {
-        span[role='img'] {
-          transform: rotate(0deg);
-        }
-      }
-
-      &__info {
-        display: inline-block;
-        width: 100%;
-        height: @multiple-height - 2;
-        padding-left: 0;
-        margin-left: -10px;
-        font-size: 12px;
-        cursor: pointer;
-        user-select: none;
-      }
-    }
-  }
+  @import './index.less';
 </style>

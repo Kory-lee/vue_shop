@@ -1,4 +1,5 @@
-import { YYYY_MM_DD_HH_MM } from '../date';
+import { isFunction } from 'lodash-es';
+import { YYYY_MM_DD_HH_MM_SS } from '../date';
 import { isObject, isString } from '../is';
 
 export function createNow<T extends boolean>(
@@ -18,15 +19,19 @@ export function createNow(join: boolean, restful = false) {
  * @param params
  */
 export function formatRequestDate(params: any) {
+  if (!isObject(params)) return;
   for (const key in params) {
-    if (params[key] && params[key]._isAMomentObject)
-      params[key] = params[key].format(YYYY_MM_DD_HH_MM);
+    const format = params[key]?.format;
+    if (isFunction(format)) {
+      params[key] = params[key].format(YYYY_MM_DD_HH_MM_SS);
+    }
+
     if (isString(key)) {
       const value = params[key];
       if (value) {
         try {
           params[key] = isString(value) ? value.trim() : value;
-        } catch (e) {
+        } catch (e: any) {
           throw new Error(e);
         }
       }

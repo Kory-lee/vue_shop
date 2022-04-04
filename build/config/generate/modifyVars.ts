@@ -24,7 +24,7 @@ export function generateModifyVars(dark = false) {
     'success-info': '#55D187',
     'error-info': '#ED6F6F',
     'warning-color': '#EFBD47',
-    'border-color-base': '#EEEEEE',
+    // 'border-color-base': '#EEEEEE',
     'font-size-base': '14px',
     'border-radius-base': '2px',
     'link-color': primary,

@@ -7,6 +7,7 @@ export const getMultipleTabSetting = computed(() => {
   const configStore = useConfigStore();
   return configStore.getProjectConfig.multipleTabsSetting;
 });
+
 export const getShowMultipleTab = computed(() => unref(getMultipleTabSetting).show);
 
 export const getShowQuick = computed(() => unref(getMultipleTabSetting).showQuick);

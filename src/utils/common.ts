@@ -1,10 +1,5 @@
 import { isObject } from './is';
 
-export function omit(obj: any, attr: string) {
-  const { [attr]: _, ...newObj } = obj;
-  return newObj;
-}
-
 export const noop = () => {};
 
 export function deepMerge<T = any>(src: any, target: any): T {
