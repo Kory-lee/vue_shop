@@ -5,8 +5,8 @@
   import { useI18n } from 'vue-i18n';
   import { useRoute } from 'vue-router';
   import { useGo, useRefresh } from '/@/hooks/web/usePage';
-  import NoDataImg from '/@/assets/img/exception/no-data.png';
-  import netWorkImg from '/@/assets/img/exception/net-work.png';
+  import NoDataImg from '/@/assets/svg/no-data.svg';
+  import netWorkImg from '/@/assets/svg/net-error.svg';
   import { PageEnum } from '/@/enums/pageEnum';
   interface MapValue {
     title: string;
