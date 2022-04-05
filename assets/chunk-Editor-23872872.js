@@ -1,1 +1,0 @@
-import{i as a,a1 as t,a2 as o,af as r,a4 as c,aK as s}from"./entry-index-a3b6a048.js";const n={},_=s(" 555 ");function p(f,i){const e=t("PageWrapper");return o(),r(e,{title:"\u5BCC\u6587\u672C\u7EC4\u4EF6\u793A\u4F8B"},{default:c(()=>[_]),_:1})}var l=a(n,[["render",p]]);export{l as default};
