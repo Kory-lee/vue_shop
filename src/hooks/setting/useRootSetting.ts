@@ -57,6 +57,11 @@ export const getGrayMode = computed(() => getRootSetting.value.grayMode);
 
 export const getLockTime = computed(() => getRootSetting.value.lockTime);
 
+export const getDarkMode = computed(() => {
+  const configStore = useConfigStore();
+  return configStore.getDarkMode;
+});
+
 export const getLayoutContentMode = computed(() =>
   getRootSetting.value.contentMode === ContentEnum.FULL ? ContentEnum.FULL : ContentEnum.FIXED
 );
@@ -67,10 +72,6 @@ export function setRootSetting(setting: Partial<RootSetting>) {
 }
 
 export function useRootSetting() {
-  const configStore = useConfigStore();
-
-  const getDarkMode = computed(() => configStore.getDarkMode);
-
   return {
     setRootSetting,
     getOpenKeepAlive,

@@ -26,6 +26,36 @@ const comp: AppRouteModule = {
         },
       ],
     },
+    {
+      path: 'editor',
+      name: 'EditorDemo',
+      redirect: '/comp/editor/tinymce',
+      component: getParentLayout('EditorDemo'),
+      meta: {
+        title: t('routes.demo.editor.editor'),
+      },
+      children: [
+        {
+          path: 'tinymce',
+          component: getParentLayout('TinymceDemo'),
+          name: 'TinymceDemo',
+          meta: {
+            title: t('routes.demo.editor.tinymce'),
+          },
+          redirect: '/comp/editor/tinymce/index',
+          children: [
+            {
+              path: 'index',
+              name: 'TinymceBasicDemo',
+              component: () => import('/@/views/demo/editor/tinymce/index.vue'),
+              meta: {
+                title: t('routes.demo.editor.tinymceBasic'),
+              },
+            },
+          ],
+        },
+      ],
+    },
   ],
 };
 

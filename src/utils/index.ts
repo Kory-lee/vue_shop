@@ -1,3 +1,4 @@
+import type { App, Plugin } from 'vue';
 import type { RouteLocationNormalized, RouteRecordNormalized } from 'vue-router';
 
 export const noop = () => {};
@@ -11,12 +12,20 @@ export function getRawRoute(route: RouteLocationNormalized): RouteLocationNormal
   const { matched, ...opt } = route;
   return {
     ...opt,
-    matched: (matched
-      ? matched.map(({ meta, name = '', path = '' }) => ({
-          meta,
-          name,
-          path,
-        }))
-      : undefined) as RouteRecordNormalized[],
+    matched: (matched?.map?.(({ meta, name = '', path = '' }) => ({
+      meta,
+      name,
+      path,
+    })) ?? []) as RouteRecordNormalized[],
+    //  ,
   };
+}
+
+export function withInstall<T>(component: T, alias?: string) {
+  const comp = component as any;
+  comp.install = (app: App) => {
+    app.component(comp.name || comp.displayName, component);
+    alias && (app.config.globalProperties[alias] = component);
+  };
+  return component as T & Plugin;
 }

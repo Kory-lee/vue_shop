@@ -36,7 +36,6 @@
 
 <script lang="ts">
   import { computed, defineComponent, PropType } from '@vue/runtime-core';
-  import { useProviderContext } from '/@/components/Application';
   import headerImg from '/@/assets/img/logo.png';
   import { useI18n } from 'vue-i18n';
   import { useUserStore } from '/@/store/modules/user';
@@ -47,6 +46,7 @@
   import Icon from '/@/components/Icon';
   import { useModal } from '/@/components/Modal';
   import createAsyncComponent from '/@/utils/factory/createAsyncComponent';
+  import { getPrefixCls } from '/@/hooks/web/useDesign';
 
   type MenuEvent = 'logout' | 'doc' | 'lock';
 
@@ -62,7 +62,6 @@
     },
     props: { theme: { type: String as PropType<'light' | 'dark'>, default: 'light' } },
     setup() {
-      const { getPrefixCls } = useProviderContext();
       const { t } = useI18n();
       const userStore = useUserStore();
       const getUserInfo = computed(() => {
@@ -117,7 +116,8 @@
 
   .@{prefix-cls} {
     height: @header-height;
-    padding: 0 10px 0 10px;
+    padding: 0 0 0 10px;
+    padding-right: 10px;
     overflow: hidden;
     font-size: 12px;
     cursor: pointer;

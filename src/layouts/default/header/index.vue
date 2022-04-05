@@ -20,6 +20,8 @@
     <div :class="`${prefixCls}-action`">
       <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" />
 
+      <Notify v-if="getShowNotice" :class="`${prefixCls}-action__item notify-item`" />
+
       <LocalePicker
         v-if="getShowLocalePicker"
         :reload="true"
@@ -36,7 +38,7 @@
   import { computed, defineComponent, unref } from 'vue';
   import LayoutTrigger from '../trigger/index.vue';
   import LayoutBreadcrumb from './components/Breadcrumb.vue';
-  import ErrorAction from './components/ErrorAction.vue';
+  import { Notify, ErrorAction } from './components';
   import UserDropdown from './components/UserDropdown/index.vue';
   import { Logo, LocalePicker } from '/@/components/Application';
   import { useProviderContext } from '/@/components/Application';
@@ -44,6 +46,7 @@
     getHeaderTheme,
     getShowContent,
     getShowHeaderLogo,
+    getShowNotice,
   } from '/@/hooks/setting/useHeaderSetting';
   import {
     getIsMixMode,
@@ -65,11 +68,12 @@
       LayoutBreadcrumb,
       LocalePicker,
       UserDropdown,
+      Notify,
     },
     props: { fixed: Boolean },
     setup(props) {
-      const { isMobile, getPrefixCls } = useProviderContext(),
-        prefixCls = getPrefixCls('layout-header'),
+      const { isMobile, getPrefixCls } = useProviderContext();
+      const prefixCls = getPrefixCls('layout-header'),
         headerCls = computed(() => {
           const theme = unref(getHeaderTheme);
           return [
@@ -101,6 +105,7 @@
         getShowBreadCrumb,
         getShowLocalePicker,
         getUseErrorHandle,
+        getShowNotice,
       };
     },
   });
