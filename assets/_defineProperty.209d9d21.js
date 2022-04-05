@@ -1,0 +1,1 @@
+import{g as a}from"./index.a7e7c866.js";function p(e,t){for(var r=-1,n=e==null?0:e.length,i=Array(n);++r<n;)i[r]=t(e[r],r,e);return i}var o=function(){try{var e=a(Object,"defineProperty");return e({},"",{}),e}catch(t){}}(),d=o;export{p as a,d};
