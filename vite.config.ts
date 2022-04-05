@@ -10,6 +10,7 @@ import { generateModifyVars } from './build/config/generate/modifyVars';
 
 import pkg from './package.json';
 import dayjs from 'dayjs';
+import { defineConfig } from 'vite';
 
 const pathResolve = (dir: string): string => resolve(process.cwd(), '.', dir);
 
@@ -19,7 +20,7 @@ const __APP_INFO__ = {
   lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 };
 
-export default ({ command, mode }: ConfigEnv): UserConfig => {
+export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
   const root = process.cwd(),
     env = loadEnv(mode, root),
     viteEnv = wrapperEnv(env),
@@ -69,6 +70,12 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       // Turning off brotliSize display can slightly reduce packaging time
       brotliSize: false,
       chunkSizeWarningLimit: 2000,
+      rollupOptions: {
+        output: {
+          entryFileNames: `assets/entry-[name]-[hash].js`,
+          chunkFileNames: `assets/chunk-[name]-[hash].js`,
+        },
+      },
     },
     define: {
       // setting vue-i18-next
@@ -95,4 +102,4 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       exclude: ['vue-demi'],
     },
   };
-};
+});
