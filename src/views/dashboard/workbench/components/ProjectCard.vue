@@ -22,13 +22,13 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue-demi';
-  import { Card, Button, CardGrid } from 'ant-design-vue';
+  import { Card, Button } from 'ant-design-vue';
   import Icon from '/@/components/Icon';
   import { groupItems } from './data';
 
   export default defineComponent({
     name: 'ProjectCard',
-    components: { Icon, Card, CardGrid: CardGrid, Button },
+    components: { Icon, Card, CardGrid: Card.CardGrid, Button },
     props: {
       loading: Boolean,
     },
