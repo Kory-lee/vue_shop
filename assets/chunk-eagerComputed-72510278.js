@@ -1,1 +1,0 @@
-import{p as o,q as r,v as a,aV as t,aF as f}from"./entry-index-0d006381.js";import{R as s}from"./chunk-responsiveObserve-83ca31c1.js";function l(){var n=o({}),e=null;return r(function(){e=s.subscribe(function(u){n.value=u})}),a(function(){s.unsubscribe(e)}),n}function v(n){var e=t();return f(function(){e.value=n()},{flush:"sync"}),e}export{v as e,l as u};
