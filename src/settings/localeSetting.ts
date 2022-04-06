@@ -1,7 +1,7 @@
 import type { LocaleSetting, LocaleType } from '/@/types/config';
 import type { DropMenu } from '/@/components/Dropdown';
 
-export const LOCALE: { [key: string]: LocaleType } = {
+export const LOCALE: Record<'ZH_CN' | 'EN_US', LocaleType> = {
   ZH_CN: 'zh_CN',
   EN_US: 'en',
 };

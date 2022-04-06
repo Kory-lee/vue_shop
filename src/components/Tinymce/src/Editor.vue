@@ -55,9 +55,9 @@
   import 'tinymce/plugins/print';
   import 'tinymce/plugins/save';
   import 'tinymce/plugins/searchreplace';
-  import 'tinymce/plugins/spellchecker';
+  // import 'tinymce/plugins/spellchecker';
   import 'tinymce/plugins/tabfocus';
-  // import 'tinymce/plugins/table';
+  import 'tinymce/plugins/table';
   import 'tinymce/plugins/template';
   import 'tinymce/plugins/textpattern';
   import 'tinymce/plugins/visualblocks';
@@ -76,11 +76,11 @@
   import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActived';
 
   const plugins = [
-    'advlist anchor autolink autosave code codesample  directionality  fullscreen hr insertdatetime link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace spellchecker tabfocus  template  textpattern visualblocks visualchars wordcount',
+    'advlist anchor autolink autosave code codesample  directionality  fullscreen hr insertdatetime link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace tabfocus  template  textpattern visualblocks visualchars wordcount table',
   ];
 
   const toolbar = [
-    'fontsizeselect lineheight searchreplace bold italic underline strikethrough alignleft aligncenter alignright outdent indent  blockquote undo redo removeformat subscript superscript code codesample',
+    'fontsizeselect lineheight searchreplace bold italic underline strikethrough alignleft aligncenter alignright outdent indent  blockquote undo redo removeformat subscript superscript code codesample table',
     'hr bullist numlist link  preview anchor pagebreak insertdatetime media  forecolor backcolor fullscreen',
   ];
 
@@ -99,7 +99,7 @@
       type: Array as PropType<string[]>,
       default: () => plugins,
     },
-    modelVlaue: String,
+    modelValue: String,
     height: {
       type: [Number, String] as PropType<string | number>,
       default: 400,
@@ -130,7 +130,7 @@
       const tinymceId = ref<string>(buildShortUUID('tiny-vue'));
       const elRef = ref<Nullable<HTMLElement>>(null);
       const prefixCls = getPrefixCls('tinymce-container');
-      const tinymceContent = computed(() => props.modelVlaue);
+      const tinymceContent = computed(() => props.modelValue);
 
       const containerWidth = computed(() => {
         const { width } = props;
@@ -139,9 +139,11 @@
 
       const skinName = computed(() => (unref(getDarkMode) === 'light' ? 'oxide' : 'oxide-dark'));
 
-      const landName = computed(() => {
-        const lang = useLocale().getLocale.value;
-        return [LOCALE.zh_CN, LOCALE.en_US].includes(lang) ? lang : LOCALE.zh_CN;
+      const langName = computed(() => {
+        const { getLocale: locale } = useLocale();
+        const lang = locale.value;
+
+        return [LOCALE.ZH_CN, LOCALE.EN_US].includes(lang) ? lang : LOCALE.ZH_CN;
       });
 
       const initOptions = computed((): RawEditorOptions => {
@@ -153,8 +155,8 @@
           toolbar,
           menubar: 'file edit insert view format table tools',
           plugins,
-          language_url: publicPath + 'resources/tinymce/langs/' + unref(landName) + '.js',
-          language: unref(landName),
+          language_url: publicPath + 'resource/tinymce/langs/' + unref(langName) + '.js',
+          language: unref(langName),
           branding: false,
           default_link_target: '_blank',
           link_title: false,
@@ -219,7 +221,7 @@
       function initSetup(e) {
         const editor = unref(editorRef);
         if (!editor) return;
-        const value = props.modelVlaue || '';
+        const value = props.modelValue || '';
         editor.setContent(value);
         bindModelHandlers(editor);
         bindHandlers(e, attrs, unref(editorRef));
@@ -230,7 +232,7 @@
         const normalizedEvents = Array.isArray(modelEvents) ? modelEvents.join(' ') : modelEvents;
 
         watch(
-          () => props.modelVlaue,
+          () => props.modelValue,
           (val: string, preVal: string) => {
             setValue(editor, val, preVal);
           }
@@ -282,7 +284,7 @@
         const editor = unref(editorRef);
         if (!editor) return;
         const content = editor?.getContent() ?? '';
-        const value = content?.replace(getUploadingImgName(name), `<img src="${url}/>`) ?? ''; // 替换上传中的图片
+        const value = content?.replace(getUploadingImgName(name), `<img src="${url}"/>`) ?? ''; // 替换上传中的图片
         setValue(editor, value);
       }
 

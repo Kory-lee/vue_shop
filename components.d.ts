@@ -15,6 +15,8 @@ declare module 'vue' {
     CollapseHeader: typeof import('./src/components/Container/src/collapse/CollapseHeader.vue')['default']
     CountButton: typeof import('./src/components/CountDown/src/CountButton.vue')['default']
     CountDownInput: typeof import('./src/components/CountDown/src/CountDownInput.vue')['default']
+    Editor: typeof import('./src/components/Tinymce/src/Editor.vue')['default']
+    ImgUpload: typeof import('./src/components/Tinymce/src/ImgUpload.vue')['default']
     LocalePicker: typeof import('./src/components/Application/src/LocalePicker.vue')['default']
     Logo: typeof import('./src/components/Application/src/Logo.vue')['default']
     Menu: typeof import('./src/components/SimpleMenu/src/components/Menu.vue')['default']
