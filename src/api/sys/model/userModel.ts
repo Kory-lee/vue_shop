@@ -32,7 +32,6 @@ export interface LoginResultModel {
   role: RoleInfo;
 }
 
-
 export interface GetUserInfoModel {
   roles: RoleInfo[];
   // 用户id

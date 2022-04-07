@@ -26,7 +26,7 @@
         default: null,
       },
     },
-    setup(props) {
+    setup() {
       const { getPrefixCls } = useProviderContext();
 
       return { prefixCls: getPrefixCls('countdown-input') };

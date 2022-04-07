@@ -9,12 +9,12 @@
   import { Provider } from '/@/components/Application';
   import { initConfigStore } from '/@/logics/init';
   import { useLocale } from '/@/hooks/web/useLocale';
-  import 'virtual:windi.css';
+  // import 'virtual:windi.css';
   import { useTitle } from '/@/hooks/web/useTitle';
   import 'dayjs/locale/zh-cn';
-  // import 'virtual:windi-base.css';
-  // import 'virtual:windi-components.css';
-  // import 'virtual:windi-utilities.css';
+  import 'virtual:windi-base.css';
+  import 'virtual:windi-components.css';
+  import 'virtual:windi-utilities.css';
   import 'virtual:svg-icons-register';
 
   export default defineComponent({

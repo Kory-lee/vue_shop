@@ -7,6 +7,7 @@
     :style="getWrapStyle"
   ></span>
 </template>
+
 <script lang="ts">
   import {
     computed,

@@ -1,7 +1,7 @@
 import type { ProjectConfig } from '/@/types/config';
 
 import { computed, unref } from 'vue';
-import { ContentEnum } from '/@/enums/configEnum';
+import { ContentEnum, ThemeEnum } from '/@/enums/configEnum';
 import router from '/@/router';
 import useConfigStore, { useConfigStoreWidthOut } from '/@/store/modules/config';
 
@@ -61,6 +61,8 @@ export const getDarkMode = computed(() => {
   const configStore = useConfigStore();
   return configStore.getDarkMode;
 });
+
+export const getIsDarkMode = computed(() => unref(getDarkMode) === ThemeEnum.DARK);
 
 export const getLayoutContentMode = computed(() =>
   getRootSetting.value.contentMode === ContentEnum.FULL ? ContentEnum.FULL : ContentEnum.FIXED

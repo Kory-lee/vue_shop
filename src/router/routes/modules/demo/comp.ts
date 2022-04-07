@@ -36,6 +36,25 @@ const comp: AppRouteModule = {
       },
       children: [
         {
+          path: 'markdown',
+          component: getParentLayout('MarkdownDemo'),
+          name: 'MarkdownDemo',
+          meta: {
+            title: t('routes.demo.editor.markdown'),
+          },
+          redirect: '/comp/editor/markdown/index',
+          children: [
+            {
+              path: 'index',
+              name: 'MarkDownBasicDemo',
+              component: () => import('/@/views/demo/editor/markdown/index.vue'),
+              meta: {
+                title: t('routes.demo.editor.tinymceBasic'),
+              },
+            },
+          ],
+        },
+        {
           path: 'tinymce',
           component: getParentLayout('TinymceDemo'),
           name: 'TinymceDemo',

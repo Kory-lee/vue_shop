@@ -5,7 +5,7 @@ import setupGlobalDirective from './plugins/directives';
 import router, { setupRouter } from './router';
 import { setupStore } from './store';
 
-import 'vite-plugin-svg-icons/register';
+// import 'vite-plugin-svg-icons/register';
 
 if (import.meta.env.DEV) import('ant-design-vue/dist/antd.less');
 

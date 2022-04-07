@@ -73,10 +73,12 @@
       const modalMethods: ModalMethods = {
         setModalProps,
         emitVisible: undefined,
-        redoModalHeight: () =>
+        redoModalHeight: () => {
           nextTick(() => {
-            if (unref(modalWrapperRef)) (unref(modalMethods) as any).setModalHeight();
-          }),
+            if (!unref(modalWrapperRef)) return;
+            (unref(modalMethods) as any).setModalHeight();
+          });
+        },
       };
       const instance = getCurrentInstance();
       if (instance) emit('register', modalMethods, instance.uid);
@@ -149,7 +151,7 @@
       }
 
       function setModalProps(props: Partial<ModalProps>) {
-        propsRef.value = deepMerge(unref(propsRef) || {}, props);
+        propsRef.value = deepMerge(unref(propsRef) || ({} as any), props);
         if (!Reflect.has(props, 'visible')) return;
         visibleRef.value = !!props.visible;
       }

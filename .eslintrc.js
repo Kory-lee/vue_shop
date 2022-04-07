@@ -15,10 +15,10 @@ module.exports = defineConfig({
   extends: [
     'plugin:vue/vue3-recommended',
     'plugin:@typescript-eslint/recommended',
-    'prettier',
     'plugin:prettier/recommended',
   ],
   rules: {
+    'vue/script-setup-uses-vars': 'error',
     '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/ban-types': 'off',
@@ -66,5 +66,6 @@ module.exports = defineConfig({
         math: 'always',
       },
     ],
+    'vue/multi-word-component-names': 'off',
   },
 });

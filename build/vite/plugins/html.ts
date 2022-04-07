@@ -1,4 +1,4 @@
-import type { PluginOption } from 'vite';
+import type { Plugin } from 'vite';
 
 import { createHtmlPlugin } from 'vite-plugin-html';
 import pkg from '../../../package.json';
@@ -14,7 +14,7 @@ export function configHtmlPlugin(env: ViteEnv, isBuild: boolean) {
     minify: isBuild,
     inject: {
       data: { title: VITE_GLOBAL_APP_TITLE },
-      tags: isBuild ? [{ tag: 'script', attrs: { src: getAppConfigSrc()} }] : [],
+      tags: isBuild ? [{ tag: 'script', attrs: { src: getAppConfigSrc() } }] : [],
     },
-  }) as PluginOption[];
+  }) as Plugin[];
 }

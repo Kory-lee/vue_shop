@@ -61,7 +61,9 @@
 
       watch(
         () => props.openNames,
-        () => nextTick(() => updateOpened())
+        () => {
+          nextTick(updateOpened);
+        }
       );
 
       function updateOpened() {

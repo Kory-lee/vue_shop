@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router';
 
 import { RoleEnum } from '/@/enums/roleEnum';
 
-export type Component<T extends any = any> =
+export type Component<T = any> =
   | ReturnType<typeof defineComponent>
   | (() => Promise<typeof import('*.vue')>)
   | (() => Promise<T>);
