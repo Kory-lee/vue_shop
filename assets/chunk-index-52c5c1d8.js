@@ -1,1 +1,0 @@
-import{a as o,a8 as s,Y as p,o as u}from"./entry-index-cce5698a.js";var d=o({name:"Redirect",setup(){const{currentRoute:a,replace:r}=s(),{params:{path:e},query:t}=p(a),n=Array.isArray(e)?e.join("/"):e;return r({path:"/"+n,query:t}),()=>u("div")}});export{d as default};
