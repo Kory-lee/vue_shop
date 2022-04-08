@@ -10,6 +10,7 @@ import store from '/@/store';
 import { getRawRoute } from '/@/utils';
 import { PageEnum } from '/@/enums/pageEnum';
 import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '/@/router/routes/basic';
+import { useUserStore } from './user';
 
 export interface MultipleTabsState {
   cacheTabList: Set<string>;
@@ -21,6 +22,15 @@ async function handleGotoPage(router: Router) {
   const go = useGo(router);
   await go(unref(router.currentRoute).path, true);
 }
+
+const getToTarget = (tabItem: RouteLocationNormalized) => {
+  const { params = {}, path, query = {} } = tabItem;
+  return {
+    params,
+    path,
+    query,
+  };
+};
 
 const cacheTab = projectSetting.multipleTabsSetting.cache;
 
@@ -51,12 +61,13 @@ export const useMultipleTabsStore = defineStore({
       for (const tab of this.tabList) {
         const item = getRawRoute(tab);
         const needCache = !item.meta?.ignoreKeepAlive;
-        if (!needCache) return;
+        if (!needCache) continue;
         const name = item.name as string;
         cacheSet.add(name);
       }
       this.cacheTabList = cacheSet;
     },
+
     async refreshPage(router: Router) {
       const { currentRoute } = router;
       const route = unref(currentRoute);
@@ -88,9 +99,9 @@ export const useMultipleTabsStore = defineStore({
       path !== toPath && go(toPath as PageEnum, true);
     },
     async addTab(route: RouteLocationNormalized) {
-      const { path, name, fullPath, params, query } = getRawRoute(route);
+      const { path, name, fullPath, params, query, meta } = getRawRoute(route);
       if (
-        path === PageEnum.ERROR_PAGE ||
+        [PageEnum.ERROR_PAGE, PageEnum.BASE_LOGIN].includes(path as PageEnum) ||
         !name ||
         [REDIRECT_ROUTE.name, PAGE_NOT_FOUND_ROUTE.name].includes(<string>name)
       ) {
@@ -109,22 +120,31 @@ export const useMultipleTabsStore = defineStore({
         query && (curTab.query = query);
         fullPath && (curTab.fullPath = fullPath);
         this.tabList.splice(updateIndex, 1, curTab);
-        return;
+      } else {
+        //  add tab
+        // 获取动态路由打开数，超过 0 即代表需要控制打开数
+        const dynamicLevel = meta?.dynamicLevel ?? -1;
+        if (dynamicLevel > 0) {
+          // 如果动态路由层级大于 0 了，那么就要限制该路由的打开数限制了
+          // 首先获取到真实的路由，使用配置方式减少计算开销.
+          // const realName: string = path.match(/(\S*)\//)![1];
+          const realPath = meta?.realPath ?? '';
+          // 获取到已经打开的动态路由数, 判断是否大于某一个值
+          if (
+            this.tabList.filter((e) => e.meta?.realPath ?? '' === realPath).length >= dynamicLevel
+          ) {
+            // 关闭第一个
+            const index = this.tabList.findIndex((item) => item.meta.realPath === realPath);
+            index !== -1 && this.tabList.splice(index, 1);
+          }
+        }
+        this.tabList.push(route);
       }
-      //  add tab
-      this.tabList.push(route);
+
       this.updateCacheTab();
       cacheTab && Persistent.setLocal(MULTIPLE_TABS_KEY, this.tabList);
     },
     async closeTab(tab: RouteLocationNormalized, router: Router) {
-      const getToTarget = (tabItem: RouteLocationNormalized) => {
-        const { params = {}, path, query = {} } = tabItem;
-        return {
-          params,
-          path,
-          query,
-        };
-      };
       const close = (route: RouteLocationNormalized) => {
         const { fullPath, meta: { affix } = {} } = route;
         if (affix) return;
@@ -141,8 +161,10 @@ export const useMultipleTabsStore = defineStore({
       let toTarget: RouteLocationRaw = {};
       const index = this.tabList.findIndex((item) => item.path === path);
       if (index === 0) {
-        if (this.tabList.length === 1) toTarget = PageEnum.BASE_HOME;
-        else {
+        if (this.tabList.length === 1) {
+          const userStore = useUserStore();
+          toTarget = userStore.getUserInfo.homePath || PageEnum.BASE_HOME;
+        } else {
           const page = this.tabList[index + 1];
           toTarget = getToTarget(page);
         }
@@ -165,30 +187,37 @@ export const useMultipleTabsStore = defineStore({
       this.lastDragEndIndex = this.lastDragEndIndex + 1;
     },
     async closeLeftTabs(route: RouteLocationNormalized, router: Router) {
+      const { currentRoute } = router;
+      const { fullPath } = unref(currentRoute);
       const index = this.tabList.findIndex((item) => item.path === route.path);
-      const pathList: string[] = [];
       if (index > 0) {
         const leftTabs = this.tabList.slice(0, index);
+        const pathList: string[] = [];
         for (const item of leftTabs) {
           const affix = item?.meta?.affix ?? false;
-          if (!affix) pathList.push(item.fullPath);
+          if (affix || fullPath === item.fullPath) continue;
+          pathList.push(item.fullPath);
         }
+        this.bulkCloseTabs(pathList);
       }
-      this.bulkCloseTabs(pathList);
       this.updateCacheTab();
       await handleGotoPage(router);
     },
     async closeRightTabs(route: RouteLocationNormalized, router: Router) {
+      const { currentRoute } = router;
+      const { fullPath } = unref(currentRoute);
       const index = this.tabList.findIndex((item) => item.fullPath === route.fullPath);
-      const pathList: string[] = [];
       if (index >= 0 && index < this.tabList.length - 1) {
-        const rightTabs = this.tabList.slice(index + 1, this.tabList.length);
+        const rightTabs = this.tabList.slice(index + 1);
+
+        const pathList: string[] = [];
         for (const item of rightTabs) {
           const affix = item?.meta?.affix ?? false;
-          if (!affix) pathList.push(item.fullPath);
+          if (affix || fullPath === item.fullPath) continue;
+          pathList.push(item.fullPath);
         }
+        this.bulkCloseTabs(pathList);
       }
-      this.bulkCloseTabs(pathList);
       this.updateCacheTab();
       await handleGotoPage(router);
     },
@@ -215,6 +244,21 @@ export const useMultipleTabsStore = defineStore({
     async bulkCloseTabs(pathList: string[]) {
       if (!pathList.length) return;
       this.tabList = this.tabList.filter((item) => !pathList.includes(item.fullPath));
+    },
+
+    async setTabTitle(title: string, route: RouteLocationNormalized) {
+      const findTab = this.getTabList.find((item) => item === route);
+      if (!findTab) return;
+      findTab.meta.title = title;
+      await this.updateCacheTab();
+    },
+
+    async updateTabPath(fullPath, route: RouteLocationNormalized) {
+      const findTab = this.getTabList.find((item) => item === route);
+      if (!findTab) return;
+      findTab.path = fullPath;
+      findTab.fullPath = fullPath;
+      await this.updateCacheTab();
     },
   },
 });

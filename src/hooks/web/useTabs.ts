@@ -13,59 +13,68 @@ enum TabActionEnum {
   CLOSE,
 }
 
-export function useTabs(_router?: Router) {
-  const configStore = useConfigStore(),
-    tabStore = useMultipleTabsStore();
+function canIUseTabs(): boolean {
+  const configStore = useConfigStore();
+  const { show } = configStore.getMultiTabsSetting;
+  if (!show) throw new Error('the multi-tab page is not open,please open it in the setting');
+  return show;
+}
 
-  function canIUseTabs(): boolean {
-    const { show } = configStore.getMultiTabsSetting;
-    if (!show) throw new Error('the multi-tab page is not open,please open it in the setting');
-    return show;
-  }
+export function useTabs(_router?: Router) {
+  const tabStore = useMultipleTabsStore();
 
   const router = _router || useRouter();
   const { currentRoute } = router;
 
   function getCurrentTab() {
     const route = unref(currentRoute);
-    return tabStore.getTabList.find((item) => item.path === route.path)!;
+    return tabStore.getTabList.find((item) => item.fullPath === route.fullPath)!;
   }
 
-  async function handleTabAction(action: TabActionEnum, tab?: RouteLocationNormalized) {
+  function updateTabTitle(title: string, tab?: RouteLocationNormalized) {
+    const canIUse = canIUseTabs();
+    if (!canIUse) return;
+    const targetTab = tab || getCurrentTab();
+    return tabStore.setTabTitle(title, targetTab);
+  }
+
+  function updateTabPath(path: string, tab?: RouteLocationNormalized) {
+    const canIUse = canIUseTabs();
+    if (!canIUse) return;
+    const targetTab = tab || getCurrentTab();
+    return tabStore.updateTabPath(path, targetTab);
+  }
+
+  function handleTabAction(action: TabActionEnum, tab?: RouteLocationNormalized) {
     const canIUse = canIUseTabs();
     if (!canIUse) return;
     const currentTab = getCurrentTab();
     switch (action) {
       case TabActionEnum.REFRESH:
-        await tabStore.refreshPage(router);
-        break;
+        return tabStore.refreshPage(router);
       case TabActionEnum.CLOSE_ALL:
-        await tabStore.closeAllTabs(router);
-        break;
+        return tabStore.closeAllTabs(router);
       case TabActionEnum.CLOSE_LEFT:
-        await tabStore.closeLeftTabs(currentTab, router);
-        break;
+        return tabStore.closeLeftTabs(tab || currentTab, router);
       case TabActionEnum.CLOSE_RIGHT:
-        await tabStore.closeRightTabs(currentTab, router);
-        break;
+        return tabStore.closeRightTabs(tab || currentTab, router);
       case TabActionEnum.CLOSE_OTHER:
-        await tabStore.closeOtherTabs(currentTab, router);
-        break;
+        return tabStore.closeOtherTabs(tab || currentTab, router);
       case TabActionEnum.CLOSE_CURRENT:
       case TabActionEnum.CLOSE:
-        await tabStore.closeTab(tab || currentTab, router);
-        break;
+        return tabStore.closeTab(tab || currentTab, router);
     }
   }
 
   return {
     refreshPage: () => handleTabAction(TabActionEnum.REFRESH),
     closeAll: () => handleTabAction(TabActionEnum.CLOSE_ALL),
-    closeLeft: () => handleTabAction(TabActionEnum.CLOSE_LEFT),
-    closeRight: () => handleTabAction(TabActionEnum.CLOSE_RIGHT),
+    closeLeft: (tab?: RouteLocationNormalized) => handleTabAction(TabActionEnum.CLOSE_LEFT,tab),
+    closeRight: (tab?: RouteLocationNormalized) => handleTabAction(TabActionEnum.CLOSE_RIGHT,tab),
     closeOther: () => handleTabAction(TabActionEnum.CLOSE_OTHER),
-    closeCurrent: (tab?: RouteLocationNormalized) =>
-      handleTabAction(TabActionEnum.CLOSE_CURRENT, tab),
+    closeCurrent: () => handleTabAction(TabActionEnum.CLOSE_CURRENT),
     close: (tab?: RouteLocationNormalized) => handleTabAction(TabActionEnum.CLOSE, tab),
+    setTitle: (title: string, tab?: RouteLocationNormalized) => updateTabTitle(title, tab),
+    updatePath: (path: string, tab?: RouteLocationNormalized) => updateTabPath(path, tab),
   };
 }

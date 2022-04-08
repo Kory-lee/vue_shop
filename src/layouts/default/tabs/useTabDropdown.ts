@@ -13,36 +13,35 @@ export function useTabDropdown(tabContentProps: TabContentProps, getIsTabs: Comp
     current: null as Nullable<RouteLocationNormalized>,
     currentIndex: 0,
   });
-  const { t } = useI18n(),
-    tabStore = useMultipleTabsStore(),
-    { currentRoute } = useRouter(),
-    { refreshPage, closeAll, closeCurrent, closeLeft, closeRight, closeOther } = useTabs();
+  const { t } = useI18n();
+  const tabStore = useMultipleTabsStore();
+  const { currentRoute } = useRouter();
+  const { refreshPage, closeAll, closeCurrent, closeLeft, closeRight, closeOther } = useTabs();
 
-  const getTargetTab = computed(
-    (): RouteLocationNormalized =>
-      unref(getIsTabs) ? tabContentProps.tabItem : unref(currentRoute)
+  const getTargetTab = computed<RouteLocationNormalized>(() =>
+    unref(getIsTabs) ? tabContentProps.tabItem : unref(currentRoute)
   );
 
   const getDropMenuList = computed(() => {
     if (!unref(getTargetTab)) return;
-    const { meta } = unref(getTargetTab),
-      { path } = unref(currentRoute);
+    const { meta } = unref(getTargetTab);
+    const { path } = unref(currentRoute);
 
-    const curItem = state.current,
-      index = state.currentIndex,
-      refreshDisabled = curItem ? curItem.path !== path : true;
+    const curItem = state.current;
+    const index = state.currentIndex;
+    const isCurItem = curItem ? curItem.path === path : false;
 
-    const closeLeftDisabled = index === 0,
-      disabled = tabStore.getTabList.length === 1,
-      closeRightDisabled =
-        index === tabStore.getTabList.length - 1 && tabStore.getLastDragEndIndex >= 0;
+    const disabled = tabStore.getTabList.length === 1;
+    const closeLeftDisabled = index === 0 || !isCurItem;
+    const closeRightDisabled =
+      (index === tabStore.getTabList.length - 1 && tabStore.getLastDragEndIndex >= 0) || !isCurItem;
 
-    const dropMenuList: DropMenu[] = [
+    return [
       {
         icon: 'ion:reload-sharp',
         event: MenuEventEnum.REFRESH_PAGE,
         text: t('layout.multipleTab.reload'),
-        disabled: refreshDisabled,
+        disabled: !isCurItem,
       },
       {
         icon: 'clarity:close-line',
@@ -69,7 +68,7 @@ export function useTabDropdown(tabContentProps: TabContentProps, getIsTabs: Comp
         icon: 'dashicons:align-center',
         event: MenuEventEnum.CLOSE_OTHER,
         text: t('layout.multipleTab.closeOther'),
-        disabled: disabled,
+        disabled: disabled || !isCurItem,
       },
       {
         icon: 'clarity:minus-line',
@@ -77,40 +76,33 @@ export function useTabDropdown(tabContentProps: TabContentProps, getIsTabs: Comp
         text: t('layout.multipleTab.closeAll'),
         disabled: disabled,
       },
-    ];
-    return dropMenuList;
+    ] as DropMenu[];
   });
 
   function handleContextMenu(tabItem: RouteLocationNormalized) {
-    return (e: Event) => {
-      if (!tabItem) return;
-      e?.preventDefault();
-      const index = tabStore.getTabList.findIndex((item) => item.path === tabItem.path);
-      state.current = tabItem;
-      state.currentIndex = index;
-    };
+    if (!tabItem) return;
+
+    const index = tabStore.getTabList.findIndex((item) => item.path === tabItem.path);
+    if (index === -1) return;
+    state.current = tabItem;
+    state.currentIndex = index;
   }
+
   async function handleMenuEvent(menu: DropMenu): Promise<void> {
     const { event } = menu;
     switch (event) {
       case MenuEventEnum.REFRESH_PAGE:
-        await refreshPage();
-        break;
+        return refreshPage();
       case MenuEventEnum.CLOSE_CURRENT:
-        await closeCurrent(tabContentProps.tabItem);
-        break;
+        return closeCurrent();
       case MenuEventEnum.CLOSE_LEFT:
-        await closeLeft();
-        break;
+        return closeLeft();
       case MenuEventEnum.CLOSE_RIGHT:
-        await closeRight();
-        break;
+        return closeRight();
       case MenuEventEnum.CLOSE_ALL:
-        await closeAll();
-        break;
+        return closeAll();
       case MenuEventEnum.CLOSE_OTHER:
-        await closeOther();
-        break;
+        return closeOther();
     }
   }
   return { getDropMenuList, handleMenuEvent, handleContextMenu };

@@ -15,8 +15,9 @@ import { intersection } from 'lodash-es';
 export function usePermission() {
   const userStore = useUserStore(),
     configStore = useConfigStore(),
-    permissionStore = usePermissionStore(),
-    { closeAll } = useTabs(router);
+    permissionStore = usePermissionStore();
+
+  const { closeAll } = useTabs(router);
 
   async function togglePermissionMode() {
     configStore.setProjectConfig({

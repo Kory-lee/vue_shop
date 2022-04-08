@@ -63,12 +63,12 @@
       selectedKeys: { type: Array as PropType<string[]>, default: () => [] },
     },
 
-    emits: ['menuEvent'],
+    emits: ['menu-event'],
     setup(props, { emit }) {
       function handleClickMenu(item: DropMenu) {
         const { event } = item;
         const menu = props.dropMenuList.find((item) => `${item.event}` === `${event}`);
-        emit('menuEvent', menu);
+        emit('menu-event', menu);
         item.onClick?.();
       }
       return {
