@@ -1,4 +1,5 @@
 import type { Slots } from 'vue';
+
 import { isFunction } from '/@/utils/is';
 
 export function getSlot(slots: Slots, slot = 'default', data?: any) {
@@ -12,7 +13,7 @@ export function getSlot(slots: Slots, slot = 'default', data?: any) {
 }
 
 export function extendSlots(slots: Slots, excludeKeys: string[] = []) {
-  const ret: any = {};
+  const ret: Recordable<() => ReturnType<typeof getSlot>> = {};
   for (const key of Object.keys(slots)) {
     if (excludeKeys.includes(key)) continue;
     ret[key] = () => getSlot(slots, key);

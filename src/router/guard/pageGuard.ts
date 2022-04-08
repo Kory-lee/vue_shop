@@ -1,7 +1,7 @@
 import type { Router } from 'vue-router';
 import { setRouteChange } from '/@/logics/mitt/routeChange';
 
-export default function createPageGuard(router: Router) {
+export  function createPageGuard(router: Router) {
   const loadedPageMap = new Map<string, boolean>();
 
   router.beforeEach(async (to) => {

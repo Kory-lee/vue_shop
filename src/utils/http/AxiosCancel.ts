@@ -1,4 +1,5 @@
 import type { AxiosRequestConfig, Canceler } from 'axios';
+
 import { isFunction } from '../is';
 import axios from 'axios';
 import { warn } from '../log';

@@ -6,6 +6,7 @@ export interface ViewportOffsetResult {
   rightIncludeBody: number;
   bottomIncludeBody: number;
 }
+
 export function getBoundingClientRect(ele: Element): DOMRect | number {
   if (!ele?.getBoundingClientRect()) return 0;
   return ele.getBoundingClientRect();
@@ -33,8 +34,8 @@ export function getViewportOffset(element: Element): ViewportOffsetResult {
   const left = offsetLeft - scrollLeft,
     top = offsetTop - scrollTop;
 
-  const clientWidth = window.document.documentElement.clientWidth,
-    clientHeight = window.document.documentElement.clientHeight;
+  const clientWidth = window.document.documentElement.clientWidth;
+  const clientHeight = window.document.documentElement.clientHeight;
 
   return {
     left,

@@ -3,8 +3,8 @@ import type { RouteLocationNormalized } from 'vue-router';
 import Mitt from '/@/utils/mitt';
 import { getRawRoute } from '/@/utils';
 
-const mitt = new Mitt(),
-  key = Symbol();
+const mitt = new Mitt();
+const key = Symbol();
 
 let routeChange: RouteLocationNormalized;
 export function setRouteChange(lastChangeTab: RouteLocationNormalized) {

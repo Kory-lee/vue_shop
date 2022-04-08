@@ -1,4 +1,5 @@
 import type { App } from 'vue';
+
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import { REDIRECT_NAME } from './constant';
 import { createGuard } from './guard';
