@@ -4,6 +4,7 @@ import type { GlobalThemeWithoutCommon } from './internal-interface';
 
 export interface GlobalTheme extends GlobalThemeWithoutCommon {
   common?: ThemeCommonVars;
+  name: string;
 }
 
 export type GlobalThemeOverrides = {

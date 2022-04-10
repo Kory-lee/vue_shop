@@ -3,8 +3,9 @@ import type { CNode } from 'css-render';
 import type { InputTheme } from '/@/input/styles/light';
 import type { InputSize } from '/@/input/src/interface';
 import type { ButtonSize } from '/@/button/src/interface';
-import { Hljs } from '/@/_mixins/use-hljs';
-import { KDateLocale } from '/@/locales/date';
+import type { GlobalTheme, GlobalThemeOverrides } from './interface';
+import type { Hljs } from '/@/_mixins/use-hljs';
+import type { KDateLocale } from '/@/locales/date';
 
 export interface GlobalThemeWithoutCommon {
   Input?: InputTheme;
@@ -59,11 +60,14 @@ export type RtlProp = RtlItem[];
 
 export type RtlEnabledState = Partial<Record<keyof GlobalThemeWithoutCommon, RtlItem>>;
 
+export type Breakpoints = { [k: string]: number } | undefined;
+
 export interface KConfigProviderInjection {
+  mergedBreakpointsRef: Ref<Breakpoints | undefined>;
   mergedClsPrefixRef: Ref<string | undefined>;
   mergedBorderedRef: Ref<boolean | undefined>;
   mergedNamespaceRef: Ref<string | undefined>;
-  mergedLocaleRef: Ref<NLocale | undefined>;
+  mergedLocaleRef: Ref<KLocale | undefined>;
   mergedDateLocaleRef: Ref<KDateLocale | undefined>;
   mergedHljsRef: Ref<Hljs | undefined>;
   mergedComponentPropsRef: Ref<GlobalComponentConfig | undefined>;
@@ -71,4 +75,7 @@ export interface KConfigProviderInjection {
   mergedThemeRef: Ref<GlobalTheme | undefined>;
   mergedThemeOverridesRef: Ref<GlobalThemeOverrides | undefined>;
   mergedRtlRef: Ref<RtlEnabledState | undefined>;
+  mergedThemeHashRef: Ref<string>;
+  // non-reactive
+  inlineThemeDisabled: boolean;
 }

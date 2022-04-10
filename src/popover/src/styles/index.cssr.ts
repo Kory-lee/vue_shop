@@ -1,8 +1,6 @@
 import { c, cB, cCB, cE, cM, cNotM } from '/@/_utils/cssr';
 import { FollowerPlacement } from 'vueuc';
-import { CNode } from 'css-render';
-import { CProperties } from 'css-render/lib/types';
-
+import type { CNode, CProperties } from 'css-render';
 const oppositePlacement = {
   top: 'bottom',
   bottom: 'top',

@@ -8,12 +8,14 @@ import type {
   GlobalIconConfig,
   RtlEnabledState,
   RtlProp,
+  Breakpoints,
 } from './internal-interface';
 
-import { defineComponent, h, inject, renderSlot, computed, provide, warn, markRaw } from 'vue';
+import { defineComponent, h, inject, renderSlot, computed, provide, markRaw } from 'vue';
 import { merge } from 'lodash-es';
 import { useMemo } from 'vooks';
 import { defaultClsPrefix } from '/@/_mixins/use-config';
+import { hash } from 'css-render';
 
 export const configProviderInjectionKey: InjectionKey<KConfigProviderInjection> =
   Symbol('configProviderInjection');
@@ -35,12 +37,10 @@ export const configProviderProps = {
   themeOverrides: Object as PropType<GlobalThemeOverrides | null>,
   componentOptions: Object as PropType<GlobalComponentConfig>,
   icons: Object as PropType<GlobalIconConfig>,
-  as: {
-    type: String as PropType<string | undefined>,
-    validator: () => {
-      warn('config-provider', '`as` is deprecated, please use `tag` instead');
-      return true;
-    },
+  breakpoints: Object as PropType<Breakpoints>,
+  inlineThemeDisabled: {
+    type: Boolean,
+    default: undefined,
   },
 };
 
@@ -103,7 +103,34 @@ export default defineComponent({
       return rtlEnabledState;
     });
 
+    const mergedBreakpointsRef = computed(() => {
+      return props.breakpoints || ConfigProvider?.mergedBreakpointsRef.value;
+    });
+    const inlineThemeDisabled =
+      props.inlineThemeDisabled || ConfigProvider?.inlineThemeDisabled || false;
+
+    const mergedThemeHashRef = computed(() => {
+      const { value: theme } = mergedThemeRef;
+      const { value: mergedThemeOverrides } = mergedThemeOverridesRef;
+      const hasThemeOverrides =
+        mergedThemeOverrides && Object.keys(mergedThemeOverrides).length !== 0;
+      const themeName = theme?.name;
+      if (themeName) {
+        if (hasThemeOverrides) {
+          return `${themeName}-${hash(JSON.stringify(mergedThemeOverridesRef.value))}`;
+        }
+        return themeName;
+      } else {
+        if (hasThemeOverrides) {
+          return hash(JSON.stringify(mergedThemeOverridesRef.value));
+        }
+        return '';
+      }
+    });
+
     provide(configProviderInjectionKey, {
+      mergedThemeHashRef,
+      mergedBreakpointsRef,
       mergedRtlRef,
       mergedIconsRef,
       mergedComponentPropsRef,
@@ -126,6 +153,7 @@ export default defineComponent({
       }),
       mergedThemeRef,
       mergedThemeOverridesRef,
+      inlineThemeDisabled,
     });
 
     return {
@@ -139,7 +167,7 @@ export default defineComponent({
   render() {
     return !this.abstract
       ? h(
-          this.as || this.tag,
+          this.tag,
           {
             class: `${this.mergedClsPrefix || defaultClsPrefix}-config-provider`,
           },

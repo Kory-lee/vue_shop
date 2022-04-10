@@ -1,5 +1,5 @@
 import path from 'path';
-import parser from '@babel/parser';
+const parser = require('@babel/parser');
 import traverse from '@babel/traverse';
 import generator from '@babel/generator';
 

@@ -1,4 +1,4 @@
-import { c } from '/@/_utils/cssr';
+import { c } from '../../_utils/cssr';
 import commonVariables from '../common/_common';
 
 export default c(

@@ -1,6 +1,11 @@
-import { computed, ComputedRef, inject } from 'vue';
+import type {
+  Breakpoints,
+  GlobalComponentConfig,
+  RtlEnabledState,
+} from '../config-provider/src/internal-interface';
+
+import { computed, ComputedRef, inject, Ref } from 'vue';
 import { configProviderInjectionKey } from '../config-provider/src/ConfigProvider';
-import { KConfigProviderInjection } from '../config-provider/src/internal-interface';
 
 type UseConfigProps = Readonly<{
   bordered?: boolean;
@@ -13,22 +18,29 @@ export default function useConfig(
   props: UseConfigProps = {},
   options: { defaultBordered?: boolean } = { defaultBordered: true }
 ): {
-  KConfigProvider: KConfigProviderInjection | null;
+  inlineThemeDisabled: boolean | undefined;
+  mergedRtlRef: Ref<RtlEnabledState | undefined> | undefined;
   mergedBorderedRef: ComputedRef<boolean>;
   mergedClsPrefixRef: ComputedRef<string>;
+  mergedBreakpointsRef: Ref<Breakpoints> | undefined;
+  mergedComponentPropsRef: Ref<GlobalComponentConfig | undefined> | undefined;
   namespaceRef: ComputedRef<string | undefined>;
 } {
   const KConfigProvider = inject(configProviderInjectionKey, null);
   return {
-    KConfigProvider,
+    inlineThemeDisabled: KConfigProvider?.inlineThemeDisabled,
+    mergedRtlRef: KConfigProvider?.mergedRtlRef,
+    mergedComponentPropsRef: KConfigProvider?.mergedComponentPropsRef,
+    mergedBreakpointsRef: KConfigProvider?.mergedBreakpointsRef,
     mergedBorderedRef: computed(() => {
       const { bordered } = props;
       if (bordered !== undefined) return bordered;
       return KConfigProvider?.mergedBorderedRef.value ?? options.defaultBordered ?? true;
     }),
-    mergedClsPrefixRef: computed(
-      () => KConfigProvider?.mergedClsPrefixRef.value || defaultClsPrefix
-    ),
+    mergedClsPrefixRef: computed(() => {
+      const clsPrefix = KConfigProvider?.mergedClsPrefixRef.value;
+      return clsPrefix || defaultClsPrefix;
+    }),
     namespaceRef: computed(() => KConfigProvider?.mergedNamespaceRef.value),
   };
 }
