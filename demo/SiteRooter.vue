@@ -51,7 +51,8 @@
         </tbody>
       </k-table>
     </div>
-      <k-code>1234fff</k-code>
+    <k-code>1234fff</k-code>
+    <k-form>78787</k-form>
   </component>
 </template>
 
@@ -72,7 +73,8 @@
         console.log(val, 'change');
       }
 
-      return { inputValue, handleInput, handleChange, ...siteSetup() };
+      const { configProvider } = siteSetup();
+      return { inputValue, handleInput, handleChange, configProvider };
     },
   };
 </script>

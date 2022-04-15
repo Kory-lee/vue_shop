@@ -1,43 +1,40 @@
-import type { ConfigEnv, UserConfig } from 'vite';
+import type { UserConfig } from 'vite';
 
 import { resolve } from 'path';
-import { loadEnv } from 'vite';
 import { OUTPUT_DIR } from './build/constant';
-import { wrapperEnv } from './build/utils';
 import { createVitePlugins } from './build/vite/plugins';
-import { createProxy } from './build/vite/proxy';
-// import { babel } from '@rollup/plugin-babel';
+const { babel } = require('@rollup/plugin-babel');
 
-const pathResolve = (dir: string): string => resolve(process.cwd(), '.', dir);
+const pathResolve = (dir: string): string => resolve(__dirname, dir);
 
-export default ({ mode }: ConfigEnv): UserConfig => {
-  const root = process.cwd(),
-    env = loadEnv(mode, root),
-    viteEnv = wrapperEnv(env),
-    { VITE_PORT, VITE_PROXY } = viteEnv;
+export default (): UserConfig => {
+  const isProduction = process.env.NODE_ENV === 'production';
 
   return {
-    root,
-    resolve: { alias: [{ find: /^\/@\//, replacement: pathResolve('src') + '/' }] },
-    server: {
-      port: VITE_PORT,
-      proxy: createProxy(VITE_PROXY),
+    root: __dirname,
+    resolve: {
+      alias: isProduction
+        ? undefined
+        : [
+            { find: /^\/@\//, replacement: pathResolve('./src') + '/' },
+            {
+              find: 'kory-ui',
+              replacement: pathResolve('./src'),
+            },
+          ],
     },
     build: {
-      target: 'es2015',
       outDir: OUTPUT_DIR,
-      terserOptions: {
-        compress: {
-          keep_infinity: true,
-        },
+      rollupOptions: {
+        plugins: [
+          babel({
+            babelHelpers: 'bundled',
+          }),
+        ],
       },
-      brotliSize: false,
-      chunkSizeWarningLimit: 2000,
     },
     define: {
-      // Suppress warning
-      __INTLIFY_PROD_DEVTOOLS__: false,
-      __IS_DEV__: mode !== 'production',
+      __IS_DEV__: !isProduction,
     },
     plugins: createVitePlugins(),
     optimizeDeps: {
@@ -54,6 +51,22 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         'vue',
         'vue-router',
         'vueuc',
+        'date-fns/locale/nb',
+        'date-fns/locale/fr',
+        'date-fns/locale/id',
+        'date-fns/locale/de',
+        'date-fns/locale/ja',
+        'date-fns/locale/zh-CN',
+        'date-fns/locale/en-US',
+        'date-fns/locale/ru',
+        'date-fns/locale/uk',
+        'date-fns/locale/zh-TW',
+        'date-fns/locale/es',
+        'date-fns/locale/it',
+        'date-fns/locale/en-GB',
+        'date-fns/locale/pl',
+        'date-fns/locale/eo',
+        'date-fns/locale/sk',
       ],
       exclude: [],
     },

@@ -19,10 +19,10 @@ export default function useHljs(
   props: UseHljsProps,
   shouldHighlightRef?: Ref<boolean>
 ): ComputedRef<Hljs | undefined> {
-  const KConfigProvider = inject(configProviderInjectionKey, null);
+  const ConfigProvider = inject(configProviderInjectionKey, null);
   if (__IS_DEV__) {
     const wranHljs = () => {
-      if (!props.hljs && !KConfigProvider?.mergedHljsRef.value) {
+      if (!props.hljs && !ConfigProvider?.mergedHljsRef.value) {
         warn('code', 'hljs is not set');
       }
     };
@@ -33,5 +33,5 @@ export default function useHljs(
     }
   }
 
-  return computed(() => (props.hljs as any) || KConfigProvider?.mergedHljsRef.value);
+  return computed(() => (props.hljs as any) || ConfigProvider?.mergedHljsRef.value);
 }

@@ -1,18 +1,10 @@
-import {
-  defineComponent,
-  PropType,
-  CSSProperties,
-  computed,
-  ref,
-  onMounted,
-  watch,
-  unref,
-} from 'vue';
+import { defineComponent, PropType, CSSProperties, computed, ref, onMounted, watch } from 'vue';
 import { codeLight, CodeTheme } from '../styles';
 import useConfig from '/@/_mixins/use-config';
 import useHljs, { Hljs } from '/@/_mixins/use-hljs';
 import useTheme, { ThemeProps } from '/@/_mixins/use-theme';
 import style from './styles/index.cssr';
+import { useThemeClass } from '/@/_mixins';
 
 const codeProps = {
   ...(useTheme.props as ThemeProps<CodeTheme>),
@@ -50,10 +42,9 @@ export default defineComponent({
   name: 'Code',
   props: codeProps,
   setup(props, { slots }) {
-    const { internalNoHighlight } = props;
     const { mergedClsPrefixRef, inlineThemeDisabled } = useConfig();
     const codeRef = ref<HTMLElement | null>(null);
-    const hljsRef = internalNoHighlight ? { value: undefined } : useHljs(props);
+    const hljsRef = props.internalNoHighlight ? { value: undefined } : useHljs(props);
     const cssVarsRef = computed(() => {
       const {
         common: { cubicBezierEaseInOut, fontFamilyMono },
@@ -123,19 +114,32 @@ export default defineComponent({
     onMounted(setCode);
     watch(() => props.language, setCode);
     watch(() => props.code, setCode);
-    if (!internalNoHighlight) watch(hljsRef, setCode);
+    if (!props.internalNoHighlight) watch(hljsRef, setCode);
+
+    const themeClassHandle = inlineThemeDisabled
+      ? useThemeClass(
+          'Code',
+          computed(() => `${props.internalFontSize || 'a'}`),
+          cssVarsRef,
+          props
+        )
+      : undefined;
     return {
       mergedClsPrefix: mergedClsPrefixRef,
       cssVars: inlineThemeDisabled ? undefined : cssVarsRef,
+      themeClass: themeClassHandle?.themeClass,
+      onRender: themeClassHandle?.onRender,
     };
   },
   render() {
-    const { wordWrap } = this;
+    const { wordWrap, onRender } = this;
+    onRender?.()
     return (
       <code
         class={[
           `${this.mergedClsPrefix}-code`,
-          wordWrap && `${this.mergedClsPrefix}-code-word-wrap`,
+          this.themeClass,
+          wordWrap && `${this.mergedClsPrefix}-code--word-wrap`,
         ]}
         style={this.cssVars}
         ref="codeRef"
