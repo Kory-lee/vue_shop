@@ -3,6 +3,7 @@ import {
   ContentEnum,
   PermissionModeEnum,
   RouterTransitionEnum,
+  SessionTimeoutProcessingEnum,
   SettingButtonPositionEnum,
   ThemeEnum,
 } from '../enums/configEnum';
@@ -83,6 +84,8 @@ export interface ProjectConfig {
   settingButtonPosition: SettingButtonPositionEnum;
   // 权限模式
   permissionMode: PermissionModeEnum;
+  // Session timeout processing
+  sessionTimeoutProcessing: SessionTimeoutProcessingEnum;
   // 网站灰色模式
   grayMode: boolean;
   //是否开启色弱模式

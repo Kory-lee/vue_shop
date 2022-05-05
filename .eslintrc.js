@@ -1,7 +1,4 @@
-// ts-check
-const { defineConfig } = require('eslint-define-config');
-
-module.exports = defineConfig({
+module.exports = {
   root: true,
   env: { browser: true, node: true, es6: true },
   parser: 'vue-eslint-parser',
@@ -68,4 +65,4 @@ module.exports = defineConfig({
     ],
     'vue/multi-word-component-names': 'off',
   },
-});
+};

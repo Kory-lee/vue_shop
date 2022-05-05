@@ -56,13 +56,15 @@ const transform: AxiosTransform<Result> = {
     return errorResult;
   },
   beforeRequestHook(config, options) {
-    const { apiUrl, joinPrefix, joinParamsToUrl, formatData, joinTime = true } = options;
+    const { apiUrl, joinPrefix, joinParamsToUrl, formatDate, joinTime = true } = options;
 
     if (joinPrefix) config.url = `${prefixUrl}${config.url}`;
 
     if (apiUrl && isString(apiUrl)) config.url = `${apiUrl}${config.url}`;
 
     const params = config.params || {};
+    const data = config.data || false;
+    formatDate && data && !isString(data) && formatRequestDate(data);
     if (config.method?.toUpperCase() === RequestEnum.GET) {
       // 给get请求加上时间戳参数,避免从缓存中拿数据
       if (!isString(params)) config.params = Object.assign(params, createNow(joinTime, false));
@@ -73,7 +75,7 @@ const transform: AxiosTransform<Result> = {
       }
     } else {
       if (!isString(params)) {
-        formatData && formatRequestDate(params);
+        formatDate && formatRequestDate(params);
         config.data = params;
         config.params = undefined;
         if (joinParamsToUrl) config.url = setObjToUrlParams(config.url as string, config.data);
@@ -84,9 +86,15 @@ const transform: AxiosTransform<Result> = {
     }
     return config;
   },
-  requestInterceptors(config) {
+  requestInterceptors(config, options) {
+    // 请求之前处理config
     const token = getToken();
-    if (token) config.headers.Authorization = token;
+    if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
+      // jwt token
+      (config as Recordable).headers.Authorization = options.authenticationScheme
+        ? `${options.authenticationScheme} ${token}`
+        : token;
+    }
     return config;
   },
 
@@ -117,6 +125,10 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
   return new VAxios(
     deepMerge(
       {
+        // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
+        // authentication schemes，e.g: Bearer
+        // authenticationScheme: 'Bearer',
+        authenticationScheme: '',
         timeout: 10 * 1000,
         prefixUrl,
         headers: { 'Content-Type': ContentTypeEnum.JSON },

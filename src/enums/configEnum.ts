@@ -16,6 +16,11 @@ export enum SettingButtonPositionEnum {
   HEADER = 'header',
   FIXED = 'fixed',
 }
+export enum SessionTimeoutProcessingEnum {
+  ROUTE_JUMP,
+  PAGE_COVERAGE,
+}
+
 export enum PermissionModeEnum {
   ROLE = 'ROLE',
   BACK = 'BACK',

@@ -4,6 +4,7 @@ import {
   ContentEnum,
   PermissionModeEnum,
   RouterTransitionEnum,
+  SessionTimeoutProcessingEnum,
   SettingButtonPositionEnum,
   ThemeEnum,
 } from '../enums/configEnum';
@@ -21,6 +22,9 @@ const setting: ProjectConfig = {
   permissionMode: PermissionModeEnum.ROUTE_MAPPING,
   //Permission-related cache is stored in sessionStorage or localStorage
   permissionCacheType: CacheTypeEnum.LOCAL,
+
+  // Session timeout processing
+  sessionTimeoutProcessing: SessionTimeoutProcessingEnum.ROUTE_JUMP,
 
   themeColor: primaryColor,
 

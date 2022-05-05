@@ -48,13 +48,17 @@ export class VAxios {
     const axiosCanceler = new AxiosCanceler();
 
     this.axiosInstance.interceptors.request.use((config: AxiosRequestConfig) => {
-      const {
-        headers: { ignoreCancelToken },
-      } = config;
-      !ignoreCancelToken && axiosCanceler.addPending(config);
+      // @ts-ignore
+      const { ignoreCancelToken } = config.requestOptions;
+      const ignoreCancel =
+        ignoreCancelToken !== undefined
+          ? ignoreCancelToken
+          : this.options.requestOptions?.ignoreCancelToken;
+      !ignoreCancel && axiosCanceler.addPending(config);
 
-      if (requestInterceptors && isFunction(requestInterceptors))
-        config = requestInterceptors(config);
+      if (requestInterceptors && isFunction(requestInterceptors)) {
+        config = requestInterceptors(config, this.options);
+      }
 
       return config;
     }, undefined);

@@ -21,10 +21,10 @@ const __APP_INFO__ = {
 };
 
 export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
-  const root = process.cwd(),
-    env = loadEnv(mode, root),
-    viteEnv = wrapperEnv(env),
-    { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY, VITE_DROP_CONSOLE } = viteEnv;
+  const root = process.cwd();
+  const env = loadEnv(mode, root);
+  const viteEnv = wrapperEnv(env);
+  const { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY, VITE_DROP_CONSOLE } = viteEnv;
   const isBuild = command === 'build';
 
   return {

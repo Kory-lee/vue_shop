@@ -5,7 +5,7 @@ export interface RequestOptions {
   // 请求参数拼接到url
   joinParamsToUrl?: boolean;
   // 格式化请求参数时间
-  formatData?: boolean;
+  formatDate?: boolean;
   // 是否处理请求结果
   isTransformRequestResult?: boolean;
   // 受否加入url
@@ -16,10 +16,20 @@ export interface RequestOptions {
   errorMessageMode?: ErrorMessageMode;
   // 是否加入时间戳
   joinTime?: boolean;
+  ignoreCancelToken?: boolean;
+  withToken?: boolean;
+  // 请求重试机制
+  retryRequest?: RetryRequest;
+}
+
+export interface RetryRequest {
+  isOpenRetry: boolean;
+  count: number;
+  waitTime: number;
 }
 
 export interface CreateAxiosOptions extends AxiosRequestConfig {
-  prefixUrl?: string;
+  authenticationScheme?: string;
   transform?: AxiosTransform<Result>;
   requestOptions?: RequestOptions;
 }
@@ -64,7 +74,10 @@ export interface AxiosTransform<T> {
   /**
    * @description 请求之前的拦截器
    */
-  requestInterceptors?: (config: AxiosRequestConfig) => AxiosRequestConfig;
+  requestInterceptors?: (
+    config: AxiosRequestConfig,
+    options: CreateAxiosOptions
+  ) => AxiosRequestConfig;
 
   /**
    * @description 请求之后的拦截器

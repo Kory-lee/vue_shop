@@ -1,4 +1,5 @@
-import { GetUserInfoByUserIdModel, LoginParams, LoginResultModel } from './model/userModel';
+import type { GetUserInfoByUserIdModel, LoginParams, LoginResultModel } from './model/userModel';
+
 import http from '/@/utils/http';
 import { ErrorMessageMode } from '/@/utils/http/type';
 

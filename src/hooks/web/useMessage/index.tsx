@@ -1,22 +1,22 @@
 import { Modal, notification, message } from 'ant-design-vue';
 import type { ModalFunc, ModalFuncProps } from 'ant-design-vue/lib/modal/Modal';
-import type { ArgsProps, ConfigProps } from 'ant-design-vue/lib/notification';
+import type { NotificationArgsProps, ConfigProps } from 'ant-design-vue/lib/notification';
 import { useI18n } from '/@/i18n/useI18n';
 import ModalIcon from './ModalIcon/index.vue';
 import { IconsType } from './ModalIcon/icons';
 
 export interface NotifyApi {
-  info(config: ArgsProps): void;
+  info(config: NotificationArgsProps): void;
 
-  success(config: ArgsProps): void;
+  success(config: NotificationArgsProps): void;
 
-  error(config: ArgsProps): void;
+  error(config: NotificationArgsProps): void;
 
-  warn(config: ArgsProps): void;
+  warn(config: NotificationArgsProps): void;
 
-  warning(config: ArgsProps): void;
+  warning(config: NotificationArgsProps): void;
 
-  open(args: ArgsProps): void;
+  open(args: NotificationArgsProps): void;
 
   close(key: string): void;
 
@@ -44,7 +44,7 @@ interface ConfirmOptions {
 }
 
 function renderContent({ content }: Pick<ModalOptionEx, 'content'>) {
-  return <div innerHTML={content && `<div>${content as string}<div/>`} />;
+  return <div innerHTML={content as string} />;
 }
 
 export function createConfirm(options: ModalOptionEx) {
