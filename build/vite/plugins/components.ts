@@ -11,7 +11,7 @@ const replaceMap = {
 };
 
 export function configComponentsImportPlugin(_isBuild: boolean) {
-  if (!_isBuild) return [];
+  // if (!_isBuild) return [];
   return [
     createStyleImportPlugin({
       // resolves: [AndDesignVueResolve()],
@@ -29,7 +29,11 @@ export function configComponentsImportPlugin(_isBuild: boolean) {
       ],
     }),
     // Components({
-    //   resolvers: [AntDesignVueResolver()],
+    //   resolvers: [
+    //     AntDesignVueResolver({
+    //       importStyle: 'less',
+    //     }),
+    //   ],
     // }),
   ];
 }

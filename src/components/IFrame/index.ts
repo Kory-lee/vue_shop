@@ -1,4 +1,4 @@
-import { default as IFrame } from './src/index.vue';
+import { default as IFrame } from './src/IFrame.vue';
 
 export { IFrame };
 export default IFrame;

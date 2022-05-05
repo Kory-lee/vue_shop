@@ -1,4 +1,4 @@
-import icon from './src/index.vue';
+import icon from './src/Icon.vue';
 import svgIcon from './src/SvgIcon.vue';
 import { withInstall } from '/@/utils';
 

@@ -1,4 +1,4 @@
-import Dropdown from './src/index.vue';
+import Dropdown from './src/Dropdown.vue';
 
 export * from './src/types';
 

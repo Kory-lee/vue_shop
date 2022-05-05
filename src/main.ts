@@ -7,7 +7,7 @@ import { setupStore } from './store';
 
 // import 'vite-plugin-svg-icons/register';
 
-if (import.meta.env.DEV) import('ant-design-vue/dist/antd.less');
+// if (import.meta.env.DEV) import('ant-design-vue/dist/antd.less');
 
 (async () => {
   const app = createApp(App);
