@@ -1,1 +1,0 @@
-import{i as e,a,a2 as n,a3 as r}from"./entry-index-9b52c156.js";const o=a({name:"FrameBlank"});function s(t,m,c,i,_,f){return n(),r("div")}var d=e(o,[["render",s],["__file","/home/runner/work/admin/admin/src/views/sys/iframe/FrameBlank.vue"]]);export{d as default};
