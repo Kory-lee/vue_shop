@@ -1,1 +1,0 @@
-import{c2 as t,b as e,c3 as c,Y as s}from"./entry-index-d8ec0f3a.js";const a=t(),l=e(()=>a.getLocale),g=e(()=>a.getShowPicker);e(()=>{var o;return(o=c.global.getLocaleMessage(s(l)))==null?void 0:o.antdLocale});export{l as a,g};
