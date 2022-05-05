@@ -26,21 +26,21 @@ export default function useConfig(
   mergedComponentPropsRef: Ref<GlobalComponentConfig | undefined> | undefined;
   namespaceRef: ComputedRef<string | undefined>;
 } {
-  const KConfigProvider = inject(configProviderInjectionKey, null);
+  const ConfigProvider = inject(configProviderInjectionKey, null);
   return {
-    inlineThemeDisabled: KConfigProvider?.inlineThemeDisabled,
-    mergedRtlRef: KConfigProvider?.mergedRtlRef,
-    mergedComponentPropsRef: KConfigProvider?.mergedComponentPropsRef,
-    mergedBreakpointsRef: KConfigProvider?.mergedBreakpointsRef,
+    inlineThemeDisabled: ConfigProvider?.inlineThemeDisabled,
+    mergedRtlRef: ConfigProvider?.mergedRtlRef,
+    mergedComponentPropsRef: ConfigProvider?.mergedComponentPropsRef,
+    mergedBreakpointsRef: ConfigProvider?.mergedBreakpointsRef,
     mergedBorderedRef: computed(() => {
       const { bordered } = props;
       if (bordered !== undefined) return bordered;
-      return KConfigProvider?.mergedBorderedRef.value ?? options.defaultBordered ?? true;
+      return ConfigProvider?.mergedBorderedRef.value ?? options.defaultBordered ?? true;
     }),
     mergedClsPrefixRef: computed(() => {
-      const clsPrefix = KConfigProvider?.mergedClsPrefixRef.value;
+      const clsPrefix = ConfigProvider?.mergedClsPrefixRef.value;
       return clsPrefix || defaultClsPrefix;
     }),
-    namespaceRef: computed(() => KConfigProvider?.mergedNamespaceRef.value),
+    namespaceRef: computed(() => ConfigProvider?.mergedNamespaceRef.value),
   };
 }

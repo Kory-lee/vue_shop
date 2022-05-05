@@ -3,6 +3,7 @@ import type { UserConfig } from 'vite';
 import { resolve } from 'path';
 import { OUTPUT_DIR } from './build/constant';
 import { createVitePlugins } from './build/vite/plugins';
+
 const { babel } = require('@rollup/plugin-babel');
 
 const pathResolve = (dir: string): string => resolve(__dirname, dir);
@@ -13,15 +14,13 @@ export default (): UserConfig => {
   return {
     root: __dirname,
     resolve: {
-      alias: isProduction
-        ? undefined
-        : [
-            { find: /^\/@\//, replacement: pathResolve('./src') + '/' },
-            {
-              find: 'kory-ui',
-              replacement: pathResolve('./src'),
-            },
-          ],
+      alias: [
+        { find: /^\/@\//, replacement: pathResolve('./src') + '/' },
+        {
+          find: '@korylee/ui',
+          replacement: pathResolve('./src'),
+        },
+      ],
     },
     build: {
       outDir: OUTPUT_DIR,

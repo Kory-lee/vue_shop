@@ -28,11 +28,11 @@
     "skipLibCheck": true,
     "paths": {
       "/@/*": [
-        "./src"
+        "./src/*"
       ],
-      "kory-ui": [
+      "@korylee/ui": [
         "./src"
       ]
     }
-  },
+  }
 }

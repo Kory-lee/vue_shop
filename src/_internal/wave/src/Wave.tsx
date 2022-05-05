@@ -1,4 +1,4 @@
-import { defineComponent, nextTick, ref, toRef, onBeforeUnmount } from 'vue';
+import { defineComponent, nextTick, onBeforeUnmount, ref, toRef } from 'vue';
 import useStyle from '/@/_mixins/use-style';
 import style from './styles/index.cssr';
 
@@ -42,6 +42,7 @@ export default defineComponent({
     };
   },
   render({ clsPrefix }) {
+    console.log(clsPrefix);
     return (
       <div
         ref="selfRef"

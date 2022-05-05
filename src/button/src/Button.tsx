@@ -1,4 +1,5 @@
 import type { ButtonTheme } from '/@/button/styles';
+import { buttonLight } from '/@/button/styles';
 import type { ButtonSize, ButtonType } from '/@/button/src/interface';
 import type { ExtractPublicPropTypes } from '/@/_utils/ui/extract-public-props';
 
@@ -18,11 +19,10 @@ import useConfig from '/@/_mixins/use-config';
 import { useMemo } from 'vooks';
 import useRtl from '/@/_mixins/use-rtl';
 import style from './styles/button.cssr';
-import { buttonLight } from '/@/button/styles';
 import { createKey } from '/@/_utils/cssr';
 import { createHoverColor, createPressedColor } from '/@/_utils/color';
 import useFormItem from '/@/_mixins/use-form-item';
-import { BaseWaveRef, BaseWave } from '/@/_internal/wave';
+import { BaseWave, BaseWaveRef } from '/@/_internal/wave';
 
 export type ButtonProps = ExtractPublicPropTypes<typeof buttonProps>;
 
@@ -60,8 +60,7 @@ export default defineComponent({
       () => !props.text && (!props.color || props.ghost || props.dashed) && props.bordered
     );
 
-    const { mergedClsPrefixRef } = useConfig(props);
-    const { KConfigProvider } = useConfig(props);
+    const { mergedClsPrefixRef, mergedRtlRef } = useConfig(props);
     const themeRef = useTheme('Button', 'Button', style, buttonLight, props, mergedClsPrefixRef);
     const { mergedSizeRef } = useFormItem(
       {},
@@ -114,11 +113,12 @@ export default defineComponent({
           enterPressedRef.value = true;
       }
     }
+
     function handleBlur(): void {
       enterPressedRef.value = false;
     }
 
-    const rtlEnabledRef = useRtl('Button', KConfigProvider?.mergedRtlRef, mergedClsPrefixRef);
+    const rtlEnabledRef = useRtl('Button', mergedRtlRef, mergedClsPrefixRef);
     return {
       selfRef,
       mergedClsPrefix: mergedClsPrefixRef,
