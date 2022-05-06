@@ -1,1 +1,0 @@
-import{i as e,a as n,a2 as o,a3 as a}from"./entry-index-59c4b1ac.js";const r=n({});function t(s,c,i,d,m,p){return o(),a("div")}var f=e(r,[["render",t],["__file","/home/runner/work/admin/admin/src/views/demo/comp/button/index.vue"]]);export{f as default};
