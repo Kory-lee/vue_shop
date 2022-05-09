@@ -1,0 +1,1 @@
+import{i as e,a0 as n,a1 as r}from"./entry-index-200dc0c4.js";const a={name:"Btn"};function t(o,s,c,i,m,_){return n(),r("div",null,"btn")}var d=e(a,[["render",t],["__file","/home/runner/work/admin/admin/src/views/demo/permission/back/Btn.vue"]]);export{d as default};
