@@ -1,6 +1,7 @@
 <template>
   <Provider :locale="getAntdLocale">
     <router-view />
+    <ModalContainer />
   </Provider>
 </template>
 
@@ -16,10 +17,11 @@
   import 'virtual:windi-components.css';
   import 'virtual:windi-utilities.css';
   import 'virtual:svg-icons-register';
+  import { ModalContainer } from './components/Modal';
 
   export default defineComponent({
     name: 'App',
-    components: { Provider },
+    components: { Provider, ModalContainer },
     setup() {
       initConfigStore();
       useTitle();
